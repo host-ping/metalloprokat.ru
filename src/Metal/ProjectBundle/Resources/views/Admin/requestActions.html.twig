@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        <li>
+            <a href="{{ path('admin_metal_project_banrequest_list', {'filter': {'intIp': {'value': object.intIp}}}) }}" target="_blank">Просмотреть запросы</a>
+        </li>
+    </ul>
+{% endblock %}

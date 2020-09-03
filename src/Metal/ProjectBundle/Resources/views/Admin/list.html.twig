@@ -1,0 +1,234 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block table_header %}
+    <thead>
+        {% if admin.datagrid.pager.haveToPaginate() %}
+            <tr>
+                <td colspan="{{ admin.list.elements|length }}">
+                    <div class="text-center">
+                        <ul  class="pagination">
+                            {% if admin.datagrid.pager.page > 2  %}
+                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
+                            {% endif %}
+
+                            {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
+                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
+                            {% endif %}
+
+                            {# Set the number of pages to display in the pager #}
+                            {% for page in admin.datagrid.pager.getLinks(admin_pool.getOption('pager_links')) %}
+                                {% if page == admin.datagrid.pager.page %}
+                                    <li class="active"><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                {% else %}
+                                    <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
+                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
+                            {% endif %}
+
+                            {% if admin.datagrid.pager.page != admin.datagrid.pager.lastpage and admin.datagrid.pager.lastpage != admin.datagrid.pager.nextpage %}
+                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+        <tr class="sonata-ba-list-field-header">
+            {% for field_description in admin.list.elements %}
+                {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
+                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                        <input type="checkbox" id="list_batch_checkbox">
+                    </th>
+                {% elseif field_description.getOption('code') == '_select' %}
+                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
+                {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                    {# Action buttons disabled in ajax view! #}
+                {% else %}
+                    {% set sortable = false %}
+                    {% if field_description.options.sortable is defined and field_description.options.sortable %}
+                        {% set sortable             = true %}
+                        {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                        {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.fieldName == sort_parameters.filter._sort_by %}
+                        {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
+                        {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                    {% endif %}
+
+                    {% spaceless %}
+                        <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
+                            {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                {{ admin.trans(field_description.label, {}, field_description.translationDomain) }}
+                                {% if sortable %}</a>{% endif %}
+                        </th>
+                    {% endspaceless %}
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+{% endblock %}
+
+{% block list_filters_actions '' %}
+
+{% block sonata_admin_content %}
+
+    {# Исправление фона #}
+    <style>
+        .skin-black .wrapper {
+            background-color: #ecf0f5 !important;
+        }
+    </style>
+
+    {% block notice %}
+        {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+    {% endblock notice %}
+
+    {% if _list_filters|trim %}
+        <div class="row-fluid">
+            {# выкинул класс span2, чтобы по всей ширине шел блок #}
+            <div class="sonata-ba-filter">
+                {{ _list_filters|raw }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if _preview is not empty %}
+        <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+    {% endif %}
+
+    {% if _content is not empty %}
+        <div class="sonata-ba-content">{{ _content|raw }}</div>
+    {% endif %}
+
+    {% if _show is not empty %}
+        <div class="sonata-ba-show">{{ _show|raw }}</div>
+    {% endif %}
+
+    {% if _form is not empty %}
+        <div class="sonata-ba-form">{{ _form|raw }}</div>
+    {% endif %}
+    {% if _list_table is not empty or _list_filters is not empty %}
+        <div class="row-fluid">
+            {#{% if _list_filters|trim %}span10{% else %}span12{% endif %}   выкинул проверку и оставил один класс#}
+            <div class="sonata-ba-list span12 js-grid">
+                {{ _list_table|raw }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block list_filters %}
+    {% if admin.datagrid.filters %}
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title filter_legend js-legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</h4>
+            </div>
+            <div class="box-body">
+                <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}"
+                      action="{{ admin.generateUrl('list') }}" method="GET">
+                    {{ form_errors(form) }}
+                    <fieldset class="filter_legend">
+
+                        <div class="filter_container js-filter-container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}"
+                             {% if not admin.datagrid.hasActiveFilters %}style="display: none;"{% endif %}>
+                            <div class="clearfix" style="margin-bottom: 5px;">
+                                {% for filter in admin.datagrid.filters %}
+                                    <div class="form-filter-item js-item">
+                                        <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                        {{ form_widget(form.children[filter.formName].children['type'], {'attr':  form.children[filter.formName].children['type'].vars.attr|default({})|merge({'class': (form.children[filter.formName].children['type'].vars.attr.class|default('') ~ ' span8 sonata-filter-option js-filter-option select2-offscreen')|trim})}) }}
+                                        {{ form_widget(form.children[filter.formName].children['value'], {'attr': form.children[filter.formName].children['value'].vars.attr|default({})|merge({'class': (form.children[filter.formName].children['value'].vars.attr.class|default('') ~ ' span8')|trim, 'style': 'height: 28px;'})}) }}
+                                    </div>
+                                {% endfor %}
+
+                                <div style="height:1px; clear:both;"></div>
+                            </div>
+
+                            <input type="hidden" name="filter[_page]" id="filter__page" value="1">
+
+                            {% set foo = form.children['_page'].setRendered() %}
+                            {{ form_rest(form) }}
+
+                            <input type="submit" class="btn btn-primary"
+                                   value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
+
+                            <a class="btn btn-danger"
+                               href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+                        </div>
+
+                        {% for paramKey, paramValue in admin.persistentParameters %}
+                            <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
+                        {% endfor %}
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('div.filter_container .sonata-filter-option', document).hide();
+            $('h4.filter_legend', document).click(function(event) {
+                $('div.filter_container .sonata-filter-option').toggle();
+            });
+
+            $('#list_batch_checkbox').click(function (e) {
+                var $table = $(e.target).closest('table');
+                $('td input:checkbox', $table).prop('checked', e.target.checked);
+            });
+            
+            $('.sonata-ba-list :checkbox').shiftcheckbox();
+
+            $('body').delegate('.js-legend', 'click', function () {
+                var $filterContainer = $('.js-filter-container');
+                if ($filterContainer.is(':hidden')) {
+                    $filterContainer.show();
+                    $filterContainer.find('.js-filter-option').hide();
+
+                }
+
+                $filterContainer.find('.js-item').css('height', 'auto');
+
+                if ($('.js-filter-option').is(':visible')) {
+                    $('.filter_container').find('.js-item').css('height', '100px');
+                }
+            });
+
+            var $parent = $('.js-sonata-datepicker').parents('.js-item');
+                $parent.css({
+                    'width' : 440 +'px'
+                });
+            $parent.find('.span8 > div').css({
+                'float' : 'left',
+                'width' : 200 +'px',
+                'marginLeft' : 10 +'px'
+            });
+
+            $('.js-select-link-text').bind('focus', function () {
+                $(this).trigger('select');
+            });
+        });
+
+        $(window).load(function () {
+            var scrollTop = 0;
+            var scrollToSelector = window.location.hash.match(/scroll-to-(.*)$/);
+            if (scrollToSelector) {
+                var $el = $('[data-scroll-el=' + scrollToSelector[1] + ']');
+
+                if ($el.length) {
+                    scrollTop = parseInt($el.offset().top - $('.navbar').outerHeight()) - parseInt($el.parents('td').css('padding-top')) * 2;
+                }
+            }
+
+            var $flash = $('.alert');
+            if ((!$flash.length || $flash.is(':hidden')) && !scrollTop) {
+                scrollTop = $('.js-grid').offset().top - $('.navbar-inner').outerHeight(true);
+            }
+
+            if (scrollTop) {
+                $(window).scrollTo(scrollTop);
+            }
+        });
+    </script>
+{% endblock %}
+

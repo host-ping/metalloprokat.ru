@@ -1,0 +1,29 @@
+'MetalContentBundle:Question:view':
+    path:     /{category_slug}/questions_{id}.html
+    condition: "request.attributes.has('content_category')"
+    defaults: { _controller: MetalContentBundle:Question:view }
+    requirements:
+        id: \d+
+        category_slug: %category_with_parameters_slug_regex%
+
+'MetalContentBundle:Questions:list':
+    path:     /{category_slug}/questions.html
+    condition: "request.attributes.has('content_category')"
+    defaults: { _controller: MetalContentBundle:Questions:list }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+
+'MetalContentBundle:Topic:view':
+    path:     /{category_slug}/publications_{id}.html
+    condition: "request.attributes.has('content_category')"
+    defaults: { _controller: MetalContentBundle:Topic:view }
+    requirements:
+        id: \d+
+        category_slug: %category_with_parameters_slug_regex%
+
+'MetalContentBundle:Topics:list':
+    path:     /{category_slug}/
+    condition: "request.attributes.has('content_category')"
+    defaults: { _controller: MetalContentBundle:Topics:list }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%

@@ -1,0 +1,343 @@
+{% extends 'markup/html/portal/_portal_layout.html.twig' %}
+
+{% block title 'Demand view' %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs-wrapper">
+        <div class="breadcrumbs empty-breadcrumbs outline clearfix">
+            <div class="site-info float-left">
+                <a href="#" class="link">7337 заявки</a> от потребителей в России
+            </div>
+            {% block breadcrumbs_button %}
+                <div class="add float-right">
+                    <a class="add-button demand icon-add-btn" href="#">Добавить заявку</a>
+                </div>
+            {% endblock breadcrumbs_button %}
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <div id="content" class="content-wide table-container outline-left">
+    <div class="left table-cell">
+        <div class="inside-page">
+            <div class="product-info-wrapper">
+                <h1 class="demand_main-title">
+                    <strong class="demand-count">№39526</strong>
+                    Москва
+                    <span class="demand-date">от 28 апр 2013</span>
+                    <div class="demand-region gray60-color">
+                        <strong>Московская обл.</strong>
+                    </div>
+                </h1>
+                <div class="table-holder">
+                    <table class="demand_product demand-table border">
+                        <tr class="row first"> {#fixed#}
+                            <td class="item col">
+                                <p class="product-item">1</p>
+                            </td>
+                            <td class="title col">
+                                <p class="product-title">Прокат угловой равнополочный Ст.3 ГО</p>
+                            </td>
+                            <td class="count col">
+                                <p class="product-count">50 тонн</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="item col">
+                                <p class="product-item">2</p>
+                            </td>
+                            <td class="title col">
+                                <p class="product-title">Арматура А3</p>
+                            </td>
+                            <td class="count col">
+                                <p class="product-count">50 тонн</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="item col">
+                                <p class="product-item">3</p>
+                            </td>
+                            <td class="title col">
+                                <p class="product-title">Порошок вольфрамовый технический ПВТ ТУ 48-19-72-92</p>
+                            </td>
+                            <td class="count col">
+                                <p class="product-count">50 тонн</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="download-demand-file icon-clip">
+                    <a class="link" href="#">Скачать прикрепленный файл</a>
+                </div>
+                <p class="demand_delivery-text">Доставка до ж/д станции Баковка. Оплат аккредитив 30 дней.</p>
+                <div class="demand-info demand-mobile">
+                    <div class="holder clearfix">
+                        <span class="answered icon-back float-left">4</span>
+                        <span class="viewed icon-views float-left">506</span>
+                    </div>
+                    <p class="text">
+                        <span class="trader">Металлоторговец</span>
+                        <span class="location">из Одинцово</span>
+                    </p>
+
+                    <p class="text">
+                        Для просмотра контактной информации о потребителе необходимо <br>
+                        <a href="#">зарегистрироваться</a>
+                        и
+                        <a href="#">авторизоваться</a>.
+                    </p>
+
+                    <div class="user-info-block">
+                        <p class="user">Василий Ложкин</p>
+
+                        <p class="user-contact">
+                            <span class="phone-text">+7 (495) 772-65-83,</span> <a href="#">vasiliy@lozhkin.com</a>
+                        </p>
+                    </div>
+                    <div class="comment-block left-bullet">
+                        <span class="text">Готовы поставить на след. неделе. Позвонить Максиму</span>
+                        <span class="date">2 мар 2013 18:20</span>
+                    </div>
+                </div>
+                <ul class="links demand_links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="item width-181 float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                    <li class="print item width-181 float-left">
+                        <div class="print-button button is-bordered ie-radius js-print-page">Распечатать</div>
+                    </li>
+                    <li class="links_answer item width-181 float-left clearfix">
+                        <a class="button answer is-bordered green-bg js-popup-opener ie-radius" href="#"
+                           data-popup="#demand-answer" data-demand-id="39525">
+                            <span class="text">Ответить</span>
+                            <span class="icon-back float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="tabs" class="result-tabs-wrapper tabs demand_tabs clearfix">
+                <ul class="tabs-list">
+                    <li class="item active ie-radius">
+                        <a class="link" href="#">Похожие заявки в Москве</a>
+                        <span class="count">258</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="tabs-content">
+                <ul class="similar-list">
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="item outline">
+                        <div class="title is-gradiented">
+                            <a class="product-link" href="#">Арматура А3, Уголок</a>
+                        </div>
+                        <div class="similar-demand">
+                            <strong class="demand-count red-color">№39526</strong>
+                            <span class="text">Разовая потребность</span>
+                            <span class="demand-date">от 28 апр 2013</span>
+                        </div>
+                    </li>
+                    <li class="see-more-block-wrapper">
+                        <div class="see-more-block">
+                            <a class="see-more button ie-radius" href="#">всего 258 заявок</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="right table-cell blue">
+        <div class="demand-info">
+            <div class="holder clearfix">
+                <span class="answered icon-back float-left">4</span>
+                <span class="viewed icon-views float-left">506</span>
+            </div>
+            <p class="text">
+                <span class="trader">Металлоторговец</span>
+                <span class="location">из Одинцово</span>
+            </p>
+
+            <p class="text">
+                Для просмотра контактной информации о потребителе необходимо <br/>
+                <a href="#">зарегистрироваться</a>
+                и
+                <a href="#">авторизоваться</a>.
+            </p>
+
+            <div class="user-info-block">
+                <p class="user">Василий Ложкин</p>
+
+                <p class="user-contact">
+                    <span class="phone-text">+7 (495) 772-65-83,</span> <a href="#">vasiliy@lozhkin.com</a>
+                </p>
+            </div>
+            <div class="comment-block left-bullet">
+                <span class="text">Готовы поставить на след. неделе. Позвонить Максиму</span>
+                <span class="date">2 мар 2013 18:20</span>
+            </div>
+        </div>
+        <div class="seo-block">
+            <div class="related-topics">
+                <div class="related-topics_title">
+                    Связанные разделы
+                </div>
+                <ul class="topic-list">
+                    <li class="item">
+                        <a class="link" href="#">Лента</a>
+                    </li>
+                    <li class="item">
+                        <a class="link" href="#">Уголок</a>
+                    </li>
+                    <li class="item">
+                        <a class="link" href="#">Шпунт Ларсена</a>
+                    </li>
+                    <li class="item">
+                        <a class="link" href="#">Шплинт</a>
+                    </li>
+                    <li class="item">
+                        <a class="link" href="#">Шары помольные</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="premium-product-block">
+                <div class="category-title">Товары из раздела <a href="#" class="link">Арматура</a></div>
+                <ul class="topic-list">
+                    <li class="item clearfix">
+                        <div class="topic-info float-left">
+                            <a class="title-link" href="#">Арматура стеклопластиковая АСП-6</a>
+
+                            <p class="text">Размер 6, <strong class="price red-color">10 <span class="icon-rouble"></span></strong> за погонный метр
+                            </p>
+                        </div>
+                        <div class="img is-bordered float-right">
+                            <div class="img-holder">
+                                <a href="#" class="img-link pattern-small">
+                                    <img src="./markup/pic/small-img.jpg" alt="image description"/>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="topic-info float-left">
+                            <a class="title-link" href="#">Арматура стеклопластиковая АСП-6</a>
+
+                            <p class="text">Размер 6, <strong class="price red-color">10 <span class="icon-rouble"></span></strong> за погонный метр
+                            </p>
+                        </div>
+                        <div class="img is-bordered float-right">
+                            <div class="img-holder">
+                                <a href="#" class="img-link pattern-small"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="topic-info float-left">
+                            <a class="title-link" href="#">Арматура стеклопластиковая АСП-6</a>
+
+                            <p class="text">Размер 6, <strong class="price red-color">10 <span class="icon-rouble"></span></strong> за погонный метр
+                            </p>
+                        </div>
+                        <div class="img is-bordered float-right">
+                            <div class="img-holder">
+                                <a href="#" class="img-link pattern-small"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="topic-info float-left">
+                            <a class="title-link" href="#">Арматура стеклопластиковая АСП-6</a>
+
+                            <p class="text">Размер 6, <strong class="price red-color">10 <span class="icon-rouble"></span></strong> за погонный метр
+                            </p>
+                        </div>
+                        <div class="img is-bordered float-right">
+                            <div class="img-holder">
+                                <a href="#" class="img-link pattern-small"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="topic-info float-left">
+                            <a class="title-link" href="#">Арматура стеклопластиковая АСП-6</a>
+
+                            <p class="text">Размер 6, <strong class="price red-color">10 <span class="icon-rouble"></span></strong> за погонный метр
+                            </p>
+                        </div>
+                        <div class="img is-bordered float-right">
+                            <div class="img-holder">
+                                <a href="#" class="img-link pattern-small"></a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <a class="add-product-text" href="#">Разместить здесь товары</a>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block sidebar '' %}

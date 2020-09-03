@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.support.admin.topic" class="Metal\SupportBundle\Admin\TopicAdmin">
+            <argument>metal.support.admin.topic</argument>
+            <argument>Metal\SupportBundle\Entity\Topic</argument>
+            <argument>MetalSupportBundle:TopicAdmin</argument>
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="feedback" label="Обращения в службу поддержки" />
+        </service>
+
+        <service id="metal.support.admin.block.unprocessed_support_topic" class="Metal\SupportBundle\Admin\Block\UnprocessedSupportTopicBlockService">
+            <argument>metal.support.admin.block.unprocessed_support_topic</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <service id="metal.support.admin.answer" class="Metal\SupportBundle\Admin\AnswerAdmin">
+            <argument>metal.support.admin.answer</argument>
+            <argument>Metal\SupportBundle\Entity\Answer</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="feedback" show_in_dashboard="false" label="Ответы" />
+        </service>
+    </services>
+</container>

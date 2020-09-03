@@ -1,0 +1,223 @@
+{% extends '@markup/content/_content_layout.html.twig' %}
+
+{% block content %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="sort-view clearfix">
+
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#order">Новое</a>
+
+                    <div id="order" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">Новое</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Самое интересное</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Самое комментируемое</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#period">За все время</a>
+
+                    <div id="period" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">За все время</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За сутки</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За неделю</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За месяц</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#categories">Все темы</a>
+
+                    <div id="categories" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">Все темы</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Проекты и технологии</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Отделочные материалы</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Выполнение работ</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Мебель, декор, аксессуары</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="links float-right">
+                    <li class="item width-141">
+                        <div class="button send-button blue-bg js-popup-opener ie-radius" data-popup="">
+                            <span class="text">Задать вопрос</span>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="view-category products questions">
+                <h1 class="title">Вопросы</h1>
+                <ul class="product list">
+                    <li class="view-product item">
+                        <div class="all-product-holder clearfix">
+
+                            <div class="top-block">
+                                <div class="creation-info gray60-color">
+                                    <span class="date icon-clock">15 апр 2015 11:25</span>,
+                                    <span class="user-name link js-popup-opener clickable" data-popup="#user-info">admin</span>
+                                </div>
+
+                                <div class="title">
+                                    <a href="{{ path('content/questions/question.html.twig') }}" class="is-gradiented-bottom">Как правильно сделать дверные и оконные проёмы в срубе дома</a>
+                                </div>
+
+                                <div class="categories gray60-color">
+                                    Раздел: <a href="#">Загородный дом</a> / <a href="#">окна, Проекты и технологии</a>
+                                </div>
+                                <div class="tags icon-clip gray60-color">
+                                    <span>Метки: </span>
+                                    <a class="link">Кондиционер</a>,
+                                    <a class="link">Электроснабжение</a>
+                                </div>
+                                <p class="description gray60-color is-gradiented-bottom">
+                                    Всем привет. У меня в планах постройка бани. Сейчас, пока еще не совсем все так подорожало, есть
+                                </p>
+
+                            </div>
+                            <ul class="links clearfix">
+                                <li class="links_answer item default-width float-left clearfix">
+                                    <a class="button answer is-bordered green-bg js-popup-opener ie-radius" data-popup="#demand-answer-1" href="#">
+                                        <span class="text">Ответить</span>
+                                        <span class="icon-back float-right"></span>
+                                    </a>
+
+                                </li>
+                                <li class="links_read-answers item default-width float-left clearfix">
+                                    <a class="button is-bordered js-popup-opener ie-radius" data-popup="#demand-answers" href="#">
+                                        <span class="text">Читать ответы</span>
+                                        <strong class="count gray80-color">3</strong>
+                                        <span class="read-answers icon-back float-right"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                    <li class="view-product item">
+                        <div class="all-product-holder clearfix">
+
+                            <div class="top-block">
+                                <div class="creation-info gray60-color">
+                                    <span class="date icon-clock">15 апр 2015 11:25</span>,
+                                    <span class="user-name link js-popup-opener clickable" data-popup="#user-info">admin</span>
+                                </div>
+                                <div class="title">
+                                    <a href="{{ path('content/questions/question.html.twig') }}" class="is-gradiented-bottom">Как правильно сделать дверные и оконные проёмы в срубе дома</a>
+                                </div>
+                                <div class="categories gray60-color">
+                                    Раздел: <a href="#">Загородный дом</a> / <a href="#">окна, Проекты и технологии</a>
+                                </div>
+                                <div class="tags icon-clip gray60-color">
+                                    <span>Метки: </span>
+                                    <a class="link">Кондиционер</a>,
+                                    <a class="link">Электроснабжение</a>
+                                </div>
+                                <p class="description gray60-color is-gradiented-bottom">
+                                    Всем привет. У меня в планах постройка бани. Сейчас, пока еще не совсем все так подорожало, есть
+                                </p>
+
+                            </div>
+                            <ul class="links clearfix">
+                                <li class="links_answer item default-width float-left clearfix">
+                                    <a class="button answer is-bordered green-bg js-popup-opener ie-radius" data-popup="#demand-answer-1" href="#">
+                                        <span class="text">Ответить</span>
+                                        <span class="icon-back float-right"></span>
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                    <li class="see-more-block-wrapper">
+                        <div class="see-more-block">
+                            <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="product-right right table-cell">
+            <div class="info-wrapper white-bg">
+
+                <div class="topics-block">
+                    <h3 class="title ">Популярные темы</h3>
+
+                    <ul class="topics list">
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Как грамотно принять квартиру, купленную в новом доме</a>
+                            </div>
+
+                        </li>
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Бытовые вытяжные вентиляторы</a>
+                            </div>
+
+                        </li>
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Вентиляция квартиры</a>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Оборудование для кухни</a>
+                            </div>
+
+                        </li>
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Как победить жару и зной - дома, в офисе и на даче</a>
+                            </div>
+
+                        </li>
+                        <li class="item">
+                            <div class="title">
+                                <a href="#" class="link">Очистители воздуха для комфортной жизни</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+
+

@@ -1,0 +1,158 @@
+{% extends "@MetalProject/layouts/_portal_layout.html.twig" %}
+
+{% block title brouzie_helper('MetalCatalogBundle:Seo').getMetaTitleForBrandPage(brand) %}
+{% block meta_description brouzie_helper('MetalCatalogBundle:Seo').getMetaDescriptionForBrandPage(brand) %}
+
+{% block canonical_url %}
+    {{ brouzie_helper('MetalCatalogBundle:Seo').getCanonicalUrl(true) }}
+{% endblock %}
+
+{% block callback '' %}
+
+{% block content %}
+    {% set companiesSideWidget = brouzie_widget('MetalCatalogBundle:CompaniesSide', {'brand' : brand, 'city' : currentCity}) %}
+    {% set hasCompaniesToDisplay = companiesSideWidget.hasCompaniesToDisplay() %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="product-inside js-calc-height">
+                <div class="product-info-wrapper clearfix">
+                    <div class="product-img is-bordered float-left">
+                        <span class="img-link {% if not brand.logo.name %}pattern-big{% endif %}">
+                            {% if brand.logo.name %}
+                                <img src="{{ vich_uploader_asset(brand, 'uploadedLogo')|imagine_filter('catalog_logo_sq136') }}" alt="{{ brand.title }}"/>
+                            {% endif %}
+
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product_main-title">{{ brouzie_helper('MetalCatalogBundle:Seo').getHeadTitleForBrandPage(brand) }}</h1>
+                        <div class="information">
+                            {% if brand.site %}
+                                <!--noindex-->
+                                    <div class="site">
+                                        <a data-href="{{ path('MetalProjectBundle:Redirect:redirect', {'url' : brand.site}) }}"
+                                           target="_blank" rel="noopener noreferrer">{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(brand.site) }}</a>
+                                    </div>
+                                <!--/ noindex -->
+                            {% endif %}
+                            {% if brand.manufacturer %}
+                                <div class="manufacturer-info">
+                                    Производитель: <a href="{{ path('MetalCatalogBundle:Manufacturer:view', {'slug' : brand.manufacturer.slug}) }}" class="link">{{ brand.manufacturer.title }}</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if brand.description %}
+                    <div class="product-description">
+                        <div><strong>Описание</strong></div>
+                        <p class="text">{{ brand.description|nl2br }}</p>
+                    </div>
+                {% endif %}
+
+                {% set pagerfantaLength = pagerfanta|length %}
+                {% if pagerfantaLength %}
+                    <div id="tabs" class="result-tabs-wrapper tabs demand_tabs clearfix">
+                        <ul class="tabs-list">
+                            <li class="item active js-tabs" data-tab="#similar-products-tab">
+                                <span class="link">Продукты</span>
+                                <span class="count">{{ pagerfantaLength }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tabs-content">
+                        <ul class="similar-list catalog-list" id="similar-products-tab"
+                            data-replacement-zone="page.similar_products_tab_list">
+                            {% set subdomain = app.request.attributes.get('city') ? app.request.attributes.get('city').getSlugWithFallback : 'www' %}
+
+                            {{ include('@MetalCatalog/partial/products_in_brand.html.twig', {
+                                'pagerfanta' : pagerfanta,
+                                'subdomain' : subdomain
+                            }, false) }}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="product-right right white95-bg table-cell static">
+            <div class="js-company-info-fixed">
+                <div class="info-wrapper white-bg">
+                    {% if hasCompaniesToDisplay %}
+                        {{ brouzie_render_widget(companiesSideWidget) }}
+                    {% endif %}
+
+                    <div class="add-companies-wrapper">
+                        <p class="title">
+                            <strong>Торгуете продукцией {{ brand.title }}?</strong>
+                        </p>
+                        <a data-href="{{ brouzie_helper('MetalProjectBundle:Url').getRegisterAndAddProductsUrl()}}" class="button green-bg ie-radius centered">Добавить компанию и товары</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block search_form %}
+    {% set searchRoute = searchRoute|default('MetalCatalogBundle:Search:search') %}
+    {% set searchPlaceholder = searchPlaceholder|default('Введите строку поиска') %}
+
+    <div class="search-block clearfix">
+        <form action="{{ path(searchRoute) }}" class="search-form">
+            <fieldset id="search-fixed" class="main-block js-fixed">
+                <div class="wrap clearfix input-block">
+                    <div class="search-field-wrap float-left">
+                        <span class="icon-search-big"></span>
+                        <input name="q" type="text"
+                               placeholder="{{ searchPlaceholder|escape('html_attr') }}"
+                               value="{{ app.request.query.get('q')|escape('html_attr') }}"
+                               class="search-input" />
+                    </div>
+                    <div class="search-submit-wrapper float-right">
+                        <input type="submit" value="Найти" class="button search-submit blue-bg float-left ie-radius" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock search_form %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'head-side-1', 'category_id' : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'head-side-2', 'category_id' : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'head-center', 'category_id' : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'premium', 'category_id' : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'left-sidebar', 'category_id' : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'background', 'category_id' : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'right-sidebar-1', 'category_id' : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'right-sidebar-2', 'category_id' : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'brand', 'zone_slug' : 'right-sidebar-3', 'category_id' : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

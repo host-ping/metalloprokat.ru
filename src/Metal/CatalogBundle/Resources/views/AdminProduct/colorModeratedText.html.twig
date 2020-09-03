@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        <p><b>{{ object.title }}</b></p>
+        {#TODO: Использовать цвета из Metal/CatalogBundle/Resources/views/AdminProduct/list.html.twig #}
+        {% if object.getCategory() %}
+            <span class="label label-primary" title="Категория">{{ object.category.getTitleWithParent() }}</span>
+        {% endif %}
+
+        {% set attributes = object.getAttribute('product_attributes')|default([]) %}
+
+        {% set colors = { (constant('ATTR_CODE_MANUFACTURER', object)): '#276db4', (constant('ATTR_CODE_BRAND', object)): '#15b4ad'} %}
+        {% for attribute in attributes %}
+            <span class="label label-default" style="background-color: {{ colors[attribute['code']]|default('#999') }};  color:#fff;" title="{{ attribute['attributeTitle'] }}">{{ attribute['attributeValueTitle'] }}</span>
+        {% endfor %}
+    </div>
+{% endblock %}

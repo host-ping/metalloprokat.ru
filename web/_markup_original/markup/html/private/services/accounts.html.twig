@@ -1,0 +1,262 @@
+{% extends '@markup/private/services/_services_layout.html.twig' %}
+{% block title 'Accounts' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+            {% block tabs %}
+                {% set activeTab = 'accounts' %}
+                {{ parent() }}
+            {% endblock tabs %}
+            {% block package %}
+                {{ parent() }}
+            {% endblock package %}
+            <table class="accounts table">
+            <thead>
+            <tr class="row"> {#fixed#}
+                <th class="id col">Номер</th>
+                <th class="package-name col">Основание</th>
+                <th class="date col">Дата выставления</th>
+                <th class="account-num col">Номер п/поручения</th>
+                <th class="account-status col">Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="current row">
+                <td class="id col">1</td>
+                <td class="package-name  col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black js-popover-opener" data-popover="#load-links" href="#">Оплатить</a>
+                    <div id="load-links" class="drop-wrapper opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Олатить онлайн</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Распечатать счет</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">20</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 12 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">421</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">45</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 13 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">38</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">20</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 12 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">421</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">45</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 13 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">38</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">20</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 12 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">421</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">45</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 13 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">38</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">20</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 12 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">421</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">45</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link complete icon-check black" href="#">оплачен 13 мар 2013</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="id col">38</td>
+                <td class="package-name col">
+                    <a href="#">Расширенный пакет</a>
+                </td>
+                <td class="date col">12 апр 2013</td>
+                <td class="account-num col">
+                    <a href="#">854782</a>
+                </td>
+                <td class="account-status col">
+                    <a class="link icon-check black" href="#">Оплатить</a>
+                </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

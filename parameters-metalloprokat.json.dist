@@ -1,0 +1,47 @@
+[
+    {
+        "file": "app/config/parameters.yml",
+        "dist-file": "app/config/parameters.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/metalloprokat.yml",
+        "dist-file": "app/config/parameters/metalloprokat.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/metalspros.yml",
+        "dist-file": "app/config/parameters/metalspros.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/8_800.yml",
+        "dist-file": "app/config/parameters/8_800.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/metalloprokat-ua.yml",
+        "dist-file": "app/config/parameters/metalloprokat-ua.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/metalloprokat-by.yml",
+        "dist-file": "app/config/parameters/metalloprokat-by.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/metalloprokat-kz.yml",
+        "dist-file": "app/config/parameters/metalloprokat-kz.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/parameters/country_host.yml",
+        "dist-file": "app/config/parameters/country_host.yml.dist",
+        "keep-outdated": true
+    },
+    {
+        "file": "app/config/listeners/metalloprokat.yml",
+        "dist-file": "app/config/listeners/metalloprokat.yml.dist",
+        "keep-outdated": true
+    }
+]

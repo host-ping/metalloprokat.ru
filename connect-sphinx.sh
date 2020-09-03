@@ -1,0 +1,1 @@
+mysql -h search-metalloprokat -P 9306

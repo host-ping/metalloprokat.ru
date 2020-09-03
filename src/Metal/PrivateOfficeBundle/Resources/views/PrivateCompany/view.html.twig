@@ -1,0 +1,294 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Компания / Управление информацией / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Company.js'
+        combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right"
+         ng-controller="Metal.Core as coreController">
+        <div class="private-scrollable content-scrollable js-scrollable">
+
+            {{ block('tabs') }}
+
+            <div class="management-content-wrapper clearfix">
+                {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+                <div class="company-form-wrapper float-left">
+                    <form class="register-form form js-ajax-form-submit"
+                          ng-controller="Metal.Company as companyController"
+                          action="{{ path('MetalPrivateOfficeBundle:Company:edit') }}"
+                          method="post"
+                          novalidate="novalidate"
+                          data-success="reload">
+                        <fieldset class="left-group">
+                            <div class="group clearfix">
+                                <div class="user-company-wrapper field-wrap float-left">
+                                    {{ form_widget(form.title, {'attr' : {'class' : 'register-company form-text ie-radius', 'placeholder' : 'Компания' }}) }}
+                                </div>
+                                <div class="company-type-wrapper field-wrap float-left">
+                                    {{ form_widget(form.companyTypeId, {'attr' : {'placeholder' : '', 'class': 'form-select hight'} }) }}
+                                </div>
+                            </div>
+                            <div class="field-wrap">
+                                {{ form_widget(form.domain, {'attr' : {'class' : 'form-text ie-radius with-change-link', 'placeholder' : 'Мини-сайт' }}) }}
+                                <a class="change" href="{{ path('MetalPrivateOfficeBundle:MiniSite:address') }}">Изменить</a>
+                            </div>
+
+                            <div class="group clearfix">
+                                <div class="field-wrap float-left">
+                                    {{ form_widget(form.cityTitle, {
+                                        'attr' : {
+                                            'class' : 'form-text ie-radius',
+                                            'placeholder' : 'Город',
+                                            'typeahead': '',
+                                            'typeahead-loading': 'typeaheadLoading',
+                                            'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getCities'),
+                                            'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                            'typeahead-model': "city"
+                                        }
+                                    }) }}
+
+                                    {{ form_widget(form.city, {
+                                        'attr' : {
+                                            'class' : 'g-hidden',
+                                            'ng-model': "city.id",
+                                            'initial-value': ''
+                                        } }) }}
+                                </div>
+
+                                <div class="field-wrap float-left">
+                                    {{ form_widget(form.address, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Улица' }}) }}
+                                </div>
+                            </div>
+
+                            <script id="new-phone-row" type="text/html">
+                                <div class="phones group clearfix js-phone-row">
+                                    <div class="field-wrap float-left">
+                                        {{ form_widget(form.phones.vars.prototype.phone, {'attr' : {'class' : 'phone form-text ie-radius', 'placeholder' : 'Телефон' }}) }}
+                                    </div>
+                                    <div class="field-wrap float-left">
+                                        {{ form_widget(form.phones.vars.prototype.additionalCode, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Добавочный' }}) }}
+                                    </div>
+                                    <div class="add-string float-left js-phone-row-controls">
+                                        <span class="add-string-link icon-add-btn clickable float-left js-add-phone-row"> Еще телефон</span>
+                                        <span class="del-btn clickable float-right ico-delete-btn js-del-phone-row"></span>
+                                    </div>
+                                </div>
+                            </script>
+
+                            <div id="phone-list-container" data-items-index="{{ form.phones|length }}">
+                                {% for companyPhone in form.phones %}
+                                    <div class="phones group clearfix js-phone-row">
+                                        <div class="field-wrap float-left">
+                                            {{ form_widget(companyPhone.phone, {'attr' : {'class' : 'phone form-text ie-radius', 'placeholder' : 'Телефон' }}) }}
+                                        </div>
+                                        <div class="field-wrap float-left">
+                                            {{ form_widget(companyPhone.additionalCode, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Добавочный' }}) }}
+                                        </div>
+
+                                        <div class="add-string float-left js-phone-row-controls {% if not loop.last %}g-hidden{% endif %}">
+                                            <span class="add-string-link icon-add-btn clickable float-left js-add-phone-row"> Еще телефон</span>
+                                            <span class="del-btn clickable float-right ico-delete-btn js-del-phone-row {% if loop.first %}g-hidden{% endif %}"></span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {% do form.phones.setRendered() %}
+                                {% endfor %}
+                            </div>
+
+                            <script id="new-site-list-row" type="text/html">
+                                <div class="js-site-row clearfix">
+                                    <div class="field-wrap">
+                                        {{ form_widget(form.sites.vars.prototype, {'attr' : {'class' : 'site form-text ie-radius', 'placeholder' : 'Сайт' }} ) }}
+                                    </div>
+                                    <div class="add-string  float-left js-site-row-controls">
+                                        <span class="add-string-link icon-add-btn float-left clickable js-add-site-row"> Еще сайт</span>
+                                        <span class="del-btn float-right ico-delete-btn js-del-site-row"></span>
+                                    </div>
+                                </div>
+                            </script>
+                            <div id="site-list-container" data-items-index="{{ form.sites|length }}">
+                                {% for siteItem in form.sites %}
+                                    <div class="js-site-row clearfix">
+                                        <div class="field-wrap">
+                                            {{ form_widget(siteItem, {'attr' : {'class' : 'site form-text ie-radius', 'placeholder' : 'Сайт' }} ) }}
+                                        </div>
+                                        <div class="add-string float-left js-site-row-controls {% if not loop.last %}g-hidden{% endif %}">
+                                            <span class="add-string-link icon-add-btn float-left clickable js-add-site-row"> Еще сайт</span>
+                                            <span class="del-btn float-right ico-delete-btn js-del-site-row {% if loop.first %}g-hidden{% endif %}"></span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {% do form.site.setRendered() %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="field-wrap">
+                                {{ form_widget(form.slogan, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Слоган' }} ) }}
+                            </div>
+
+                            <div class="field-wrap helper-center-position">
+                                {{ form_widget(form.deliveryDescription, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Текст доставки' }} ) }}
+                                {% if not company.packageChecker().isAllowedSetDeliveryDescription() %}
+                                    <span class="change clickable link js-popup-opener"
+                                          data-popup="#complete-package"
+                                    >Заполнить</span>
+                                {% endif %}
+                                <div class="no-more">
+                                <span class="icon-help js-helper-opener"
+                                      data-text='Этот текст будет выводиться на минисайте на странице "О компании" в секции "Осуществляем доставку в города"'></span>
+                                </div>
+                            </div>
+
+                            <div class="textarea-wrapper field-wrap">
+                                {{ form_widget(form.companyDescription.description, {'attr' : {'class' : 'form-textarea ie-radius' , 'placeholder' : 'Описание' }}) }}
+                                <div class="check-block">
+                                    <ul class="type-list">
+                                        {% for companyAttributesType in form.companyAttributesTypesIds %}
+                                            <li>
+                                                {{ form_widget(companyAttributesType, {'attr' : {'class' : 'js-styled-checkbox bg-grey' }}) }}
+                                                {{ form_label(companyAttributesType) }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <script id="new-category-row" type="text/html">
+                                <li class="item ie-radius js-changed-element">
+                                    {{ form_widget(form.enabledCompanyCategories.vars.prototype.category, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'id'}}) }}
+                                    {{ form_widget(form.enabledCompanyCategories.vars.prototype.categoryTitle, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'title' }}) }}
+                                    <span data-bind-text="title"></span>
+                                    <span class="icon-filter-del clickable js-del-element"></span>
+                                </li>
+                            </script>
+
+                            <div class="field-wrap helper-center-position">
+                                <input type="text" class="form-text ie-radius" placeholder="Продукт"
+                                       typeahead-prefetch-url="{{ path('MetalCategoriesBundle:Suggest:getCategories') }}"
+                                       data-container="#category-list-container"
+                                       typeahead=""
+                                       typeahead-loading="typeaheadLoading"
+                                       typeahead-model="category"
+                                       typeahead-clear-on-select="true"
+                                       typeahead-suggestion-template-url="'typeahead-suggestion-with-parent'"
+                                        />
+                                <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoading">
+                                    <div class="spinner"></div>
+                                </div>
+                                <div class="no-more">
+                                    {% if company.getMaxPossibleCategoriesCount() is not null %}
+                                        <span>Не более {{ company.getMaxPossibleCategoriesCount() }} категорий.</span>
+                                        <p class="text">Для добавления большего количества категорий необходимо выбрать и оплатить
+                                            <a class="link" target="_blank" href="{{ path('MetalCorpsiteBundle:Default:services') }}">доступ к порталу</a>.</p>
+                                    {% endif %}
+                                    <span class="icon-help js-helper-opener"
+                                          data-text="Ваша компания будет отображаться в списке по запросам указанных категорий продукции."></span>
+                                </div>
+
+                                <div class="filtered-block">
+                                    <ul class="list" id="category-list-container">
+                                        {% for companyCategory in form.enabledCompanyCategories %}
+                                            <li class="item ie-radius js-changed-element">
+                                                {{ form_widget(companyCategory, {
+                                                    'attr' : {
+                                                        'class' : 'g-hidden'
+                                                    }}
+                                                ) }}
+                                                {{ companyCategory.categoryTitle.vars.value }}
+                                                <span class="icon-filter-del clickable js-del-element"></span>
+                                            </li>
+                                        {% else %}
+                                            {% do form.enabledCompanyCategories.setRendered() %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="submit-wrapper">
+                            <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить" />
+                        </div>
+                        <p class="last-update">Последнее обновление <span data-bind-text="date">{{ formattingHelper.formatDateTime(company.updatedAt) }}</span></p>
+
+                        {{ form_rest(form) }}
+                    </form>
+                </div>
+
+                {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+                {% set logo = null %}
+                {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq168', 'private') %}
+                {% if companyLogoUrl %}
+                    {% set logo = {'url': companyLogoUrl, 'optimizeLogo': company.optimizeLogo} %}
+                {% endif %}
+
+                <div class="float-right">
+                    <form class="load-company-logo form company-logo float-right"
+                          action="{{ path('MetalPrivateOfficeBundle:Company:saveCompanyLogo') }}"
+                          ng-controller="Metal.CompanyLogo as companyLogoController"
+                          data-file-upload="options"
+                          ng-init='companyLogoController.setOptions({{ {'deleteLogoUrl': path('MetalPrivateOfficeBundle:Company:deleteCompanyLogo')}|json_encode|raw }})'
+                          enctype="multipart/form-data"
+                          method="post"
+                          novalidate="novalidate">
+                        <fieldset class="right-group"
+                                  ng-init='logo = {{ logo|json_encode|raw }}'>
+                            <div class="photo-wrapper">
+                                    <span class="pattern-big">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                             ng-if="logo"
+                                             ng-src="<%= logo.url %>"
+                                        />
+                                    </span>
+                                <div class="loading-mask" ng-show="loadingLogo" ng-cloak>
+                                    <div class="spinner"></div>
+                                </div>
+
+                                <div class="photo-btns-wrapper clearfix">
+                                    <div class="add-photo-wrapper float-left">
+                                        <label class="file-upload with-icon" ng-if="logo">
+                                            <span class="photo link ico-upload" ng-click='companyLogoController.popups.open({"popup": "#upload-company-logo-popup", "data": {"logo": logo}}, $event.currentTarget)'></span>
+                                        </label>
+                                        <label class="file-upload" ng-if="!logo">
+                                            <span class="load-btn button blue-bg ie-radius" ng-show="!logo" ng-click='companyLogoController.popups.open({"popup": "#upload-company-logo-popup"}, $event.currentTarget)'>Загрузить логотип</span>
+                                        </label>
+                                    </div>
+                                        <span class="del-btn float-left ico-delete-btn"
+                                              ng-if="logo"
+                                              ng-click="coreController.confirm('Вы действительно хотите удалить логотип?', companyLogoController.deleteLogo)"
+                                        ></span>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </form>
+                    {% if project.promocode_enabled and not company.promocode and not company.getAttribute('already_used_package') and is_granted('ROLE_SUPPLIER') and is_granted('ROLE_CONFIRMED_EMAIL') %}
+                        <p class="promo-link link clickable js-popup-opener" data-popup="#promo">Ввести промокод</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('document').ready(function () {
+            initializeForms();
+        });
+    </script>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:UploadCompanyLogo')}}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:PromocodeForm') }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Возможность указывать этот текст, который будет отображаться в разделе "Доставка" на минисайте, доступна при подключении пакета "Полный плюс".'}) }}
+{% endblock %}

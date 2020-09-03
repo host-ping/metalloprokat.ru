@@ -1,0 +1,66 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalProjectBundle/Resources/public/js-integration/libs/zeroclipboard/ZeroClipboard.js'
+        combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock javascripts %}
+
+{% block title 'Кнопка / Мини-сайт / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-fix-width">
+            {{ block('tabs') }}
+            <div class="mini-site-content-wrapper">
+                {% if app.user.company.minisiteEnabled %}
+                    <p class="text">Вы можете разместить кнопку со ссылкой на свой мини-сайт на официальном сайте
+                        компании.</p>
+
+                    <form class="share-form form" action="#">
+                        <fieldset>
+                            <div class="field-group clearfix">
+                                <div class="left field-wrap float-left">
+                                    {% set embed -%}
+                                        <a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : app.user.company.domain, '_secure' : app.user.company.packageChecker.isHttpsAvailable()}) }}">
+                                            <img style="border: 0; display: inline;" title="{{ app.user.company.title|escape('html_attr') }}" src="{{ app.request.getUriForPath(project.share_logo) }}" width="36" height="27" alt="{{ app.user.company.title|escape('html_attr') }}" />
+                                        </a>
+                                    {%- endset %}
+                                    <textarea id="code-for-copy" class="form-textarea" readonly="readonly" cols="50" rows="5">{{ embed|escape }}</textarea>
+                                </div>
+                                <div class="submit-wrapper float-left">
+                                    <div class="logo-picture field-wrap">
+                                        <input type="button" id="copy-button" class="save-btn button blue-bg ie-radius" value="Скопировать код" />
+                                        <p class="text centered">Результат на сайте</p>
+                                        {{ embed }}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                {% else %}
+                    <p class="text">Мини-сайт отключен, <span class="js-popup-opener link clickable" id="send-message-support" data-popup="#add-support-request" data-support-text="Включение минисайта">свяжитесь</span> с администрацией сайта.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        $('document').ready(function(){
+            ZeroClipboard.config({ swfPath: "{{ asset('bundles/metalproject/js-integration/libs/zeroclipboard/ZeroClipboard.swf') }}" })
+            var clipboard = new ZeroClipboard($("#copy-button"));
+            clipboard.setText($('#code-for-copy').val());
+            clipboard.on('aftercopy', function( event ) {
+                alert('Код кнопки скопирован.');
+            });
+        });
+    </script>
+{% endblock content %}
+

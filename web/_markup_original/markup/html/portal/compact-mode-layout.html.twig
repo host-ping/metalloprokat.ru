@@ -1,0 +1,228 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+{% block title 'Main page' %}
+{% block body_additional_class 'compact-mode ' %}
+{% block search_form %}
+    <div class="search-block clearfix">
+        <form action="#" class="search-form">
+            <fieldset id="search-fixed" class="main-block js-fixed">
+                <div class="wrap clearfix">
+                    <div class="search-field-wrap float-left">
+                        <span class="icon-search-big"></span>
+                        <input type="text" placeholder="Введите название товара или компании" class="search-input"/>
+                    </div>
+                    <div class="search-submit-wrapper float-right">
+                        <a href="#" class="change-location icon-check js-popover-opener float-left" data-popover="#cities" data-different-position="true" data-index="2000">Москва и Область</a>
+                        <input type="submit" value="Найти" class="button search-submit blue-bg float-left ie-radius"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="more">
+                <div class="wrap">
+
+                    <div class="info centered">
+                        <p><strong>Тысячи</strong> поставщиков с нами! <strong class="phone-text">8 (800) 555-56-65</strong> <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a></p>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block breadcrumbs %}
+    <div class="breadcrumbs-wrapper">
+        <div class="breadcrumbs empty-breadcrumbs outline">
+            {#<p class="site-info float-left">#}
+            {#<strong>77</strong> заявок от потребителей#}
+            {#</p>#}
+            {% block breadcrumbs_button %}
+                <div class="add">
+                    <a class="add-button product icon-add-btn" href="#">Добавить прайс-лист</a>
+                </div>
+            {% endblock breadcrumbs_button %}
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div id="content" class="content-wide main-page">
+        <div class="product-categories-wrapper">
+            <ul class="product-categories table-container">
+                <li class="item table-cell js-popover-centered">
+                    <div class="item-wrapper">
+                        <div class="holder js-popover-opener" data-popover="#cat-1">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/product/food-items.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Продукты питания</a>
+                        </div>
+                        <div class="drop-wrapper opacity-border" id="cat-1">
+                            <div class="heading">
+                                <div class="block-title">Продукция из черных металлов</div>
+                            </div>
+                            <ul class="dropdown">
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">517593</span>
+                                        <span class="elem is-gradiented">Лист стальной, металлический</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/product/agricultural-products.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Сырье и сельхозпродукты</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/product/equipment-machinery.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Оборудование и техника</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/product/packing.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Упаковка</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/product/services.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Услуги</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="intro">
+            <p class="site-name">Металлопрокат.ру</p>
+            <p class="site-slogan">
+                объединяет поставщика и потребителя металлопродукции.
+            </p>
+            <p class="text">Вы можете найти партнера двумя способами — <a href="#">разместив информацию</a>
+                о своих товарах или потребности, либо самостоятельно при помощи <a href="#">поисковой строки</a> и <a href="#">рубрикатора</a>.</p>
+        </div>
+        <div class="main-register btn-wrapper">
+            <a class="main-register-button button green-bg ie-radius" href="#">Зарегистрироваться и добавить компанию</a>
+        </div>
+
+    </div>
+{% endblock %}

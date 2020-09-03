@@ -1,0 +1,17 @@
+MetalStatisticBundle:Default:showContact:
+    path: /statistic/show_contact
+    defaults:  { _controller: MetalStatisticBundle:Default:showContact }
+    methods:  [POST]
+
+MetalStatisticBundle:Default:redirectSite:
+    path: /statistic/redirect_site
+    defaults:  { _controller: MetalStatisticBundle:Default:redirectSite }
+
+MetalStatisticBundle:Default:redirectStats:
+    path: /redirect_stats
+    defaults: { _controller: MetalStatisticBundle:Default:redirectStats }
+
+sonata_admin_statistic_view:
+    path:  /_admin/statistic/view
+    defaults: { _controller: MetalStatisticBundle:StatisticAdmin:view }
+

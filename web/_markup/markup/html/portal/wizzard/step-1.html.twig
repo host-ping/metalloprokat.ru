@@ -1,0 +1,84 @@
+{% extends '@markup/portal/wizzard/_wizzard_layout.html.twig' %}
+{% block title 'Step - 1' %}
+{% set landingTemplate = true %}
+
+{% block content %}
+    <div id="content" class="register content-wide js-calc-height clearfix">
+
+        <div class="wizzard-block">
+            <ul class="steps-list clearfix">
+                <li class="step item float-left active">
+                    <div class="step-count is-bordered ie-radius">1</div>
+
+                </li>
+                <li class="step item float-left">
+                    <div class="step-count is-bordered ie-radius">2</div>
+                </li>
+                <li class="step item float-left">
+                    <div class="step-count is-bordered ie-radius">3</div>
+                </li>
+            </ul>
+            <div class="register-block">
+                <div class="main-title ">
+                    <h1>Регистрация</h1>
+                </div>
+                <form class="register-form form" action="#">
+                    <fieldset>
+                        <div class="user-type-wrapper field-wrap">
+                            <select name="#" id="user-type" class="user-type form-select error">
+                                <option value="1">Я поставщик металлопродукции</option>
+                                <option value="2">Я потребитель металлопродукции</option>
+                            </select>
+                            <span class="icon-error-color js-helper-opener" data-text="Вы должны подтвердить пользовательское соглашение"></span>
+                        </div>
+                        <div class="group clearfix">
+                            <div class="user-company-wrapper field-wrap float-left">
+                                <input class="register-company form-text ie-radius" type="text" placeholder="Компания"/>
+                            </div>
+                            <div class="company-type-wrapper field-wrap float-left">
+                                <select name="company-type" id="company-type" class="form-select hight">
+                                    <option value="-1"> </option>
+                                    <option value="1">ЗАО</option>
+                                    <option value="2">OАО</option>
+                                    <option value="3">OOО</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="group clearfix">
+                            <div class="user-city-wrapper field-wrap float-left">
+                                <input class="user-city form-text ie-radius" type="text" placeholder="Город"/>
+                            </div>
+                            <div class="phone-wrapper field-wrap float-left">
+                                <input class="user-phone phone form-text ie-radius" type="text" placeholder="Телефон"/>
+                            </div>
+                        </div>
+                        <div class="group clearfix">
+                            <div class="user-name-wrapper field-wrap float-left">
+                                <input class="user-name form-text ie-radius" type="text" placeholder="Имя"/>
+                            </div>
+                            <div class="user-email-wrapper field-wrap float-left">
+                                <input class="user-mail form-email ie-radius" type="email" placeholder="Электронная почта"/>
+                            </div>
+                        </div>
+                        <div class="group clearfix">
+                            <div class="user-pwd-wrapper field-wrap float-left">
+                                <input class="user-password form-text ie-radius" type="password" placeholder="Пароль"/>
+                            </div>
+                            <div class="user-pwd-wrapper-re field-wrap float-left">
+                                <input class="user-password form-text ie-radius" type="password" placeholder="... еще раз"/>
+                            </div>
+                        </div>
+                        <div class="agreement-wrapper">
+                            <input id="agreement" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey error"/>
+                            <label for="agreement" >Согласен с <a href="#" class="link" target="_blank">пользовательским соглашением</a></label>
+                            <span class="icon-error-color js-helper-opener" data-text="Вы должны подтвердить пользовательское соглашение"></span>
+                        </div>
+                        <div class="submit-wrapper">
+                            <input class="register-button button green-bg js-popup-opener ie-radius" data-popup="#register" type="submit" value="Продолжить"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

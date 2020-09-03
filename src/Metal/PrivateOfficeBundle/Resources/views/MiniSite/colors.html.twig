@@ -1,0 +1,257 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Цвета / Мини-сайт / '~titleSuffix %}
+
+{% form_theme form _self %}
+
+{% block _metal_privateofficebundle_minisitecolors_backgroundColor_widget %}
+    {# этот блок можно будет удалить после того, как примержат https://github.com/symfony/symfony/pull/10309 #}
+    {% set backgroundColors = brouzie_helper('MetalMiniSiteBundle:ValueObject').getAllBackgroundColors() %}
+    {% for child in form %}
+        {% set backgroundColor = backgroundColors[child.vars.value] %}
+            {{ form_widget(child, {'attr': {'class': 'theme-color-'~backgroundColor['input_css_class']~' colored js-theme js-theme-background', 'data-name': 'bg', 'data-placeholder': backgroundColor['placeholder'], 'data-hover-color': backgroundColor['hover_color'], 'data-bg-color': backgroundColor['bg_color']} }) }}
+    {% endfor %}
+{% endblock %}
+
+{% block _metal_privateofficebundle_minisitecolors_primaryColor_widget %}
+    {% set primaryColors = brouzie_helper('MetalMiniSiteBundle:ValueObject').getAllPrimaryColors() %}
+    {% for child in form %}
+        {% set primaryColor = primaryColors[child.vars.value] %}
+            {{ form_widget(child, {'attr': {'class': 'theme-color-'~primaryColor['input_css_class']~' colored js-theme', 'data-name': 'primary'} }) }}
+    {% endfor %}
+{% endblock %}
+
+{% block _metal_privateofficebundle_minisitecolors_secondaryColor_widget %}
+    {% set secondaryColors = brouzie_helper('MetalMiniSiteBundle:ValueObject').getAllSecondaryColors() %}
+    {% for child in form %}
+        {% set secondaryColor = secondaryColors[child.vars.value] %}
+            {{ form_widget(child, {'attr': {'class': 'theme-color-'~secondaryColor['input_css_class']~' colored js-theme', 'data-name': 'secondary'} }) }}
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <style id="themes" type="text/css"></style>
+
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                {{ block('tabs') }}
+                <div class="mini-site-content-wrapper">
+                    <form class="themes form js-ajax-form-submit"
+                          action="{{ path('MetalPrivateOfficeBundle:MiniSite:colors') }}"
+                          method="post"
+                          novalidate="novalidate">
+                        <fieldset class="clearfix">
+                            <p class="text float-left">Вы можете изменить цвета некоторых элементов на вашем сайте:</p>
+
+                            <div class="submit-wrapper float-right">
+                                {% if app.user.company.packageChecker.isAllowedSetColor() %}
+                                    <input type="submit" class="button green-bg ie-radius" value="Сохранить" />
+                                {% else %}
+                                    <input type="submit" class="button green-bg ie-radius clickable js-popup-opener" data-popup="#complete-package" value="Сохранить" />
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <p class="title-set">Фон</p>
+                        <fieldset class="backgrounds colors-block is-bordered ie-radius">
+                            {{ form_widget(form.backgroundColor, {'attr' : {'class' : ' colored js-theme'}}) }}
+                        </fieldset>
+
+                        <p class="title-set">Основные кнопки и цены</p>
+                        <fieldset class="primary-links colors-block is-bordered ie-radius">
+                            {{ form_widget(form.primaryColor, {'attr' : {'class' : 'colored js-theme' }}) }}
+                        </fieldset>
+
+                        <p class="title-set">Второстепенные кнопки и ссылки</p>
+                        <fieldset class="secondary-links colors-block is-bordered ie-radius">
+                            {{ form_widget(form.secondaryColor, {'attr' : {'class' : 'colored js-theme' }}) }}
+                        </fieldset>
+
+                        <fieldset class="result-block">
+                            <div class="main-background ie-radius">
+                                <div class="result-wrapper">
+                                    <div class="result-header bg clearfix">
+                                        <div class="r-logo float-left">
+                                            <svg width="108" height="108">
+                                                <line x1="0" y1="0" x2="108" y2="0" stroke-width="2" stroke="#fff" />
+                                                <line x1="108" y1="0" x2="108" y2="108" stroke-width="2" stroke="#fff" />
+                                                <line x1="108" y1="108" x2="0" y2="108" stroke-width="2" stroke="#fff" />
+                                                <line x1="0" y1="108" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                <line x1="0" y1="0" x2="108" y2="108" stroke-width="2" stroke="#fff" />
+                                                <line x1="108" y1="0" x2="0" y2="108" stroke-width="2" stroke="#fff" />
+                                            </svg>
+                                        </div>
+                                        <div class="r-info float-left">
+                                            <div class="top">
+                                                <div class="r-title r-block long" style="background: #262626;"></div>
+                                                <div class="r-text r-block long" style="background: #919191;"></div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="r-title r-block middle" style="background: #262626;"></div>
+                                                <div class="r-link secondary r-block middle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="result-announcement placeholder"></div>
+                                    <div class="result-main clearfix">
+                                        <div class="result-sidebar bg float-left"
+                                             style="border-right-style:solid; border-right-width: 2px;">
+                                            <div class="r-top bg" style="border-bottom-style: solid; border-bottom-width: 2px;">
+                                                <div class="r-title r-block small"></div>
+                                                <ul class="r-menu">
+                                                    <li class="r-item">
+                                                        <div class="clearfix">
+                                                            <div class="p-link r-block float-left small" style="background: #262626;"></div>
+                                                            <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                        </div>
+                                                        <ul class="r-menu clearfix">
+                                                            <li class="r-item clearfix">
+                                                                <div class="s-link secondary r-block float-left middle"></div>
+                                                                <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                            </li>
+                                                            <li class="r-item clearfix">
+                                                                <div class="s-link secondary r-block float-left middle"></div>
+                                                                <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                            </li>
+                                                            <li class="r-item clearfix">
+                                                                <div class="s-link secondary r-block float-left middle"></div>
+                                                                <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                            </li>
+                                                            <li class="r-item clearfix">
+                                                                <div class="s-link secondary r-block float-left middle"></div>
+                                                                <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                            </li>
+                                                            <li class="r-item clearfix">
+                                                                <div class="s-link secondary r-block float-left middle"></div>
+                                                                <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="r-item clearfix">
+                                                        <div class="p-link r-block float-left small" style="background: #262626;"></div>
+                                                        <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                    </li>
+                                                    <li class="r-item clearfix">
+                                                        <div class="p-link r-block float-left small" style="background: #262626;"></div>
+                                                        <div class="r-count r-block float-right" style="background: #919191;"></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="r-bottom" style="background: #fff8e8;">
+                                                <div class="r-title r-block small" style="background: #262626;"></div>
+                                                <ul class="r-list">
+                                                    <li class="r-item">
+                                                        <div class="s-link secondary r-block middle"></div>
+                                                        <div class="s-link secondary r-block middle"></div>
+                                                        <div class="r-text r-block small" style="background: #919191;"></div>
+                                                        <div class="r-price primary r-block small"></div>
+                                                    </li>
+                                                    <li class="r-item">
+                                                        <div class="s-link secondary r-block middle"></div>
+                                                        <div class="s-link secondary r-block middle"></div>
+                                                        <div class="r-text r-block small" style="background: #919191;"></div>
+                                                        <div class="r-price primary r-block small"></div>
+                                                    </li>
+                                                </ul>
+                                                <div class="r-text r-block middle" style="background: #919191;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="result-content-wrapper bg float-left">
+                                            <div class="r-tabs bg clearfix" style="border-bottom-style: solid; border-bottom-width: 2px;">
+                                                <div class="tabs-title r-block float-left small" style="background: #262626;"></div>
+                                                <div class="tabs-title r-block float-left small" style="background: #262626;"></div>
+                                                <div class="tabs-title r-block float-left small" style="background: #262626;"></div>
+                                            </div>
+                                            <div class="result-content">
+                                                <div class="r-content-title r-block middle" style="background: #919191;"></div>
+                                                <ul class="r-list clearfix">
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                    </li>
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                        <div class="r-info">
+                                                            <div class="r-link secondary r-block middle"></div>
+                                                            <div class="r-link secondary r-block middle"></div>
+                                                            <div class="r-text r-block middle" style="background: #919191;"></div>
+                                                            <div class="r-price primary r-block small"></div>
+                                                            <div class="r-button primary r-block"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                    </li>
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                    </li>
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                    </li>
+                                                    <li class="r-item float-left">
+                                                        <svg width="124" height="124">
+                                                            <line x1="0" y1="0" x2="124" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="124" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="124" x2="0" y2="0" stroke-width="2" stroke="#fff" />
+                                                            <line x1="0" y1="0" x2="124" y2="124" stroke-width="2" stroke="#fff" />
+                                                            <line x1="124" y1="0" x2="0" y2="124" stroke-width="2" stroke="#fff" />
+                                                        </svg>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="submit-wrapper float-right">
+                            <input type="reset" class="reset-btn button gray60-bg ie-radius" value="Сбросить" />
+                        </div>
+                        {{ form_rest(form) }}
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Расширенный и полный пакеты дают возможность установить уникальную шапку для Вашего сайта и многое другое.'}) }}
+{% endblock %}

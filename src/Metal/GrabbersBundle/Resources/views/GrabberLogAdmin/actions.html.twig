@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        <li><a href="{{ path('admin_metal_grabbers_grabberlog_show', {'id': object.id}) }}">Просмотреть</a></li>
+    </ul>
+{% endblock %}

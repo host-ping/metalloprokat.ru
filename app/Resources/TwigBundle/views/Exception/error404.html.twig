@@ -1,0 +1,16 @@
+{% extends 'MetalProjectBundle:layouts:_error_layout.html.twig' %}
+
+{% block title 'Страница не существует' %}
+
+{% block content %}
+    <div id="content" class="error-page content-wide content-scrollable">
+        <h1 class="error-title">Ошибка 404</h1>
+        <p class="error-description">К сожалению, запрошенная вами страница не существует.</p>
+        {% if currentCity or company %}
+            <a class="button white95-bg ie-radius" href="{{ app.request.getUriForPath('/') }}">Вернуться на главную</a>
+        {% else %}
+            <a class="button white95-bg ie-radius" href="{{ path('MetalProjectBundle:Default:index') }}">Вернуться на
+                главную</a>
+        {% endif %}
+    </div>
+{% endblock %}

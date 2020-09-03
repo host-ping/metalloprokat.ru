@@ -1,0 +1,49 @@
+User-agent: *
+Disallow: /images/js/
+Disallow: /redirect.php
+Disallow: /auth/
+Disallow: /registration/
+Disallow: /price/complaint/
+Disallow: /board/
+Disallow: /catalog/
+Disallow: /hotmetal/
+Disallow: /script/
+Disallow: /netcat/
+Disallow: /profile/
+Disallow: /company/search/?text=*
+Disallow: /top/
+Disallow: /stat/
+Disallow: /exhibition/
+Disallow: /associacii_sousi
+Disallow: /smi/
+Disallow: */trade/
+Disallow: /img/
+Disallow: /users
+Disallow: /redirect.php?url=*
+Disallow: *redirect_site*
+Disallow: /landing/
+Disallow: /demands/export/*
+Disallow: /price/*.html?page=*
+Disallow: /*catalog/?page=*
+Disallow: /demands/*/?page=*
+Disallow: /*type=
+Disallow: /*concrete_city=*
+Disallow: /statistic/redirect_site?source=*
+Disallow: /bundles/metalproject/js/noindex/*
+Disallow: /pixxxel.gif
+Disallow: /*&
+Disallow: /*?
+Disallow: /demands/
+Allow: /*page=*
+Allow: /demands/$
+
+User-Agent: msnbot
+Disallow: /img
+Crawl-Delay: 10
+
+User-Agent: bingbot
+Disallow: /img
+Crawl-Delay: 10
+
+Host: {{ base_url }}
+Sitemap: {{ sitemap_url }}

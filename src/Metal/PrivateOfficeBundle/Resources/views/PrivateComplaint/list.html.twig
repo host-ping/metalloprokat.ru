@@ -1,0 +1,58 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% set filter = app.request.query.get('filter') %}
+
+{% block title 'Жалобы / Клиенты / '~titleSuffix %}
+
+{% block content %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+        {% block filters %}
+            {% set notProcessed = app.request.query.get('notProcessed') %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <span class="filter-type icon-check black clickable link js-popover-opener" data-popover="#favorite-type">{% if filter == 'watched' %}Просмотенные{% else %}Непросмотренные{% endif %}</span>
+                    <div id="favorite-type" class="drop-wrapper favorite-type_links opacity-border">
+                        <ul class="dropdown">
+                            {% if filter == 'watched' %}
+                                <li class="drop-item">
+                                    <a class="drop-link" href="{{ path(app.request.attributes.get('_route'), routeParameters|merge({ filter : null})) }}">Непросмотренные</a>
+                                </li>
+                                <li class="drop-item">
+                                    <span class="drop-link current">Просмотенные</span>
+                                </li>
+                            {% else %}
+                                <li class="drop-item">
+                                    <span class="drop-link current">Непросмотренные</span>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="{{ path(app.request.attributes.get('_route'), routeParameters|merge({ filter : 'watched'})) }}">Просмотенные</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="float-left">
+                    <form class="js-filter-form" action="{{ path('MetalPrivateOfficeBundle:Complaint:list') }}" method="get">
+                        <input {% if notProcessed %} checked="checked" {% endif %} id="untreated" type="checkbox" value="1" name="notProcessed" class="js-styled-checkbox bg-grey js-filter-check"/>
+                        <label for="untreated" class="clickable">Необработанные</label>
+                        {% if filter %}
+                            <input type="hidden" name="filter" value={{ filter }} />
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="content-scrollable js-scrollable">
+            <ul class="complaints-list list">
+                {{ include('MetalPrivateOfficeBundle:partials:complaints_list.html.twig', {
+                    'complaints' : complaints,
+                    'pagerfanta' : pagerfanta
+                    }, false) }}
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}

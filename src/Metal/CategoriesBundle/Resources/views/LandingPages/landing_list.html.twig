@@ -1,0 +1,130 @@
+{% extends 'MetalProductsBundle:Products:list.html.twig' %}
+
+{% set landingSeoHelper = brouzie_helper('MetalProjectBundle:LandingSeo') %}
+
+{% block content %}
+    {% set productTabsWidgetCurrentRoute = 'MetalProductsBundle:Products:products_list' %}
+    {% set productTabsRouteParameters = {'subdomain': app.request.attributes.get('subdomain')} %}
+    {% if category %}
+        {% set productTabsWidgetCurrentRoute = 'MetalProductsBundle:Products:list_category_subdomain' %}
+        {% set productTabsRouteParameters = {'subdomain': app.request.attributes.get('subdomain'), 'category_slug': category.slugCombined} %}
+        {% if attributesCollection %}
+            {% set productTabsRouteParameters = {'subdomain': app.request.attributes.get('subdomain'), 'category_slug': category.getUrl(attributesCollection.getUrl())} %}
+        {% endif %}
+    {% endif %}
+
+    {% set productTabsRouteParameters = productTabsRouteParameters|merge({ 'q' : landingPage.searchQuery }) %}
+    {% if landingPage.companyAttributes %}
+        {% set productTabsRouteParameters = productTabsRouteParameters|merge({ 'cattr' : app.request.query.get('cattr') }) %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}
+    {{ landingSeoHelper.getMetaTitleForLandingPage(landingPage) }}
+{% endblock %}
+
+{% block meta_description %}
+    {{ landingSeoHelper.getMetaDescriptionForLandingPage(landingPage) }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% set categoryForBreadcrumbs = landingPage.breadcrumbCategory %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block callback %}
+    {% set currentCategory = landingPage.getFakeCategory()  %}
+    {% block target_object_for_landing %}
+        {% set targetObject = 'other' %}
+    {% endblock %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block breadcrumbs_widget %}
+    {% if currentTerritory.getKind() != 'country' %}
+        {% set subdomain = currentTerritory.getSlug() %}
+
+        {% set breadcrumbsRoute = breadcrumbsRoute|default(project.suppliers_route_subdomain) %}
+        {% set breadcrumbsHomepageRoute = 'MetalProjectBundle:Default:index_subdomain' %}
+        {% set breadcrumbsRouteParams = {'subdomain' : subdomain } %}
+    {% else %}
+        {% set breadcrumbsRoute = breadcrumbsRoute|default(project.suppliers_route) %}
+        {% set breadcrumbsHomepageRoute = 'MetalProjectBundle:Default:index' %}
+        {% set breadcrumbsRouteParams = {} %}
+    {% endif %}
+
+    {{ brouzie_render_widget('MetalCategoriesBundle:Breadcrumbs', {
+        'category': landingPage.breadcrumbCategory,
+        'city' : currentCity,
+        'region' : currentRegion,
+        'country' : currentCountry,
+        'counter_name': counterName|default(project.suppliers_menu_counter_name),
+        'route': breadcrumbsRoute,
+        'route_params': breadcrumbsRouteParams,
+        'homepage_route': breadcrumbsHomepageRoute,
+        'homepage_route_params': breadcrumbsRouteParams,
+        'append_items': brouzie_helper('MetalProductsBundle:Breadcrumbs').getBreadcrumbsForLandingPage(landingPage)
+    }) }}
+{% endblock %}
+
+{% block main_title_for_portal_page %}
+    {% set landingPage = app.request.attributes.get('landingPage') %}
+    <h1 ng-include="'alternative-header'">{{- landingSeoHelper.getHeadTitleForLandingPage(landingPage) -}}</h1>
+
+    <script type="text/ng-template" id="alternative-header">
+        {{ landingSeoHelper.getHeadTitleForHumansForLandingPage(landingPage) }}
+
+        {% set routeParameters = app.request.attributes.get('_route_params') %}
+
+        {% for attribute, attributeValues in attributesCollection %}
+            {% for attributeValue in attributeValues %}
+                <span class="accepted-filter ie-radius">{{ attributeValue.value }}
+                    <a href="{{ path('MetalProductsBundle:Products:list_category_subdomain', routeParameters|merge({'category_slug': category.getUrl(attributesCollection.getUrl(null, attributeValue))})) }}"
+                       class="icon-filter-del"></a>
+                </span>
+            {% endfor %}
+        {% endfor %}
+
+        <span class="region-link link icon-check clickable js-popover-opener" data-popover="#cities-tabs"
+              ng-click='citiesWidgetPopoverOpenerController.loadPopover("cities-tabs")'
+              data-different-position="true">в {{ currentTerritory.getTitleLocative() }}</span>
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    {% set currentRoute = 'MetalProductsBundle:Products:products_list' %}
+    {% set routeParameters = {'subdomain': app.request.attributes.get('subdomain')} %}
+    {% if category %}
+        {% set currentRoute = 'MetalProductsBundle:Products:list_category_subdomain' %}
+        {% set routeParameters = {'subdomain': app.request.attributes.get('subdomain'), 'category_slug': category.slugCombined} %}
+    {% endif %}
+
+    {{ brouzie_render_widget('MetalProductsBundle:ProductSidebar', {
+        'current_route': currentRoute,
+        'route_parameters': routeParameters,
+    }) }}
+{% endblock %}
+
+{% block seo_linking_top '' %}
+
+{% block seo_linking_bottom '' %}
+
+{% block cities_tabs %}
+    {% set attributesIds = [] %}
+    {% for productsParameters in app.request.attributes.get('products_parameters') %}
+        {% set attributesIds = attributesIds|merge([productsParameters['parameterOption']['id']]) %}
+    {% endfor %}
+
+    {% set citiesWidgetOptions = {
+        'landing_id' : landingPage.id,
+        'loading_route' : 'MetalProductsBundle:Api:territorialForLandingPage'
+    } %}
+
+    {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions) }}
+
+    {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions|merge({'id' : 'cities-tabs'})) }}
+{% endblock %}

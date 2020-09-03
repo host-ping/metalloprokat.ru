@@ -1,0 +1,23 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}
+Порисоединение к компании
+{% endblock %}
+
+{% block body_text -%}
+{% set mainUser = user.company.companyLog.createdBy %}
+Здравствуйте, {{ user.firstName }}!
+
+При регистрации Вы выбрали зарегистрированную компанию {{ user.company.title}} ({{ user.company.city.title }}). {% if isAdminpanel %}Администратор {{ app.user.fullName }} ({{ app.user.email }}){% else %}Главный пользователь этой компании {{ mainUser.fullName }} ({{ mainUser.email }}){% endif %} подтвердил, что Вы являетесь сотрудником. Теперь Вы можете приступить к работе на сайте от лица компании.
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    {% set mainUser = user.company.companyLog.createdBy %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ user.firstName }}!<br/>
+        <br/>
+        При регистрации Вы выбрали зарегистрированную компанию <b>{{ user.company.title}} ({{ user.company.city.title }})</b>. {% if isAdminpanel %}Администратор <b>{{ app.user.fullName }} ({{ app.user.email }})</b>{% else %}Главный пользователь этой компании <b>{{ mainUser.fullName }} ({{ mainUser.email }})</b>{% endif %} подтвердил, что Вы являетесь сотрудником. Теперь Вы можете приступить к работе на сайте от лица компании.<br/>
+    </p>
+{% endblock %}

@@ -1,0 +1,30 @@
+/* Button
+---------------------------------------------------------------------------------- */
+.drop-wrapper.contact{
+    display: block;
+    position: static;
+}
+.links_contacts{
+    height: auto;
+}
+.links .button.report{
+    height: auto;
+}
+.tooltip{
+    display: block;
+    opacity: 1;
+}
+.tooltip .chat-bubble-arrow-border{
+    left: 11px;
+}
+.tooltip .chat-bubble-arrow{
+    left: 12px;
+}
+
+.drop-wrapper.contact.top-position{
+    position: absolute;
+    z-index: 3;
+    bottom: 36px;
+}
+/* /Button
+---------------------------------------------------------------------------------- */

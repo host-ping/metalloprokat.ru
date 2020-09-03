@@ -1,0 +1,33 @@
+<div class="register-company-form large-popup popup-block opacity-border large">
+    <div class="popup-content">
+        <div class="title-popup">Ваша компания уже зарегистрирована?</div>
+        <p class="text">Выберите компанию, к которой присоединиться</p>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <div class="companies-wrapper">
+            <div class="scroll-block js-scrollable">
+                <div class="reg-companies">
+                    {% for company in companiesList %}
+                        <div class="row">
+                            <div class="company-name col">
+                                <span class="link is-gradiented">{{ company.title }}</span>
+                                <span class="gray60-color is-gradiented"> {{ company.city.title }}</span>
+                            </div>
+                            <div class="phone-text col">
+                                <p class="is-gradiented-bottom">{{ company.getPhonesAsString() }}</p>
+                            </div>
+                            <div class="choose col">
+                                <span class="choose-btn button clickable js-choice-comp js-popup-closer ie-radius"
+                                  data-id="{{ company.id }}">Выбрать</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <span
+                class="popup-form_send-button send-button button clickable green-bg js-register-new js-popup-closer ie-radius"
+                >Нет, зарегистрировать новую
+        </span>
+    </div>
+</div>

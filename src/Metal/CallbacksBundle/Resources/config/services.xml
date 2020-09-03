@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.callbacks.admin.callback" class="Metal\CallbacksBundle\Admin\CallbackAdmin">
+            <argument>metal.callbacks.admin.callback</argument>
+            <argument>Metal\CallbacksBundle\Entity\Callback</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="feedback" label="Обратные звонки" />
+        </service>
+
+        <service id="metal.callbacks.admin.block.unprocessed_callback" class="Metal\CallbacksBundle\Admin\Block\UnprocessedCallbackBlockService">
+            <argument>metal.callbacks.admin.block.unprocessed_callback</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+    </services>
+</container>

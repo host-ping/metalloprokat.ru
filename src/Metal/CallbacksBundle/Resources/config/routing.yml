@@ -1,0 +1,15 @@
+MetalCallbacksBundle:Callback:save:
+    path:   /callbacks/{target_object}/{id}
+    methods:  [POST]
+    defaults:  { _controller: MetalCallbacksBundle:Callback:save, id: null }
+    requirements:
+        target_object: company|product|category|other
+        id: \d+
+
+MetalCallbacksBundle:Callback:savePublic:
+    path:   /callbacks-moderator/{target_object}/{id}
+    methods:  [POST]
+    defaults:  { _controller: MetalCallbacksBundle:Callback:save, id: null, is_public: true }
+    requirements:
+        target_object: company|product|demand|category|other
+        id: \d+

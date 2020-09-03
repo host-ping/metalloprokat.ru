@@ -1,0 +1,39 @@
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+
+{% set showRegistrationOptions = false %}
+{% if fromRegistrationPage is defined %}
+    {% set showRegistrationOptions = true %}
+{% endif %}
+<div class="user-reviews {% if showRegistrationOptions %}float-left{% endif %}">
+    {% if showRegistrationOptions %}
+        <div class="block-title">
+            <a class="link" href="{{ path('MetalCorpsiteBundle:Default:clients') }}">Отзывы клиентов</a>
+        </div>
+    {% endif %}
+    <div class="review">
+        <p class="text">{{ textHelper.limitByWords(review.shortComment, 15) }}</p>
+        <span class="link clickable js-popup-opener"
+              data-popup="#client-review{{ review.id }}"
+        >показать все...</span>
+    </div>
+    <div class="user-info-block">
+        <div class="user-photo">
+            {% if review.photo.name %}
+                <img src="{{ vich_uploader_asset(review, 'uploadedPhoto')|imagine_filter('client_review_logo_sq136') }}" />
+            {% elseif review.company.logo %}
+                {% set companyLogoUrl = brouzie_helper('MetalProjectBundle:Image').getCompanyLogoUrl(review.company, 'sq136', 'corp') %}
+                <img src="{{ companyLogoUrl }}" />
+            {% endif %}
+        </div>
+        <div class="user-info">
+            <span class="text">{{ review.name }}</span>,
+            <span class="period">{{ review.position }}</span> <br />
+            {% set companyViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : review.company.domain, '_secure' : review.company.packageChecker.isHttpsAvailable() }) %}
+            {% if companyViewUrl and review.company.minisiteEnabled %}
+                <a class="link" target="_blank" rel="noopener noreferrer" href="{{ companyViewUrl }}" title="{{ review.company.title }}">{{ review.company.title }}</a>
+            {% else %}
+                {{ review.company.title }}
+            {% endif %}
+        </div>
+    </div>
+</div>

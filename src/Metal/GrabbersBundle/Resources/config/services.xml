@@ -1,0 +1,449 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.grabbers.monolog.handler.doctrine_dbal" class="Metal\GrabbersBundle\Monolog\DoctrineDBALHandler">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+        </service>
+
+        <service id="metal.grabbers.admin.site" class="Metal\GrabbersBundle\Admin\SiteAdmin">
+            <argument>metal.grabbers.admin.site</argument>
+            <argument>Metal\GrabbersBundle\Entity\Site</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="grabbers" label="Сайты" />
+        </service>
+
+        <service id="metal.grabbers.admin.parsed_demand" class="Metal\GrabbersBundle\Admin\ParsedDemandAdmin">
+            <argument>metal.grabbers.admin.parsed_demand</argument>
+            <argument>Metal\GrabbersBundle\Entity\ParsedDemand</argument>
+            <argument>MetalGrabbersBundle:ParsedDemandAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="grabbers" label="Распарсенные заявки" />
+        </service>
+
+        <service id="metal.grabbers.admin.grabber_log" class="Metal\GrabbersBundle\Admin\GrabberLogAdmin">
+            <argument>metal.grabbers.admin.grabber_log</argument>
+            <argument>Metal\GrabbersBundle\Entity\GrabberLog</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="grabbers" label="Логи парсинга" />
+        </service>
+
+        <!-- Metalloprokat sites -->
+        <service id="metal.grabbers.grabber.metalloprokat.metal100_ru" class="Metal\GrabbersBundle\Grabber\Metalloprokat\Metal100RuGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.trade_inox" class="Metal\GrabbersBundle\Grabber\Metalloprokat\TradeInoxRuGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.armtorg" class="Metal\GrabbersBundle\Grabber\Metalloprokat\ArmtorgRuGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.metaprom" class="Metal\GrabbersBundle\Grabber\Metalloprokat\MetapromRuGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.metallorus" class="Metal\GrabbersBundle\Grabber\Metalloprokat\MetallorusGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.infogeo" class="Metal\GrabbersBundle\Grabber\Metalloprokat\InfogeoGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.armaturka" class="Metal\GrabbersBundle\Grabber\Metalloprokat\ArmaturkaGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.metalloprokat.metaltorg" class="Metal\GrabbersBundle\Grabber\Metalloprokat\MetaltorgGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.meatinfo" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>meatinfo</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.fishretail" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>fishretail</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.grainboard" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>grainboard</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.fruitinfo" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>fruitinfo</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.milknet" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>milknet</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.sweetinfo" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>sweetinfo</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.drinkinfo" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>drinkinfo</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.vbakalee" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>vbakalee</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.eqinfo" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>eqinfo</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.packboard" class="Metal\GrabbersBundle\Grabber\Product\InlineGrabber" public="false">
+            <argument>packboard</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <!-- Agroru for category-->
+        <service id="metal.grabbers.grabber.product.agroru.selhoz_produkciya_syrye" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/selhoz-produkciya-i-syrye/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.pererabotka_gotovye_produkty" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/pererabotka-gotovye-produkty/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.upakovka_upakovochnye_materialy" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/upakovka-upakovochnye-materialy/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.zhivotnye_ptica" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/s-h-zhivotnye-i-ptica/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.udobreniya_agrohimiya" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/udobreniya-agrohimiya/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.selhoztehnika_zapchasti" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/selhoztehnika-zapchasti/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.oborudovanie" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/oborudovanie/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.uslugi" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/uslugi/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.sadovaya_tehnika_inventar" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/sadovaya-tehnika-i-inventar/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+        <service id="metal.grabbers.grabber.product.agroru.prochee" class="Metal\GrabbersBundle\Grabber\Product\AgroruGrabber" public="false">
+            <argument>agroru</argument>
+            <argument type="collection">
+                <argument>/spros/prochee/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+        <!--End Agroru-->
+
+        <service id="metal.grabbers.grabber.product.fishnet" class="Metal\GrabbersBundle\Grabber\Product\FishnetGrabber" public="false">
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+
+
+        <!--Foodmarkets-->
+        <service id="metal.grabbers.grabber.product.foodmarkets" class="Metal\GrabbersBundle\Grabber\Product\FoodmarketsGrabber" public="false">
+            <argument>foodmarkets</argument>
+            <tag name="metal.demands_grabber" project_family="product" />
+        </service>
+        <!--End Foodmarkets-->
+
+        <!-- FreeAdsGrabber for category stroy-->
+
+        <service id="metal.grabbers.grabber.stroy.freeads.pesok" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/274/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.beton" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/275/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.bloki" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/276/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.lesomateriali" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/277/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.krovelnie" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/278/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.otdelochnie_materiali" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/279/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.metall" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/280/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.okna" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/281/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.dveri" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/282/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.lestnici" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/284/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.santehnika" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/283/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.steklo" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/285/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.krepezhi" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/286/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.laki" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/287/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.elektrika" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/288/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.otoplenie" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/289/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.ventilyacia" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/290/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.vorota" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/718/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.bitovki" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/356/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <service id="metal.grabbers.grabber.stroy.freeads.other" class="Metal\GrabbersBundle\Grabber\Stroy\FreeAdsGrabber" public="false">
+            <argument>freeads</argument>
+            <argument type="collection">
+                <argument>/rubrika/stroymaterialy/291/</argument>
+            </argument>
+            <tag name="metal.demands_grabber" project_family="stroy"/>
+        </service>
+
+        <!--End FreeAdsGrabber stroy -->
+
+
+        <!--stroyscan-->
+        <service id="metal.grabbers.grabber.metalloprokat.stroyscan" class="Metal\GrabbersBundle\Grabber\Metalloprokat\StroyscanGrabber" public="false">
+            <argument>stroyscan</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End stroyscan-->
+
+        <!--metalbulletin-->
+        <service id="metal.grabbers.grabber.metalloprokat.metalbulletin" class="Metal\GrabbersBundle\Grabber\Metalloprokat\MetalbulletinGrabber" public="false">
+            <argument>metalbulletin</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End metalbulletin-->
+
+        <!--MetalinfoGrabber-->
+        <service id="metal.grabbers.grabber.metalloprokat.metalinfo" class="Metal\GrabbersBundle\Grabber\Metalloprokat\MetalinfoGrabber" public="false">
+            <argument>metalinfo</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End MetalinfoGrabber-->
+
+        <!--rusmet-->
+        <service id="metal.grabbers.grabber.metalloprokat.rusmet" class="Metal\GrabbersBundle\Grabber\Metalloprokat\RusmetGrabber" public="false">
+            <argument>rusmet</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End rusmet-->
+
+
+        <!--TrubametGrabber-->
+        <service id="metal.grabbers.grabber.metalloprokat.trubamet" class="Metal\GrabbersBundle\Grabber\Metalloprokat\TrubametGrabber" public="false">
+            <argument>trubamet</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End TrubametGrabber-->
+
+        <!--PromindexGrabber-->
+        <service id="metal.grabbers.grabber.metalloprokat.promindex" class="Metal\GrabbersBundle\Grabber\Metalloprokat\PromindexGrabber" public="false">
+            <argument>promindex</argument>
+            <tag name="metal.demands_grabber" project_family="metalloprokat" />
+        </service>
+        <!--End PromindexGrabber-->
+
+        <service id="metal.grabbers.graber_helper" class="Metal\GrabbersBundle\Grabber\GrabberHelper">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="buzz" />
+            <argument type="service" id="monolog.logger.grabber" />
+            <argument type="service" id="sonata.notification.backend" />
+        </service>
+
+        <service id="metal.grabbers.graber_manager" class="Metal\GrabbersBundle\Grabber\GrabberManager">
+            <argument /> <!-- grabbers -->
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal.territorial.city_service" />
+            <argument type="service" id="metal.categories.category_matcher" />
+            <argument type="service" id="metal.grabbers.graber_helper" />
+            <argument>%project.family%</argument>
+            <argument>%web_dir%</argument>
+            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.environment%</argument>
+        </service>
+
+        <service id="metal.grabbers.admin.block.site_statistic" class="Metal\GrabbersBundle\Admin\Block\SiteStatisticBlockService">
+            <argument>metal.grabbers.admin.block.site_statistic</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+    </services>
+</container>

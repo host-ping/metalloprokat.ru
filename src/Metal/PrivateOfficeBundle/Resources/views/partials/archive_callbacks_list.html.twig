@@ -1,0 +1,76 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{% for callback in callbacks %}
+    <li class="item clearfix">
+        <div class="date-text float-left is-gradiented-bottom">
+            {% set company = callback.company %}
+            {% if company %}
+                {% if company.minisiteEnabled %}
+                    Для
+                    <a href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }}"
+                       target="_blank"
+                       class="small-link"
+                       title="{{ company.title }}">
+                        <span>{{ company.title }}</span>
+                    </a>
+                {% else %}
+                    <p class="small-link is-gradiented-bottom"
+                       title="{{ company.title }}">
+                        <span>{{ company.title }}</span>
+                    </p>
+                {% endif %}
+            {% else %}
+                Менеджеру
+            {% endif %}
+        </div>
+        <div class="date-text float-left">
+            {{ formattingHelper.formatDateTime(callback.createdAt) }}
+        </div>
+        <div class="page-from float-left">
+            <p class="{% if callback.isFromProduct %}icon-clip{% endif %} is-gradiented-bottom">
+                {% if callback.isFromProduct %}
+                    {{ callback.callFromType.title }}
+                    <a class="link" href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id': callback.product.id, 'subdomain' : callback.product.company.city.getSlugWithFallback()}) }}" title="{{ callback.product.title }}">{{ callback.product.title }}</a>
+                {% elseif callback.isFromMiniSite %}
+                    <a class="link" href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', { 'domain': callback.company.domain, '_secure' : callback.company.packageChecker.isHttpsAvailable() }) }}" title="{{ callback.callFromType.title }}">{{ callback.callFromType.title }}</a>
+                {% else %}
+                    {{ callback.callFromType.title }}
+                {% endif %}
+            </p>
+            {% if callback.city %}
+                <p class="city text">
+                    {{ callback.city.title }}
+                </p>
+            {% endif %}
+        </div>
+        <div class="status float-left">
+            <p class="text {% if not callback.processedAt %} g-hidden {% endif %}">
+                <strong>Перезвонили</strong>
+                <span class="js-processed-date">{{ formattingHelper.formatDateTime(callback.processedAt) }}</span>
+            </p>
+
+        </div>
+    </li>
+{% else %}
+    <li class="empty-item">
+        <div class="empty-result">
+            <p class="message">Здесь будут размещаться звонки, которые вы заказали</p>
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="callbacks-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+               href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#callbacks-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

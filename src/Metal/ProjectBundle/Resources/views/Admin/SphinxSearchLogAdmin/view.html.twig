@@ -1,0 +1,106 @@
+{% extends admin_pool.getTemplate('layout') %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">Статистика запросов в SphinxSearch</li>
+{% endblock %}
+
+{% block content %}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                {% if header_stat %}
+                    Всего запросов: <span
+                        class="label label-default">{{ header_stat['_count']|default(0)|number_format_decimal }}</span>
+                    Запросов в секунду: <span
+                        class="label label-default">{{ header_stat['qps']|default(0)|number_format_decimal }}</span>
+                    За период с: <span
+                        class="label label-default">{{ header_stat['min_date']|format_datetime }}</span> по: <span
+                        class="label label-default">{{ header_stat['max_date']|format_datetime }}</span>
+                {% else %}
+                    Запросов не найдено
+                {% endif %}
+            </h3>
+        </div>
+        <div class="box-body">
+
+            <form method="GET" action="{{ path('sonata_admin_sphinx_log_statistic_view') }}">
+                <label class="icon-help" data-toggle="tooltip"
+                       title="Вывести данные, где количество запросов больше или равно выбранному значению.">
+                    Запросов больше или равно:
+                    <input name="queries-count" style="width: 100px;"
+                           value="{{ app.request.query.get('queries-count', 1) }}">
+                </label>
+                <label class="icon-help" data-toggle="tooltip" title="Вывести данные только за последние сутки.">
+                    За сутки:
+                    <input type="checkbox" name="for-day"
+                           {% if app.request.query.get('for-day') %}checked="checked"{% endif %}>
+                </label>
+                <input type="submit" value="Выбрать">
+            </form>
+
+            {% set headers = [
+            'Наиболее повторяющиеся запросы',
+            'Наиболее медленные запросы',
+            'Hаиболее медленные запросы по общему времени выполнения',
+            'Наиболее медленные запросы по среднему времени выполнения',
+            ] %}
+
+            <style>
+                colgroup col.selected-col {
+                    background-color: #fcf8e3;
+                }
+            </style>
+
+            {% for key, stat in statistics %}
+                <h3>{{ headers[key]|raw }}</h3>
+                <table class="table table-bordered table-hover sonata-ba-list">
+                    <colgroup>
+                        <col {% if key == 0 %}class="selected-col"{% endif %}></col>
+                        <col {% if key == 1 %}class="selected-col"{% endif %}></col>
+                        <col {% if key == 2 %}class="selected-col"{% endif %}></col>
+                        <col {% if key == 3 %}class="selected-col"{% endif %}></col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th width="90px">
+                            count
+                        </th>
+                        <th width="90px">
+                            max (time)
+                        </th>
+                        <th width="90px">
+                            sum (time)
+                        </th>
+                        <th width="90px">
+                            avg (time)
+                        </th>
+                        <th>
+                            query
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for el in stat %}
+                        <tr>
+                            <td class="text-right">
+                                {{ el['_count']|number_format_decimal }}
+                            </td>
+                            <td class="text-right">
+                                {{ el['max_time']|number_format_decimal({'fraction_digits': 3}) }}
+                            </td>
+                            <td class="text-right">
+                                {{ el['sum_time']|number_format_decimal({'fraction_digits': 3}) }}
+                            </td>
+                            <td class="text-right">
+                                {{ el['tpq']|number_format_decimal({'fraction_digits': 3}) }}
+                            </td>
+                            <td class="text-left">
+                                <code>{{ el['raw_query'] }}</code>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

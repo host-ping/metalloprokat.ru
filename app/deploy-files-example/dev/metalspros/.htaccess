@@ -1,0 +1,11 @@
+AddDefaultCharset utf-8
+Options -Indexes
+
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^(.+)\.(dev|srv)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ app_dev.php [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ app.php [QSA,L]

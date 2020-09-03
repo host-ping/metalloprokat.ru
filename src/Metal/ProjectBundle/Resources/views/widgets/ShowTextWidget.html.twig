@@ -1,0 +1,11 @@
+{% set popupId = _options['popup_name'] %}
+
+<div id="{{ popupId }}" class="popup-block opacity-border large"
+     data-popup-template="#{{ popupId }}-template"></div>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content private-room-content">
+        <div class="text">{{ _options['popup_text']|nl2br }}</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+    </div>
+</script>

@@ -1,0 +1,36 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing/routing_%hostname_package_routing%_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+            channels: [!event]
+            max_files: 7
+        console:
+            type:   console
+            channels: [!event, !doctrine]
+
+assetic:
+    use_controller: true
+
+bazinga_geocoder:
+    fake_ip: 46.98.43.114
+
+#swiftmailer:
+#    delivery_address: me@example.com
+
+sonata_notification:
+    backend: sonata.notification.backend.runtime

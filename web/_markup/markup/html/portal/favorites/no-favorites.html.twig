@@ -1,0 +1,31 @@
+{% extends '@markup/portal/favorites/favorites-consumers.html.twig' %}
+{% block search_form '' %}
+{% block breadcrumbs '' %}
+{% block banner '' %}
+{% block content %}
+    <div id="content" class="content-wide float-left">
+        <div class="favorites main-title ">
+            <h1>Избранные: <a href="#" class="current link">поставщики <sup>32</sup></a>, <a href="#" class="link">потребители <sup>6</sup></a> </h1>
+        </div>
+        {% block tabs %}
+            <div class="favorites_result-tabs-wrapper outline clearfix">
+                <div class="tabs favorite-filter float-left">
+                    <ul class="list">
+                        <li class="item">
+                            <a class="link active" href="#">Все</a>
+                        </li>
+                        <li class="item">
+                            <a class="link" href="#">С пометками</a>
+                        </li>
+                        <li class="item">
+                            <a class="link" href="#">Без пометок</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock tabs %}
+        <div class="no-favorites js-calc-height">
+            <span class="text">Нет избранных поставщиков</span>
+        </div>
+    </div>
+{% endblock content %}

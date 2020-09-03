@@ -1,0 +1,29 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set imageUrl = vich_uploader_asset(object, field_description.name) %}
+    {% if imageUrl %}
+        {% set imageUrl = imageUrl|imagine_filter(field_description.options.image_filter) %}
+        {% set imageUrlBig = '' %}
+        {% if field_description.options.image_filter_big is defined %}
+            {% set imageUrlBig = vich_uploader_asset(object, field_description.name)|imagine_filter(field_description.options.image_filter_big) %}
+        {% endif %}
+        <img
+            style="
+                {% if field_description.options.without_default_size is not defined %}
+                    max-width: 40px; max-height: 40px;
+                {% endif %}
+                {% if field_description.options.width is defined %}
+                    width: {{ field_description.options.width }}px;
+                {% endif %}
+                {% if field_description.options.height is defined %}
+                    height: {{ field_description.options.height }}px;
+                {% endif %}
+            "
+            src="{{ imageUrl }}"
+            {% if imageUrlBig %}
+                rel="popover" data-img="{{ imageUrlBig }}"
+            {% endif %}
+        />
+    {% endif %}
+{% endblock %}

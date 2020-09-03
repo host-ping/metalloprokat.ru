@@ -1,0 +1,31 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% if maxProductsCount is not null %}
+    {% set isLimitedPackage = companyPackage and maxProductsCount > maxProductsCountMinisite %}
+    <div class="user-alert clearfix">
+        <div class="wrap clearfix">
+            <div class="account-info float-right">
+                {# TODO: подсчитывать период на основании текущего пакета #}
+                {% if companyPackage %}
+                    <a class="extend-btn button green-bg" href="{{ path('MetalCorpsiteBundle:Default:services') }}">
+                        <strong>выбрать другой пакет</strong>
+                    </a>
+                {% else %}
+                    <span class="extend-btn button green-bg js-popup-opener"
+                          data-popup="#add-support-request"
+                          data-support-text="Хочу подключить доступ">Подключить доступ</span>
+                {% endif %}
+            </div>
+            <div class="info">
+                <p class="text">
+                    {% if isLimitedPackage %}
+                        <strong class="days">{{ maxProductsCount }}</strong> товаров из всех загруженных будут показываться в каталоге (раздел Поставщики), полностью товары доступны на минисайте.
+                    {% else %}
+                        Максимальное количество товаров для загрузки <strong
+                            class="days">{{ maxProductsCount }}</strong>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}

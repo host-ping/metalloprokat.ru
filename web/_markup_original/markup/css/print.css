@@ -1,0 +1,65 @@
+body{
+    font-size: 14px;
+    line-height: 24px;
+    font-family: "Open Sans";
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+.mini-site-links,
+.admin-button,
+.mini-site .company-announcement,
+.mini-site .side-left,
+.mini-site .company-contacts,
+.mini-site .staff,
+.mini-site .company-menu,
+#header .user-block,
+#header .location,
+#footer,
+.main-menu-wrapper,
+.search-block,
+.breadcrumbs-wrapper,
+.announcement,
+.demand_links,
+.tabs,
+.tabs-content,
+.seo-block,
+.popup-block,
+.popover-block,
+.demand-info .holder,
+.right-announcement-wrapper,
+.left-announcement-wrapper{
+    display: none;
+}
+.mini-site .company-contacts.details{
+    display: block;
+}
+#header{
+    background: #fff;
+    overflow: hidden;
+}
+#header .logo-text{
+    float: left;
+}
+#header .logo-text a{
+    text-decoration: none;
+    color: #000;
+    text-transform: uppercase;
+}
+#header .logo{
+    float: left;
+    margin-right: 10px;
+    margin-top: 8px;
+}
+h1{font-weight: 600;}
+.contacts .details .table .col{
+    padding: 0 15px;
+}
+.contacts .details .table .col p{
+    font-size: 14px;
+    line-height: 16px;
+}
+.mini-site .details .minisite-title{
+    text-align: center;
+    font-size: 18px;
+}

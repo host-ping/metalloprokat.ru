@@ -1,0 +1,200 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% set demandItemsPerDemand = 2 %}
+
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% for demand in pagerfanta %}
+    {#{% set demandUrl = brouzie_helper('MetalDemandsBundle').getDemandPath('view', demand) %}#}
+    <li class="demand_item">
+        <div class="demand_holder clearfix">
+            <div class="demand-data float-left">
+                <div class="demand-title">
+                    <strong class="demand-count red-color">№{{ demand.id }}</strong>
+                    {{ demand.demandPeriodicity.title|capitalize }} потребность
+                    <span class="demand-date">от {{ projectHelper.formatDate(demand.displayTime) }}</span>
+                    <div class="demand-region gray60-color">{{ demand.city.region.title }}</div>
+                </div>
+                <table class="demand_product-list demand-table">
+                    {% set demandItems = demand.getAttribute('demandItems') %}
+                    {% for demandItem in demandItems %}
+                        <tr class="row {% if loop.index > demandItemsPerDemand %}g-hidden{% endif %}" {% if loop.index > demandItemsPerDemand %} data-expandable-section="demand-items-{{ demand.id }}"{% endif %}>
+                            <td class="item col">
+                                <p class="product-item">{{ loop.index }}</p>
+                            </td>
+                            <td class="title col">
+                                <p class="product-title" title="{{ demandItem.title }}">{{ demandItem.title }}</p>
+                            </td>
+                            <td class="count col">
+                                <p class="product-count">
+                                    {% if demandItem.volume %}
+                                        {{ demandItem.volume|number_format_decimal }}
+                                        {% if demandItem.volumeTypeId %}
+                                            {{ demandItem.volumeType.title }}
+                                        {% endif %}
+                                        {% else %}
+                                            объем договорной
+                                    {% endif %}
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {{ include('@MetalDemands/partials/demand_files.html.twig', {
+                    'demand': demand,
+                    'checkAccess' : false,
+                    'route': 'MetalDemandsBundle:DemandFile:downloadFileFromPrivate',
+                }, false) }}
+
+                {% if demandItems|length > demandItemsPerDemand %}
+                    <span class="demand_link link clickable js-expandable" data-expandable="demand-items-{{ demand.id }}">Всего {{ demandItems|length }}
+                        {{ 'demands_by_count'|transchoice(demandItems|length, {}, 'MetalDemandsBundle') }}</span>
+                {% endif %}
+            </div>
+            <div class="demand-info float-right">
+
+                <p class="user text">{{ demand.getFixedUserTitle }} <br/> {{ demand.city.title }}</p>
+
+                {% if demand.product is defined and demand.product and demand.productCity %}
+                    <p class="attached-product icon-clip text">прикреплена к товару<br />
+                        <a href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id': demand.product.id, 'subdomain': demand.productCity.getSlugWithFallback()}) }}">{{ demand.product.title }}</a><br />
+                        найден в {% if demand.productCity %}{{ demand.productCity.getTitleLocative() }}{% else %}{{ demand.productCountry.getTitleLocative() }}{% endif %}</p>
+                {% endif %}
+                {% if demand.viewedAt is defined and demand.viewedAt %}<p class="viewed icon-views text">Просмотрена</p>{% endif %}
+            </div>
+        </div>
+        <ul class="links clearfix">
+            {#<li class="links_report item float-left clearfix">#}
+                {#<a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener"#}
+                   {#data-tooltip-title="Пожаловаться"#}
+                   {#data-popup="#report">#}
+                    {#<span class="icon-complaint"></span>#}
+                {#</a>#}
+            {#</li>#}
+
+            <li class="links_report item float-left clearfix">
+                <span class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                   data-tooltip-title="Пожаловаться" data-popup="#complaint-demand"
+                   data-object-id="{{ demand.id }}"
+                   data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : demand.id, 'kind' : 'demand'}) }}">
+                    <span class="icon-complaint"></span>
+                </span>
+            </li>
+
+            <li class="links_contacts item default-width float-left clearfix">
+                <span class="button contacts clickable is-bordered js-popup-opener js-view-contacts ie-radius"
+                   data-popup="#contact-{{ demand.id }}"
+                   data-view-url="{{ path('MetalPrivateOfficeBundle:Demand:show', { 'id' : demand.id}) }}"
+                   data-index="2">
+                    <span class="text">Контакты и условия</span>
+                    <span class="icon-points float-right"></span>
+                </span>
+
+                <div id="contact-{{ demand.id }}" class="popup-block contact opacity-border large ie-radius fixed">
+                    <div class="popup-content">
+                        <div class="close-popup icon-popup-close clickable js-popup-closer"></div>
+                        {% if not is_granted('ROLE_SUPPLIER') %}
+                            <p class="text">Для просмотра контактной информации о потребителе необходимо зарегистрироваться или авторизоваться.</p>
+                        {% else %}
+                            <div class="user-info-block">
+                                <p class="user">{{ demand.getFixedCompanyTitle() }}</p>
+                                <p class="user">{{ demand.getFixedUserTitle() -}}</p>
+                                <p class="user-contact">
+                                    {% if demand.phone %}<span class="phone-text">{{ demand.phone }}{% if demand.getFixedEmail() %}, {% endif %}</span>{% endif %}
+                                    {% if demand.getFixedEmail() %}
+                                        <!--email_off-->
+                                            <a href="mailto:{{ demand.getFixedEmail() }}">{{ demand.getFixedEmail() }}</a>
+                                        <!--/email_off-->
+                                    {% endif %}
+                                </p>
+                                {% if demand.info %}
+                                    <p>
+                                        {{ demand.info }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </li>
+
+            <li class="links_answer item default-width float-left clearfix">
+                <span class="button answer clickable is-bordered green-bg js-popup-opener ie-radius"
+                    {% if not demand.email %}
+                        data-popup="#demand-without-email"
+                    {% else %}
+                        data-popup="#demand-answer"
+                        data-demand-id="{{ demand.id }}"
+                        data-demand-answer-url="{{ path('MetalDemandsBundle:Demand:answer', {'id' : demand.id}) }}"
+                    {% endif %}
+                        >
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </span>
+            </li>
+
+            {% if demand.answersCount %}
+                <li class="links_read-answers item default-width float-left clearfix">
+                    <span class="button clickable is-bordered js-popup-opener ie-radius"
+                       data-popup="#demand-answers-{{ demand.id }}">
+                        <span class="text">Читать ответы</span>
+                        <strong class="count gray80-color">{{ demand.answersCount }}</strong>
+                        <span class="read-answers icon-back float-right"></span>
+                    </span>
+                </li>
+            {% endif %}
+        </ul>
+        <div id="demand-answers-{{ demand.id }}" class="demand-answers-block popup-block opacity-border large fixed">
+            <div class="popup-content">
+                <div class="title-popup">Ответы на потребность <strong class="demand-count red-color">№{{ demand.id }}</strong></div>
+                <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+                <div class="answers js-scrollable">
+                    {% set demandAnswers = demand.getAttribute('demandAnswers') %}
+                    {% for demandAnswer in demandAnswers %}
+                        <div class="item clearfix">
+                            <div class="left float-left">
+                                <div class="user-name">
+                                    <span class="link">{{ demandAnswer.user.firstName }}</span>
+                                    {% if demandAnswer.user and demandAnswer.user.company %}
+                                        (<a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:contact', {'domain' : demandAnswer.user.company.domain, '_secure' : demandAnswer.user.company.packageChecker.isHttpsAvailable() }) }}" class="link" target="_blank">{{ demandAnswer.user.company.title }}</a>)
+                                    {% endif %}
+                                </div>
+                                <div class="answer-add-date">
+                                    <span class="date">{{ projectHelper.formatDate(demandAnswer.createdAt) }}</span>
+                                </div>
+                                <div class="answer-text">
+                                    <p>{{ demandAnswer.description|nl2br }}</p>
+                                </div>
+                            </div>
+                            <div class="user-photo float-right">
+                                <span class="pattern-small">
+                                    {#{% set imageUrl = imageHelper.getPhotoUrlForProductPhoto(demandAnswer.user) %}#}
+                                    {#{% if imageUrl %}#}
+                                        {#<img src="{{ imageUrl }}" alt="image description"/>#}
+                                    {#{% endif %}#}
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="complaints-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+                href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#complaints-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

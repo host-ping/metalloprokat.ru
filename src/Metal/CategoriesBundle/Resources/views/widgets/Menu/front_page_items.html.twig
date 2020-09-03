@@ -1,0 +1,52 @@
+<ul class="product-categories table-container">
+    {% for rootMenuItem in rootMenuItems %}
+        <li class="item table-cell {% if not rootMenuItem.logo %}without-img{% endif %} js-popover-centered">
+            <div class="item-wrapper">
+                {% set popoverId = 'frontpage-categories'~rootMenuItem.id %}
+                <div class="holder js-popover-opener" data-popover="#{{ popoverId }}">
+                    {% if rootMenuItem.logo %}
+                        <div class="img">
+                                <span class="clickable">
+                                    <img src="{{ asset('bundles/metalproject/img/'~project.family~'/'~rootMenuItem.logo) }}"
+                                         alt="{{ rootMenuItem.title }}"
+                                         title="{{ rootMenuItem.title }}" width="167" height="110" />
+                                </span>
+                        </div>
+                    {% endif %}
+
+                    <span class="link clickable">{{ rootMenuItem.title }}</span>
+                </div>
+
+                <div class="drop-wrapper opacity-border" id="{{ popoverId }}">
+                    <div class="heading">
+                        <div class="block-title">{{ rootMenuItem.title }}</div>
+                    </div>
+
+                    <ul class="dropdown">
+                        {% for childMenuItem in rootMenuItem.loadedChildren %}
+                            {% if childMenuItem.isLabel() %}
+                                <li class="drop-item">
+                                    <p class="link black15-color">
+                                        {{ childMenuItem.title }}
+                                    </p>
+                                </li>
+                            {% else %}
+                                {% set objectsCount = childMenuItem.getAttribute(_options['counter_name']) %}
+                                <li class="drop-item">
+                                    <a class="link clearfix"
+                                       href="{{ path(_options['route'], _options['route_params']|merge({'category_slug': childMenuItem.slugCombined})) }}">
+                                        {% if objectsCount %}
+                                            <span class="gray60-color float-right">{{ objectsCount|number_format_decimal }}</span>
+                                        {% endif %}
+                                        <span class="elem is-gradiented {% if childMenuItem.isVirtualReference %} black15-color {% endif %}"
+                                              title="{{ childMenuItem.title }}">{{ childMenuItem.title }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

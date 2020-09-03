@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800&subset=latin,cyrillic-ext,latin-ext,cyrillic" rel="stylesheet" type="text/css">
+
+    {% block stylesheets %}
+        {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/layouts/layout.css'
+            '@MetalProjectBundle/Resources/public/css/style.css'
+            '@MetalProjectBundle/Resources/public/css/color.css'
+            '@MetalProjectBundle/Resources/public/css/buttons.css'
+            '@MetalProjectBundle/Resources/public/css/style-portal.css'
+            filter='phpcssembed,?uglifycss'
+            combine=true
+        %}
+        <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+    {% endblock stylesheets %}
+    <title>Landing page</title>
+</head>
+
+{% set currentCountry = app.request.get('country') %}
+<body class="landing-page">
+    <div class="land-background" {% if landingTemplate %}style="background-image: url({{ vich_uploader_asset(landingTemplate, 'uploadedFile')|imagine_filter('landing_template_big') }});" {% endif %}>
+    </div>
+    <div class="land-container">
+        <div class="land-text">
+            <p class="text">Приведем клиентов{% if landingTemplate %} на {{ landingTemplate.category.titleAccusative|lower }}{% endif %}</p>
+            <p class="land-slog">Загрузите прайс-лист на {{ currentCountry.domainTitle }}</p>
+            <div class="button-wrapper">
+                {% block button %}
+                    {% set route = 'MetalUsersBundle:Registration:register' %}
+                    {% set options = {} %}
+                    {% if landingTemplate %}
+                        {% set route = 'MetalUsersBundle:Registration:registerFirstStep' %}
+                        {% set options = {'category_id': landingTemplate.category.id} %}
+                    {% endif %}
+                    <a href="{{ path(route, options) }}" class="button send-button green-bg" rel="nofollow">продолжить</a>
+                {% endblock button %}
+            </div>
+        </div>
+    </div>
+
+    {{ include('@MetalProject/partials/counters.html.twig', {'display_mailru_logo': false}) }}
+</body>
+</html>

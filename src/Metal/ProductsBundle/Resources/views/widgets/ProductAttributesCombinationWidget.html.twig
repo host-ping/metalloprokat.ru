@@ -1,0 +1,35 @@
+{% set currentCity = app.request.attributes.get('city') %}
+{% if productAttrSets or productAttrExtendedSets %}
+    <div class="related-topics">
+        <div class="related-topics_title">
+            Товар содержится в категориях
+        </div>
+        <ul class="topic-list">
+            {% if category.isVisibleForSeo %}
+                <li class="item">
+                    <a class="link" href="{{ path('MetalProductsBundle:Products:list_category_subdomain', {
+                        'category_slug' : category.getSlugCombined(),
+                        'subdomain' : currentCity.getSlugWithFallback() }) }}"
+                            >{{ category.titleForSeo|default(category.title) }}</a>
+                </li>
+            {% endif %}
+            {% for productAttrSet in productAttrSets %}
+                <li class="item">
+                    <a class="link" href="{{ path('MetalProductsBundle:Products:list_category_subdomain', {
+                    'category_slug' : productAttrSet.slug,
+                    'subdomain' : currentCity.getSlugWithFallback() }) }}"
+                     >{{ productAttrSet.title }}</a>
+                </li>
+            {% endfor %}
+            {% for productAttrExtendedSet in productAttrExtendedSets %}
+                <li class="item">
+                    <a class="link" href="{{ path('MetalProductsBundle:Products:list_category_subdomain', {
+                    'category_slug' : productAttrExtendedSet.slug,
+                    'subdomain' : currentCity.getSlugWithFallback() }) }}"
+                     >{{ productAttrExtendedSet.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+

@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.callFromType %}
+            Страница - <b>{{ object.callFromType.title|lower }}</b>.<br/>
+        {% endif %}
+        {% if object.category %}
+            Категория - <b>{{ object.category.title }}</b>.<br/>
+        {% endif %}
+        {% if object.city %}
+            Город - <b>{{ object.city.title }}</b>.
+        {% endif %}
+    </div>
+{% endblock %}

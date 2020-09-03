@@ -1,0 +1,31 @@
+<?php
+
+namespace Application\Migrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20150911130418 extends AbstractMigration
+{
+    public function up(Schema $schema)
+    {
+       $this->addSql("
+            UPDATE Message142 AS product
+                JOIN Message75 AS company ON company.Message_ID = product.Company_ID
+                JOIN company_delivery_city AS companyCity ON company.Message_ID = companyCity.company_id AND companyCity.is_main_office = true
+            SET product.branch_office_id = companyCity.id
+            WHERE
+              product.branch_office_id IS NULL
+            AND
+              company.deleted_at_ts = 0
+       ");
+    }
+
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+    }
+}

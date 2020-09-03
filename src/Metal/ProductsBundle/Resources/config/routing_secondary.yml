@@ -1,0 +1,53 @@
+MetalProductsBundle:Products:companies_list_category:
+    path:      /{category_slug}/catalog/
+    host:      "%host_prefix%{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: MetalProductsBundle:Products:listCompanies, tab: companies, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+MetalProductsBundle:Products:companies_list_category_country:
+    path:      /{category_slug}/catalog/
+    host:      "%host_prefix%{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: MetalProductsBundle:Products:listCompanies, tab: companies, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+MetalProductsBundle:Products:companies_list_category_subdomain:
+    path:      /{category_slug}/catalog/
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category') and (request.attributes.has('city') or request.attributes.has('region'))"
+    defaults:  { _controller: MetalProductsBundle:Products:listCompanies, tab: companies, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+MetalProductsBundle:Products:list_category:
+    path:      /{category_slug}/
+    host:      "%host_prefix%{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: MetalProductsBundle:Products:list, tab: products, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+MetalProductsBundle:Products:list_category_country:
+    path:      /{category_slug}/
+    host:      "%host_prefix%{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: MetalProductsBundle:Products:list, tab: products, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+MetalProductsBundle:Products:list_category_subdomain:
+    path:      /{category_slug}/
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category') and (request.attributes.has('city') or request.attributes.has('region')) "
+    defaults:  { _controller: MetalProductsBundle:Products:list, tab: products, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+

@@ -1,0 +1,76 @@
+{% set popupId = _options.popup_id %}
+
+<div id="{{ popupId }}-popup" data-popup-template="#{{ popupId }}-template"
+     class="demand-subscription-block popup-block opacity-border large static-height"></div>
+
+<script type="text/ng-template" id="{{ popupId }}-template">
+    <div class="popup-content" ng-cloak>
+        <div class="title-popup">{{ _options.popup_title }}</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        {% set subscriptionControllerOptions = {
+            'loadItemsUrl': path(_options.load_url),
+            'loadSubscribedItemsUrl': path(_options.load_subscribe_url),
+            'updateItemsUrl': path(_options.route)
+        } %}
+
+        <form   id="{{ popupId }}-form"
+                class="popup-form" action="{{ path(_options.route) }}"
+                ng-controller="Metal.Subscription as subscriptionController"
+                method="post"
+                novalidate="novalidate"
+                >
+            <fieldset ng-init='subscriptionController.options = {{ subscriptionControllerOptions|json_encode|raw }}; subscriptionController.loadItems(); itemsSearch.title = ""'>
+                <div class="field-wrap">
+                    {#<div class="loading-mask embed-mask">#}
+                        {#<div class="spinner"></div>#}
+                    {#</div>#}
+                    <input type="text" class="search-field form-text ie-radius with-tags" ng-model="itemsSearch.title"
+                           placeholder="{{ _options.search_title }}" />
+                    <button type="button" class="icon-search-small search-button"></button>
+                </div>
+
+            </fieldset>
+            <div class="subscription-wrapper">
+                <div class="scroll-block">
+                    <ul class="subscription-products" vs-repeat="50" vs-scroll-parent=".scroll-block">
+                        <li class="item {#is-invisible#}"  ng-repeat="item in items.all()|filter:itemsSearch track by item.id">
+                            <div ng-class="{'level1': item.depth == 1, 'level2': item.depth == 2, 'level3': item.depth == 3, 'level4': item.depth == 4}">
+                                <label class="product-name clearfix clickable">
+                                    <span class="float-left" ng-bind="item.title"></span>
+                                    <input type="checkbox" name="items_ids[]" ng-value="item.id"
+                                           {#ускорить работу styled-checkbox или заменить на другую библиотеку#}
+                                           {#styled-checkbox#} class="not-styling float-right"
+                                           ng-click="subscriptionController.toggleItemSubscription(item, $event.target.checked)"
+                                           ng-checked="item.subscribed" />
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="submit-wrapper">
+                <input type="button" class="save-btn button blue-bg ie-radius"
+                       ng-click="subscriptionController.updateItems()" value="Сохранить"/>
+                <div ng-show="formSubmitting">
+                    <div class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="loadingItems">
+                <div class="loading-mask">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#{{ popupId }}-popup').bind('popup.close', function() {
+            document.location.reload();
+        });
+    });
+</script>

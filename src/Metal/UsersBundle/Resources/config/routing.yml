@@ -1,0 +1,99 @@
+MetalUsersBundle:Registration:registerFirstStep:
+    path:   /registration/{category_id}/
+    defaults:  { _controller: MetalUsersBundle:Registration:register }
+    host: %host_prefix%%base_host%
+    requirements:
+        category_id: \d+
+
+MetalUsersBundle:WizzardRegistration:registerSecondStep:
+    path:   /registration-second-step/{category_id}/
+    defaults:  { _controller: MetalUsersBundle:WizzardRegistration:secondStep }
+    host: %host_prefix%%base_host%
+    requirements:
+        category_id: \d+
+MetalUsersBundle:WizzardRegistration:registerThirdStep:
+    path:   /registration-third-step/{category_id}/
+    defaults:  { _controller: MetalUsersBundle:WizzardRegistration:thirdStep }
+    host: %host_prefix%%base_host%
+    requirements:
+        category_id: \d+
+
+MetalUsersBundle:Registration:register:
+    path:   /registration
+    defaults:  { _controller: MetalUsersBundle:Registration:register }
+    host: %host_prefix%%base_host%
+
+MetalUsersBundle:Registration:redirectToRegistrationInviteProject:
+    path:   /registration
+    methods: [FOR_GENERATING_URL_ONLY]
+    host: %base_host_invite_project%
+
+MetalUsersBundle:Registration:getUserInfoForInviteProject:
+    path:   /get_user_info_for_invite_project
+    defaults:  { _controller: MetalUsersBundle:Registration:getUserInfoForInviteProject }
+    host: %host_prefix%%base_host%
+#--------------------------------------------------------------------------------------
+
+MetalUsersBundle:Registration:confirmation:
+    path:   /users/confirm
+    defaults:  { _controller: MetalUsersBundle:Registration:confirmation }
+
+MetalUsersBundle:Registration:confirmNewEmail:
+    path:   /users/confirm-new-email/{id}/{code}
+    defaults:   { _controller: MetalUsersBundle:Registration:confirmNewEmail }
+    requirements:
+        id: \d+
+
+MetalUsersBundle:RecoveryPassword:recover:
+    path:   /users/recover
+    defaults:  { _controller: MetalUsersBundle:RecoveryPassword:recover }
+
+MetalUsersBundle:RecoveryPassword:confirmationRecover:
+    path:   /users/confirmation/recover
+    defaults:  { _controller: MetalUsersBundle:RecoveryPassword:confirmationRecover }
+
+MetalUsersBundle:RecoveryPassword:resendConfirmationMail:
+    path:   /users/confirmation/resend
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateAccount:resendConfirmationMail }
+
+MetalUsersBundle:Favorite:toggleFavorite:
+    path:   /favorite/{id}/{object}
+    defaults:  { _controller: MetalUsersBundle:Favorite:toggleFavorite }
+    methods:  [POST]
+    requirements:
+        object: demand|company|product
+        id: \d+
+
+MetalUsersBundle:Favorite:addComment:
+    path:   /favorite/{id}/{object}/addComment
+    defaults:  { _controller: MetalUsersBundle:Favorite:addComment }
+    requirements:
+        object: favorite|favoriteCompany
+        id: \d+
+
+MetalUsersBundle:Favorites:list:
+    path:   /favorite
+    defaults:  { _controller: MetalUsersBundle:Favorites:list }
+    host: %host_prefix%%base_host%
+
+MetalUsersBundle:Favorites:demandsList:
+    path:   /favorite/demands
+    defaults:  { _controller: MetalUsersBundle:Favorites:demandsList }
+    host: %host_prefix%%base_host%
+
+MetalUsersBundle:Topic:save:
+    path:  /topic/save
+    defaults: { _controller: MetalSupportBundle:Topic:saveCorpSite }
+
+MetalUsersBundle:Registration:oldRegister:
+    path:   /profile/registration/
+    defaults:
+      _controller: FrameworkBundle:Redirect:redirect
+      route: MetalUsersBundle:Registration:register
+      permanent: true
+
+MetalUsersBundle:Favorites:export:
+    path: /favorites/demands/export/{format}
+    defaults: { _controller: MetalUsersBundle:Favorites:export }
+    requirements:
+        format: xlsx|csv

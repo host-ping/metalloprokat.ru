@@ -1,0 +1,24 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Новый пользователь{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ mainUser.firstName }}!
+
+К Вашей компании на сайте {{ mainUser.country.domainTitle }} присоединился новый пользователь - {{ user.fullName }} ({{ user.email }}).
+
+Для подтверждения пользователя, пожалуйста, перейдите по ссылке
+{{ url('MetalPrivateOfficeBundle:Employees:list')}} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ mainUser.firstName }}!<br/>
+        <br/>
+        К Вашей компании на сайте {{ mainUser.country.domainTitle }} присоединился новый пользователь - <b>{{ user.fullName }} ({{ user.email }})</b>.<br/>
+        <br/>
+        Для подтверждения пользователя, пожалуйста, перейдите по <a href="{{ url('MetalPrivateOfficeBundle:Employees:list')}}">ссылке</a>.
+    </p>
+{% endblock %}

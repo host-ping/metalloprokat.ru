@@ -1,0 +1,41 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set defaultOptions = {
+    'reviews_from_mini_site': false
+    } %}
+{% set options = defaultOptions|merge(options|default({})) %}
+
+{% block title %}
+    Отзывы о компании — {{ currentCompany.title }}
+{% endblock %}
+
+{% block filters %}
+    <div class="filters-block clearfix">
+        <div class="add-review-wrapper">
+            {% if isCompanyModerator %}
+                <a class="admin-button button gray60-bg float-right ie-radius" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalPrivateOfficeBundle:Reviews:list', {'_secure' : currentCompany.country.secure}) }}">Управлять отзывами</a>
+            {% else %}
+                <span class="primary add-review button clickable js-popup-opener ie-radius" data-popup="#add-review"
+                      data-review-url="{{ path('MetalCompaniesBundle:Company:review', {'id' : currentCompany.id}) }}"
+                        >Добавить отзыв</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block tab_content %}
+    <div class="reviews clearfix">
+        <h1 class="minisite-title reviews-title">Отзывы о компании {{ currentCompany.title }}</h1>
+        <ul class="review-list clearfix">
+            {% include 'MetalCompaniesBundle:partial:minisite_review_in_list.html.twig'
+            with {'formatHelper' : formatHelper, 'isCompanyModerator' : isCompanyModerator, 'options' : options, 'pagerfanta' : pagerfanta} only %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:CompanyReviewForm', {'company' : currentCompany}) }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:ReviewAnswerForm') }}
+{% endblock %}

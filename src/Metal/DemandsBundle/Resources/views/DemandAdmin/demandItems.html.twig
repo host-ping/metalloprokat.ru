@@ -1,0 +1,19 @@
+{% extends standalone|default(false) ? 'MetalProjectBundle:Admin:empty_field.html.twig' : 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.getAttribute('demandItems')|length %}
+            <ul>
+                {% for demandItem in object.getAttribute('demandItems') %}
+                    <li>{{ demandItem.title }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% set attributesCollection = object.getAttribute('demand_attributes_collection') %}
+        {% for attribute, attributeValues in attributesCollection %}
+            {% for attributeValue in attributeValues %}
+                <span class="label label-default" title="{{ attribute.title }}">{{ attributeValue.value }}</span>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

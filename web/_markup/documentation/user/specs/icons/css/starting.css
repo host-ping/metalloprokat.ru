@@ -1,0 +1,23 @@
+/* Starting template
+---------------------------------------------------------------------------------- */
+
+div[class^="icon"]{
+    float: left;
+    margin: 0 10px 10px !important;
+    position: relative;
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    padding: 25px 0 0;
+ }
+div[class^="icon"]:after,
+div[class^="icon"]:before{
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 45%;
+    height: 50px;
+}
+
+/* /Starting template
+---------------------------------------------------------------------------------- */

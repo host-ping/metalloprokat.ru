@@ -1,0 +1,65 @@
+{% extends '@markup/portal/wizzard/_wizzard_layout.html.twig' %}
+{% block title 'Step - 2' %}
+{% block content %}
+    <div id="content" class="register content-wide js-calc-height clearfix">
+        <div class="wizzard-block">
+            <ul class="steps-list clearfix">
+                <li class="step item float-left completed">
+                    <div class="step-count is-bordered ie-radius">1</div>
+                </li>
+                <li class="step item float-left active">
+                    <div class="step-count is-bordered ie-radius">2</div>
+                </li>
+                <li class="step item float-left">
+                    <div class="step-count is-bordered ie-radius">3</div>
+                </li>
+            </ul>
+            <div class="main-title ">
+                <h1>Прайс-лист</h1>
+            </div>
+            <form class="register-form" action="#">
+                <fieldset>
+                    <div class="category-list-wrapper">
+                        <div class="field-wrap">
+                            <input type="text" class="form-text ie-radius" placeholder="Предлагаемая продукция" />
+                        </div>
+                        <div class="field-wrap">
+                            <label class="file-upload">
+                                <span class="load-file-btn ico-upload">Загрузить прайс-лист (можно потом)</span>
+                                <input type="file"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="update-price-list">
+                        <div class="update-price-item">
+                            <input id="id-1" type="checkbox" disabled="disabled" checked class="js-styled-checkbox bg-grey"/>
+                            <label for="id-1">цены буду обновлять самостоятельно</label>
+                        </div>
+                        <div class="update-price-item">
+                            <div class="clearfix">
+                                <div class="float-left">
+                                    <input id="id-2" type="checkbox" class="js-styled-checkbox bg-grey"/>
+                                    <label for="id-2">при помощи наших специалистов</label>
+                                </div>
+                            </div>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input id="id-radio-1" name="updater" type="radio" class="radio bg-grey80"/>
+                                    <label for="id-radio-1">раз в две недели</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input id="id-radio-2" name="updater" type="radio" class="radio bg-grey80"/>
+                                    <label for="id-radio-2">раз в месяц</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-wrapper clearfix">
+                        <input class="button green-bg ie-radius" type="submit" value="Продолжить"/>
+                        <a href="#" class="link">Пропустить</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

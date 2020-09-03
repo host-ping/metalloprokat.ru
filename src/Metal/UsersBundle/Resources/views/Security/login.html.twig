@@ -1,0 +1,84 @@
+{% extends '@MetalProject/layouts/_login_layout.html.twig' %}
+
+{% block title 'Вход / '~currentCountry.domainTitle %}
+{% block wrapper_additional_class '' %}
+
+    {% block content_inside %}
+        <div class="main-title ">
+            <h1>Авторизация</h1>
+        </div>
+
+        {% if error %}
+            <div style="color: red;">{{ error.getMessageKey()|trans(error.getMessageData(), 'security') }}</div>
+        {% endif %}
+
+        <div class="title-wrapper clearfix">
+            <a class="register-link float-right" href="{{ brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl() }}" rel="nofollow">Регистрация</a>
+        </div>
+
+        <form id="login-form-inline" action="{{ path('login_check') }}" method="post">
+            <fieldset>
+                <div class="email-wrapper field-wrap">
+                    <input class="email form-email ie-radius" type="email" placeholder="Электронная почта" id="username" name="_username" value="{{ last_username }}" />
+                </div>
+                <div class="password-wrapper field-wrap">
+                    <input class="password form-text ie-radius" type="password" placeholder="Пароль" name="_password" />
+                </div>
+                <div class="login-info clearfix">
+                    <div class="check-wrapper float-left">
+                        <input id="login-form-inline-remember-me" name="_remember_me" type="checkbox" checked="checked" class="inform js-styled-checkbox bg-white" />
+                        <label for="login-form-inline-remember-me">Запомнить меня</label>
+                    </div>
+                    <span class="forgot-link link clickable float-right js-popup-opener" data-popup="#recover-password">Забыл пароль</span>
+                </div>
+
+                {#
+                    If you want to control the URL the user is redirected to on success (more details below)
+                    <input type="hidden" name="_target_path" value="/account" />
+                #}
+
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit" value="Войти"/>
+                </div>
+            </fieldset>
+        </form>
+    {% endblock %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'premium', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'left-sidebar', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'background', 'category_id' : currentCategory ? currentCategory.id : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-1', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-2', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-3', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

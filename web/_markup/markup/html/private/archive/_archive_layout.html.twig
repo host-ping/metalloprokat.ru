@@ -1,0 +1,22 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'demand' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'demands') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/archive/demands.html.twig') }}">Заявки</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'callbacks') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/archive/callbacks.html.twig') }}">Обратные звонки</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock tabs %}
+
+{% block sidebar %}
+    {% set activeMenu = 'archive' %}
+    {{ parent() }}
+{% endblock sidebar %}

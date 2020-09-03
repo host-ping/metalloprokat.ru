@@ -1,0 +1,92 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="security.authentication.form_entry_point.class">Metal\UsersBundle\Security\Http\EntryPoint\FormAuthenticationEntryPoint</parameter>
+    </parameters>
+
+    <services>
+        <service id="metal_users.service.online_tracker" class="Metal\UsersBundle\Service\OnlineTracker">
+            <argument type="service" id="snc_redis.session_client" />
+        </service>
+
+        <service id="metal.users.security.handler.role" class="Metal\UsersBundle\Security\Handler\RoleSecurityHandler" public="false">
+            <argument type="service" id="security.authorization_checker" on-invalid="null" />
+            <argument type="collection">
+                <argument>ROLE_SUPER_ADMIN</argument>
+            </argument>
+
+            <argument type="service" id="security.token_storage" />
+        </service>
+
+        <service id="metal.users.admin.user" class="Metal\UsersBundle\Admin\UserAdmin">
+            <argument>metal.users.admin.user</argument>
+            <argument>Metal\UsersBundle\Entity\User</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="metal.users.users_mailer" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="metal.users.user_service" />
+            <tag name="sonata.admin" manager_type="orm" group="clients" label="Пользователи" />
+        </service>
+
+        <service id="metal.users.admin.block.wizzard_register" class="Metal\UsersBundle\Admin\Block\WizzardRegisterBlockService">
+            <argument>metal.users.admin.block.wizzard_register</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <service id="metal.users.security.core.user.userversioner" class="Metal\UsersBundle\Security\Core\User\UserVersioner" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.security.crossdomain_auth.response_signer" class="Metal\UsersBundle\CrossdomainAuth\ResponseSigner" />
+
+        <service id="metal.users.favorite_services" class="Metal\UsersBundle\Service\FavoriteService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.users.users_mailer" class="Metal\UsersBundle\Service\UserMailer">
+            <argument type="service" id="metal.newsletter.mailer" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%mailer_from_account%</argument>
+            <argument>%project.registration_email_template%</argument>
+        </service>
+
+        <service id="metal.users.user_service" class="Metal\UsersBundle\Service\UserService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="metal.users.users_mailer" />
+        </service>
+
+        <service id="metal.auto_login_user_provider" class="Metal\UsersBundle\Security\Core\User\UserProvider">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal.newsletter.subscriber_service" />
+        </service>
+
+        <service id="validator.users.email_available"
+                 class="Metal\UsersBundle\Validator\Constraints\IsUniqueEmailValidator">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="validator.constraint_validator" alias="useremail_validator" />
+        </service>
+
+        <service id="metal.users.registration_services" class="Metal\UsersBundle\Service\RegistrationService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument type="service" id="metal.users.users_mailer" />
+        </service>
+
+        <service id="metal.users.telegram.connector" class="Metal\UsersBundle\Telegram\Service\TelegramConnector">
+            <argument>%notifications.telegram_bot_api_token%</argument>
+        </service>
+    </services>
+</container>

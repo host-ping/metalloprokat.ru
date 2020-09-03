@@ -1,0 +1,107 @@
+{% extends 'SprosProjectBundle:Default:index.html.twig' %}
+
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+
+{%- block header_hover_text -%}
+    <div class="buble g-hidden">
+        <div class="left"></div>
+        <p>
+            {% if category %}
+                {{ category.title }} {{ parametersOptionsWithSpace }}
+            {% elseif categoryTitle %}
+                {{ textHelper.ucFirst(categoryTitle) }}
+            {% else %}
+                {{ 'Металл' }} {{ parametersOptionsWithSpace }}
+            {% endif %}
+            — оформите
+            <a
+                href="{{ path('SprosProjectBundle:Default:form', {'subdomain' : city ? city.slug : 'www', 'city' : city ? city.id : null, 'category' : category ? category.id : null} ) }}">
+                заказ онлайн
+            </a>
+            и получите предложение с ценами от поставщика
+            в {{ city ? city.titleLocative : 'Москве' }}.</p>
+    </div>
+{%- endblock -%}
+
+{% block provider %}
+    <div class="link">
+        <a href="#" onclick="subscribe()" class="js-submit">
+            Я &mdash; поставщик, хочу получать заказы от потребителей</a>
+    </div>
+{% endblock %}
+
+{% block footer_content '' %}
+
+{% macro name(name, regionsData, category) %}
+
+    <ul class="regions">
+        {% for regionData in regionsData[name] %}
+            <li class="expanded js-search-hidable">
+                <span class="bullet"></span>
+                <a href="#"
+                   data-region-id="{{ regionData.region.id }}">{{ regionData.region.title }}</a>
+                <ul class="inside level-1">
+                    {% set routeName = 'SprosProjectBundle:Default:index_subdomain' %}
+                    {% if category %}
+                        {% set routeName = 'SprosProjectBundle:Default:index_subdomain_category' %}
+                    {% endif %}
+
+                    {% for city in regionData.cities %}
+                        <li class="js-search-source" data-search-hide-parent=".js-search-hidable">
+                            <a href="{{ path(routeName, {'subdomain' : city.slug, 'category_slug' : category ? category.getSlugCombined() : null}) }}"
+                               data-city-id="{{ city.id }}">{{ city.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endmacro %}
+
+{%- block search_category -%}
+    {% if category %}
+        {{- category.titleAccusative -}}
+    {% elseif categoryTitle %}
+        {{- textHelper.declinePhraseAccusative(categoryTitle) -}}
+    {% else %}
+        {{- 'Металл' -}}
+    {% endif %}
+{%- endblock -%}
+
+{% block search_category_description %}
+    <span>Получите предложение от поставщика прямо сейчас!</span>
+{% endblock %}
+
+{%- block fill_demand -%}
+    <h3>Бесплатно создайте заявку</h3>
+    <p>Ваша заявка на покупку
+        {{ category ? category.titleGenitive : 'металла' }} {{ parametersOptionsWithSpace }}
+        будет автоматически отправлена
+        {% if companiesCount %}
+            {{ companiesCount }}
+            {{ 'companies_by_count'|transchoice(companiesCount, {}, 'MetalCompaniesBundle') }}
+        {% else %}
+            поставщикам
+        {% endif %}
+        в {{ city ? city.titleLocative : 'России' }}.
+    </p>
+{%- endblock -%}
+
+{% block get_offers %}
+    <h3>Сравните условия и цены</h3>
+    <p>Поставщики будут связываться по указанному вами телефону и электронной почте.</p>
+{% endblock %}
+
+{% block make_choice %}
+    <h3>Сделайте выбор</h3>
+    <p>Вы сможете сделать оптимальный выбор на основе полученных предложений.</p>
+{% endblock %}
+
+{% block redirect_to_form_block_category_title %}
+    {{ render(controller('SprosProjectBundle:Default:form', {'embedded' : true}, {
+        'city' : city ? city.id : null,
+        'category' : category ? category.id : null,
+        'category_title' : categoryTitle,
+    })) }}
+{% endblock redirect_to_form_block_category_title %}

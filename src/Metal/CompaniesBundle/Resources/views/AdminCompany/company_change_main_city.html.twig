@@ -1,0 +1,72 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+    <form action=""
+          class="form-horizontal"
+          method="POST"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <label class="control-label required" >Город</label>
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.cityTitle, {
+                                'attr' : {
+                                    'class' : 'form-control',
+                                    'typeahead' : '',
+                                    'typeahead-loading' : 'typeaheadLoading',
+                                    'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                                    'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                    'typeahead-model' : 'city'
+                                }
+                            }) }}
+                            {{ form_errors(form.cityTitle) }}
+                            {{ form_widget(form.city, {'attr' : {
+                                'class' : 'hidden',
+                                'ng-model' : 'city.id',
+                                'initial-value' : ''
+                            } }) }}
+
+                            {% if hasCount and (productsCountFromOldBranch or productsCountFromNewBranch) %}
+                                <span>За старым городом закреплено {{ productsCountFromOldBranch }}
+                                    {{ 'products_by_count'|transchoice(productsCountFromOldBranch, {}, 'MetalProductsBundle') }},
+                                    за новым {{ productsCountFromNewBranch }}
+                                    {{ 'products_by_count'|transchoice(productsCountFromNewBranch, {}, 'MetalProductsBundle') }}</span>
+                            {% elseif hasCount and (not productsCountFromOldBranch and not productsCountFromNewBranch) %}
+                                За старым и новым городом не закреплено ни одного товара
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+
+        {% block formactions %}
+            <div class="well well-small form-actions">
+                {% if hasCount and (productsCountFromOldBranch or productsCountFromNewBranch) %}
+                    <input type="submit" class="btn btn-primary" name="btn_move_products" value="Перенести товары и сохранить">
+                    <input type="submit" class="btn btn-primary" name="btn_save_without_move" value="Cохранить без переноса товаров">
+                {% elseif not hasCount %}
+                    <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Отправить">
+                {% else %}
+                    <input type="submit" class="btn btn-primary" name="btn_save_without_move" value="Сохранить">
+                {% endif %}
+                <a href="{{ path('admin_metal_companies_company_edit', {'id': object.id}) }}">
+                    <input type="button" class="btn" value="Вернуться к компании">
+                </a>
+            </div>
+        {% endblock formactions %}
+
+    </form>
+{% endblock %}
+
+

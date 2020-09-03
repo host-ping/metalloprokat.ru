@@ -1,0 +1,58 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set product = _options['product'] %}
+{% set city = _options['city'] %}
+
+<div id="tabs" class="result-tabs-wrapper tabs demand_tabs clearfix">
+    <ul class="tabs-list">
+        {% if 'similar-products-tab' in _options['available_tabs'] and products and products.count > 0 %}
+            <li class="item js-tabs {% if _options['active_tab'] == 'similar-products-tab' or not productsByCategory or productsByCategory.count == 0 %}active{% endif %} ie-radius"
+                data-tab="#similar-products-tab">
+                <span class="link" title="Другие товары компании">Другие товары компании</span>
+                <span class="count">{{ products.count|number_format_decimal }}</span>
+            </li>
+        {% endif %}
+
+        {% if 'category-products-tab' in _options['available_tabs'] and productsByCategory and productsByCategory.count > 0 %}
+            <li class="item js-tabs {% if _options['active_tab'] == 'category-products-tab' or products.count == 0 %}active{% endif %} ie-radius"
+                data-tab="#category-products-tab">
+                <span class="link" title="{{ product.category.title }} в {{ city.titleLocative }}">{{ product.category.title }} в {{ city.titleLocative }}</span>
+                <span class="count">{{ productsByCategory.count|number_format_decimal }}</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="tabs-content">
+    {% if 'similar-products-tab' in _options['available_tabs'] %}
+        <ul id="similar-products-tab" class="product similar-list {% if _options['active_tab'] == 'category-products-tab' %}g-hidden{% endif %}"
+            data-replacement-zone="page.similar_products_tab_list" data-replacement-callback="scrollToElement">
+            {{ include('MetalProductsBundle:Product:products_more.html.twig', {
+                'pagerfanta' : products.pagerfanta,
+                'renderPagerfanta': true,
+                'imageHelper' : imageHelper,
+                'productHelper' : productHelper,
+                'city' : city,
+                'routeParamsShowMore': _options['show_more_route_parameters']['similar-products-tab'],
+                'id' : 'similar-products-tab-more',
+                'productViewUrlMode': _options['product_view_url_mode'],
+                'use_pagination': _options['use_pagination'],
+            }, false) }}
+        </ul>
+    {% endif %}
+
+    {% if 'category-products-tab' in _options['available_tabs'] and productsByCategory and productsByCategory.count > 0 %}
+        <ul id="category-products-tab" class="product similar-list {% if _options['active_tab'] == 'similar-products-tab' and products and products.count > 0 %}g-hidden{% endif %}"
+            data-replacement-zone="page.category_products_tab_list" data-replacement-callback="scrollToElement">
+            {{ include('MetalProductsBundle:Product:products_more.html.twig', {
+                'pagerfanta' : productsByCategory.pagerfanta,
+                'imageHelper' : imageHelper,
+                'productHelper' : productHelper,
+                'city' : city,
+                'routeParamsShowMore' : _options['show_more_route_parameters']['category-products-tab'],
+                'id' : 'category-products-tab-more',
+                'productViewUrlMode': _options['product_view_url_mode'],
+                'use_pagination': _options['use_pagination'],
+            }, false) }}
+        </ul>
+    {% endif %}
+</div>

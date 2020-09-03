@@ -1,0 +1,83 @@
+{% extends '@markup/private/management/_managemet_layout.html.twig' %}
+{% block title 'Филиалы' %}
+    {% block content %}
+        <div id="content" class="private-room-content content-right outline-right float-right">
+            {% block tabs %}
+                {% set activeTab = 'filials' %}
+                {{ parent() }}
+            {% endblock %}
+            <div class="management-content-wrapper">
+                <form class="filials-form form clearfix" action="#">
+                    <div class="clearfix">
+                        <fieldset class="left-group float-left">
+
+                            <div class="group clearfix">
+                                <div class="field-wrap float-left">
+                                    <input type="text" class="form-text ie-radius" placeholder="Город"/>
+                                </div>
+
+                                <div class="field-wrap float-left js-extended">
+                                    <input type="text" class="form-text ie-radius" placeholder="Улица"/>
+                                </div>
+
+                            </div>
+
+                            <div class="phones group clearfix">
+                                <div class="field-wrap float-left">
+                                    <input type="text" class="phone form-text ie-radius" placeholder="Телефон"/>
+                                </div>
+                                <div class="field-wrap float-left">
+                                    <input type="text" class="form-text ie-radius" placeholder="Добавочный"/>
+                                </div>
+                                <div class="add-string float-left">
+                                    <span class="add-string-link icon-add-btn float-right"></span>
+                                    <span class="del-btn float-left ico-delete-btn"></span>
+                                </div>
+                            </div>
+                            <div class="textarea-wrapper field-wrap">
+                                <textarea class="form-textarea ie-radius" name="comment" placeholder="Комментарий"></textarea>
+                            </div>
+                            <div class="employee-rating">
+                                <input type="text" class="form-text" value="1" />
+                                <span class="icon-help js-helper-opener" data-text="Отображает приоритет вывода городов в контактах минисайта от большего к меньшему"></span>
+                            </div>
+                            <div class="field-wrap centered g-hidden">
+                                <span class="gray60-color centered" style="border-bottom: dashed 1px #919191; font-size: 13px;">Кратко</span>
+                            </div>
+                            <div class="field-wrap centered">
+                                <span class="gray60-color centered" style="border-bottom: dashed 1px #919191; font-size: 13px;">Кратко</span>
+                            </div>
+                            <div class="submit-wrapper">
+                                <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                            </div>
+                            <p class="last-update">Последнее обновление 20 марта 2013</p>
+
+                        </fieldset>
+                        <fieldset class="right-group float-right">
+                            <ul class="filials-list clearfix">
+                                <li class="item active float-left">
+                                    <span class="del-btn float-right ico-delete-btn"></span>
+                                    <a class="link is-gradiented float-left" href="#">Благовещенск</a>
+                                </li>
+                                <li class="item float-left">
+                                    <span class="del-btn float-right ico-delete-btn"></span>
+                                    <a class="link is-gradiented float-left" href="#">Таганрог</a>
+                                </li>
+                                <li class="add-filial item float-left">
+                                    <a class="link" href="#">Добавить филиал</a>
+                                </li>
+                            </ul>
+                            <div class="help-block icon-help">
+                                <p class="text">При наличии филиалов ваши товары будут отображаться в регионах ваших
+                                    филиалов.</p>
+                                <p class="text">Для добавления филиалов необходимо выбрать и оплатить
+                                    <a class="link" href="#">доступ к порталу</a>.</p>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    {% endblock content %}

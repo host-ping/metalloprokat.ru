@@ -1,0 +1,98 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set productsHelper = brouzie_helper('MetalMiniSiteBundle:Product') %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set companyHelper = brouzie_helper('MetalCompaniesBundle') %}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+{# @var \Metal\TerritorialBundle\Entity\TerritoryInterface currentTerritory #}
+{% set currentTerritory = brouzie_helper('MetalProjectBundle').getCurrentTerritory %}
+
+{% if isFallback is not defined %}
+    {% set isFallback = false %}
+{% endif %}
+{% if includeBanners is not defined %}
+    {% set includeBanners = true %}
+{% endif %}
+
+{% set template = '@MetalProducts/partial/product_article.html.twig' %}
+{% set bannerTemplate = '@MetalProducts/Products/partial/banner_inclusion.html.twig' %}
+{% set activeView = app.request.query.get('view') %}
+{% if activeView == 'pallete' %}
+    {% set template = '@MetalProducts/partial/product_pallete_article.html.twig' %}
+    {% set bannerTemplate = '@MetalProducts/Products/partial/banner_inclusion_pallete.html.twig' %}
+{% endif %}
+
+{% set currentCity = app.request.attributes.get('city') %}
+{% set currentRegion = app.request.attributes.get('region') %}
+{% set categorySlug = null %}
+{% if category %}
+    {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+    {% set categorySlug = category.getUrl(attributesCollection.getUrl()) %}
+{% endif %}
+
+{% set routeParams = {
+    'price_from' : app.request.query.get('price_from'),
+    'price_to' : app.request.query.get('price_to'),
+    'q': app.request.query.get('q')
+} %}
+
+{% if currentRegion %}
+    {% set currentRegionId = currentRegion.id %}
+{% endif %}
+
+{% if currentCity %}
+    {% set currentRegionId = currentCity.region.id %}
+{% endif %}
+
+{% if isFallback %}
+    <li class="special-title {% if activeView == 'pallete' %}float-left{% else %}item{% endif %}">
+        <p class="text">Похожие товары из других регионов</p>
+    </li>
+{% endif %}
+
+{% for product in pagerfanta %}
+    {% set productCity = currentCity|default(product.branchOffice.city) %}
+    {% set company = product.company %}
+    {% set minisiteRouteParams = {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()} %}
+
+    {% if currentCity %}
+        {% set minisiteRouteParams = minisiteRouteParams|merge({'city' : currentCity.id }) %}
+    {% endif %}
+
+    {% set productsListUrl = productHelper.generateProductsUrl(company, categorySlug, routeParams) %}
+    {% set productViewUrl = productHelper.generateProductUrl(product) %}
+    {% set companyViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', minisiteRouteParams) %}
+
+    {{ include(template, {
+        'product' : product,
+        'categorySlug' : categorySlug,
+        'productCity' : productCity,
+        'category' : category,
+        'productsListUrl': productsListUrl,
+        'productViewUrl': productViewUrl,
+        'companyViewUrl': companyViewUrl,
+        'currentCity' : currentCity,
+        'currentRegion' : currentRegion,
+        'currentTerritory' : currentTerritory,
+        'imageHelper' : imageHelper,
+        'productHelper' : productHelper,
+        'productsHelper' : productsHelper,
+        'seoHelper' : seoHelper,
+        'formatHelper' : formatHelper,
+        'companyHelper' : companyHelper
+    }, false) }}
+
+    {% if includeBanners %}
+        {{ include(bannerTemplate, {
+            'index' : loop.index,
+            'category' : product.category,
+            'source_type_slug' : 'products-list',
+            'additional_class' : 'float-left',
+        }, false) }}
+    {% endif %}
+{% endfor %}
+
+{% if not isFallback %}
+    {{ pagerfanta(pagerfanta, 'pagination_twig') }}
+{% endif %}

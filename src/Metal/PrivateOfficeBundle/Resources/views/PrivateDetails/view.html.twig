@@ -1,0 +1,114 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Реквизиты / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+
+                {{ block('tabs') }}
+
+                <div class="content-wrapper">
+                    <div class="company-details-wrapper">
+                        {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+                        {% set attachment = null %}
+                        {% if paymentDetails.file.originalName %}
+                            {% set attachment = {
+                                'name': paymentDetails.file.originalName,
+                            } %}
+                        {% endif %}
+
+                        <form class="company-details form" enctype="multipart/form-data"
+                              data-file-upload="fileUploadOptions"
+                              data-replace-file-input="false"
+                              data-ajax-form="ajaxFormOptions"
+                              ng-init='
+                                attachment = {{ attachment|json_encode|raw }};
+                                updatedAt = {{ formattingHelper.formatDateTime(paymentDetails.updatedAt)|json_encode|raw }}'
+                              action="{{ path('MetalPrivateOfficeBundle:Details:edit') }}"
+                              method="post"
+                              novalidate="novalidate">
+                            <fieldset>
+                                <div class="field-wrap clearfix">
+                                    {{ form_widget(form.displayOnMiniSite, {'attr' : {'class' :  'js-styled-checkbox bg-grey'} }) }}
+                                    {{ form_label(form.displayOnMiniSite) }}
+                                </div>
+                                <div class="field-groups clearfix">
+                                    <div class="left-group field-group float-left">
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.nameOfLegalEntity, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.nameOfLegalEntity, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.legalAddress, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.legalAddress, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.mailAddress, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.mailAddress, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.inn, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.inn, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.kpp, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.kpp, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.orgn, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.orgn, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.directorFullName, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.directorFullName, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                    </div>
+                                    <div class="right-group field-group float-left">
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.bankAccount, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.bankAccount, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.bankCorrespondentAccount, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.bankCorrespondentAccount, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.bankBik, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.bankBik, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+                                        <div class="field-wrap">
+                                            {{ form_widget(form.bankTitle, {'attr' : {'class' : 'form-text ie-radius' }}) }}
+                                            {{ form_label(form.bankTitle, null, {'label_attr' : {'class' : 'input-label'}}) }}
+                                        </div>
+
+                                        <div class="field-wrap">
+                                            <label class="load">
+                                                <span class="load-button button blue-bg ie-radius" ng-if="attachmentFile"><%= attachmentFile.name %></span>
+                                                <span class="load-button button blue-bg ie-radius" ng-if="!attachmentFile">Загрузить скан ИНН</span>
+                                                {{ form_widget(form.uploadedFile, {'attr': {'file-model': 'attachmentFile'} }) }}
+                                            </label>
+                                            <a class="file-name" ng-if="attachment" href="{{ path('MetalPrivateOfficeBundle:Details:downloadDocument') }}"><%= attachment.name %></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="submit-wrapper">
+                                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                                    <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            {{ form_rest(form) }}
+
+                            <p class="last-update">Последнее обновление <%= updatedAt %></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

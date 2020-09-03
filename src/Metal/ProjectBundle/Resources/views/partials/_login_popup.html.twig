@@ -1,0 +1,37 @@
+{% set redirectTo = true %}
+{% if popup_id is not defined %}
+    {% set popup_id = 'login' %}
+    {% set redirectTo = null %}
+{% endif %}
+<div id="{{ popup_id }}" class="login-form popup-block opacity-border large">
+    <div class="popup-content">
+        <div class="title-wrapper clearfix">
+            <div class="title-popup float-left">Авторизация</div>
+            <a class="register-link float-right"
+               href="{{ brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl(redirectTo) }}" rel="nofollow">Регистрация</a>
+        </div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+        <form id="login-form" class="popup-form" action="{{ path('login_check') }}" method="post">
+            <fieldset>
+                <div class="email-wrapper field-wrap">
+                    <input name="_username" class="email form-email" type="email" placeholder="Электронная почта"/>
+                </div>
+                <div class="password-wrapper field-wrap">
+                    <input name="_password" class="password form-text" type="password" placeholder="Пароль"/>
+                </div>
+                <div class="login-info clearfix">
+                    <div class="check-wrapper float-left">
+                        <input id="login-form-remember-me" name="_remember_me" type="checkbox" checked="checked" class="inform js-styled-checkbox bg-white"/>
+                        <label for="login-form-remember-me">Запомнить меня</label>
+                    </div>
+                    <span class="forgot-link clickable float-right js-popup-closer js-popup-opener" data-popup="#recover-password">Забыл пароль</span>
+                </div>
+
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg" type="submit" value="Войти"/>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,209 @@
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+{% set company = _options.company %}
+{% set source = _options.data_for_stats %}
+{% set categoryForStatistic = _options.category %}
+
+{% set isCompanyModerator = is_granted('COMPANY_MODERATOR', company) %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq64', 'portal') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{% set currentRegion = app.request.attributes.get('region') %}
+
+{% if company.isDeleted %}
+    <div class="info-wrapper white-bg">
+        <div class="company-info-wrapper clearfix">
+            <div class="company-info float-left">
+                <div class="prod-title clearfix">
+                    <div class="title">
+                        {{ company.title }}
+                    </div>
+                    <p class="localization gray60-color">
+                        {{ productHelper.getDeliveryString(company) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="info-wrapper white-bg" itemscope itemtype="http://schema.org/Organization">
+        <div class="company-info-wrapper clearfix">
+            <div class="company-info float-left">
+                <div class="prod-title clearfix">
+                    <div class="star-panel float-left">
+                        {% if brouzie_helper('MetalCompaniesBundle').isCompanyOnline(company) %}
+                            <div class="status float-left green-bg ie-radius">Онлайн</div>
+                        {% endif %}
+                        {{ companyMacroses.rating(company, 'float-left') }}
+                    </div>
+                    <div class="title">
+                        {% if company.minisiteEnabled %}
+                            {% set minisiteRouteParam = {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()} %}
+                            {% if currentCity %}
+                                {% set minisiteRouteParam = minisiteRouteParam|merge({'city' : currentCity.id }) %}
+                            {% endif %}
+                            {% set encodedContent %}
+                                <a target="_blank" {% if currentCity %}rel="nofollow"{% endif %} href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', minisiteRouteParam) }}">
+                                    <span itemprop="name" >{{ company.title }}</span>
+                                </a>
+                            {% endset %}
+                            <span itemscope itemprop="name" data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">{{ company.title }}</span>
+                        {% else %}
+                            <span itemprop="name" >{{ company.title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <p class="localization gray60-color">
+                    <span itemscope itemprop="address">{{ productHelper.getDeliveryString(company) }}</span>
+                </p>
+
+                {% if contactInfo.description is defined and contactInfo.description %}
+                    <p class="localization gray60-color">
+                        {{ contactInfo.description|nl2br }}
+                    </p>
+                {% endif %}
+
+                {% if _options['product_external_url'] %}
+                    {% set encodedContent %}
+                        <p>
+                            <a target="_blank" rel="noopener noreferrer nofollow"
+                               data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {
+                                   'source' : source,
+                                   'object-id' : company.id,
+                                   'object-kind' : 'company',
+                                   'category-id' : categoryForStatistic ? categoryForStatistic.id : null,
+                                   'url' : _options['product_external_url']
+                               }) }}"
+                            >{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(_options['product_external_url']) }}</a>
+                        </p>
+                    {% endset %}
+                    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">
+                    </span>
+
+                {% else %}
+                    {% for site in company.sites %}
+                        {% set encodedContent %}
+                            <p>
+                                <a target="_blank" rel="noopener noreferrer nofollow"
+                                   data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {
+                                       'source' : source,
+                                       'object-id' : company.id,
+                                       'object-kind' : 'company',
+                                       'category-id' : categoryForStatistic ? categoryForStatistic.id : null,
+                                       'url' : site
+                                   }) }}"
+                                >{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(site) }}</a>
+                            </p>
+                        {% endset %}
+                        <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">
+                        </span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="company-logo float-right">
+                {% if company.minisiteEnabled %}
+                    {% set encodedContent %}
+                        <a target="_blank" class="img-link pattern-small"
+                           data-href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }}">
+                            {% if companyLogoUrl %}
+                                <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" itemprop="logo"/>
+                            {% endif %}
+                        </a>
+                    {% endset %}
+                    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">
+                        <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" itemprop="logo"/>
+                    </span>
+
+                {% else %}
+                    {% if companyLogoUrl %}
+                        <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" itemprop="logo"/>
+                    {% endif %}
+                {% endif %}
+                {% set contactInfo = company.getContactInfo() %}
+                {% set phonesString = company.getAttribute('phones_string')|default(contactInfo.getPhonesAsString())|default(company.getPhonesAsString()) %}
+
+                {% if phonesString %}
+                    <span class="g-hidden" itemprop="telephone">{{ phonesString }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% if favoriteCompany and favoriteCompany.comment %}
+            <div class="comment-block right-bullet">
+                <span class="text">{{ favoriteCompany.comment }}</span>
+                <span class="date">{{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(favoriteCompany.createdAt) }}</span>
+            </div>
+        {% endif %}
+        <div class="sec-info">
+            {% set companyCounter = company.counter %}
+
+            {% set reviewsCount = companyCounter.reviewsCount %}
+            {% set subdomain = company.city.getSlugWithFallback() %}
+
+            {% if not _options.hide_all_product_link %}
+                {% if not _options.hide_category_link and productsInCategoryCount %}
+                    {% set categoryHelper = brouzie_helper('MetalCategoriesBundle') %}
+                    {% set categorySlug = null %}
+                    {% set category = _options.category %}
+                    {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+
+                    {% set attributeSlugs = attributesCollection|length ? attributesCollection.getUrl() : '' %}
+                    {% set categorySlug = category.getUrl(attributeSlugs) %}
+                    <p>
+                        <a data-href="{{ path('MetalCompaniesBundle:Company:products_category', {'subdomain': subdomain, 'company_slug' : company.slug, 'category_slug' : categorySlug }) }}">
+                            {{ productsInCategoryCount|number_format_decimal }} {{ 'products_by_count'|transchoice(productsInCategoryCount, [], 'MetalProductsBundle') }}
+                        </a>
+                        из раздела {{ category.getTitleForEmbed() }}
+                    </p>
+                {% endif %}
+
+                {% if productsCountByCompany > 0 %}
+                    <p>
+                        <a href="{{ path('MetalCompaniesBundle:Company:products', {'subdomain': subdomain, 'company_slug' : company.slug}) }}">
+                            {{ productsCountByCompany|number_format_decimal }} {{ 'products_by_count'|transchoice(productsCountByCompany, [], 'MetalProductsBundle') }}
+                        </a> на сайте
+                    </p>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="reviews-block">
+            <div class="reviews-title clearfix">
+                {% if reviewsCount %}
+                    <div class="title float-left">Отзывы о компании</div>
+                    <span class="review-count float-left">{{ reviewsCount|number_format_decimal }}</span>
+                {% endif %}
+            </div>
+
+            <ul class="reviews list">
+                {% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+                {% for review in companyReviews %}
+                    <li class="{% if review.isCommentPositive() %}icon-positive{% else %}icon-negative{% endif %} item">
+                        <p class="text">{{ review.comment }}</p>
+
+                        <div class="info">
+                            <span class="author">{{ review.user ? review.user.firstName : review.name }}</span>,
+                            <span class="period" title="{{ formatHelper.formatDate(review.createdAt) }}">{{ formatHelper.getTimeLocalized(review.createdAt) }} назад</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="reviews-links">
+                {% if not isCompanyModerator %}
+                    <span class="add-review link clickable js-popup-opener"
+                          data-popup="#add-review"
+                          data-review-url="{{ path('MetalCompaniesBundle:Company:review', {'id' : company.id, 'category' : categoryForStatistic ? categoryForStatistic.id : null}) }}"
+                            >Добавить отзыв
+                    </span>
+                {% endif %}
+
+                {% if reviewsCount and company.minisiteEnabled %}
+                    <a target="_blank" class="all-reviews link" rel="nofollow"
+                       data-href="{{ path('MetalMiniSiteBundle:MiniSite:reviews', {'domain' : company.domain}) }}">Все отзывы</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

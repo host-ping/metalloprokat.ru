@@ -1,0 +1,70 @@
+{% set availableTabs = _options['available_tabs'] %}
+{% set activeTab = _options['active_tab'] %}
+{% set city = _options['city'] %}
+
+<div id="tabs" class="result-tabs-wrapper tabs demand_tabs catalog-tabs clearfix">
+    <ul class="tabs-list clearfix">
+        {% if 'products-review-tab' in availableTabs and reviews %}
+            <li class="item js-tabs {% if activeTab == 'products-review-tab' %}active{% endif %} ie-radius clearfix" data-tab="#products-reviews-tab">
+                <span class="count float-right">{{ reviews|length|number_format_decimal }}</span>
+                <span class="link" title="Отзывы">Отзывы</span>
+            </li>
+        {% endif %}
+
+        {% if 'products-brand-tab' in availableTabs and productsByBrand %}
+            <li class="item js-tabs {% if activeTab == 'products-brand-tab' %}active{% endif %} ie-radius clearfix" data-tab="#products-brand-tab">
+                <span class="count float-right">{{ productsByBrand|length|number_format_decimal }}</span>
+                <span class="link" title="{{ product.category.title }} {{ product.brand.value }}">{{ product.category.title }} {{ product.brand.value }}</span>
+            </li>
+        {% endif %}
+
+        {% if 'similar-products-tab' in availableTabs and similarProducts|length %}
+            <li class="item js-tabs {% if activeTab == 'similar-products-tab' %}active{% endif %} ie-radius clearfix" data-tab="#similar-products-tab">
+                <span class="count float-right">{{ similarProducts.count|number_format_decimal }}</span>
+                <span class="link" title="{{ product.category.title }} других брендов">{{ product.category.title }} других брендов</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="tabs-content">
+    {% if 'products-review-tab' in availableTabs and reviews %}
+        <div id="products-reviews-tab" class="similar-list reviews-block {% if 'products-review-tab' != activeTab %}g-hidden{% endif %}">
+            <ul class="reviews list">
+                {% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+                {% for review in reviews %}
+                    <li class="{% if review.isCommentPositive() %}icon-positive{% else %}icon-negative{% endif %} item outline">
+                        <p class="text">{{ review.comment }}</p>
+
+                        <div class="info">
+                            <span class="author">{{ review.user ? review.user.firstName : review.name }}</span>,
+                            <span class="period" title="{{ formatHelper.formatDate(review.createdAt) }}">{{ formatHelper.getTimeLocalized(review.createdAt) }} назад</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if 'products-brand-tab' in availableTabs and productsByBrand %}
+        <ul id="products-brand-tab" class="product similar-list catalog-list {% if 'products-brand-tab' != activeTab %}g-hidden{% endif %}">
+
+            {{ include('MetalCatalogBundle:Product:products_more.html.twig', {
+                'products' : productsByBrand,
+                'isPagerfanta' : false,
+                'city' : city,
+            }, false) }}
+        </ul>
+    {% endif %}
+
+    {% if 'similar-products-tab' in availableTabs and similarProducts|length  %}
+        <ul id="similar-products-tab" class="product similar-list catalog-list {% if 'similar-products-tab' != activeTab %}g-hidden{% endif %}"
+            data-replacement-zone="page.similar_products_tab_list">
+            {{ include('MetalCatalogBundle:Product:products_more.html.twig', {
+                'products' : similarProducts,
+                'isPagerfanta' : true,
+                'city' : city,
+                'displayBrand' : true
+            }, false) }}
+        </ul>
+    {% endif %}
+</div>

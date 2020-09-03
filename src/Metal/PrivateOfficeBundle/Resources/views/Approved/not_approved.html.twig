@@ -1,0 +1,10 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right"></div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:ApprovedUser', {'main_user' : app.user.company ? app.user.company.companyLog.createdBy : null, 'redirect_url' : app.request.query.get('redirect_url')}) }}
+{% endblock %}

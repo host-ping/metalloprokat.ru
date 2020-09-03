@@ -1,0 +1,312 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% block title 'Медийная реклама / '~titleSuffix %}
+
+{% block content %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+    {% set user = app.user %}
+
+    <div id="content" class="corporate-content content-wide clearfix">
+        <div class="schema float-left">
+            {% for announcementSchemaImage in announcementsSchemasImages %}
+                <img src="{{ announcementSchemaImage|imagine_filter('announcement') }}" alt="Схема баннеров" width="200"
+                     class="clickable js-popup-opener" data-popup="#announcement-schema-{{ loop.index }}"/>
+                <br />
+            {% endfor %}
+        </div>
+        <div class="announcement-info-wrapper float-right">
+            <h1 class="title">Реклама</h1>
+            <div class="table-box-holder">
+                {% for zonesBySection in zonesBySections %}
+                    <h3 class="title">{{ zonesBySection.section.getLongTitle }}</h3>
+                    <table class="announcement-info">
+                        <thead>
+                        <tr class="col">
+                            <td class="name col">Название</td>
+                            <td class="size col">{{ tokens.product_volume_title|capitalize }}</td>
+                            <td class="price col">Стоимость за месяц</td>
+                            <td class="order col"></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for zone in zonesBySection.zones %}
+                                <tr class="row {% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+                                    <td class="name col">
+                                        <p>{{ zone.title }}</p>
+                                    </td>
+                                    <td class="size col">
+                                        <p>{{ zone.width }}x{{ zone.height }}</p>
+                                    </td>
+                                    <td class="price col">
+                                        {% if zone.cost %}
+                                            <p>
+                                                {{ zone.cost }} <span class="icon-rouble"></span>
+                                            </p>
+                                        {% endif %}
+
+                                        {% if zone.alwaysAvailable %}
+                                            <p class="status-text green-color">Свободен</p>
+                                            {% for premiumZoneStatus in zone.getAttribute('zone_status') %}
+                                                {% if premiumZoneStatus.status is constant('STATUS_SOLD', zone) %}
+                                                    <p class="status-text blue-color">
+                                                        {{ premiumZoneStatus.getStatuses[premiumZoneStatus.status] }}
+                                                        с
+                                                        {{ formattingHelper.formatDate(premiumZoneStatus.startsAt) }}
+                                                        по
+                                                        {{ formattingHelper.formatDate(premiumZoneStatus.endsAt) -}}
+                                                        {% if premiumZoneStatus.company -%}
+                                                            , {{ premiumZoneStatus.company.title }}
+                                                        {% endif %}
+                                                    </p>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% elseif zone.getAttribute('zone_status') %}
+                                            {% for zoneStatus in zone.getAttribute('zone_status') %}
+                                                {% if zoneStatus.status is constant('STATUS_RESERVED', zone) %}
+                                                    <p class="status-text red-color">
+                                                        {{ zoneStatus.getStatuses[zoneStatus.status] }}
+                                                        с
+                                                        {{ formattingHelper.formatDate(zoneStatus.startsAt) }}
+                                                        по
+                                                        {{ formattingHelper.formatDate(zoneStatus.endsAt) -}}
+                                                        {% if zoneStatus.company -%}
+                                                            , {{ zoneStatus.company.title }}
+                                                        {% endif %}
+                                                    </p>
+                                                {% endif %}
+                                                {% if zoneStatus.status is constant('STATUS_SOLD', zone) %}
+                                                    <p class="status-text blue-color">
+                                                        {{ zoneStatus.getStatuses[zoneStatus.status] }}
+                                                        с
+                                                        {{ formattingHelper.formatDate(zoneStatus.startsAt) }}
+                                                        по
+                                                        {{ formattingHelper.formatDate(zoneStatus.endsAt) -}}
+                                                        {% if zoneStatus.company -%}
+                                                            , {{ zoneStatus.company.title }}
+                                                        {% endif %}
+                                                    </p>
+                                                {% endif %}
+                                                {% if zoneStatus.status is constant('STATUS_FREE', zone) %}
+                                                    <p class="status-text green-color">Свободен</p>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="status-text green-color">Свободен</p>
+                                        {% endif %}
+                                    </td>
+                                    <td class="order col">
+                                        <span class="buy-btn button green-bg ie-radius js-popup-opener"
+                                              data-popup="#order-announcement"
+                                              {% if user %}
+                                                  data-user-name="{{ user.fullName }}"
+                                                  data-user-phone="{{ user.phone ? user.phone : '' }}"
+                                                  data-user-email="{{ user.email }}"
+                                              {% endif %}
+                                              data-zone-id="{{ zone.id }}"
+                                              data-zone-cost="{{ zone.cost }} руб."
+                                                >Заказать</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="button-block">
+                        <ul class="list">
+                            <li class="item">
+                                {% if zonesBySection.section.id == constant("Metal\\AnnouncementsBundle\\Entity\\ValueObject\\SectionProvider::TYPE_EMAIL") %}
+                                    <span class="link clickable js-popup-opener" data-popup="#requirements-for-email-announcement">Требования к баннеру</span>
+                                {% else %}
+                                    <span class="link clickable js-popup-opener" data-popup="#requirements-for-announcement">Требования к баннеру</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="order-announcement"
+         class="order-banner-form popup-block opacity-border large" data-popup-template="#order-announcement-template">
+    </div>
+    <script type="text/html" id="order-announcement-template">
+        <div class="popup-content">
+            <div class="title-popup">Заказ баннера</div>
+            <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+            <form id="order-announcement-form" class="order-banner popup-form js-ajax-form-submit"
+                  action="{{ path('MetalCorpsiteBundle:Default:saveOrderAnnouncement') }}"
+                  method="post"
+                  data-success="close-popup"
+                  novalidate="novalidate"
+                    >
+                <fieldset>
+                    <div class="group clearfix">
+                        <div class="start-date-wrapper field-wrap float-left">
+                            {% set datepickerConfig = {
+                                'selectedDate': form.startsAt.vars.data|date('Y-m-d'),
+                                'targets': [
+                                    {
+                                        'format': 'D MMMM YYYY',
+                                        'target': '#'~form.startsAt.vars.id
+                                    }
+                                ]} %}
+                            {{ form_widget(form.startsAt, {'attr' : {'class' : 'date js-popover-opener date-from form-text ie-radius', 'placeholder' : 'Дата', 'data-popover' : '#datepicker-period-from' }}) }}
+                            <span class="icon-calendar js-popover-opener clickable"
+                                  data-popover="#datepicker-period-from"></span>
+
+                            <div id="datepicker-period-from"
+                                 class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+                                 data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'>
+                            </div>
+                        </div>
+                        <div class="end-date-wrapper field-wrap float-left">
+                            <p class="date-to" id="announcement-date-to"></p>
+                        </div>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="user-name-wrapper field-wrap float-left">
+                            {{ form_widget(form.name, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Имя', 'data-bind-value' : 'user-name'} }) }}
+                        </div>
+                        <div class="phone-wrapper field-wrap float-left">
+                            {{ form_widget(form.phone, {'attr' : {'class' : 'form-text ie-radius phone', 'placeholder' : 'Телефон', 'data-bind-value' : 'user-phone'} }) }}
+                        </div>
+                    </div>
+                    <div class="email-wrapper field-wrap">
+                        {{ form_widget(form.email, {'attr' : {'class' : 'form-email ie-radius', 'placeholder' : 'Электронная почта', 'data-bind-value' : 'user-email'} }) }}
+                    </div>
+                    <div class="textarea-wrapper field-wrap">
+                        {{ form_widget(form.comment, {'attr' : {'placeholder' : 'Комментарии', 'class': 'form-textarea ie-radius' } }) }}
+                    </div>
+                    <div class="field-wrap">
+                        {{ form_widget(form.createAnnouncement, {'attr' : {'class' : 'jq-checkbox js-styled-checkbox bg-white'} }) }}
+                        {{ form_label(form.createAnnouncement) }} (+4000 <span class="icon-rouble"></span>)
+                    </div>
+
+                    <div class="total-sum-wrapper">
+                        <span class="gray60-color">к оплате</span>
+                        <span class="sum" id="order-announcement-total-sum"></span>
+                        <span class="icon-rouble"></span>
+                    </div>
+                    <input type="hidden" id="order-announcement-zone-cost" data-bind-value="zone-cost" />
+                    <input type="hidden" id="order-announcement-creation-cost" value="4000" />
+                    <div class="submit-wrapper clearfix">
+                        <input class="pay-btn button green-bg ie-radius" type="submit" value="Заказать"/>
+                    </div>
+
+                </fieldset>
+
+                {{ form_widget(form.zone, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'zone-id' } }) }}
+
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </script>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {% for announcementSchemaImage in announcementsSchemasImages %}
+        <div id="announcement-schema-{{ loop.index }}" class="photo popup-block opacity-border large content-scrollable ">
+            <div class="img-content js-scrollable">
+                <img alt="image description" src="{{ announcementSchemaImage|imagine_filter('announcement') }}">
+            </div>
+        </div>
+    {% endfor %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#order-announcement').bind('popup.open', function() {
+                var $createAnnouncementCheckbox = $('#{{ form.createAnnouncement.vars.id }}');
+
+                function refreshDatepicker() {
+                    var dateStart = $('#datepicker-period-from').data('datepicker.selectedDate');
+                    var dateEnd = dateStart.clone().add(30, 'days');
+                    $('#announcement-date-to').text(dateEnd.format('D MMMM YYYY'));
+                }
+
+                $('#datepicker-period-from').bind('datepicker.selectDate', function() {
+                    refreshDatepicker();
+                });
+
+                function calculateTotalSum() {
+                    var totalSum = parseInt($('#order-announcement-zone-cost').val());
+
+
+                    if ($createAnnouncementCheckbox.prop('checked')) {
+                        totalSum += parseInt($('#order-announcement-creation-cost').val());
+                    }
+
+                    $('#order-announcement-total-sum').text(number_format_current_locale(totalSum));
+                }
+
+                $createAnnouncementCheckbox.bind('change', calculateTotalSum);
+
+                window.setTimeout(function() { // wait binding
+                    calculateTotalSum();
+                    refreshDatepicker();
+                }, 200);
+            });
+        });
+    </script>
+    <div id="requirements-for-announcement" class="requirements-for-announcement popup-block opacity-border large">
+        <div class="popup-content">
+            <div class="title-popup">Требования к баннеру</div>
+            <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+            <ol class="list">
+                <li class="item">Поддерживаемые форматы: GIF, JPEG, PNG, HTML5.</li>
+                <li class="item">Размер файла баннера не должен превышать 300 кб</li>
+                <li class="item">Альтернативный текст для баннера не может быть больше 100 символов.</li>
+                <li class="item">Рекламный баннер должен иметь видимые границы (обведен в рамку, не совпадающую с цветом фона).</li>
+                <li class="item">Не принимаются баннеры с мигающими крупными графическими или текстовыми элементами и/или
+                    фоном, с резкими перемещениями элементов, существенно отвлекающие пользователя от
+                    взаимодействия со страницей сайта (изучения содержания страницы или ввода запроса)<sup>1</sup></li>
+                <li class="item">Баннер в формате HTML должен быть "резиновым" т.е. адаптироваться под разные расширения экранов
+                    (минимальная длина 450px). В противном случае на низких разрешениях экрана у баннера появится горизонтальная прокрутка.
+                    Стаья по созданию "резинового" <a href="https://habrahabr.ru/post/169387/" target="_blank" rel="noopener noreferrer">HTML баннера</a>
+                </li>
+            </ol>
+            <div class="footnote">
+                <p><sup>1</sup>Миганием, например, можно считать изменение цвета элемента (т. е. любого из параметров по шкале
+                    hue-saturation-brightness) более, чем на 40%, происходящее регулярно с частотой более 1 раза в 2
+                    секунды. Резким перемещением можно считать изменение расположения элемента на баннере, происходящее
+                    неоднократно со скоростью более, чем на 100% от размера элемента (или на 50% от размера баннера) за 1 секунду.</p>
+
+                <p>Приведенные оценки не являются критерием соответствия баннера требованиям к баннерной рекламе,
+                    а скорее, иллюстрацией нашей системы оценок. Баннер с описанными выше проблемами креатива
+                    практически гарантированно будет отклонен как несоответствующий требованиям к баннерной
+                    рекламе. Однако возможны ситуации, когда баннер с гораздо меньшими «численными» значениями
+                    изменений, будет признан раздражающий, и наоборот, будет допущен баннер с бОльшими
+                    значениями изменений.</p>
+            </div>
+        </div>
+    </div>
+    <div id="requirements-for-email-announcement" class="requirements-for-announcement popup-block opacity-border large">
+        <div class="popup-content">
+            <div class="title-popup">Требования к баннеру</div>
+            <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+            <ol class="list">
+                <li class="item">Поддерживаемые форматы: GIF, JPEG, PNG.</li>
+                <li class="item">Размер файла баннера не должен превышать 50 кб</li>
+                <li class="item">Альтернативный текст для баннера не может быть больше 100 символов.</li>
+                <li class="item">Рекламный баннер должен иметь видимые границы (обведен в рамку, не совпадающую с цветом фона).</li>
+                <li class="item">Не принимаются баннеры с мигающими крупными графическими или текстовыми элементами и/или
+                    фоном, с резкими перемещениями элементов, существенно отвлекающие пользователя от
+                    взаимодействия со страницей сайта (изучения содержания страницы или ввода запроса)<sup>1</sup></li>
+            </ol>
+            <div class="footnote">
+                <p><sup>1</sup>Миганием, например, можно считать изменение цвета элемента (т. е. любого из параметров по шкале
+                    hue-saturation-brightness) более, чем на 40%, происходящее регулярно с частотой более 1 раза в 2
+                    секунды. Резким перемещением можно считать изменение расположения элемента на баннере, происходящее
+                    неоднократно со скоростью более, чем на 100% от размера элемента (или на 50% от размера баннера) за 1 секунду.</p>
+
+                <p>Приведенные оценки не являются критерием соответствия баннера требованиям к баннерной рекламе,
+                    а скорее, иллюстрацией нашей системы оценок. Баннер с описанными выше проблемами креатива
+                    практически гарантированно будет отклонен как несоответствующий требованиям к баннерной
+                    рекламе. Однако возможны ситуации, когда баннер с гораздо меньшими «численными» значениями
+                    изменений, будет признан раздражающий, и наоборот, будет допущен баннер с бОльшими
+                    значениями изменений.</p>
+            </div>
+        </div>
+    </div>
+
+    {{ brouzie_render_widget('MetalSupportBundle:TopicCorpSite') }}
+{% endblock %}

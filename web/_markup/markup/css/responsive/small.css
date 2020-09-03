@@ -1,0 +1,69 @@
+body{
+    min-width: 700px;
+}
+.portal .wrap,
+.wizzard .wrap,
+.mini-site .wrap,
+.portal #main:not(.main-wide) .wrap,
+#footer .wrap{
+    width: 670px;
+}
+.header-info-block {
+    display: none;
+}
+.main-menu{
+    padding-left: 60px;
+}
+.search-input{
+    font-size: 14px;
+    width: 290px;
+}
+.footer-links{
+    float: left;
+    margin-right: 20px;
+    width: 300px;
+}
+
+.company-announcement .file-upload .admin-button{
+    width: 70px;
+}
+
+.wizzard-block{
+    margin: 0 auto;
+    width: 635px;
+}
+.corporate .footer-links{
+    float: none;
+    width: 100%;
+}
+.corporate #footer .wrap{
+    width: inherit;
+}
+.wizzard .steps-block,
+.left-announcement-wrapper,
+.right-announcement-wrapper{
+    display: none;
+}
+.wizzard-block .steps-list{
+    width: 280px;
+}
+
+.blogs .item{
+    width: 214px;
+    height: 214px;
+    margin: 0 5px 5px 0;
+    overflow: hidden;
+}
+
+.blogs .item .text-layout{
+    position: absolute;
+    height: 214px;
+    width: 214px;
+    top: 0;
+    left: 0;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px;
+    background: rgba(0,0,0, .8);
+    display: none;
+}

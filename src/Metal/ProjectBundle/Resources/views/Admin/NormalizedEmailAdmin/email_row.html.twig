@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.email %}
+            {% if admin.datagrid.filters.email.value.value is defined and admin.datagrid.filters.email.value.value %}
+                <div>
+                    {% set value = admin.datagrid.filters.email.value.value %}
+                    {{ object.email|replace({(value) : '<strong style="color:red">'~value~'</strong>'})|raw }}
+                </div>
+            {% else %}
+                <div>
+                    {{ object.email }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

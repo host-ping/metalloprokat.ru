@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.city %}
+            <p>{{ object.city.title }}</p>
+        {% elseif object.region %}
+            <p>{{ object.region.title }}</p>
+        {% elseif object.country %}
+            <p>{{ object.country.title }}</p>
+        {% else %}
+            <p><b>{{ object.landingPageTerritoryTitle }}</b></p>
+        {% endif %}
+    </div>
+{% endblock %}

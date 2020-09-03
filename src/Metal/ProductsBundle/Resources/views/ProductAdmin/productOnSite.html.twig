@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% if object.company.minisiteEnabled %}
+            <li><a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:product_view', {'domain' : object.company.domain, 'id' : object.id, '_secure' : object.company.packageChecker.isHttpsAvailable()}) }}" target="_blank">товар на минисайте</a></li>
+        {% endif %}
+        <li><a href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id': object.id, 'subdomain': object.getBranchOffice().getCity().getSlugWithFallback()}) }}" target="_blank">товар на портале</a></li>
+    </ul>
+{% endblock %}

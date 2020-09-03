@@ -1,0 +1,90 @@
+.compact-mode .search-block .twitter-typeahead{
+    min-height: 38px;
+}
+.search-block .tt-dropdown-menu{
+    width: 1008px;
+    background-color: #f1f1f1;
+    position: absolute;
+    z-index: 999;
+    border-bottom: 2px solid #C0C0C0;
+    margin: 0 -200%;
+    padding: 10px 200% 10px 196%;
+    border-radius: 0;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.search-block .tt-dropdown-menu div[class^="tt-dataset"]{
+    max-height: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/*верстка*/
+.search-block .twitter-typeahead{
+    padding-bottom: 21px;
+}
+.compact-mode .search-block .twitter-typeahead{
+    padding-bottom: 0;
+}
+.search-block  .tt-suggestions{
+    padding: 0 20px 0 52px;
+    width: 916px;
+}
+.search-block  .tt-suggestion{
+    font-size: 18px;
+    line-height: 2;
+    padding-left: 12px;
+    position: relative;
+    width: 100%;
+
+}
+.search-block .tt-suggestion.tt-cursor{
+    background-color: #fff;
+}
+.tt-suggestion a{
+    color: #262626;
+}
+
+/*Popup suggest*/
+.tt-dropdown-menu{
+    margin: 8px 0 0;
+    border-radius: 4px;
+    border: solid 1px #c6c6c6;
+    max-height: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 5px 7px;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    z-index: 100;
+}
+.tt-suggestion{
+    font-size: 11px;
+    text-transform: uppercase;
+    line-height: 18px;
+    padding: 3px 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.tt-suggestion:hover,
+.tt-suggestion.tt-cursor{
+    background: #f1f1f1 url(../img/ico-return.png) no-repeat 98% 50%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.tt-suggestions{
+    padding: 0;
+    width: auto;
+}
+.tt-dropdown-menu .region{
+    font-size: 9px;
+    line-height: 11px;
+    color: #919191;
+}

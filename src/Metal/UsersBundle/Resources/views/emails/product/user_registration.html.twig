@@ -1,0 +1,72 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Подтверждение регистрации{% endblock %}
+
+{% block body_text -%}
+{% set serviceHelper = brouzie_helper('MetalServicesBundle:Default') %}
+Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!
+Благодарим Вас за регистрацию на портале {{ user.country.domainTitle }}!
+
+Для завершения регистрации, пожалуйста, перейдите по ссылке
+{{ url('MetalUsersBundle:Registration:confirmation', {'code' : user.registrationCode, 'id' : user.id })|raw }} .
+
+{% if user.newPassword %}Запомните Ваш пароль: {{ user.newPassword }}{% endif %}
+
+{% if user.company and user.company.companyLog.createdBy.id != user.id %}
+При регистрации Вы выбрали зарегистрированную компанию {{ user.company.title}} ({{ user.company.city.title }}). Главный пользователь этой компании {{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }}) должен подтвердить, что Вы являетесь сотрудником, чтобы Вы могли работать на сайте от лица компании.
+{% endif %}
+
+Интернет-портал www.{{ country.baseHost }} — Старейший и узнаваемый ресурс, 17 лет существующий на рынке продуктов питания.
+На www.{{ country.baseHost }} зарегистрировано более 80 000 компаний — производителей, трейдеров, потребителей и других представителей отрасли.
+
+Подключив Полный или Расширенный доступ к услугам портала, Вы получаете:
+
+* персональный мини-сайт;
+* размещение неограниченного количества позиций прайс-листа c изображением продукции;
+* возможность перемещения позиций прайс-листа на 1е место;
+* доступ к базе потребителей продуктов питания всей России;
+* о вашей компании узнает целевая аудитория продуктового рынка России и ближнего зарубежья
+
+{{ serviceHelper.prepareTextTable(packages, periods) }}
+
+Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: {{ http_prefix }}://corp.product.ru/services/ или по телефону +7 (495) 268-02-85
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+
+    <p style="font-size: 12;">
+        Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!<br/>
+        Благодарим Вас за регистрацию на портале {{ user.country.domainTitle }}!
+        <br/>
+        <br/>
+        Для завершения регистрации, пожалуйста, перейдите по <a href="{{ url('MetalUsersBundle:Registration:confirmation', {'code' : user.registrationCode, 'id' : user.id }) }}">ссылке</a>.
+        <br/><br/>
+        {% if user.newPassword %}
+            Запомните Ваш пароль: {{ user.newPassword }}
+            <br/><br/>
+        {% endif %}
+        {% if user.company and user.company.companyLog.createdBy.id != user.id %}
+            При регистрации Вы выбрали зарегистрированную компанию <b>{{ user.company.title}}{% if user.company.city %} ({{ user.company.city.title }}){% endif %}</b>. Главный пользователь этой компании <b>{{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }})</b> должен подтвердить, что Вы являетесь сотрудником, чтобы Вы могли работать на сайте от лица компании.<br/><br/>
+        {% endif %}
+
+        Интернет-портал <a href="{{ http_prefix }}://www.{{ country.baseHost }}">{{ country.domainTitle }}</a> — Старейший и узнаваемый ресурс, 17 лет существующий на рынке продуктов питания.
+        На <a href="{{ http_prefix }}://www.{{ country.baseHost }}">{{ country.domainTitle }}</a> зарегистрировано более 80 000 компаний — производителей, трейдеров, потребителей и других представителей отрасли.
+        <br/><br/>
+        Подключив Полный или Расширенный доступ к услугам портала, Вы получаете:
+        <br/><br/>
+        &#9679; персональный мини-сайт;<br/>
+        &#9679; размещение неограниченного количества позиций прайс-листа c изображением продукции;<br/>
+        &#9679; возможность перемещения позиций прайс-листа на 1е место;<br/>
+        &#9679; доступ к базе потребителей продуктов питания всей России;<br/>
+        &#9679; о вашей компании узнает целевая аудитория продуктового рынка России и ближнего зарубежья<br/>
+    </p>
+
+    {{ include('MetalUsersBundle:emails/partial:conditions_subscribe.html.twig', {
+        'packages': packages,
+        'periods': periods,
+        'serviceItemsTree': serviceItemsTree,
+        'country': country
+    }, false) }}
+{% endblock %}

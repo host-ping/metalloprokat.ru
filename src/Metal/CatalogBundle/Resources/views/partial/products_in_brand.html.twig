@@ -1,0 +1,31 @@
+{% for product in pagerfanta %}
+    {% set productViewUrl = path('MetalCatalogBundle:Product:view', {'id' : product.id, 'category_slug': product.category.slugCombined, 'subdomain': subdomain}) %}
+    <li class="item outline clearfix">
+        <div class="img is-bordered float-right">
+            <div class="img-holder">
+                <a class="img-link {% if not product.photo.name %}pattern-small{% endif %}"
+                   href="{{ productViewUrl }}">
+                    {% if product.photo.name %}
+                        <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq28_non_optim') }}"
+                             alt="{{ product.title }}" />
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="left">
+            <p class="title is-gradiented">
+                <a class="product-link" href="{{ productViewUrl }}" title="{{ product.title }}">{{ product.title }}</a>
+            </p>
+
+            <div class="info">
+                <p class="text">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                {# TODO: что тут должно быть? категория? #}
+                {#<p class="text">Молочные изделия, Напитки</p>#}
+            </div>
+        </div>
+    </li>
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}
+
+

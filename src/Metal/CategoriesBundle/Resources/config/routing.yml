@@ -1,0 +1,19 @@
+MetalCategoriesBundle:Suggest:getCategories:
+    path: /suggest/categories
+    defaults:  { _controller: MetalCategoriesBundle:Suggest:getCategories }
+
+MetalCategoriesBundle:LandingPages:search:
+    path:      /search/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalCategoriesBundle:LandingPages:search }
+
+MetalCategoriesBundle:LandingPage:landing:
+    path: /search/{slug}
+    host: "{subdomain}.{base_host}"
+    defaults:  { _controller: MetalCategoriesBundle:LandingPage:landing, subdomain: www, base_host: %base_host% }
+    requirements:
+        base_host: .+
+
+MetalCategoriesBundle:Suggest:getCategoriesByLevels:
+    path: /suggest/categories.json
+    defaults:  { _controller: MetalCategoriesBundle:Suggest:getCategoriesByLevels }

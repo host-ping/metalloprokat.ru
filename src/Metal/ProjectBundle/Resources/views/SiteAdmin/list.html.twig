@@ -1,0 +1,13 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block actions %}
+    {{ parent() }}
+
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('import', {'redirect_to': app.request.requestUri}) }}">
+            <i class="fa fa-upload"></i>
+            Импортировать
+        </a>
+    </li>
+{% endblock %}

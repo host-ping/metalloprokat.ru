@@ -1,0 +1,184 @@
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set demandItemsPerDemand = 2 %}
+{% if route is not defined %}
+    {% set route = 'MetalProductsBundle:Product:view_subdomain' %}
+{% endif %}
+<li class="demand_item">
+    <div class="demand_holder clearfix">
+        <div class="demand-data float-left">
+            <div class="demand-title">
+                {% if demand.moderatedAt and demand.isPublic %}
+                    {% set demandUrl = brouzie_helper('MetalDemandsBundle').generateDemandUrl(demand) %}
+                    <a data-href="{{ demandUrl }}"><strong class="demand-count red-color">№{{ demand.id }}</strong> {{ demand.city.title }}</a>
+                {% else %}
+                    <strong class="demand-count red-color">№{{ demand.id }}</strong> {{ demand.city.title }}
+                {% endif %}
+                <div class="demand-region gray60-color">{{ demand.city.region.title }}</div>
+
+                {% set company = null %}
+                {% set minisiteRouteParams = {} %}
+                {% if demand.company is defined %}
+                    {% set company = demand.company %}
+                    {% set minisiteRouteParams = minisiteRouteParams|merge({'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable() }) %}
+                    {% if demand.city %}
+                        {% set minisiteRouteParams = minisiteRouteParams|merge({'city' : demand.city.id }) %}
+                    {% endif %}
+                {% endif %}
+
+                {% if company %}
+                    {% if company and company.minisiteEnabled %}
+                        {% set companyViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', minisiteRouteParams) %}
+                        для
+                        <a href="{{ companyViewUrl }}" itemprop="url" class="{% if not company.packageChecker.isAllowedShowCompanyName() %}g-hidden{% endif %}" title="{{ company.title }}">
+                            <span itemscope itemprop="name">{{ company.title }}</span>
+                        </a>
+                    {% else %}
+                        <p class="{% if not company.packageChecker.isAllowedShowCompanyName() %}g-hidden{% endif %}" title="{{ company.title }}">
+                            <span itemscope itemprop="name">для {{ company.title }}</span>
+                        </p>
+                    {% endif %}
+                {% endif %}
+
+                <span class="demand-date">от {{ projectHelper.formatDate(demand.displayTime) }}</span>
+                {% if demand.isPublic %}
+                    {% if demand.isDeleted() %}
+                        {#TODO: заинлайнил стиль, чтобы крести не уезжал вправо#}
+                        <span class="process icon-filter-del clickable js-helper-opener" style="position: static" data-text="Удалена" data-absolute-parent=".list"></span>
+                    {% elseif demand.moderatedAt %}
+                        <span class="process icon-check-big clickable js-helper-opener" data-text="Промодерирована" data-absolute-parent=".list"></span>
+                    {% else %}
+                        <span class="process icon-clock clickable js-helper-opener" data-text="Не промодерирована" data-absolute-parent=".list"></span>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <table class="demand_product-list demand-table">
+                {% set demandItems = demand.getAttribute('demandItems') %}
+                {% for demandItem in demandItems %}
+                    <tr class="row {% if loop.index > demandItemsPerDemand %}g-hidden{% endif %}" {% if loop.index > demandItemsPerDemand %} data-expandable-section="demand-items-{{ demand.id }}"{% endif %}>
+                        <td class="item col">
+                            <p class="product-item">{{ loop.index }}</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title" title="{{ demandItem.title }}">{{ demandItem.title }}{% if demandItem.size %} {{ tokens.product_volume_title }} {{ demandItem.size }}{% endif %}</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">
+                                {% if demandItem.volume %}
+                                    {{ demandItem.volume|number_format_decimal }}
+                                    {% if demandItem.volumeTypeId %}
+                                        {{ demandItem.volumeType.title }}
+                                    {% endif %}
+                                {% else %}
+                                    объем договорной
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {{ include('@MetalDemands/partials/demand_files.html.twig', {
+                'demand': demand,
+                'checkAccess' : false,
+                'route': 'MetalDemandsBundle:DemandFile:downloadFileFromArchive',
+            }, false) }}
+
+            {% if demandItems|length > demandItemsPerDemand %}
+                <span class="demand_link link clickable js-expandable" data-expandable="demand-items-{{ demand.id }}">Всего {{ demandItems|length }}
+                    {{ 'demands_by_count'|transchoice(demandItems|length, {}, 'MetalDemandsBundle') }}</span>
+            {% endif %}
+        </div>
+        <div class="demand-info float-right">
+
+            <p class="user text">{{ demand.demandPeriodicity.title|capitalize }} потребность <br/></p>
+
+            {% if demand.product is defined and demand.product and demand.productCity %}
+
+                <p class="attached-product icon-clip text">прикреплена к товару<br />
+                    <a href="{{ path(route, {'id': demand.product.id, 'subdomain' : demand.productCity.getSlugWithFallback()}) }}">{{ demand.product.title }}</a><br />
+                    найден в {% if demand.productCity %}{{ demand.productCity.getTitleLocative() }}{% else %}{{ demand.productCountry.getTitleLocative() }}{% endif %}</p>
+            {% endif %}
+            {% if demand.product is defined and demand.viewedAt %}<p class="viewed icon-views text">Просмотрена</p>{% endif %}
+        </div>
+    </div>
+    <ul class="links clearfix">
+        {% if demand.answersCount %}
+            <li class="links_read-answers item default-width float-left clearfix">
+                <span class="button clickable is-bordered js-popup-opener ie-radius"
+                      data-popup="#demand-answers-{{ demand.id }}">
+                    <span class="text">Читать ответы</span>
+                    <strong class="count gray80-color">{{ demand.answersCount }}</strong>
+                    <span class="read-answers icon-back float-right"></span>
+                </span>
+            </li>
+        {% endif %}
+        <li class="item width-141 float-left clearfix">
+            <span
+                class="button favorites is-bordered ie-radius js-toggle-archive {% if demand.isDeleted() %}g-hidden{% endif %}"
+                data-url="{{ path("MetalPrivateOfficeBundle:Archive:toggleDemand", {'id' : demand.id, 'subject' : 'delete'}) }}">
+                <span class="text">Удалить</span>
+                <span class="icon-favorite-del float-right"></span>
+            </span>
+
+            <div class="js-toggle-archive {% if not demand.isDeleted() %}g-hidden{% endif %}"
+                 data-url="{{ path("MetalPrivateOfficeBundle:Archive:toggleDemand", {'id' : demand.id, 'subject' : 'restore'}) }}">
+                     <span class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                         <span class="text">Восстановить</span>
+                     </span>
+
+                <span class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                    <span class="text">Восстановить</span>
+                </span>
+            </div>
+        </li>
+        <li class="links_answer item default-width float-left clearfix">
+
+            <div class="button answer clickable is-bordered green-bg ie-radius js-toggle-archive {% if projectHelper.isCurrentDay(demand.updatedAt) %}g-hidden{% endif %}"
+                 data-url="{{ path("MetalPrivateOfficeBundle:Archive:toggleDemand", {'id' : demand.id, 'subject' : 'update'}) }}">
+
+                <span class="text">Обновить</span>
+                <span class="icon-back float-right"></span>
+            </div>
+
+            {% if projectHelper.isCurrentDay(demand.updatedAt) %}
+                <span class="demand-date">Обновлено {{ projectHelper.formatDate(demand.updatedAt) }}</span>
+            {% endif %}
+        </li>
+    </ul>
+    <div id="demand-answers-{{ demand.id }}" class="demand-answers-block popup-block opacity-border large fixed">
+        <div class="popup-content">
+            <div class="title-popup">Ответы на потребность <strong class="demand-count red-color">№{{ demand.id }}</strong></div>
+            <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+            <div class="answers js-scrollable">
+                {% set demandAnswers = demand.getAttribute('demandAnswers') %}
+                {% for demandAnswer in demandAnswers %}
+                    <div class="item clearfix">
+                        <div class="left float-left">
+                            <div class="user-name">
+                                <span>{{ demandAnswer.user.firstName }}</span>
+                                <!--email_off-->
+                                (<a href="mailto:{{ demandAnswer.user.email }}" class="link">{{ demandAnswer.user.email }}</a>)
+                                <!--/email_off-->
+                            </div>
+                            <div class="answer-add-date">
+                                <span class="date">{{ projectHelper.formatDate(demandAnswer.createdAt) }}</span>
+                            </div>
+                            <div class="answer-text">
+                                <p>{{ demandAnswer.description|nl2br }}</p>
+                            </div>
+                        </div>
+                        <div class="user-photo float-right">
+                                <span class="pattern-small">
+                                    {#{% set imageUrl = imageHelper.getPhotoUrlForProductPhoto(demandAnswer.user) %}#}
+                                    {#{% if imageUrl %}#}
+                                    {#<img src="{{ imageUrl }}" alt="image description"/>#}
+                                    {#{% endif %}#}
+                                </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</li>

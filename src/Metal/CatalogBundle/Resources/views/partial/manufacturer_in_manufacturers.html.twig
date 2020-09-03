@@ -1,0 +1,85 @@
+{% set brandsPerManufacturerCount = 4 %}
+{% for manufacturer in pagerfanta %}
+    {% set brands = manufacturer.attribute('manufacturer_brands') %}
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link {% if not manufacturer.logo.name %}pattern-small{% endif %}"
+                           data-href="{{ path('MetalCatalogBundle:Manufacturer:view', {'slug' : manufacturer.slug}) }}">
+                            {% if manufacturer.logo.name %}
+                                <img src="{{ vich_uploader_asset(manufacturer, 'uploadedLogo')|imagine_filter('catalog_logo_sq64') }}"
+                                     alt="{{ manufacturer.title }}"
+                                     title="{{ manufacturer.title }}" />
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+
+                            <div class="title">
+                                <a href="{{ path('MetalCatalogBundle:Manufacturer:view', {'slug' : manufacturer.slug}) }}"
+                                   class="is-gradiented-bottom" title="{{ manufacturer.title }}">{{ manufacturer.title }}</a>
+                            </div>
+                        </div>
+                        <p class="localization gray60-color is-gradiented-bottom" title="{{ manufacturer.cutDescription }}">{{ manufacturer.cutDescription }}</p>
+                        <!--noindex-->
+                            <a data-href="{{ path('MetalProjectBundle:Redirect:redirect', {'url' : manufacturer.site}) }}"
+                               target="_blank" rel="noopener noreferrer">{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(manufacturer.site) }}</a>
+                        <!--/ noindex -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="send-order {% if not brands %}no-result{% endif %} float-left">
+            <div class="holder clearfix">
+                <div class="tooltip-holder clearfix">
+                    {% if brands %}
+                        {% for brand in brands|slice(0, brandsPerManufacturerCount) %}
+                            <div id="inform-tooltip-{{ brand.id }}"
+                                 class="product-informer tooltip grey with-bullet g-hidden">
+                                <p class="t is-gradiented">{{ brand.title }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="img-wrapper">
+                            {% for brand in brands|slice(0, brandsPerManufacturerCount) %}
+                                <div class="img is-bordered float-left">
+                                    <div class="img-holder">
+                                        <a class="img-link {% if not brand.logo.name %}pattern-small{% endif %} js-tooltip-opener"
+                                           data-tooltip="#inform-tooltip-{{ brand.id }}"
+                                           data-href="{{ path('MetalCatalogBundle:Brand:view', {'slug' : brand.slug}) }}">
+                                            {% if brand.logo.name %}
+                                                <img src="{{ vich_uploader_asset(brand, 'uploadedLogo')|imagine_filter('catalog_logo_sq40') }}"
+                                                     alt="{{ brand.title }}"
+                                                     title="{{ brand.title }}" />
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% if brands|length > brandsPerManufacturerCount %}
+                                <div class="img is-bordered float-left">
+                                    <div class="img-holder">
+                                        <a class="img-link clickable" href="{{ path('MetalCatalogBundle:Manufacturer:view', {'slug' : manufacturer.slug}) }}">
+                                            <span class="icon-points"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+
+    {% include '@MetalProducts/Products/partial/banner_inclusion.html.twig' with {
+    'index' : loop.index,
+    'category' : null,
+    'source_type_slug' : 'catalog-manufacturers'
+    } only %}
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}

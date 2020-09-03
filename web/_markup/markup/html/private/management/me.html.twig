@@ -1,0 +1,80 @@
+{% extends '@markup/private/management/_managemet_layout.html.twig' %}
+{% block title 'Я' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'me' %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="management-content-wrapper clearfix">
+            <form class="users-data form float-left" action="#">
+                <fieldset class="left-group float-left">
+                    <div class="group clearfix">
+                        <div class="field-wrap float-left">
+                            <input type="text" class="form-text ie-radius" placeholder="Ваше имя"/>
+                        </div>
+                        <div class="field-wrap float-left">
+                            <input type="text" class="form-text ie-radius" placeholder="Ваша фамилия"/>
+                        </div>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="text" class="form-text ie-radius" placeholder="Должность"/>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="email" class="mail form-email ie-radius with-change-link" disabled="disabled" value="Электронная почта"/>
+                        <a class="change" href="#">Изменить</a>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="password" class="password form-text ie-radius with-change-link" disabled="disabled" placeholder="Пароль"/>
+                        <a class="change" href="#">Изменить</a>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="field-wrap float-left">
+                            <input type="text" class="phone form-text ie-radius" placeholder="Телефон"/>
+                        </div>
+                        <div class="field-wrap float-left">
+                            <input type="text" class="form-text ie-radius" placeholder="Добавочный"/>
+                        </div>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="field-wrap float-left">
+                            <input type="text" class="icq form-text ie-radius" placeholder="ICQ"/>
+                        </div>
+                        <div class="field-wrap float-left">
+                            <input type="text" class="skype form-text ie-radius" placeholder="Skype"/>
+                        </div>
+                    </div>
+                    <div class="check-item clearfix">
+                        <div class="employee-rating float-right">
+                            <input type="text" class="form-text" placeholder="Приоритет"/>
+                            <span class="icon-help js-helper-opener"
+                                  data-text="Отображает приоритет вывода сотрудников в контактах минисайта от большего к меньшему"
+                                    ></span>
+                        </div>
+                        <input id="check-1" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey"/>
+                        <label for="check-1">Отображать на минисайте</label>
+                    </div>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                    </div>
+                    <p class="last-update">Последнее обновление 20 марта 2013</p>
+                </fieldset>
+            </form>
+            <form class="load-company-logo form float-right" action="#">
+                <fieldset class="right-group">
+                    <div class="photo-wrapper">
+                        <label class="file-upload">
+                            <a class="pattern-big" href="#"></a>
+                            <span class="load-btn button blue-bg ie-radius">Загрузить логотип</span>
+                            <input type="file"/>
+                        </label>
+
+                    </div>
+                </fieldset>
+            </form>
+
+
+
+        </div>
+    </div>
+{% endblock content %}

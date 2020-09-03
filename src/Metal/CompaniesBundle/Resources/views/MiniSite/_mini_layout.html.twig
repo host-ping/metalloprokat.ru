@@ -1,0 +1,492 @@
+{% extends '@MetalProject/layouts/_base_layout.html.twig' %}
+
+{% set currentCompany = app.request.attributes.get('company') %}
+{# @var \Metal\CompaniesBundle\Entity\Company currentCompany #}
+{% set country = currentCompany.country %}
+{% set isCompanyModerator = is_granted('COMPANY_MODERATOR', currentCompany) %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% set coverHelper = brouzie_helper('MetalPrivateOfficeBundle:Cover') %}
+{% set companyCover = coverHelper.companyCover(currentCompany) %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set companyLogoUrl = imageHelper.getCompanyLogoUrl(currentCompany, 'sq168', 'minisite') %}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+{% set branchOfficesCount = currentCompany.getBranchOffices()|length %}
+{% set companyHelper = brouzie_helper('MetalCompaniesBundle:Default') %}
+{% set miniSiteHelper = brouzie_helper('MetalMiniSiteBundle:Default') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{# @var \Metal\ProjectBundle\Helper\DefaultHelper projectHelper #}
+{% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+
+{% if currentCategory is not defined %}
+    {% set currentCategory = null %}
+    {% if category is defined %}
+        {% set currentCategory = category %}
+    {% endif %}
+{% endif %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        processAnnouncements.loadAnnouncementsUrl = {{ path('MetalAnnouncementsBundle:Announcement:getAnnouncements')|json_encode|raw }};
+    </script>
+
+    <!--[if lte IE 8]>
+        <link href="{{ asset('bundles/metalproject/js/respond-proxy.html') }}" id="respond-proxy" rel="respond-proxy"/>
+        <link href="{{ app.request.getUriForPath('/bundles/metalproject/js/respond.proxy.gif') }}" id="respond-redirect" rel="respond-redirect" />
+        {% javascripts
+        '@MetalProjectBundle/Resources/public/js/respond.js'
+        '@MetalProjectBundle/Resources/public/js/respond.proxy.js'
+        combine = true
+        %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+        {% endjavascripts %}
+    <![endif]-->
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets
+        '@MetalProjectBundle/Resources/public/css/mini-site.css'
+        '@MetalProjectBundle/Resources/public/css/private.css'
+        filter='phpcssembed,?uglifycss'
+        combine=true %}
+            <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+    {% stylesheets
+    '@MetalProjectBundle/Resources/public/css/style-mini-site.css'
+    filter='phpcssembed,?uglifycss'
+    combine=true %}
+    <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+    {% if currentCompany.packageChecker.isAllowedSetColor() %}
+        <link rel="stylesheet" href="{{ path('MetalMiniSiteBundle:Theme:renderCss', {'company_id': currentCompany.id, 'date': currentCompany.counter.minisiteColorsUpdatedAt|date('U')}) }}" type="text/css" />
+    {% else %}
+        <link rel="stylesheet" href="{{ path('MetalMiniSiteBundle:Theme:renderDefaultCss') }}" type="text/css" />
+    {% endif %}
+
+    {% if projectHelper.isNewYearEve() %}
+        {# FIXME: удалить это помле исправления верстки #}
+        <style>
+            #header {
+                background-image: url({{ asset('bundles/metalproject/img/metalloprokat/back_bg6.jpg') }}) !important;
+                background-size: cover !important;
+                padding: 0 !important;
+                height: 38px;
+            }
+        </style>
+    {% endif %}
+
+
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="mini-site container js-announcement js-layout-announcement"
+         data-new-window="true"
+         data-announcement-options={% block background_announcement %}
+            {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                'source_type_slug' : 'mini-site',
+                'zone_slug' : 'background',
+                'category_id' : currentCategory ? currentCategory.id : null,
+                'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+        }) }}{% endblock %}>
+        <div class="inside-container">
+            <div id="header" class="clearfix">
+                <div class="wrap">
+                    {% block header %}
+                        <div class="left float-left">
+                            <div class="logo-holder">
+                                <div class="logo float-left">
+                                    <a href="{{ urlHelper.generateUrl('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': country.baseHost, '_secure' : country.secure}) }}">
+                                        <img src="{{ asset(projectHelper.getLogo()) }}" width="36" height="27"
+                                             alt="{{ country.domainTitle }}" title="{{ country.domainTitle }}"/>
+                                    </a>
+                                </div>
+                                <div class="logo-text float-left">
+                                    <p>
+                                        <a class="header-logo-text" href="{{ urlHelper.generateUrl('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': country.baseHost, '_secure' : country.secure}) }}">{{ country.domainTitle }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="location float-right">
+                                <a href="#" class="js-popover-opener current-location" data-popover="#cities" data-index="1001" data-different-position="true">{{ currentCompany.city.title }}</a>
+                            </div>
+                        </div>
+                        {% block login %}
+                            {{ brouzie_render_widget('MetalUsersBundle:UserDropdownMenu', {'place' : '1'}) }}
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block head_banner %}
+                {% if currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite %}
+                    {% set categoryId = categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null %}
+                    <div class="head-announcements-wrapper">
+                        <div class="head-announcements clearfix">
+                            <div class="left-announcement-wrapper">
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                    'source_type_slug' : 'mini-site',
+                                    'zone_slug' : 'head-side-1',
+                                    'category_id' : categoryId,
+                                    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                            </div>
+                            <div class="right-announcement-wrapper">
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                    'source_type_slug' : 'mini-site',
+                                    'zone_slug' : 'head-side-2',
+                                    'category_id' : categoryId,
+                                    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                            </div>
+                            <div class="wrap ">
+                                <div class="center-announcement table-container">
+                                    <div class="head-banner table-cell">
+                                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                            'source_type_slug' : 'mini-site',
+                                            'zone_slug' : 'head-center',
+                                            'category_id' : categoryId,
+                                            'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                        }) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock head_banner %}
+
+            {% block company_header %}
+                {% set miniSiteUrl = path('MetalMiniSiteBundle:MiniSite:view', {'domain': currentCompany.domain}) %}
+
+
+                {% if companyCover %}
+                    <div class="header-bottom head-bg" style="background-image: url({{ vich_uploader_asset(companyCover, 'uploadedFile')|imagine_filter('minisite_cover_big') }})">
+                {% else %}
+                    <div class="header-bottom">
+                {% endif %}
+                        <div class="wrap">
+                            {% if companyCover %}
+                                <div class="header-inner" style="background-image: url({{ vich_uploader_asset(companyCover, 'uploadedFile')|imagine_filter('minisite_cover_big') }})">
+                            {% else %}
+                                <div class="header-inner">
+                            {% endif %}
+
+                                {% if isCompanyModerator or companyLogoUrl %}
+                                    <div class="header-photos">
+                                        <div class="logo-box logo-full">
+                                        {% if seoHelper.isCurrentPageIsHomePage() %}
+                                            {% if companyLogoUrl %}
+                                                <span class="logo-link" >
+                                                    <img src="{{ companyLogoUrl }}" alt="{{currentCompany.title}}" title="{{currentCompany.title}}" width="168" height="168"/>
+                                                </span>
+                                            {% else %}
+                                                <span class="logo-link"></span>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if companyLogoUrl %}
+                                                <a class="logo-link" href="{{ miniSiteUrl }}">
+                                                    <img src="{{ companyLogoUrl }}" alt="{{currentCompany.title}}" title="{{currentCompany.title}}" width="168" height="168"/>
+                                                </a>
+                                            {% else %}
+                                                <a class="logo-link" href="{{ miniSiteUrl }}"></a>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if isCompanyModerator %}
+                                            <label for="head-logo" class="logo-upload">
+                                                <a href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:MiniSite:header', {'_secure' : country.secure}) }}" class="add-photo-link ico-upload"></a>
+                                            </label>
+                                            {% if companyLogoUrl %}
+                                                <label class="">
+                                                    <a class="del-btn ico-delete-btn" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:MiniSite:header', {'_secure' : country.secure}) }}"></a>
+                                                </label>
+                                            {% endif %}
+                                        {% endif %}
+                                        </div>
+                                        {% if isCompanyModerator %}
+                                            <label class="btn-change header-upload">
+                                                <a href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:MiniSite:header', {'_secure' : country.secure}) }}" class="admin-button button gray60-bg float-right ie-radius">Загрузить шапку</a>
+                                            </label>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                <div class="company-info">
+                                    <strong class="title">{{ currentCompany.title }}</strong>
+                                    {% if currentCompany.slogan %}
+                                        <span class="subtitle">
+                                            {% if currentCompany.id == 2056162 %}
+                                                E-MAIL:   <a href="mailto:1101@bmp-simira.ru">1101@bmp-simira.ru</a>
+                                            {% else %}
+                                                {{ currentCompany.slogan }}
+                                            {% endif %}
+                                        </span>
+                                    {% endif %}
+                                    {# TODO: а что, бывают случаи, когда нет currentBranchOffice? #}
+                                    {% set currentBranchOffice = miniSiteHelper.getCurrentBranchOffice(currentCompany) %}
+                                    {% set phonesForCurrentCity = miniSiteHelper.getPhonesForCurrentCity(currentCompany) %}
+                                    {% if currentBranchOffice and phonesForCurrentCity %}
+                                        <p class="phone-text">
+                                            <span class="phone curr-phone js-phone float-left"
+                                                  data-object-id="{{ currentCompany.id }}"
+                                                  data-object-kind="company"
+                                                  data-source="mini-site"
+                                                  data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                                  data-category-id="{{ currentCategory ? currentCategory.id : null }}"
+                                                  data-phone-of-company="{{ currentCompany.id }}"
+                                                  data-minisite-phone="true"
+                                            >{{ phonesForCurrentCity }}</span>
+                                        </p>
+                                    {% endif %}
+                                    <span class="address">
+                                        {% if branchOfficesCount >= 5 %}
+                                            {% if currentRoute == 'MetalMiniSiteBundle:MiniSite:contact_subdomain' %}
+                                                {{ branchOfficesCount }} {{ 'branch_office'|transchoice(branchOfficesCount,[],'MetalCompaniesBundle') }}
+                                            {% else %}
+                                                <a href="{{ path('MetalMiniSiteBundle:MiniSite:contact', {'domain' : currentCompany.domain}) }}" class="orange"><span>{{ branchOfficesCount }} {{ 'branch_office'|transchoice(branchOfficesCount,[],'MetalCompaniesBundle') }}</span></a>
+                                            {% endif %}
+                                        {% else %}
+                                            {{ currentBranchOffice.city.title -}}
+                                            {% if not currentBranchOffice.city.isAdministrativeCenter %}
+                                                {{ currentBranchOffice.city.region.title -}}
+                                            {% endif %}
+                                            {%- if currentBranchOffice.address -%},
+                                                {% if currentRoute == 'MetalMiniSiteBundle:MiniSite:contact_subdomain' %}
+                                                    {{ currentBranchOffice.address }}
+                                                {% else %}
+                                                    <a href="{{ path('MetalMiniSiteBundle:MiniSite:contact', {'domain' : currentCompany.domain}) }}" class="orange">{{ currentBranchOffice.address }}</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                    {% if isCompanyModerator %}
+                                        <a href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Company:edit', {'_secure' : country.secure}) }}" class="btn-change">изменить</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            {% endblock company_header %}
+
+            <div id="main" class="clearfix">
+                {% block side_announcements %}
+                    <div class="left-announcement-wrapper">
+                        <div class="js-fixed-side-banner">
+                            {% block side_announcement_left %}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                'source_type_slug' : 'mini-site',
+                                'zone_slug' : 'left-sidebar',
+                                'category_id' : currentCategory ? currentCategory.id : null,
+                                'additional_class' : 'left-announcement',
+                                'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                    <div class="right-announcement-wrapper employees-block-wrapper">
+                        <div class="js-fixed-side-banner">
+                            {% block side_announcements_right %}
+
+                                {% block company_employees %}
+                                    {% if currentCompany.packageChecker.isAdditionalContactsBlockShouldBeVisible() %}
+                                        {{ brouzie_render_widget('MetalCompaniesBundle:CompanyEmployees', {'company': currentCompany}) }}
+                                    {% endif %}
+                                {% endblock company_employees %}
+
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                'source_type_slug' : 'mini-site',
+                                'zone_slug' : 'right-sidebar-1',
+                                'category_id' : currentCategory ? currentCategory.id : null,
+                                'additional_class' : 'right-announcement top-announcement',
+                                'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                'source_type_slug' : 'mini-site',
+                                'zone_slug' : 'right-sidebar-2',
+                                'category_id' : currentCategory ? currentCategory.id : null,
+                                'additional_class' : 'right-announcement',
+                                'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                                'source_type_slug' : 'mini-site',
+                                'zone_slug' : 'right-sidebar-3',
+                                'category_id' : currentCategory ? currentCategory.id : null,
+                                'additional_class' : 'right-announcement',
+                                'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                                }) }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                {% endblock side_announcements %}
+                <div class="clearfix">
+                    {% if currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite %}
+                        {% block banner %}
+                            {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                            'source_type_slug' : 'mini-site',
+                            'zone_slug' : 'premium',
+                            'category_id' : currentCategory ? currentCategory.id : null,
+                            'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id,
+                            'additional_class' : 'premium-announcement'
+                            }) }}
+                        {% endblock %}
+                    {% endif %}
+
+                     <div class="wrapper clearfix">
+                        <div class="table-container">
+                            {% block sidebar %}
+                                <div id="sidebar" class="side-left {% if not currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() %} without-products-block {% endif %}table-cell">
+                                    {% set companyCategoriesWidget = brouzie_widget('MetalCompaniesBundle:CompanyCategories', {'company' : currentCompany, 'category' : currentCategory}) %}
+                                    <div class="wrap-open">
+                                        <div class="{% if not currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() %}js-fixed-minisite-menu {% endif %}">
+                                            <a href="#" class="button-open">
+                                                <span class="t">&nbsp;</span>
+                                                <span class="c">&nbsp;</span>
+                                                <span class="b">&nbsp;</span>
+                                            </a>
+                                            <div class="box-open">
+                                                <div class="products-wrapper
+                                                {% if not companyCategoriesWidget.hasCategoriesToRender() %}
+                                                    empty-category-menu
+                                                    {% if not is_granted('COMPANY_MODERATOR', currentCompany) %}
+                                                        g-hidden
+                                                    {% endif %}
+                                                {% endif %}">
+                                                    <div class="clearfix">
+                                                        {% if is_granted('COMPANY_MODERATOR', currentCompany) %}
+                                                            {% set productsManagementRoute = 'MetalPrivateOfficeBundle:Products:list' %}
+                                                            {% if currentCompany.minisiteConfig.hasCustomCategory %}
+                                                                {% set productsManagementRoute = 'MetalPrivateOfficeBundle:PrivateCustomCategories:products' %}
+                                                            {% endif %}
+                                                            <a href="{{ urlHelper.generateUrl(productsManagementRoute, {'_secure' : country.secure}) }}" class="admin-button button gray60-bg float-right ie-radius">управлять</a>
+                                                        {% endif %}
+                                                        <div class="title float-left">Товары</div>
+                                                    </div>
+                                                    {% if companyCategoriesWidget.hasCategoriesToRender() %}
+                                                        {{ brouzie_render_widget(companyCategoriesWidget) }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() %}
+                                        {{ brouzie_render_widget('MetalProductsBundle:PremiumProducts',
+                                            {'city' : currentCompany.city, 'country' : currentCompany.city.country, 'show_category_mode' : 'other_companies', 'category' : currentCategory, 'context' : 'minisite'}) }}
+                                    {% endif %}
+                                </div>
+                            {% endblock %}
+
+                            {% block content %}
+                                <div id="content" class="content table-cell">
+                                    <div class="js-calc-height">
+                                        {% block minisite_menu %}
+                                            <div class="company-menu clearfix">
+                                                {% if isCompanyModerator %}
+                                                    <a href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:MiniSite:colors', {'_secure' : country.secure}) }}" class="admin-button button clickable gray60-bg float-right ie-radius">поменять цвета</a>
+                                                {% endif %}
+
+                                                <ul class="list">
+                                                    {% set isActive = currentRoute == 'MetalMiniSiteBundle:MiniSite:view_subdomain' %}
+                                                    <li class="item {% if isActive %}active{% endif %}">
+                                                        {% if isActive %}
+                                                            <span class="link">Главная</span>
+                                                        {% else %}
+                                                            <a class="link" href="{{ path('MetalMiniSiteBundle:MiniSite:view', {'domain' : currentCompany.domain}) }}">Главная</a>
+                                                        {% endif %}
+                                                    </li>
+
+                                                    {% set isActive = currentRoute == 'MetalMiniSiteBundle:MiniSite:about_subdomain' %}
+                                                    <li class="item {% if isActive %}active{% endif %}">
+                                                        {% if isActive %}
+                                                            <span class="link">О компании</span>
+                                                        {% else %}
+                                                            <a class="link" href="{{ path('MetalMiniSiteBundle:MiniSite:about', {'domain' : currentCompany.domain}) }}">О компании</a>
+                                                        {% endif %}
+                                                    </li>
+
+                                                    {% set isActive = currentRoute == 'MetalMiniSiteBundle:MiniSite:reviews_subdomain' %}
+                                                    <li class="item {% if isActive %}active{% endif %}">
+                                                        {% if isActive %}
+                                                            <span class="link">Отзывы</span>
+                                                        {% else %}
+                                                            <a href="{{ path('MetalMiniSiteBundle:MiniSite:reviews', {'domain' : currentCompany.domain}) }}" class="link">Отзывы</a>
+                                                        {% endif %}
+                                                    </li>
+
+                                                    {% if isCompanyModerator or companyHelper.isCompanyHasDocuments(currentCompany) %}
+                                                        {% set isActive = currentRoute == 'MetalMiniSiteBundle:MiniSite:documents_subdomain' %}
+                                                        <li class="item {% if isActive %}active{% endif %}">
+                                                            {% if isActive %}
+                                                                <span class="link">Документы</span>
+                                                            {% else %}
+                                                                <a href="{{ path('MetalMiniSiteBundle:MiniSite:documents', {'domain' : currentCompany.domain}) }}" class="link">Документы</a>
+                                                            {% endif %}
+                                                        </li>
+                                                    {% endif %}
+
+                                                    {% set isActive = currentRoute == 'MetalMiniSiteBundle:MiniSite:contact_subdomain' %}
+                                                    <li class="item {% if isActive %}active{% endif %}">
+                                                        {% if isActive %}
+                                                            <span class="link">Контакты</span>
+                                                        {% else %}
+                                                            <a href="{{ path('MetalMiniSiteBundle:MiniSite:contact', {'domain' : currentCompany.domain}) }}" class="link">Контакты</a>
+                                                        {% endif %}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        {% endblock minisite_menu %}
+
+                                        {% block filters '' %}
+
+                                        {% block tab_content '' %}
+
+                                        {% block tabs '' %}
+
+                                        {% block seo_links %}
+                                            {{ brouzie_render_widget('MetalCompaniesBundle:FrequentAttributes', {'company': currentCompany}) }}
+                                        {% endblock %}
+
+                                    </div>
+                                </div>
+
+                            {% endblock content %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer %}
+                {{ include('@MetalProject/partials/footer.html.twig', {'options': {'rspmEnabled': false }}) }}
+
+                {% set analyticsOptions = miniSiteHelper.getAnalyticsOptions(currentCompany) %}
+
+                {{ include('@MetalProject/partials/counters.html.twig', {
+                    'display_mailru_logo': false,
+                    'webvisor': false,
+                    'mailru_counter_id': null,
+                    'yandex_metrika_id': analyticsOptions['yandexMetrikaId'],
+                    'google_analytics_id': analyticsOptions['googleAnalyticsId'],
+                    'google_tag_manager_id': null,
+                }) }}
+            {% endblock %}
+        </div>
+    </div>
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:SendEmailForm') }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : true}) }}
+{% endblock %}
+{% endblock %}
+

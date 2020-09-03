@@ -1,0 +1,20 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+
+{% block title %}
+    Блог Строй.ру
+{% endblock %}
+
+{% block inside_left %}
+    {% if pagerfanta.count %}
+        {{ include('@MetalContent/partial/instagram_photos_in_list.html.twig', {
+            'pagerfanta' : pagerfanta,
+        }, false) }}
+    {% endif %}
+{% endblock inside_left %}
+
+{% block inside_right %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'entry_type' : 'ENTRY_TYPE_QUESTION'}) }}
+{% endblock inside_right %}
+
+
+

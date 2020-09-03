@@ -1,0 +1,16 @@
+{% macro renderTree(tree) %}
+    <ul>
+        {% for key, data in tree %}
+            <li>
+                {% if data.leaf is not empty %}
+                    <a href="?render={{ data.path }}">{{ data.title }}</a>
+                {% else %}
+                    {{ key }}
+                    {{ _self.renderTree(data) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{{ _self.renderTree(tree) }}

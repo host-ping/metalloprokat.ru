@@ -1,0 +1,36 @@
+MetalCompaniesBundle:Company:review:
+    path:     /company/review/{id}
+    methods:  [POST]
+    defaults: { _controller: MetalCompaniesBundle:Company:review }
+    requirements:
+        id: \d+
+
+MetalCompaniesBundle:MiniSite:review_answer:
+    path:     /review/answer/{id}
+    methods:  [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateReviews:reviewAnswer }
+    requirements:
+        id: \d+
+
+MetalCompaniesBundle:MiniSite:moderateReview:
+    path:     /moderate/review/{id}
+    methods:  [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateReviews:moderateReview }
+    requirements:
+        id: \d+
+
+MetalCompaniesBundle:Suggest:getCompanies:
+    path: /suggest/companies
+    defaults:  { _controller: MetalCompaniesBundle:Suggest:getCompanies }
+
+MetalCompaniesBundle:Company:redirectToMinisite:
+    path:     /company/company_{id}.html
+    defaults: { _controller: MetalCompaniesBundle:Company:redirectToMinisite }
+    requirements:
+        id: \d+
+
+MetalCompaniesBundle:Company:redirectToCompanyProducts:
+    path: /catalogue/company_{id}.html
+    defaults: { _controller: MetalCompaniesBundle:Company:redirectToCompanyProducts }
+    requirements:
+        id: \d+

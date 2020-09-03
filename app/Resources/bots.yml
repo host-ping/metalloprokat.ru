@@ -1,0 +1,314 @@
+imports:
+    - { resource: 'basic.yml' }
+
+bots:
+    Yandex:
+        agent: 'YandexBot/'
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Images':
+        agent: YandexImages/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Direct':
+        agent: YandexDirect/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Media':
+        agent: YandexMedia/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Catalog':
+        agent: YandexCatalog/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Direct Fetcher':
+        agent: YaDirectFetcher/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Blogs':
+        agent: YandexBlogs/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex News':
+        agent: YandexNews/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Metrika':
+        agent: YandexMetrika/
+        ip: null
+        type: bot
+        meta: { email: support@search.yandex.com, website: 'http://help.yandex.com/search/?id=1112030' }
+    'Yandex Antivirus':
+        agent: YandexAntivirus/
+        ip: null
+        type: bot
+    'YandexOntoDB':
+        agent: YandexOntoDB/
+        ip: null
+        type: bot
+    'YandexMobileBot':
+        agent: YandexMobileBot/
+        ip: null
+        type: bot
+    'Mail.RU Bot':
+        agent: Mail.RU_Bot/
+        ip: null
+        type: bot
+    'Ahrefs Bot':
+        agent: AhrefsBot/
+        ip: null
+        type: bot
+    'Linkpad Bot':
+        agent: LinkpadBot/
+        ip: null
+        type: bot
+    'Sputnik Bot':
+        agent: SputnikBot/
+        ip: null
+        type: bot
+    'SemrushBot':
+        agent: SemrushBot/
+        ip: null
+        type: bot
+    'MegaIndex':
+        agent: MegaIndex.ru/
+        ip: null
+        type: bot
+    'XoviBot':
+        agent: XoviBot/
+        ip: null
+        type: bot
+    'URLGrabber':
+        agent: URLGrabber
+        ip: null
+        type: bot
+    'Qwantify':
+        agent: Qwantify/
+        ip: null
+        type: bot
+    'VSAgent':
+        agent: VSAgent/
+        ip: null
+        type: bot
+    'BLEXBot':
+        agent: BLEXBot/
+        ip: null
+        type: bot
+    'Spider':
+        agent: Spider/
+        ip: null
+        type: bot
+    'WebIndex':
+        agent: WebIndex
+        ip: null
+        type: bot
+    'LSSRocketCrawler':
+        agent: LSSRocketCrawler/
+        ip: null
+        type: bot
+    'LWNutch':
+        agent: LWNutch/
+        ip: null
+        type: bot
+    'netEstate':
+        agent: netEstate
+        ip: null
+        type: bot
+    'Riddler':
+        agent: Riddler
+        ip: null
+        type: bot
+    'UnChaos':
+        agent: UnChaos
+        ip: null
+        type: bot
+    'niki-bot':
+        agent: niki-bot
+        ip: null
+        type: bot
+    'ContextAd':
+        agent: ContextAd
+        ip: null
+        type: bot
+    'fr-crawler':
+        agent: fr-crawler/
+        ip: null
+        type: bot
+    'ca-crawler':
+        agent: ca-crawler/
+        ip: null
+        type: bot
+    'nbot':
+        agent: nbot/
+        ip: null
+        type: bot
+    'Sleuth':
+        agent: Sleuth/
+        ip: null
+        type: bot
+    'spider':
+        agent: spider/
+        ip: null
+        type: bot
+    'archiveOrg_bot':
+        agent: archive.org_bot
+        ip: null
+        type: bot
+    'specialArchiver':
+        agent: special_archiver/
+        ip: null
+        type: bot
+    'DotBot':
+        agent: DotBot/
+        ip: null
+        type: bot
+    'heritrix':
+        agent: heritrix/
+        ip: null
+        type: bot
+    'SMTBot':
+        agent: SMTBot/
+        ip: null
+        type: bot
+    'SeznamBot':
+        agent: SeznamBot/
+        ip: null
+        type: bot
+    'YisouSpider':
+        agent: YisouSpider
+        ip: null
+        type: spider
+    'ltx71':
+        agent: ltx71
+        ip: null
+        type: bot
+        meta: { website: 'http://ltx71.com/' }
+    'SEOkicks-Robot':
+        agent: SEOkicks-Robot
+        ip: null
+        type: bot
+        meta: { website: 'http://www.seokicks.de/robot.html' }
+    'HyperCrawl':
+        agent: HyperCrawl/
+        ip: null
+        type: bot
+        meta: { website: 'http://www.seograph.net/bot.html' }
+    'ConveraCrawler':
+        agent: ConveraCrawler/
+        ip: null
+        type: bot
+        meta: { website: 'http://ews.converasearch.com/crawl.htm' }
+
+    'SeopultContentAnalyzer':
+        agent: SeopultContentAnalyzer/
+        ip: null
+        type: bot
+    'DeuSu':
+        agent: DeuSu/
+        ip: null
+        type: bot
+    'NTENTbot':
+        agent: NTENTbot
+        ip: null
+        type: bot
+    'DomainCrawler':
+        agent: DomainCrawler/
+        ip: null
+        type: bot
+    'CloudFlare-AlwaysOnline':
+        agent: CloudFlare-AlwaysOnline/
+        ip: null
+        type: bot
+    'Trident':
+        agent: Trident/
+        ip: null
+        type: bot
+    'openstat.ru':
+        agent: openstat.ru/
+        ip: null
+        type: bot
+    'linkdexbot':
+        agent: linkdexbot/
+        ip: null
+        type: bot
+    'QuickFinder':
+        agent: QuickFinder
+        ip: null
+        type: bot
+    'Python aiohttp':
+        agent: Python/(.*)aiohttp
+        ip: null
+        type: bot
+    'statdom':
+        agent: statdom.ru/
+        ip: null
+        type: bot
+    'Empty User-Agent':
+        agent: '^$'
+        ip: null
+        type: bot
+    'Golang_Spider_Bot':
+        agent: Golang_Spider_Bot/
+        ip: null
+        type: bot
+    'Go-http-client':
+        agent: Go-http-client/
+        ip: null
+        type: bot
+    'YandexDirectDyn':
+        agent: YandexDirectDyn/
+        ip: null
+        type: bot
+    'YandexAccessibilityBot':
+        agent: YandexAccessibilityBot/
+        ip: null
+        type: bot
+    'RukiCrawler':
+        agent: RukiCrawler/
+        ip: null
+        type: bot
+    'CCBot':
+        agent: CCBot/
+        ip: null
+        type: bot
+    'oBot':
+        agent: oBot/
+        ip: null
+        type: bot
+    'Findxbot':
+        agent: Findxbot/
+        ip: null
+        type: bot
+    'CarianBot':
+        agent: CarianBot/
+        ip: null
+        type: bot
+    'Toweya.com bot':
+        agent: Toweya
+        ip: null
+        type: bot
+    'Domain Crawler':
+        agent: Domain Crawler
+        ip: null
+        type: bot
+    'Linguee Bot':
+        agent: Linguee Bot
+        ip: null
+        type: bot
+    'BUbiNG':
+        agent: BUbiNG
+        ip: null
+        type: bot
+    'Barkrowler':
+        agent: Barkrowler
+        ip: null
+        type: bot

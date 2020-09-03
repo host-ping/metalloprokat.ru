@@ -1,0 +1,85 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% block tab_menu %}
+    {{ parent() }}
+
+    <ol class="nav navbar-top-links breadcrumb">
+        <li>
+            <a href="{{ path('admin_metal_demands_abstractdemand_edit', {'id': demand.id}) }}">Редактировать заявку</a>
+        </li>
+    </ol>
+{% endblock %}
+
+
+{% block show %}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                История просмотров заявки
+            </h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Дата просмотра</th>
+                    <th>Просмотрено с IP</th>
+                    <th>Экспорт</th>
+                    <th>Компания пользователя</th>
+                    <th>Пользователь</th>
+                    <th>Ip-аддреса пользователя</th>
+                </tr>
+                </thead>
+                <tbody class="sonata-ba-body">
+                {% for demandView in demandViews %}
+                    <tr>
+                        <td class="control-group">
+                            {{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(demandView.viewedAt) }}
+                        </td>
+
+                        <td class="control-group">
+                            {{ demandView.ip }}
+                        </td>
+
+                        <td class="control-group">
+                            {% if demandView.isExport %}
+                                <span class="label label-success">да</span>
+                            {% else %}
+                                <span class="label label-danger">нет</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="control-group">
+                            {% if demandView.user.company %}
+                                <span>{{ demandView.user.company.title }}</span>
+                                <b>(<a target="_blank"
+                                       href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': demandView.user.company.id }}}) }}">{{ demandView.user.company.id }}</a>)</b>
+                                {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : demandView.user.company}, false) }}
+                            {% endif %}
+                        </td>
+                        <td class="control-group">
+                            <span>{{ demandView.user.fullName }}</span>
+                            <b>(<a target="_blank"
+                                   href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': demandView.user.id}}}) }}">{{ demandView.user.id }}</a>)</b>
+                        </td>
+
+                        <td class="control-group">
+                            {% for usersIp in usersIps[demandView.user.id] %}
+                                {# @var usersIp \Metal\ProjectBundle\Entity\ClientIp #}
+                                <p>
+                                    <b>{{ usersIp.ip }}</b>
+                                    <span>({{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(usersIp.createdAt) }}
+                                        )</>
+                                </p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+

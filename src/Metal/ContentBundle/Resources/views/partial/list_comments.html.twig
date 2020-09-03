@@ -1,0 +1,83 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% for comment in comments %}
+    <li class="item outline">
+        <a name="comment-{{ comment.id }}"></a>
+        <div class="comments clearfix">
+            <div class="img-wrapper is-bordered float-left">
+                {% if comment.user %}
+                    {% if comment.user.photo.name %}
+                        <img class="clickable js-popup-opener" src="{{ vich_uploader_asset(comment.user, 'uploadedPhoto')|imagine_filter('users_sq60') }}"
+                             alt="{{ comment.user.fullName }}"
+                             title="{{ comment.user.fullName }}"
+                             data-popup="#user-info"
+                             data-ajax-content="{{ path('MetalContentBundle:UserContentCategory:loadInfo', {'id' : comment.user.id}) }}"
+                        />
+                    {% else %}
+                        <div class="pattern-small js-popup-opener clickable"
+                             data-popup="#user-info"
+                             data-ajax-content="{{ path('MetalContentBundle:UserContentCategory:loadInfo', {'id' : comment.user.id}) }}"
+                        >
+
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="pattern-small"></div>
+                {% endif %}
+            </div>
+            <div class="text-wrapper information">
+                <div class="creation-info gray60-color">
+                    <span class="date icon-clock">{{ formatHelper.formatDate(comment.createdAt) }}</span>,
+                    {% if comment.user %}
+                        <span class="user-name link js-popup-opener clickable"
+                              data-popup="#user-info"
+                              data-ajax-content="{{ path('MetalContentBundle:UserContentCategory:loadInfo', {'id' : comment.user.id}) }}"
+                        >
+                            {{ comment.user.firstName }}
+                        </span>
+                    {% else %}
+                        <span class="user-name link">{{ comment.name }}</span>
+                    {% endif %}
+
+                    {% if comment.parent %}
+                        <span class="answer-by">
+                            Ответ на комментарий
+                            <a href="#comment-{{ comment.parent.id }}" class="link">
+                                {% if comment.parent.user %}
+                                    {{ comment.parent.user.fullName }}
+                                {% else %}
+                                    {{ comment.parent.name }}
+                                {% endif %}
+                            </a>
+                        </span>
+                    {% endif %}
+                </div>
+                <p class="text">{{ textHelper.formatDescription(comment.description)|raw|bbcode_filter('default') }}</p>
+
+                <ul class="links">
+                    {% if comment.contentEntry is defined %}
+                        {% set commentAddUrl = 'MetalContentBundle:Comment:add' %}
+                        {% set objectId = comment.contentEntry.contentEntryId %}
+                    {% else %}
+                        {% set commentAddUrl = 'MetalContentBundle:Instagram:addComment' %}
+                        {% set objectId = comment.instagramPhoto.id %}
+                    {% endif %}
+                    <li class="links_answer width-141 clearfix">
+                        <span class="button answer is-bordered green-bg js-popup-opener ie-radius"
+                                {% if app.user %}
+                                    data-popup="#add-comment"
+                                    data-parent-id="{{ comment.id }}"
+                                    data-comment-url="{{ path(commentAddUrl, {'id' : objectId}) }}"
+                                {% else %}
+                                    data-popup="#stroy-login"
+                                {% endif %}
+                        >
+                            <span>Ответить</span>
+                            <span class="icon-back float-right"></span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </li>
+{% endfor %}

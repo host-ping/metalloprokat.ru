@@ -1,0 +1,23 @@
+{% set currentTerritory = _options['territory'] %}
+
+{% if demandsCount %}
+    <p class="site-info float-left">
+        <a href="{{ path('MetalDemandsBundle:Demands:list_subdomain', {'subdomain': currentTerritory.slug}) }}">
+            <strong>{{ demandsCount|number_format_decimal }}</strong> {{ 'similar_demands_by_count'|transchoice(demandsCount, [], 'MetalDemandsBundle') }}
+        </a>
+        от потребителей в {{ currentTerritory.titleLocative }}
+    </p>
+{% endif %}
+
+<div class="add float-right">
+    <span class="add-button icon-add-btn clickable demand"
+          popup-opener="#request-demand"
+          id="open-request-demand-button"
+          data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+            {% if currentTerritory.kind == 'city' %}
+                data-city-text="{{ currentTerritory.title }}"
+                data-city-id="{{ currentTerritory.id }}"
+            {% endif %}
+    >Добавить заявку</span>
+</div>
+

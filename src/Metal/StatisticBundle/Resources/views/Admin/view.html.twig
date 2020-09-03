@@ -1,0 +1,324 @@
+{% extends admin_pool.getTemplate('layout') %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">Сквозная статистика</li>
+{% endblock %}
+
+{% block content %}
+    {% set monthes = brouzie_helper('MetalProjectBundle:Formatting').getMonthes('normal') %}
+    {% set totalHelper = brouzie_helper('MetalStatisticBundle:Default') %}
+    {% set totalCounts = totalHelper.getTotalStats(stats) %}
+
+    <div class="box box-primary">
+        <div class="box-body">
+
+            <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                <thead>
+                <tr>
+                    {#NB! При добавлении/удалении столбцов нужно менять colspan #}
+                    <th colspan="14" class="text-center h3"><a
+                                href="{{ path('sonata_admin_all_statistic_view', {'year' : year - 1}) }}">&larr;</a> {{ year }}
+                        <a href="{{ path('sonata_admin_all_statistic_view', {'year' : year + 1}) }}">&rarr;</a></th>
+                </tr>
+                <tr>
+                    <th>
+                        Период
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во компаний, которые зарегистрировались за заданный период и не были удалены">
+                        Новых компаний
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Количество компаний в базе на данный месяц">
+                        Кол-во компаний
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во зарегистрированных пользователей, которые подтвердили имейл">
+                        Зарегистрировано пользователей
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во зарегистрированных пользователей, которые подтвердили имейл и не присоеденены к компаниям">
+                        Зарегистрировано потребителей
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Берем данные из таблицы со статистикой">
+                        Просмотров товаров
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во публичных заявок, которые промодерированы и не удалены + приватные">
+                        Создано заявок
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во публичных заявок, которые промодерированы и не удалены и не сграбблены с других сайтов.">
+                        Создано заявок без грабберов
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во приватных заявок, которые не удалены и не сграбблены с других сайтов.">
+                        Создано приватных заявок без грабберов
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во уникальных просмотров с группировкой по компании и заявке">
+                        Просмотров заявок
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во заявок без просмотров * 100 / кол-во заявок">
+                        Непросмотренных заявок
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во просмотров + кол-во ответов / кол-во заявок">
+                        В среднем откликов на заявку
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Берем данные из таблицы со статистикой">
+                        Добавлено или обновлено товаров
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Количество товаров в базе на данный месяц">
+                        Кол-во товаров
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Считаем по дате последнего обновления и статусу 'удален'">
+                        Удалено товаров
+                    </th>
+                    <th class="icon-help" data-toggle="tooltip" data-container="body"
+                        title="Кол-во уникальных потребителей за месяц. Зарегистрированные + оставленные email + оставленный телефон">
+                        Активных потребителей
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for month, monthTitle in monthes %}
+                    <tr>
+                        <td>
+                            {{ monthTitle|capitalize }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].companies_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].current_companies_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].users_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].consumers_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].show_products_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].demands_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].demands_count_not_grabbers|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].private_demands_count_not_grabbers|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].demands_views_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {% if stats[month] is defined and stats[month].demands_count is defined %}
+                                {{ ((stats[month].demands_without_views_count|default(0) * 100) / stats[month].demands_count)|number_format_decimal({'fraction_digits': 2}) }} %
+                            {% endif %}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {% if stats[month] is defined and stats[month].demands_count is defined %}
+                                {{ ((stats[month].demands_responses_count|default(0)) / stats[month].demands_count)|number_format_decimal({'fraction_digits': 2}) }}
+                            {% endif %}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].added_products_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].current_products_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].deleted_products_count|default(0)|number_format_decimal }}
+                        </td>
+                        <td width="150px" class="text-right">
+                            {{ stats[month].active_users_count|default(0)|number_format_decimal }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th>
+                        Итого
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['companies_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ stats[stats|length]['current_companies_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['users_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['consumers_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['show_products_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['demands_count']|default(0)|number_format_decimal }}
+                    </th>
+
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['demands_count_not_grabbers']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['private_demands_count_not_grabbers']|default(0)|number_format_decimal }}
+                    </th>
+
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['demands_views_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {% if totalCounts['demands_count'] %}
+                            {{ ((totalCounts['demands_without_views_count']|default(0) * 100) / totalCounts['demands_count'])|number_format_decimal({'fraction_digits': 2}) }} %
+                        {% endif %}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {% if totalCounts['demands_count'] %}
+                            {{ ((totalCounts['demands_responses_count']|default(0)) / totalCounts['demands_count'])|number_format_decimal({'fraction_digits': 2}) }}
+                        {% endif %}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['added_products_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ stats[stats|length]['current_products_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right">
+                        {{ totalCounts['deleted_products_count']|default(0)|number_format_decimal }}
+                    </th>
+                    <th width="150px" class="text-right icon-help"
+                        data-toggle="tooltip" data-container="body"
+                        title="Кол-во уникальных пользователей за год. Зарегистрированные + оставленные email + оставленный телефон">
+                        {{ totalCountActiveUsers|number_format_decimal }}
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                <thead>
+                <tr>
+                    <th colspan="{{ companiesTypes|length + 1 }}" class="text-center h3">Формы собственности</th>
+                </tr>
+                <tr>
+                    <th>
+                        Период
+                    </th>
+                    {% for companiesType in companiesTypes %}
+                        <th>
+                            {{ companiesType.title }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for month, monthTitle in monthes %}
+                    <tr>
+                        <td rowspan="2">
+                            {{ monthTitle|capitalize }}
+                        </td>
+                        {% for companyType in companiesTypes %}
+                            <td width="150px" class="text-right">
+                                {{ statsCompaniesByTypeOfOwnership[month][companyType.id]|default(0)|number_format_decimal }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for companyType in companiesTypes %}
+                            <td width="150px" class="text-right">
+                                {% set totalStatsByMonth = totalHelper.getTotalStatsByMonth(statsCompaniesByTypeOfOwnership) %}
+                                {% if totalStatsByMonth[month] is defined %}
+                                    {{ ((statsCompaniesByTypeOfOwnership[month][companyType.id]|default(0) * 100) / totalStatsByMonth[month])|number_format_decimal({'fraction_digits': 2}) }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                %
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr>
+                    {% set totalCountsCompaniesByType = totalHelper.getTotalStats(statsCompaniesByTypeOfOwnership) %}
+                    <th rowspan="2">
+                        Итого
+                    </th>
+                    {% for companyType in companiesTypes %}
+                        <th width="150px" class="text-right">
+                            {{ totalCountsCompaniesByType[companyType.id]|default(0)|number_format_decimal }}
+                        </th>
+                    {% endfor %}
+
+                </tr>
+                <tr>
+                    {% for companyType in companiesTypes %}
+                        <th width="150px" class="text-right">
+                            {% set sumTotalStats = totalHelper.getSumTotalStats(statsCompaniesByTypeOfOwnership) %}
+                            {% if sumTotalStats != 0 %}
+                                {{ ((totalCountsCompaniesByType[companyType.id]|default(0) * 100) / sumTotalStats)|number_format_decimal({'fraction_digits': 2}) }}
+                            {% else %}
+                                0
+                            {% endif %}
+                            %
+                        </th>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+
+            {% if activeUsersByPeriods is not empty %}
+                {% set periods = {
+                1 : 'Месяц',
+                3 : 'Квартал',
+                6 : 'Полгода',
+                12 : 'Год',
+                } %}
+                <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th colspan="2" class="text-center h3">Активные потребители за период</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Период
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for period, count in activeUsersByPeriods %}
+                        <tr>
+                            <td>
+                                {{ periods[period] }}
+                            </td>
+                            <td width="150px" class="text-right">
+                                {{ count|default(0)|number_format_decimal }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+    </script>
+
+
+{% endblock %}

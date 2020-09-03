@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="metal.project.visit_listener" class="Metal\UsersBundle\EventListener\LastVisitListener">
+            <argument type="service" id="metal_users.service.online_tracker" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+        </service>
+
+        <service id="metal.users.request_listener" class="Metal\UsersBundle\EventListener\UtmSourceListener">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+    </services>
+</container>

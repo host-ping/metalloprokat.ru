@@ -1,0 +1,77 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}ПОДКЛЮЧИТЕ ДОСТУП НА Metalloprokat.ru ДО ПОВЫШЕНИЯ ЦЕН{% endblock subject %}
+
+{% block body_text -%}
+
+    Уважаемые Поставщики металла,
+    До 31.08.2020 г. Вы можете подключиться к порталу на условиях ЛЕТНЕЙ АКЦИИ: дополнительная скидка на услуги - 20% (кроме подключения на 1 месяц)
+    До 31.08.2020 года стоимость подключения к Metalloprokat.ru составляет:
+
+    Расширенный доступ с учетом дополнительной скидки:
+    1 год = 48 800 руб. вместо 61000 руб.
+    6 мес. = 31 200 руб. вместо 39 000 руб.
+    3 мес. = 19 200 руб. вместо 24 000 руб.
+
+    Полный доступ:
+    1 год = 59 200 руб. вместо 74 000 руб
+    6 мес. = 37 600 руб. вместо 47 000 руб.
+    3 мес. = 22 400 руб. вместо 28 000 руб.
+
+    С 1 сентября 2020 года Metalloprokat.ru повышает расценки на свои услуги.
+
+    По любым вопросам пишите:
+    http://corp.metalloprokat.ru/contacts
+    или звоните:
+    +7 495 268-02-85
+
+
+    С уважением,
+    {{ user.country.domainTitle }}
+    http://www.{{ user.country.baseHost }}
+
+    {{ block('text_footer') }}
+{%- endblock body_text %}
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Уважаемые Поставщики металла,
+        <br/>
+        <br/>
+
+        До 31.08.2020 г. Вы можете подключиться к порталу на условиях ЛЕТНЕЙ АКЦИИ: дополнительная скидка на услуги - 20% (кроме подключения на 1 месяц)
+        <br/><br/>
+
+        До 31.08.2020 года стоимость подключения к Metalloprokat.ru составляет:<br/><br/>
+
+        Расширенный доступ с учетом дополнительной скидки:<br/>
+        1 год = <strike style="color: red;">61 000</strike> <b style="color: green; font-size: 14px;">48 800 руб.</b><br/>
+        6 мес. = <strike style="color: red;">39 000</strike> <b style="color: green; font-size: 14px;">31 200 руб.</b><br/>
+        3 мес. = <strike style="color: red;">24 000</strike> <b style="color: green; font-size: 14px;">19 200 руб.</b><br/><br/>
+
+        Полный доступ:
+        1 год = <strike style="color: red;">74 000</strike> <b style="color: green; font-size: 14px;">59 200 руб.</b><br/>
+        6 мес. = <strike style="color: red;">47 000</strike> <b style="color: green; font-size: 14px;">37 600 руб.</b><br/>
+        3 мес. = <strike style="color: red;">28 000</strike> <b style="color: green; font-size: 14px;">22 400 руб.</b><br/><br/>
+
+        <span style="color: red">С 1 сентября 2020 года Metalloprokat.ru повышает расценки на свои услуги.</span>
+
+        Перечень услуг по подключению Полного и Расширенного доступа можно уточнить на портале:<br/>
+        <a href="http://corp.metalloprokat.ru/media/">http://corp.metalloprokat.ru/media/</a>
+
+        <br/><br/>
+        По любым вопросам пишите - <a href="http://corp.metalloprokat.ru/contacts">http://corp.metalloprokat.ru/contacts</a>
+
+        или звоните:
+
+        +7 495 268-02-85
+
+        <br /><br />
+        С уважением,
+        <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a>
+    </p>
+    {% if hashKey is defined %}
+        <img src="{{- url('MetalNewsletterBundle:NewsletterViewer:track', {
+            'hashKey': hashKey
+        } ) -}}" />
+    {% endif %}
+{% endblock text_part_body %}

@@ -1,0 +1,22 @@
+parameters:
+    database_old_stroy:
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: ~
+        dbname: stroy_2015_11_18_dev
+        user: dev
+        password: ~
+        charset:  UTF8
+    database_metalloprokat:
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: ~
+        dbname: metalloprokat_20160510_dev
+        user: dev
+        password: ~
+        charset: UTF8
+#    company_original_logos_dir: '%kernel.root_dir%/../images/logo'
+#    original_product_photos: '%kernel.root_dir%/../upload/original_product_photos'
+#    original_demand_files_dir: '%kernel.root_dir%/../upload/demands'
+    original_image_dir: '%kernel.root_dir%/../../old.stroy.ru/netcat_files'
+    original_user_avatar_dir: '%kernel.root_dir%/../../old.stroy.ru/netcat_files'

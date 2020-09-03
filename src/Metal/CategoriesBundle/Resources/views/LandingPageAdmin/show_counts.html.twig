@@ -1,0 +1,102 @@
+{% extends admin_pool.getTemplate('layout') %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">Результаты целовой страницы "{{ landingPage.title }}" по городам</li>
+{% endblock %}
+
+{% block content %}
+
+    {% if resultsByCountries %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Результаты целовой страницы "{{ landingPage.title }}" по странам</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>
+                            Страна
+                        </th>
+                        <th>
+                            Кол-во найденных результатов
+                        </th>
+                        <th>
+                            ссылка на портал
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in resultsByCountries %}
+                        {% set country = result.country %}
+                        {% set subdomain = 'www' %}
+                        {% set baseHost = country.baseHost %}
+                        {% if baseHost is defined and result.resultsCount > 0 %}
+                            <tr>
+                                <td>
+                                    {{ country.title }}
+                                </td>
+                                <td width="150px" class="text-right">
+                                    {{ result.resultsCount }}
+                                </td>
+                                <td width="150px" class="text-right">
+                                    <a href="{{ path('MetalCategoriesBundle:LandingPage:landing', {'base_host' : baseHost, 'subdomain' : subdomain, 'slug': landingPage.slug}) }}"
+                                       target="_blank">Просмотреть на {{ baseHost }}</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if resultsByCities %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Результаты целовой страницы "{{ landingPage.title }}" по городам</h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>
+                            Город
+                        </th>
+                        <th>
+                            Кол-во найденных результатов
+                        </th>
+                        <th>
+                            ссылка на портал
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in resultsByCities %}
+                        {% set city = result.city %}
+                        {% set subdomain = city.slugWithFallback %}
+                        {% set baseHost = city.displayInCountry.baseHost %}
+                        {% if baseHost is defined and result.resultsCount > 0 %}
+                            <tr>
+                                <td>
+                                    {{ city.title }}
+                                </td>
+                                <td width="150px" class="text-right">
+                                    {{ result.resultsCount }}
+                                </td>
+                                <td width="150px" class="text-right">
+                                    <a href="{{ path('MetalCategoriesBundle:LandingPage:landing', {'base_host' : baseHost, 'subdomain' : subdomain, 'slug': landingPage.slug}) }}"
+                                       target="_blank">просмотреть</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

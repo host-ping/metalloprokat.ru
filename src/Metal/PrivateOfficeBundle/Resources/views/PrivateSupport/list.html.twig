@@ -1,0 +1,41 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+{% block title 'Техническая поддержка / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="support-content private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                <div class="support-admin-block clearfix">
+                    <div class="add-btn-wrapper float-right">
+                        <span class="button clickable green-bg ie-radius js-popup-opener ie-radius" data-popup="#add-support-request">Добавить заявку</span>
+                    </div>
+                </div>
+                <div class="table-block">
+                    <table class="support-list">
+                        <thead>
+                            <tr class="row">
+                                <th class="theme col">
+                                    <span>Тема</span>
+                                </th>
+                                <th class="creation-date col">
+                                    <span>Дата создания</span>
+                                </th>
+                                <th class="comment-count col">
+                                    <span>Комментарии</span>
+                                </th>
+                                <th class="last-comment col">
+                                    <span>Последний комментарий</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ include('MetalPrivateOfficeBundle:partials:topics_list.html.twig', {
+                                'pagerfanta' : pagerfanta
+                            }, false) }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

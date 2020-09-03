@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal.project.request_listener" class="Metal\ProjectBundle\EventListener\RequestListener">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="router" />
+            <argument>%hostnames_configuration%</argument>
+            <argument>%domain_country_id%</argument>
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument type="collection">
+                <argument key="admin_panel">%base_host_admin_panel%</argument>
+                <argument key="private_office">%base_host_private_office%</argument>
+                <argument key="corp_site">%base_host_corp_site%</argument>
+                <argument key="base_host">%base_host%</argument>
+                <argument key="base_host_prefix">%host_prefix%%base_host%</argument>
+                <argument key="base_host_metallspros">%base_host_metallspros%</argument>
+                <argument key="base_host_metallspros_prefix">%host_prefix_metallspros%%base_host_metallspros%</argument>
+                <argument key="base_host_8_800">%base_host_8_800%</argument>
+                <argument key="base_host_8_800_prefix">%host_prefix_8_800%%base_host_8_800%</argument>
+            </argument>
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestBeforeRouting" priority="40" />
+            <tag name="kernel.event_listener" event="kernel.request" method="redirectToHttps" priority="35" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestAfterRouting" priority="30" />
+        </service>
+
+        <service id="metal.project.fix_page_url_listener" class="Metal\ProjectBundle\EventListener\FixPageUrlListener">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestBeforeRouting"
+                 priority="7" />
+        </service>
+        <service id="metal.project.convert_json_input_listener" class="Metal\ProjectBundle\EventListener\ConvertJsonInputListener">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestAfterSecurity"
+                 priority="8" />
+        </service>
+
+        <service id="metal.project.page_not_found_listener" class="Metal\ProjectBundle\EventListener\ExceptionListener">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="router" />
+            <argument /><!-- %minisite_hostnames_pattern% -->
+            <!-- event listener tag added dynamically -->
+        </service>
+
+        <service id="metal.project.switch_user_listener" class="Metal\ProjectBundle\EventListener\SwitchUsersListener">
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_listener" event="security.switch_user" method="onSwitchUser" />
+        </service>
+
+        <service id="metal.project.sitemap_listener" class="Metal\ProjectBundle\EventListener\SitemapListener">
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument type="service" id="metal.products.data_fetcher" />
+            <argument type="service" id="metal.demands.data_fetcher" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <argument>%project.family%</argument>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+            <tag name="presta.sitemap.listener" />
+        </service>
+
+        <service id="metal.project.ip.ban.listener" class="Metal\ProjectBundle\EventListener\IpBanListener">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+            <argument type="service" id="service_container" />
+            <argument>%kernel.debug%</argument>
+            <argument>%recaptcha.enabled%</argument>
+            <argument>%request_logging_enabled%</argument>
+            <tag name="kernel.event_listener" event="kernel.request" method="onEarlyKernelRequest" priority="255" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="6" />
+        </service>
+    </services>
+</container>

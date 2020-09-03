@@ -1,0 +1,21 @@
+{% if photos %}
+    <div class="blog-wrapper-block clearfix">
+        <div class="blog-btn width-141">
+            <a href="{{ path('MetalContentBundle:Instagram:photosList') }}" class="clickable button white-bg ie-radius">Блог</a>
+        </div>
+
+        {% for photo in photos %}
+            <div class="item float-left">
+                <a class="img-link {% if not photo.getPhoto().getSize() %}pattern-small{% endif %}"
+                   data-href="{{ path('MetalContentBundle:Instagram:photoView', {'id' : photo.id}) }}">
+                    {% if photo.getPhoto().getSize() %}
+                        <img src="{{ vich_uploader_asset(photo, 'uploadedPhoto')|imagine_filter('instagram_photo_sq178') }}"
+                             alt="{{ photo.description }}"
+                             title="{{ photo.description }}"
+                        />
+                    {% endif %}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

@@ -1,0 +1,9 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block list_filters '' %}
+
+{% block table_footer %}
+    <input type="hidden" name="from" value="simple" />
+
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% block root %}
+    {% for menuItem in item.children %}
+        {% if matcher.isCurrent(menuItem) %}
+            <li class="item active clearfix">
+                {% if menuItem.getExtra('count') %}
+                    <strong class="count ie-radius float-right">{{ menuItem.getExtra('count')|number_format_decimal }}</strong>
+                {% endif %}
+                <span class="{{ menuItem.getExtra('cssClass') }} link is-gradiented" title="{{ menuItem.label }}">{{ menuItem.label }}</span>
+            </li>
+        {% elseif matcher.isAncestor(menuItem) %}
+            {# TODO: когда мы смотрим первый элемент подменю - нода не должна быть кликабельной #}
+            <li class="{{ menuItem.getExtra('cssClass') }} active item clearfix">
+                {% if menuItem.getExtra('count') %}
+                    <strong class="count ie-radius float-right">{{ menuItem.getExtra('count')|number_format_decimal }}</strong>
+                {% endif %}
+                <a class="link is-gradiented" href="{{ menuItem.uri }}" {% if menuItem.getExtra('target') %}target="{{ menuItem.getExtra('target') }}"{% endif %} title="{{ menuItem.label }}">{{ menuItem.label }}</a>
+            </li>
+        {% else %}
+            <li class="{{ menuItem.getExtra('cssClass') }} item clearfix">
+                {% if menuItem.getExtra('count') %}
+                    <strong class="count ie-radius float-right">{{ menuItem.getExtra('count')|number_format_decimal }}</strong>
+                {% endif %}
+                <a class="link is-gradiented" href="{{ menuItem.uri }}" {% if menuItem.getExtra('target') %}target="{{ menuItem.getExtra('target') }}"{% endif %} title="{{ menuItem.label }}">{{ menuItem.label }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

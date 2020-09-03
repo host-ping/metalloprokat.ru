@@ -1,0 +1,63 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_announcements_orderannouncement_list') }}">Необработанные заказы на
+                        баннера</a>
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата</th>
+                        <th>Зона</th>
+                        <th>Создание баннера</th>
+                        <th>Дата старта</th>
+                        <th>Пользователь</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for unprocessedOrderAnnouncement in unprocessedOrderAnnouncements %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('admin_metal_announcements_orderannouncement_edit', {'id': unprocessedOrderAnnouncement.id}) }}">{{ unprocessedOrderAnnouncement.id }}</a>
+                            </td>
+                            <td>
+                                {{ formatHelper.formatStatsDate(unprocessedOrderAnnouncement.createdAt, 'day')|raw }}
+                            </td>
+                            <td>
+                                {% if unprocessedOrderAnnouncement.zone %}
+                                    {{ unprocessedOrderAnnouncement.zone.title }}
+                                {% endif %}
+                            </td>
+                            {#TODO: Возможно выделять цветом ячейки?#}
+                            <td {#style="background-color:{% if unprocessedOrderAnnouncement.createAnnouncement %}green{% else %}red{% endif %};"#}>
+                                {% if unprocessedOrderAnnouncement.createAnnouncement %}Да{% else %}Нет{% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedOrderAnnouncement.startsAt %}
+                                    {{ formatHelper.formatDate(unprocessedOrderAnnouncement.startsAt, 'full') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedOrderAnnouncement.user %}
+                                    {{ unprocessedOrderAnnouncement.user.fullName }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

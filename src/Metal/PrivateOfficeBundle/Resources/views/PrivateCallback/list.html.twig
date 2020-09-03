@@ -1,0 +1,31 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Обратные звонки / Клиенты / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+
+        {% block filters %}
+            {% set notReturnCalls = app.request.query.get('notReturnCalls') %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <form class="js-filter-form" action="{{ path('MetalPrivateOfficeBundle:Callbacks:list') }}"
+                          method="get">
+                        <input id="wait" {% if notReturnCalls %} checked="checked" {% endif %} type="checkbox" value="1"
+                               name="notReturnCalls" class="js-styled-checkbox bg-grey js-filter-check"/>
+                        <label for="wait" class="clickable">Ожидают звонка</label>
+                    </form>
+                </div>
+            </div>
+        {% endblock %}
+
+        <div class="content-scrollable js-scrollable">
+            <ul class="callback-list list">
+                {{ include('MetalPrivateOfficeBundle:partials:callbacks_list.html.twig', {
+                'pagerfanta' : pagerfanta
+                }, false) }}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,118 @@
+MetalProductsBundle:Suggest:searchSuggest:
+    path:      /search-suggest/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Suggest:searchSuggest }
+
+MetalProductsBundle:Api:territorial:
+    path:      /api/products/territorial.json
+    defaults:  { _controller: MetalProductsBundle:Api:territorial }
+
+MetalProductsBundle:Api:territorialForLandingPage:
+    path:      /api/products-for-landing/territorial.json
+    defaults:  { _controller: MetalProductsBundle:Api:territorialForLandingPage }
+
+MetalProductsBundle:Api:getProductImages:
+    path:      /api/products/company_{id}/product_images.json
+    host:      "%host_prefix%%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Api:getProductImages }
+    requirements:
+        id: \d+
+
+MetalProductsBundle:Api:getAttributeValues:
+    path:      /api/products/get_attributes/{tab}/{category_id}/{attribute_id}
+    host:      "{subdomain}.{base_host}"
+    methods:  [POST]
+    defaults: { _controller: MetalProductsBundle:Api:getAttributeValues, subdomain: www, base_host: %base_host% }
+    requirements:
+        tab: products|companies
+        category_id: \d+
+        attribute_id: \d+
+        base_host: .+
+
+MetalProductsBundle:Products:search:
+    path:      /search-portal/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Products:search}
+
+MetalProductsBundle:Products:companies_list:
+    path:      /company/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Products:listCompanies, tab: companies, base_host: %base_host% }
+
+MetalProductsBundle:Products:companies_list_without_sort:
+    path:      /last-companies/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Products:listCompanies, tab: companies, sort: false }
+
+MetalProductsBundle:Products:companies_list_catalog:
+    path:      /catalog/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: FrameworkBundle:Redirect:redirect, route: MetalProductsBundle:Products:companies_list_without_sort, permanent: true }
+
+MetalProductsBundle:Products:products_list:
+    path:      /price/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Products:list, tab: products, base_host: %base_host% }
+
+MetalProductsBundle:Products:products_index_subdomain:
+    path:      /products/
+    host:      "{subdomain}.%base_host%"
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        base_host: %base_host%
+        template:    'MetalCatalogBundle::_catalog_layout.html.twig'
+    requirements:
+        base_host: %domain_regex%
+
+MetalProductsBundle:Products:products_list_without_sort:
+    path:      /last-products/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalProductsBundle:Products:list, tab: products, sort: false }
+
+MetalProductsBundle:Product:view:
+    path:     /price/price_{id}.html
+    host:     "%host_prefix%%base_host%"
+    defaults: { _controller: MetalProductsBundle:Product:view }
+    requirements:
+        id: \d+
+
+MetalProductsBundle:Product:view_subdomain:
+    path:     /price/price_{id}.html
+    host:     "{subdomain}.%base_host%"
+    defaults: { _controller: MetalProductsBundle:Product:view }
+    requirements:
+        id: \d+
+
+MetalProductsBundle:Product:view_subdomain_domain:
+    path:     /price/price_{id}.html
+    host:     "{subdomain}.{domain}"
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        id: \d+
+        domain: %domain_regex%
+
+MetalProductsBundle:Product:view_by_city_redirect:
+    path:     /price/city_price_{id}.html
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: MetalProductsBundle:Product:view
+        permanent: true
+
+MetalProductsBundle:Api:getItemsCount:
+    path:     /api/product/items_count/{tab}/{category_id}
+    host:     "{subdomain}.{base_host}"
+    methods:  [POST]
+    defaults: { _controller: MetalProductsBundle:Api:getItemsCount, subdomain: www, tab: products, base_host: %base_host% }
+    requirements:
+        tab: companies|products
+        category_id: \d+
+        base_host: .+
+
+MetalProductsBundle:Products:list_category_domain:
+    path:   /{category_slug}/
+    host: "{domain}"
+    defaults:  { _controller: MetalProductsBundle:Products:list }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        domain: %domain_regex%

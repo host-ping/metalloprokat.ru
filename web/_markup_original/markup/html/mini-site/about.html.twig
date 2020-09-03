@@ -1,0 +1,250 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'About' %}
+{% block header %}
+    <div class="left float-left">
+        <div class="logo float-left">
+            <a href="/">
+                <img src="./markup/img/logo.png" width="36" height="27" alt="металлопрокат.ру"/>
+            </a>
+        </div>
+        <div class="logo-text float-left">
+            <p>
+                <a class="header-logo-text" href="#">металлопрокат.ру</a>
+            </p>
+        </div>
+        <div class="location float-right">
+            <a href="#" class="js-popover-opener current-location" data-popover="#cities" data-different-position="true" data-index="1001">Москва и Область</a>
+        </div>
+    </div>
+    {% block login %}
+        <div class="user-block login-user float-right">
+            <div class="user-block-holder js-popover-opener clearfix" data-popover="#user-menu">
+                <a href="#" class="msgs float-left" >
+                    <span class="icon-flag float-left"></span>
+                    <span class="msg-count float-left">9</span>
+                </a>
+                <div class="user-photo float-left">
+                    <a href="#">
+                        <img src="./markup/pic/user.png" alt="image description"/>
+                    </a>
+                </div>
+                <span class="user-name-wrapper icon-check float-left">
+                    <a href="#" class="user-name is-gradiented">Специалист по маркетингу</a>
+                </span>
+            </div>
+
+            <div id="user-menu" class="u-menu drop-wrapper opacity-border">
+                <ul class="dropdown list">
+                    <li class="company-name first">
+                        <div class="rating float-right">
+                            <span class="star-mini icon-star-colored"></span> {#FIXED#}
+                            <span class="star-mini icon-star-colored"></span> {#FIXED#}
+                            <span class="star-mini icon-star-colored"></span> {#FIXED#}
+                        </div>
+                        <a href="#" class="company-name-link">Стальторг</a>
+
+                    </li>
+                    <li class="private-room">
+                        <a class="link" href="#">Личный кабинет</a>
+                        <div class="sec-links">
+                            <a class="link" href="#">прайс-лист,</a>
+                            <a class="link" href="#">статистика,</a>
+                            <a class="link" href="#">оплата</a>
+                        </div>
+                    </li>
+                    <li class="drop-item">
+                        <a class="drop-link" href="#">Клиенты ожидают ответа</a>
+                        <strong class="count ie-radius">5</strong>
+                    </li>
+                    <li class="drop-item">
+                        <a class="drop-link" href="#">Счета и услуги</a>
+                        <strong class="count ie-radius">3</strong>
+                    </li>
+                    <li class="drop-item">
+                        <a class="drop-link" href="#">Отзывы о компании</a>
+                        <strong class="count ie-radius">1</strong>
+                    </li>
+                    <li class="drop-item disabled">
+                        <span class="drop-link" href="#">Жалобы</span>
+                        <strong class="count ie-radius">2</strong>
+                    </li>
+                    <li class="drop-item disabled">
+                        <span class="drop-link" href="#">Сообщения от модератора</span>
+                        <strong class="count ie-radius">8</strong>
+                    </li>
+                    <li class="quit drop-item">
+                        <a class="drop-link" href="#">Выход</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+{% block sidebar %}
+    <div id="sidebar" class="side-left without-products-block table-cell static">
+        <div class="js-fixed-minisite-menu">
+            <div class="products-wrapper">
+                <div class="clearfix">
+                    <a class="admin-button button gray60-bg float-right ie-radius" href="#">управлять</a>
+                    <div class="title float-left">Товары</div>
+                </div>
+                <ul class="product-categories-list">
+                    <li class="level-1 item js-expandable-menu-item" data-expandable-menu-children=".list">
+                        <a href="#" class="check-link"><span class="icon-check black"></span></a>
+                        <a class="item-link active clearfix js-expandable-menu-expander" href="#armatura">
+                            <span class="count float-right">51</span>
+                            <span class="elem is-gradiented">Арматура</span>
+                        </a>
+                        <ul class="list">
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#armatura-1">
+                                    <span class="count float-right">31</span>
+                                    <span class="elem is-gradiented">Арматура А1</span>
+                                </a>
+                            </li>
+                            <li class="level-inside item">
+                                <span class="link active clearfix" href="#armatura-2">
+                                    <span class="count float-right">14</span>
+                                    <span class="elem is-gradiented">Арматура 09Г2С</span>
+                                </span>
+                            </li>
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#armatura-3">
+                                    <span class="count float-right">103</span>
+                                    <span class="elem is-gradiented">Арматура А3</span>
+                                </a>
+                            </li>
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#armatura-4">
+                                    <span class="count float-right">52</span>
+                                    <span class="elem is-gradiented">Арматура А500С</span>
+                                </a>
+                            </li>
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#armatura-5">
+                                    <span class="count float-right">62</span>
+                                    <span class="elem is-gradiented">Арматура 12</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level-1 item js-expandable-menu-item" data-expandable-menu-children=".list">
+                        <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                        <a class="item-link clearfix js-expandable-menu-expander" href="#balka">
+                            <span class="count float-right">60</span>
+                            <span class="elem is-gradiented">Балка</span>
+                        </a>
+                        <ul class="list g-hidden">
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#balka-1">
+                                    <span class="count float-right">31</span>
+                                    <span class="elem is-gradiented">Балка Б2</span>
+                                </a>
+                            </li>
+                            <li class="level-inside item">
+                                <a class="link clearfix" href="#balka-2">
+                                    <span class="count float-right">14</span>
+                                    <span class="elem is-gradiented">Балка Б4</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level-1 item">
+                        <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                        <a class="item-link clearfix" href="#">
+                            <span class="count float-right">777</span>
+                            <span class="elem is-gradiented">Заглушка</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+            <ul class="list">
+                <li class="item active">
+                    <span class="link">О компании</span>
+                </li>
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/reviews.html.twig') }}">Отзывы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+                </li>
+            </ul>
+        </div>
+        <div class="about content-holder">
+            <div class="admin-button-wrapper clearfix">
+                <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+            </div>
+            <p style="font-size: 20px; line-height: 28px;">На основе типажей мы можем сделать вывод,
+                какие именно возможности необходимы пользователям и на какой уровень развития пользователя в интернете
+                нужно ориентироваться.</p>
+
+            <p>Информация о потребителях сформирована из опыта общения менеджера горячей линии. Не знает марки сталей
+                (нет профильного образования), зачастую диктует по бумажке, выполняя чье-то задание.
+                В интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+            <p>Суровый производственник, старая школа. Хорошее техническое образование, четкое знание потребности
+                и предметной области. В интернете не понимает ничего. Не вдается в подробности, быстро и четко
+                заказывает крупные объемы на постоянной основе, скептически относится к сервису горячей линии,
+                в интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+            <p style="font-size: 20px; line-height: 28px;">На основе типажей мы можем сделать вывод,
+                какие именно возможности необходимы пользователям и на какой уровень развития пользователя в интернете
+                нужно ориентироваться.</p>
+
+            <p>Информация о потребителях сформирована из опыта общения менеджера горячей линии. Не знает марки сталей
+                (нет профильного образования), зачастую диктует по бумажке, выполняя чье-то задание.
+                В интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+            <p>Суровый производственник, старая школа. Хорошее техническое образование, четкое знание потребности
+                и предметной области. В интернете не понимает ничего. Не вдается в подробности, быстро и четко
+                заказывает крупные объемы на постоянной основе, скептически относится к сервису горячей линии,
+                в интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+            <p style="font-size: 20px; line-height: 28px;">На основе типажей мы можем сделать вывод,
+                какие именно возможности необходимы пользователям и на какой уровень развития пользователя в интернете
+                нужно ориентироваться.</p>
+
+            <p>Информация о потребителях сформирована из опыта общения менеджера горячей линии. Не знает марки сталей
+                (нет профильного образования), зачастую диктует по бумажке, выполняя чье-то задание.
+                В интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+            <p>Суровый производственник, старая школа. Хорошее техническое образование, четкое знание потребности
+                и предметной области. В интернете не понимает ничего. Не вдается в подробности, быстро и четко
+                заказывает крупные объемы на постоянной основе, скептически относится к сервису горячей линии,
+                в интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+            <p style="font-size: 20px; line-height: 28px;">На основе типажей мы можем сделать вывод,
+                какие именно возможности необходимы пользователям и на какой уровень развития пользователя в интернете
+                нужно ориентироваться.</p>
+
+            <p>Информация о потребителях сформирована из опыта общения менеджера горячей линии. Не знает марки сталей
+                (нет профильного образования), зачастую диктует по бумажке, выполняя чье-то задание.
+                В интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+            <p>Суровый производственник, старая школа. Хорошее техническое образование, четкое знание потребности
+                и предметной области. В интернете не понимает ничего. Не вдается в подробности, быстро и четко
+                заказывает крупные объемы на постоянной основе, скептически относится к сервису горячей линии,
+                в интернете ориентируется. Встречается как у производственников так и у трейдеров.</p>
+
+
+            <div class="delivery-product">
+                <div class="title">Поставляем продукцию</div>
+                <p>Арматура, Балка, Катанка</p>
+            </div>
+            <div class="delivery-product">
+                <div class="title">Осуществляем доставку в города</div>
+                <p>Москва, Санкт-Петербург, Ступино</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

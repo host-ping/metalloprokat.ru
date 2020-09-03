@@ -1,0 +1,260 @@
+{% extends 'MetalCompaniesBundle:Default:base_layout_company.html.twig' %}
+
+{% block title brouzie_helper('MetalProjectBundle:Seo').getMetaTitleForAllProductsPage() %}
+
+{% block meta brouzie_helper('MetalProjectBundle:Seo').getAdditionalMetaTagsForSearchResults(productsViewModel.pagerfanta)|raw %}
+
+{% block meta_description brouzie_helper('MetalProjectBundle:Seo').getMetaDescriptionForAllProductsPage() %}
+
+{% block canonical_url brouzie_helper('MetalProjectBundle:Seo').getCanonicalUrlForCompanyProducts(company) %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ include('@MetalProject/partials/yandex_maps_initialization.html.twig') }}
+{% endblock javascripts %}
+
+{% block callback %}
+    {% if company.packageChecker.isDisplayCallbackBlock() %}
+        {% set displayCallbackBlock = true %}
+    {% endif %}
+
+    {% set callbackFormFrom = 'all-company-products' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set currentRoute = app.request.attributes.get('_route') %}
+    {% set order = app.request.query.get('order', false) %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+    {% set routeParameters = routeParameters|merge({'page': null}) %}
+    {% set productHelper = brouzie_helper('MetalProductsBundle') %}
+    {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+    {% set route = 'MetalProductsBundle:Product:view' %}
+
+    {% if currentCity %}
+        {% set route = 'MetalProductsBundle:Product:view_subdomain' %}
+    {% endif %}
+
+    {% set categoryHelper = brouzie_helper('MetalCategoriesBundle') %}
+
+    <div id="content" class="content-wide table-container outline-left all-prod">
+        <div class="left table-cell">
+            <div class="company-inside js-calc-height">
+
+                <h1 class="product-title" ng-include="'alternative-header'">
+                    {{- brouzie_helper('MetalProjectBundle:Seo').getHeadTitleForAllProductsPage() -}}
+                </h1>
+                <p class="callback product-title">
+                    {% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+                    {% set paramsArray = seoHelper.getParametersTitlesPerGroup() %}
+                    {% if paramsArray %}
+                        {% set attributes = seoHelper.implodeParametersGroups(paramsArray, ' ', ' ') %}
+                    {% endif %}
+                    {% if company.packageChecker.isDisplayCallbackBlock() %}
+                        отправить <span class="link clickable"
+                            popup-opener="#request-private-payment-demand"
+                            data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                            data-product-text="{{ currentCategory ? currentCategory.title : '' }} {{ attributes|default(null) }}"
+                            data-company-id="{{ company.id }}"
+                            {% if currentCity %}
+                                data-product-city-id="{{ currentCity.id }}"
+                                data-city-text="{{ currentCity.title }}"
+                                data-city-id="{{ currentCity.id }}"
+                            {% endif %}
+                            >заказ</span>
+                    {% else %}
+                        отправить <span class="link clickable"
+                            popup-opener="#request-demand"
+                            data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                            data-product-text="{{ currentCategory ? currentCategory.title : ''}} {{ attributes|default(null) }}"
+
+                            {% if currentCity %}
+                                data-product-city-id="{{ currentCity.id }}"
+                                data-city-text="{{ currentCity.title }}"
+                                data-city-id="{{ currentCity.id }}"
+                            {% endif %}
+                            >заказ</span>
+                        {% if currentCountry.callbackPhone %}
+                            {% if brouzie_helper('MetalProjectBundle').isWorkingTime() %}
+                                <strong>{{ currentCountry.callbackPhone }}</strong>
+                            {% endif %}
+                            <span class="callback-link link clickable js-popup-opener" data-popup="#callback-moderator"
+                                  data-callback-url="{{ path('MetalCallbacksBundle:Callback:savePublic', {
+                                  'id' : company.id,
+                                  'target_object' : 'company',
+                                  'for_moderator' : true,
+                                  'from': 'all-company-products',
+                                  'for_product' : false }) }}">обратный звонок</span>
+                        {% endif %}
+                    {% endif %}
+                </p>
+                <script type="text/ng-template" id="alternative-header">
+                    {{ category ? category.title : 'Товары ' }}
+
+                    {% if category %}
+                        {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+                        {% for attribute, attributeValues in attributesCollection %}
+                            {% for attributeValue in attributeValues %}
+                                <span class="accepted-filter ie-radius">{{ attributeValue.value }}
+                                    <a href="{{ path(currentRoute, routeParameters|merge({'category_slug': category.getUrl(attributesCollection.getUrl(null, attributeValue))})) }}" class="icon-filter-del"></a>
+                                </span>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                    от компании {{ company.title }} <sup>{{ productsViewModel.count|number_format_decimal }}</sup>
+                </script>
+
+                {% include 'MetalCompaniesBundle:partial:company_map.html.twig' with {
+                    'company' : company
+                }  %}
+
+                <div class="tabs-content">
+                    <div class="product-filters clearfix">
+                        <div class="sort-view float-right">
+                            {#<div class="export-block float-left">#}
+                                {#<span class="export link clickable js-popover-opener" data-popover="#export-feed">Экспорт и#}
+                                    {#подписка</span>#}
+
+                                {#<div id="export-feed" class="drop-wrapper export-feed_links opacity-border">#}
+                                    {#<div class="dropdown">#}
+                                        {#<div class="export-links block clearfix">#}
+                                            {#<p class="title">Экспорт</p>#}
+                                            {#<span class="button small-btn blue-bg clickable float-left ie-radius">XLS</span>#}
+                                            {#<span class="button small-btn blue-bg clickable float-left ie-radius">CSV</span>#}
+                                        {#</div>#}
+                                        {#<div class="feed-links block clearfix">#}
+                                            {#<p class="title">Подписка</p>#}
+                                            {#<span class="button small-btn blue-bg clickable float-left ie-radius">rss</span>#}
+                                            {#<span class="button small-btn blue-bg clickable float-left js-popup-opener ie-radius"#}
+                                               {#data-popup="#subscribe">e-mail</span>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</div>#}
+
+                            {% set sorts = {
+                                'price' : {'query' : 'price', 'title' : 'По цене'},
+                                'title' : {'query' : 'title', 'title' : 'По названию'},
+                                'date'  : {'query' :  null,   'title' : 'По дате'}
+                            } %}
+                            <div class="order-block float-left">
+                                {% for typeSort in sorts %}
+                                    {% if typeSort.query == order %}
+                                        <span class="order-link icon-check black link clickable js-popover-opener" data-popover="#order">{{ typeSort.title }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                                <div id="order" class="drop-wrapper order-list opacity-border">
+                                    <ul class="dropdown">
+                                        {% for typeSort in sorts %}
+                                            {% if typeSort.query == order %}
+                                                <li class="drop-item">
+                                                    <span class="drop-link current">{{ typeSort.title }}</span>
+                                                </li>
+                                            {% else %}
+                                                <li class="drop-item">
+                                                    <a class="drop-link" data-href="{{ path(app.request.attributes.get('_route'), routeParameters|merge({ order : typeSort.query, 'page' : null })) }}">{{ typeSort.title }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="product similar-list" data-replacement-zone="page.company_products_list" data-replacement-callback="scrollToElement">
+                        {{ include('MetalCompaniesBundle:partial:products_in_list.html.twig', {
+                            'pagerfanta' : productsViewModel.pagerfanta,
+                            'currentCity' : currentCity,
+                            'route' : route
+                            }, false) }}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        {% set productBlockClass = 'white95-bg' %}
+        {% set isFixed = true %}
+        {% if company.packageChecker.isForeignAdvertiseShouldBeVisible() %}
+            {% set productBlockClass = 'blue' %}
+            {% set isFixed = false %}
+        {% endif %}
+
+        <div class="product-right right {{ productBlockClass }} table-cell">
+            <div class="{% if isFixed %}js-company-info-fixed{% endif %}">
+                <div class="{% if isFixed %}js-scrollable-contacts js-scrollable{% endif %}">
+                    {% if category %}
+                        {{ brouzie_render_widget('MetalCompaniesBundle:CompanySide', {'company' : company, 'category' : category, 'hide_category_link' : true, 'data_for_stats' : 'all-company-products'}) }}
+                    {% else %}
+                        {{ brouzie_render_widget('MetalCompaniesBundle:CompanySide', {'company' : company, 'hide_all_product_link' : true, 'data_for_stats' : 'all-company-products'}) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if company.packageChecker.isForeignAdvertiseShouldBeVisible() %}
+                {% set premiumProductsWidgetOptions = {'city' : currentCity, 'country' : currentCountry} %}
+
+                {% if category %}
+                    {% set  premiumProductsWidgetOptions =  premiumProductsWidgetOptions|merge({'category' : category}) %}
+                {% endif %}
+
+                {{ brouzie_render_widget('MetalProductsBundle:PremiumProducts', premiumProductsWidgetOptions) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {% if company.codeAccess %}
+        {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : true, 'payment_company' : true}) }}
+
+        {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': false, 'payment_company' : true, 'for_product' : true}) }}
+        {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': false, 'payment_company' : true}) }}
+    {% endif %}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'product'}) }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:CompanyReviewForm', {'company' : company}) }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : true}) }}
+{% endblock %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'premium', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'background', 'category_id' : currentCategory ? currentCategory.id : null}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'left-sidebar', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'right-sidebar-1', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'right-sidebar-2', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'all-company-products', 'zone_slug' : 'right-sidebar-3', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

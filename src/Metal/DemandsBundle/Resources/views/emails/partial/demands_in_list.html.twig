@@ -1,0 +1,94 @@
+{% set subdomain = demand.getCity().getSlugWithFallback()|default('www') %}
+
+{% set demandUrl = null %}
+{% if demand.isPublic %}
+    {% if demand.isModerated %}
+        {% set demandUrl = url('MetalDemandsBundle:Demand:view', {'id': demand.getId(), 'category_slug': demand.getCategory.getSlugCombined, 'subdomain': subdomain, 'from': 'email' }) %}
+    {% endif %}
+{% elseif to_company %}
+    {% set demandUrl = url('MetalPrivateOfficeBundle:Demands:list', {'filter': 'unwatched', 'from': 'email' }) %}
+{% endif %}
+
+{% if show_border is not defined %}
+    {% set show_border = true %}
+{% endif %}
+{% set demandItems = demand.hasAttribute('demandItems') ? demand.getAttribute('demandItems') : demand.demandItems %}
+{% set demandItemsLength = demandItems|length %}
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+     {% if show_border %}
+        <tr>
+            <td height="1" bgcolor="#F2F0ED" valign="top">
+                <div style="height: 1px;">
+                    &nbsp;
+                </div>
+            </td>
+        </tr>
+    {% endif %}
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    <tr>
+        <td align="left" valign="top"
+            style="padding-bottom: 7px; font-family: Arial, sans-serif; color: #171F26; font-size: 18px; line-height: 21px;">
+            {% if demandUrl %}
+                <a href="{{ demandUrl }}" style="color: #2972A6; text-decoration: none;"><b style="color: #E74C3C; font-weight: bold;">№{{ demand.id }}</b> {{ demand.getFixedCityTitle() }}</a>
+            {% else %}
+                <b style="color: #E74C3C; font-weight: bold;">№{{ demand.id }}</b> {{ demand.getFixedCityTitle() }}
+            {% endif %}
+            <span style="color: #a6a39d; font-size: 16px;">{{ brouzie_helper('MetalProjectBundle:Formatting').formatDate(demand.displayTime) }}</span>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top" style="padding-bottom: 12px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                {% set demandItemsToShow = demand_items_limit is null ? demandItems : demandItems|slice(0, demand_items_limit) %}
+                {% for demandItem in demandItemsToShow %}
+                    <tr>
+                        <td width="24" align="left" valign="top" style="padding: 6px 2px 6px 0; font-family: Arial; color: #171F26; font-size: 13px; line-height: 19px;">
+                            {{ loop.index }}
+                        </td>
+                        <td width="250" align="left" valign="top" style="padding: 6px 12px; font-family: Arial; color: #171F26; font-size: 13px; font-weight: bold; line-height: 19px;">
+                            {{ demandItem.getTitle() }}
+                        </td>
+                        <td width="80" align="left" valign="top" style="padding: 6px 12px; font-family: Arial; color: #171F26; font-size: 13px; line-height: 19px;">
+                            {% if demandItem.volume %}{{ demandItem.volume|number_format_decimal }} {% if demandItem.volumeTypeId %}{{ demandItem.volumeType.tokenTransChoice|transchoice(demandItem.volume) }}{% endif %}{% else %}объем договорной{% endif %}
+                        </td>
+                        {% if view_user_name and loop.first %}
+                            <td width="280" align="left" valign="top" style="padding: 6px 12px; font-family: Arial; color: #A6A39D; font-size: 13px; line-height: 19px;">
+                                {{ demand.getFixedUserTitle() -}}&nbsp;{{ demand.demandPeriodicity.title }} потребность
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% if demandItemsToShow|length > 1 and not loop.last %}
+                        <tr>
+                            <td height="0" valign="top" colspan="3" style="border-top: 1px dashed #e5e3df;"><div style="height: 1px;">&nbsp;</div></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+    {% if demand_items_limit is not null and demand_items_limit < demandItemsLength %}
+        <tr>
+            <td align="left" valign="top"
+                style="font-family: Arial, sans-serif; color: #171F26; font-size: 13px; line-height: 19px;">
+                {% if demandUrl %}
+                    <a href="{{ demandUrl }}" target="_blank"
+                       style="color: #2972A6; font-weight: bold; text-decoration: none;">
+                        Всего {{ demandItemsLength }} {{ 'demands_by_count'|transchoice(demandItemsLength, [], 'MetalDemandsBundle') }}
+                    </a>
+                {% else %}
+                    <p style="font-weight: bold; text-decoration: none;">
+                        Всего {{ demandItemsLength }} {{ 'demands_by_count'|transchoice(demandItemsLength, [], 'MetalDemandsBundle') }}
+                    </p>
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+    <tr>
+        <td height="1" bgcolor="#F2F0ED" valign="top" style="line-height: 30px;"><div style="height: 1px;">&nbsp;</div></td>
+    </tr>
+</table>

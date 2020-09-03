@@ -1,0 +1,166 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Reviews' %}
+{% block sidebar %}
+    <div id="sidebar" class="side-left table-cell">
+        <div class="wrap-open">
+        	<a href="#" class="button-open">
+				<span class="t">&nbsp;</span>
+				<span class="c">&nbsp;</span>
+				<span class="b">&nbsp;</span>
+			</a>
+	        <div class="box-open">
+		        <div class="products-wrapper empty-category-menu">
+		            <div class="clearfix">
+		                <a class="admin-button button gray60-bg float-right ie-radius" href="#">управлять</a>
+		                <div class="title float-left">Товары</div>
+		            </div>
+		
+		        </div>
+		        <div class="premium-product-block">
+		            {#<div class="title">#}
+		                {#<a class="title-link link" href="#">Арматура</a>#}
+		                {#других компаний#}
+		            {#</div>#}
+		            <ul class="topic-list">
+		                <li class="item clearfix">
+		                    <div class="topic-info float-left">
+		                        <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+		                        <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+		                    </div>
+		                    <div class="img float-right">
+		                        <div class="img-holder">
+		                            <a href="#" class="img-link pattern-small">
+		                                <img src="./markup/pic/small-img.jpg" alt="image description"/>
+		                            </a>
+		                        </div>
+		                    </div>
+		                </li>
+		                <li class="item clearfix">
+		                    <div class="topic-info float-left">
+		                        <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+		                        <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+		                    </div>
+		                    <div class="img float-right">
+		                        <div class="img-holder">
+		                            <a href="#" class="img-link pattern-small"></a>
+		                        </div>
+		                    </div>
+		                </li>
+		                <li class="item clearfix">
+		                    <div class="topic-info float-left">
+		                        <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+		                        <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+		                    </div>
+		                    <div class="img float-right">
+		                        <div class="img-holder">
+		                            <a href="#" class="img-link pattern-small"></a>
+		                        </div>
+		                    </div>
+		                </li>
+		                <li class="item clearfix">
+		                    <div class="topic-info float-left">
+		                        <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+		                        <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+		                    </div>
+		                    <div class="img float-right">
+		                        <div class="img-holder">
+		                            <a href="#" class="img-link pattern-small"></a>
+		                        </div>
+		                    </div>
+		                </li>
+		                <li class="item clearfix">
+		                    <div class="topic-info float-left">
+		                        <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+		                        <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+		                    </div>
+		                    <div class="img float-right">
+		                        <div class="img-holder">
+		                            <a href="#" class="img-link pattern-small"></a>
+		                        </div>
+		                    </div>
+		                </li>
+		            </ul>
+		            <a class="add-product-text" href="#">Разместить здесь товары</a>
+		        </div>
+	        </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+            <ul class="list">
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+                </li>
+                <li class="item active">
+                    <span class="link">Отзывы</span>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+                </li>
+            </ul>
+        </div>
+        {% block filters %}
+            <div class="filters-block clearfix">
+                <div class="add-review-wrapper">
+                    <a class="primary add-review button js-popup-opener ie-radius" data-popup="#add-review" href="#">Добавить отзыв</a>
+                    <span class="admin-button button gray60-bg ie-radius">управлять отзывами</span>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="reviews">
+            <ul class="review-list clearfix">
+                <li class="item icon-positive">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Покупал у них старые гвозди. Но гвозди оказались даже старее, чем я ожидал!</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <a class="primary review-btn button ie-radius" href="#">Ответить</a>
+                    </div>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        <div class="loading-mask g-hidden">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="search-info-block mini-site-links clearfix">
+            <a class="link" href="#">Арматура А1</a>
+            <a class="link" href="#">Сетка оцинкованная</a>
+            <a class="link" href="#">Винт с кольцом</a>
+            <a class="link" href="#">Лист стальной, металлический</a>
+            <a class="link" href="#">Труба восстановленная</a>
+            <a class="link" href="#">Балка</a>
+            <a class="link" href="#">Катанка</a>
+            <a class="link" href="#">Швеллер</a>
+            <a class="link" href="#">Труба б/у</a>
+            <a class="link" href="#">Арматура А2</a>
+        </div>
+    </div>
+
+{% endblock content %}

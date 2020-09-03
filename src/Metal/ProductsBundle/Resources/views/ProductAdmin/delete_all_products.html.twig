@@ -1,0 +1,39 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+    <form enctype="multipart/form-data"
+          action=""
+          class="form-horizontal"
+          method="post"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+    >
+        <div class="box box-warning">
+            <div class="box-body">
+                <div class="alert alert-warning" role="alert">
+                    {% set company = admin.parent.subject %}
+                    Вы действительно хотите удалить все товары для выбранной компании (<b>{{ company.title }}, id: {{ company.id }}</b>)? Это действие нельзя будеь отменить.
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_all_products') }}" />
+
+        {% block formactions %}
+            <div class="clearfix">
+                <div class="well well-small form-actions">
+                    <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Удалить все товары">
+
+                    {% if admin.parent %}
+                        {% set productsListUrl = admin.generateUrl('list', {(admin.parent.idParameter): company.id}) %}
+                    {% else %}
+                        {% set productsListUrl = admin.generateUrl('list') %}
+                    {% endif %}
+
+                    <a href="{{ productsListUrl }}">
+                        <input type="button" class="btn" value="Вернуться к списку">
+                    </a>
+                </div>
+            </div>
+        {% endblock formactions %}
+    </form>
+{% endblock %}

@@ -1,0 +1,5 @@
+<script type="text/javascript">
+    //  console.log(document.location.href);
+    var params = location.hash.replace('#', "&");
+    document.location.href = document.location.pathname + '?redirected=1' + params;
+</script>

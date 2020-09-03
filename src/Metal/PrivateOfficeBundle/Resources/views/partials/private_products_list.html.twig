@@ -1,0 +1,115 @@
+{% set fromCustomProducts = fromCustomProducts is defined ? fromCustomProducts : false %}
+
+
+<div class="item" ng-repeat="product in products.all()" >
+    <div ng-if="!editableProduct || editableProduct.id != product.id"
+         ng-click="productsController.expandProduct(product)"
+         class="fix-holder item-block clearfix">
+        <div class="check-all block">
+            <input type="checkbox" value="<%= product.id %>"
+                   styled-checkbox
+                   ng-disabled="product.isPendingProcess"
+                   ng-click="productsController.toggleProductSelection(product.id)"
+                   ng-checked="selectedProductsIds.indexOf(product.id) > -1"
+                   class="checkbox js-styled-checkbox" />
+        </div>
+        <div class="product-photo block">
+            <div class="img is-bordered {% if not fromCustomProducts %}edited{% endif %}" ng-click="productsController.editProduct(product)">
+                <span class="pattern-small">
+                    <img ng-if="product.photo"
+                         ng-src="<%= product.photo.imageUrl %>"
+                         alt="<%= product.title %>"
+                         title="<%= product.title %>"
+                         src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                </span>
+                <div class="btns-wrapper">
+                    {#
+                    <div class="add-photo-wrapper">
+                        <label class="file-upload">
+                            <span class="add-photo-link"></span>
+                            <input type="file"/>
+                        </label>
+                    </div>
+                    #}
+                    <p ng-show="product.photo"
+                          ng-click="coreController.confirm('Вы действительно хотите отвязать фотографию от товара?', [productsController.disconnectPhotoFromProduct, [product.id]]); $event.stopPropagation()"
+                          class="del-btn"></p>
+                </div>
+            </div>
+        </div>
+        <div class="product-name block">
+            <strong class="product {% if not fromCustomProducts %}edited ie-radius {% endif %}is-gradiented" title="<%= product.title %>" ng-click="productsController.editProduct(product)">
+                <%= product.title %>
+            </strong>
+            <span class="category {% if not fromCustomProducts %}edited ie-radius{% endif %}"
+               ng-click="productsController.editProduct(product)"
+            ><%= product.category.title || 'Категория не задана' %></span>
+            <p class="category {% if not fromCustomProducts %}ie-radius edited{% endif %} green-color"
+               ng-click="productsController.editProduct(product)"
+               title="Категория пользователя"
+            ><%= product.customCategory.title %></p>
+            {% if not fromCustomProducts %}
+                <div class="product-description-wrapper"
+                     ng-if="expandedProduct.id == product.id"
+                        >
+                    <p class="product-description is-gradiented-bottom ie-radius edited" ng-click="productsController.editProduct(product)">
+                        <%= product.description ? product.description : 'Описание продукта' %>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="product-size block">
+            <p class="size {% if not fromCustomProducts %}edited ie-radius{% endif %} is-gradiented" ng-show="product.size" ng-click="productsController.editProduct(product)"><%= product.size %></p>
+
+            <p class="text" ng-show="product.isSpecialOffer" ng-click="productsController.editProduct(product)">сп</p>
+            <span class="icon-help js-helper-opener"
+                  ng-show="product.isSpecialOffer+product.isHotOffer"
+                  data-text="СП (спецпредложение) будет отображаться на главной странице вашего сайта, ГП (горячее предложение) будет отображаться в отдльном пункте меню вашего сайта"
+                  data-absolute-parent=".products-list"></span>
+            <p class="text" ng-show="product.isHotOffer" ng-click="productsController.editProduct(product)">гп</p>
+        </div>
+        <div class="product-price block">
+            <p class="price gray60-color {% if not fromCustomProducts %}ie-radius{% endif %}" ng-show="product.isContractPrice" ng-click="productsController.editProduct(product)">договорная</p>
+            <p class="price red-color {% if not fromCustomProducts %}ie-radius{% endif %}" ng-show="!product.isContractPrice" ng-click="productsController.editProduct(product)">
+                <span ng-show="product.isPriceFrom">от</span>
+                <strong><%= product.price|number %></strong>
+                <span ng-show="product.symbolClass" class="red-color <%= product.symbolClass %>"></span>
+                <span ng-show="!product.symbolClass" class="red-color"><%= product.currency %></span>
+            </p>
+            <p class="vol {% if not fromCustomProducts %}ie-radius{% endif %}" ng-show="!product.isContractPrice" ng-click="productsController.editProduct(product)">
+                <span ng-if="product.measureTypeId">за <%= product.measureType %></span></p>
+        </div>
+
+        <div class="product-status block">
+            <span ng-show="product.isLimitExceeding" class="icon-filter-del {% if not fromCustomProducts %}product-status-link{% endif %}" style="color:red;" ></span>
+            <span ng-show="!product.isModerated && !product.isLimitExceeding" class="process icon-clock {% if not fromCustomProducts %}product-status-link{% endif %}"></span>
+            <span ng-show="product.isModerated && !product.isLimitExceeding" class="complete icon-check-big {% if not fromCustomProducts %}product-status-link{% endif %}"></span>
+
+            {% if not fromCustomProducts %}
+                <span class="icon-pencil clickable edit ie-radius" ng-click="productsController.editProduct(product)"></span>
+                <span class="delete-btn g-hidden"
+                      ng-click="coreController.confirm('Вы действительно хотите удалить товар?', [productsController.deleteProduct, [product.id]])"
+                >
+                    <span class="icon-filter-del"></span>
+                </span>
+            {% endif %}
+        </div>
+
+        {% if fromCustomProducts %}
+            <div class="product-filial block">
+                <span class="filial" ><%= filial.title %></span>
+            </div>
+        {% endif %}
+    </div>
+
+    <div ng-if="editableProduct && editableProduct.id == product.id" class="change-holder item-block clearfix">
+        {{ brouzie_render_widget('MetalProductsBundle:ProductForm', {'_template' : '@MetalProducts/widgets/ProductEditFormWidget.html.twig', 'company' : company, 'existing_product_editing' : true}) }}
+    </div>
+</div>
+
+<div class="loading-mask-wrapper">
+    <span ng-show="!productsLoading && allProductsIds.length > products.size()" class="see-more button ie-radius" ng-click="productsController.loadMoreProducts()">Показать еще...</span>
+    <div ng-show="allProductsIds.length > 0 && productsLoading" class="loading-mask big">
+        <div class="spinner"></div>
+    </div>
+</div>

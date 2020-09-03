@@ -1,0 +1,14 @@
+<div id="{{ _options['widget_id'] }}" class="popup-block opacity-border large"
+     {% if _options['popup_non_closable'] %}data-popup-non-closable="true"{% endif %}
+     data-popup-template="#{{ _options['widget_id'] }}-template"></div>
+
+<script type="text/html" id="{{ _options['widget_id'] }}-template">
+    <div class="popup-content private-room-content">
+        <div class="text">{{ _options['text'] }}</div>
+        {% if not _options['popup_non_closable'] %}<span class="close-popup icon-popup-close clickable js-popup-closer"></span>{% endif %}
+        <span id="close-btn" class="{% if not _options['visible_close_button'] %}g-hidden{% endif %} send-button button clickable blue-bg ie-radius js-popup-closer">Закрыть</span>
+        <a href="{{ path('MetalCorpsiteBundle:Default:services') }}" class="{% if not _options['visible_save_button'] %}g-hidden{% endif %} company-details submit-wrapper" target="_blank">
+            <input class="save-btn button blue-bg ie-radius" type="submit" value="Получить" />
+        </a>
+    </div>
+</script>

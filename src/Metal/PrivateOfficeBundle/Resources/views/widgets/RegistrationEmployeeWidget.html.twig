@@ -1,0 +1,141 @@
+{% set popupId = 'registration-employees-popup' %}
+{% if _options['id'] %}
+    {% set popupId = 'edit-employee-popup' %}
+{% endif %}
+
+<div id="{{ popupId }}" class="opacity-border popup-block opacity-border large"
+     data-popup-template="#{{ popupId }}-template"></div>
+
+<script>
+    $(document).ready(function() {
+        var $popup = $('#{{ popupId }}');
+        {% if _options['id'] %}
+            var confirmationPopup = $('#confirmation-edit-employees');
+        {% else %}
+            var confirmationPopup = $('#confirmation-registration-employees');
+        {% endif %}
+        $popup.bind('response.success', function(e, data) {
+            Brouzie.Popups.closePopup($popup);
+            Brouzie.Popups.openPopup(confirmationPopup);
+        });
+
+        $('#ok-confirmation-btn').bind('click', function(e, data) {
+            location.reload();
+        });
+
+        $('#{{ popupId }}').bind('popup.open', function (e) {
+            includeAjax(e.$popup);
+        });
+    });
+</script>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        {% if _options['id'] %}
+            <div class="title-popup">Редактирование сотрудника</div>
+        {% else %}
+            <div class="title-popup">Добавление сотрудника</div>
+        {% endif %}
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form" class="popup-form js-ajax-form-submit" ng-init='employee = {{ employee|json_encode|raw }};'
+                {% if _options['id'] %}
+                    action="{{ path('MetalPrivateOfficeBundle:Employees:save', {'id': _options['id']}) }}"
+                {% else %}
+                    action="{{ path('MetalPrivateOfficeBundle:Employees:create') }}"
+                {% endif %}
+              novalidate="novalidate"
+              method="post">
+            <fieldset>
+                <div class="field-wrap">
+                    {{ form_widget(form.fullName, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Имя и фамилия', 'ng-model' : 'employee.fullName'} }) }}
+                </div>
+
+                <div class="field-wrap">
+                    {{ form_widget(form.job, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Должность' }}) }}
+                </div>
+
+                <div class="field-wrap">
+                    {{ form_widget(form.phone, {'attr' : {'class' : 'phone callback-form_phone form-text ie-radius', 'placeholder' : 'Телефон', 'ng-model' : 'employee.phone'} }) }}
+                </div>
+                <div class="field-wrap">
+                    {{ form_widget(form.email, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Электронная почта', 'ng-model' : 'employee.email'} }) }}
+                </div>
+
+                {% if form.newPassword is defined  %}
+                    <div class="group clearfix">
+                        <div class="user-pwd-wrapper field-wrap float-left">
+                            {{ form_widget(form.newPassword.first, {'attr' : {'class' : 'user-password form-text ie-radius', 'placeholder' : 'Новый пароль' } }) }}
+                        </div>
+
+                        <div class="user-pwd-wrapper-re field-wrap float-left">
+                            {{ form_widget(form.newPassword.second, {'attr' : {'class' : 'user-password form-text ie-radius', 'placeholder' : '...еще раз' } }) }}
+                        </div>
+                        <p class="text gray60-color">* Не заполнять, если не хотите менять.</p>
+                    </div>
+                {% endif %}
+
+                <div class="check-item">
+                    {{ form_widget(form.hasEditPermission, {'attr' : {'class' : 'js-styled-checkbox ie-radius', 'ng-model' : 'employee.hasEditPermission', 'styled-checkbox' : ''} }) }}
+                    {{ form_label(form.hasEditPermission, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                </div>
+
+                <div class="check-item">
+                    {{ form_widget(form.canUseService, {'attr' : {'class' : 'js-styled-checkbox ie-radius', 'ng-model' : 'employee.canUseService', 'styled-checkbox' : ''} }) }}
+                    {{ form_label(form.canUseService, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                </div>
+
+                {% if form.approved is defined  %}
+                    <div class="check-item">
+                        {{ form_widget(form.approved, {'attr' : {'class' : 'js-styled-checkbox ie-radius', 'ng-model' : 'employee.approved', 'styled-checkbox' : ''} }) }}
+                        {{ form_label(form.approved, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                    </div>
+                {% endif %}
+
+                <div class="check-item clearfix">
+                    <div class="employee-rating float-right">
+                        {{ form_widget(form.displayPosition, {'type' : 'text', 'attr': {
+                            'class' : 'form-text',
+                            'placeholder' : 'Позиция',
+                            'initial-value': '',
+                            'ng-model' : 'employee.displayPosition',
+                            'ng-readonly': '!employee.displayInContacts',
+                            'ng-class': '{disabled: !employee.displayInContacts}'
+                        }}) }}
+                        <span class="icon-help js-helper-opener"
+                              data-text="Отображает порядок вывода сотрудников в контактах минисайта"
+                        ></span>
+                    </div>
+                    {{ form_widget(form.displayInContacts, {'attr' : {'class' : 'js-styled-checkbox', 'ng-model' : 'employee.displayInContacts', 'styled-checkbox' : ''}}) }}
+                    {{ form_label(form.displayInContacts, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                </div>
+
+                <div class="submit-wrapper">
+                    {% if _options['id'] %}
+                        <input class="add-btn button blue-bg ie-radius" type="submit" value="Редактировать" />
+                    {% else %}
+                        <input class="add-btn button blue-bg ie-radius" type="submit" value="Добавить" />
+                    {% endif %}
+                </div>
+            </fieldset>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+{% if _options['id'] %}
+    <div id="confirmation-edit-employees" class="popup-block opacity-border large">
+{% else %}
+    <div id="confirmation-registration-employees" class="popup-block opacity-border large">
+{% endif %}
+    <div class="popup-content">
+        {% if _options['id'] %}
+            <div class="title-popup">Сотрудник отредактирован</div>
+        {% else %}
+            <div class="title-popup">Сотрудник создан</div>
+            <p class="text">Сотрудник создан, ему отправлено письмо с дальнейшими инструкциями.</p>
+        {% endif %}
+        <button id="ok-confirmation-btn" class="send-button button blue-bg ie-radius" type="button">Ок</button>
+    </div>
+</div>

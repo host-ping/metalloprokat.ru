@@ -1,0 +1,70 @@
+MetalProjectBundle:Default:index:
+    path:      /
+    host:       %host_prefix%%base_host%
+    condition: "not request.attributes.get('company_on_subdomain', false)"
+    defaults:
+        _controller: %project.frontpage_controller%
+        template:    'MetalProjectBundle::index.html.twig'
+
+MetalProjectBundle:Default:index_subdomain:
+    path:        /
+    host:        "{subdomain}.{base_host}"
+    condition:   "not request.attributes.get('company_on_subdomain', false) and (request.attributes.has('city') or request.attributes.has('region'))"
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        base_host: %base_host%
+        template:    'MetalProjectBundle::index.html.twig'
+    requirements:
+        base_host: %domain_regex%
+
+MetalProjectBundle:Parse:parse:
+    path:     /parse
+    host:     %host_prefix%%base_host%
+    defaults: { _controller: MetalProjectBundle:Parse:parseCategoryAttributes }
+
+MetalProjectBundle:Default:generate_robots:
+    path:     /robots.txt
+    host:     "{subdomain}.%base_host%"
+    defaults: { _controller: MetalProjectBundle:Robots:generate, section: %project.family% }
+
+# -------------------- sitemap start
+SprosPrestaSitemapBundle:Sitemap:index_subdomain:
+    path:  /sitemap.{_format}
+    defaults: { _controller: SprosProjectBundle:Sitemap:getSitemap }
+    host: "{subdomain}.%base_host%"
+    requirements:
+        _format: xml
+
+SprosPrestaSitemapBundle:Sitemap:section_subdomain:
+    path:  /sitemap.{section}.{_format}
+    defaults: { _controller: SprosProjectBundle:Sitemap:getSitemap }
+    host: "{subdomain}.%base_host%"
+    requirements:
+        _format: xml|xml\.gz
+# used only for url generation, for matching used routes above
+PrestaSitemapBundle_section:
+    path:  /sitemap.{name}.{_format}
+    defaults: { _controller: PrestaSitemapBundle:Sitemap:section }
+    requirements:
+        _format: xml|xml\.gz
+# -------------------- sitemap end
+
+
+#------------------- landing pages start
+
+MetalProjectBundle:LandingSimple:view:
+    path:     /landing-simple/{category_id}/
+    host:     %host_prefix%%base_host%
+    defaults: { _controller: MetalProjectBundle:Landing:view, simple: true }
+
+MetalProjectBundle:Landing:view:
+    path:     /landing/{category_id}/
+    host:     %host_prefix%%base_host%
+    defaults: { _controller: MetalProjectBundle:Landing:view }
+
+
+#------------------- landing pages end
+
+'MetalProjectBundle:Redirect:redirect':
+    path: /out
+    defaults: { _controller: MetalProjectBundle:Redirect:redirect }

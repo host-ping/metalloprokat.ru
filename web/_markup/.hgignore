@@ -1,0 +1,27 @@
+cache/
+vendor/
+bin/
+composer.phar
+syntax: glob
+documentation/node_modules/
+documentation/assets/
+documentation/core/
+documentation/build/
+documentation/docs/
+documentation/log/
+documentation/test/
+documentation/.git/
+documentation/.gitignore
+documentation/.jshintrc
+documentation/.travis.yml
+documentation/CONTRIBUTING.md
+documentation/Gruntfile.js
+documentation/License.md
+documentation/MAINTAINING.md
+documentation/README.md
+documentation/app.js
+documentation/options.js
+documentation/package.json
+documentation/source.sh
+documentation/user/.gitignore
+documentation/user/README.md

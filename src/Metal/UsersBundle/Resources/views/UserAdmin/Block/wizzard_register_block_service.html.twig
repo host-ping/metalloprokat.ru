@@ -1,0 +1,45 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if isGranted %}
+        {% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Статистика регистраций через виззард
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Категория</th>
+                        <th>Зарегистрировано компаний</th>
+                        <th>Выставлено счетов</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for items in data %}
+                        {% for item in items %}
+                            {% set isWeekend = formatHelper.isWeekend(item.created_date) %}
+                            <tr {% if isWeekend %}class="red-color"{% endif %}>
+                                {% if loop.first %}
+                                    <td rowspan="{{ items|length }}" width="100px">
+                                        {{ formatHelper.formatStatsDate(item.created_date, 'day')|raw }}
+                                    </td>
+                                {% endif %}
+                                <td>{{ item.category }}</td>
+                                <td class="text-right">{{ item.count }}</td>
+                                <td class="text-right">{{ item.countPayments }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock block %}

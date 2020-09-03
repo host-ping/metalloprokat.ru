@@ -1,0 +1,690 @@
+<?php
+
+/* @markup/portal/suppliers/product/standard.html.twig */
+class __TwigTemplate_cc49418335fbc4ae5c8d58c5d581fdd0 extends Twig_Template
+{
+    public function __construct(Twig_Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->parent = $this->env->loadTemplate("@markup/portal/_portal_layout.html.twig");
+
+        $this->blocks = array(
+            'title' => array($this, 'block_title'),
+            'content' => array($this, 'block_content'),
+        );
+    }
+
+    protected function doGetParent(array $context)
+    {
+        return "@markup/portal/_portal_layout.html.twig";
+    }
+
+    protected function doDisplay(array $context, array $blocks = array())
+    {
+        $this->parent->display($context, array_merge($this->blocks, $blocks));
+    }
+
+    // line 3
+    public function block_title($context, array $blocks = array())
+    {
+        echo "Product";
+    }
+
+    // line 4
+    public function block_content($context, array $blocks = array())
+    {
+        // line 5
+        echo "    <div id=\"content\" class=\"content-wide table-container outline-left\">
+    <div class=\"left table-cell\">
+    <div class=\"product-inside\">
+    <div class=\"product-info-wrapper clearfix\">
+        <div class=\"product-img is-bordered float-left\">
+            <a class=\"img-link pattern-big\" href=\"#\">
+                <img width=\"68\" height=\"68\" class=\"js-popup-opener\" src=\"./markup/pic/p-logo2.jpg\" alt=\"image description\" data-popup=\"#photo\"/>
+            </a>
+        </div>
+        <div class=\"product-info\">
+            <h1 class=\"product_main-title\">
+                Швеллер стальной с параллепльными гранями полок 8П, 20П, Москва
+            </h1>
+            <div class=\"information\">
+                <div class=\"size-price gray60-color\">
+                    <p>Размер 30x30</p>
+                    <p><strong class=\"red-color\">25 000 <span class=\"icon-rouble\"></span></strong> за тонну</p>
+                </div>
+                <p class=\"phone-text\">
+                    <strong>+7 (495) 784</strong>
+                    ( <a href=\"#\" class=\"see\">показать</a> )
+                    <a href=\"#\" class=\"callback\">обратный звонок</a>
+                </p>
+                <a class=\"on-site\" href=\"#\">Товар на сайте компании</a>
+                <span class=\"dot\">.</span>
+                <span class=\"updated-date\">Обновлено 8 фев 2013</span>
+            </div>
+            <ul class=\"links demand_links clearfix\">
+                <li class=\"links_report item float-left clearfix\">
+                    <a href=\"#\" class=\"button report is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\" data-popup=\"#report\">
+                        <span class=\"icon-complaint\"></span>
+                    </a>
+                </li>
+                <li class=\"item width-182 float-left clearfix\">
+                    <a href=\"#\" class=\"button favorites is-bordered ie-radius\">
+                        <span class=\"text\">В Избранное</span>
+                        <span class=\"icon-favorite float-right\"></span>
+                    </a>
+                </li>
+                <li class=\"links_answer item width-182 float-left clearfix\">
+                    <a class=\"send-order_send-button button send-button red-bg ie-radius\" href=\"#\">Отправить заявку</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class=\"map-wrapper is-bordered\">
+        <div class=\"heading clearfix\">
+            <p class=\"yandex-map float-right\">
+                <a class=\"link\" href=\"#\">Открыть в Яндекс.Картах</a>
+            </p>
+            <p class=\"address is-gradiented\">
+                <strong>улица Ялтинская, дом 9</strong>
+            </p>
+        </div>
+        <div class=\"map\">
+            <span class=\"map-point icon-position\" style=\"top: 50px; left: 150px;\"></span>
+            <img src=\"./markup/pic/map-small.jpg\" alt=\"image description\"/>
+            <div class=\"map-rotator\"></div>
+            <div class=\"resizeble-btn ie-radius\"></div>
+        </div>
+    </div>
+    <div class=\"product-description\">
+        <div><strong>Описание</strong></div>
+        <p class=\"text\">Комплект вспомогательных устройств и деталей для обеспечения функционирования какого-либо устройства, машины, оборудования или конструкции.</p>
+    </div>
+
+    <div id=\"tabs\" class=\"result-tabs-wrapper tabs demand_tabs clearfix\">
+        <ul class=\"tabs-list\">
+            <li class=\"item active js-tabs\" data-tab=\"#similar-products-tab\">
+                <span class=\"link\">Другие товары компании</span>
+                <span class=\"count\">258</span>
+            </li>
+            <li class=\"item js-tabs\" data-tab=\"#category-products-tab\">
+                <a class=\"link\" href=\"#\">Арматура в Москве</a>
+                <span class=\"count\">1,440</span>
+            </li>
+        </ul>
+    </div>
+        <div class=\"tabs-content\">
+            <ul class=\"similar-list\" id=\"similar-products-tab\">
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <div class=\"links-wrapper float-right\">
+                        <ul class=\"links clearfix\">
+                            <li class=\"links_report item float-left clearfix\">
+                \t\t\t<span class=\"button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius\" data-tooltip-title=\"Пожаловаться\">
+                    \t\t\t<span class=\"icon-complaint\"></span>
+               \t\t\t\t</span>
+                            </li>
+
+                            <li class=\"item float-left \">
+\t\t\t\t\t\t\t<span class=\"button favorites small is-bordered ie-radius js-toggle-favorite \">
+\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t<span class=\"icon-favorite\"></span>
+\t\t\t\t\t\t\t</span>
+                                <div class=\"js-toggle-favorite g-hidden\">
+\t\t\t\t\t\t\t\t<span class=\"button favorites active-link small ie-radius is-bordered js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"text\"></span>
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-active\"></span>
+\t\t\t\t\t\t\t\t</span>
+
+\t\t\t\t\t\t\t\t<span class=\"button favorites small delete blue-bg g-hidden ie-radius js-togglable-block\">
+\t\t\t\t\t\t\t\t\t<span class=\"icon-favorite-del\"></span>
+\t\t\t\t\t\t\t\t</span>
+                                </div>
+                            </li>
+
+                            <li class=\"links_answer item width-182 float-left clearfix\">
+                                <span class=\"primary button clickable send-button red-bg ie-radius\">Отправить заявку</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=\"left\">
+                        <p class=\"title is-gradiented\">
+                            <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class=\"info\">
+                            <div class=\"text clearfix\">
+                                <p class=\"size float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</p>
+                                <p class=\"price float-left\">
+                                    <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span>
+                                    </strong> за погонный метр
+                                    <span class=\"is-gradiented\"></span>
+                                </p>
+                                <span class=\"is-gradiented\"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </li>
+                <li class=\"see-more-block-wrapper\">
+                    <div class=\"see-more-block\">
+                        <a class=\"see-more button ie-radius\" href=\"#\">всего 258 заявок</a>
+                        <div class=\"loading-mask g-hidden\">
+                            <div class=\"spinner\"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class=\"similar-list g-hidden\" id=\"category-products-tab\">
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <p class=\"title\">
+                        <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class=\"info\">
+                        <p class=\"text\">Размер 6, <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <p class=\"title\">
+                        <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class=\"info\">
+                        <p class=\"text is-gradiented\"><span class=\"size is-gradiented float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</span> <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <p class=\"title\">
+                        <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class=\"info\">
+                        <p class=\"text\">Размер 6, <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                </li>
+                <li class=\"item outline\">
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a class=\"img-link pattern-small\" href=\"#\"></a>
+                        </div>
+                    </div>
+                    <p class=\"title\">
+                        <a class=\"product-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class=\"info\">
+                        <p class=\"text is-gradiented\"><span class=\"size is-gradiented float-left\">Размер 6x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10, 15x15, 15x20, 20x20, 30x30, 10x30, 5x10, 10x10</span> <strong class=\"red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                </li>
+                <li class=\"see-more-block-wrapper\">
+                    <div class=\"see-more-block\">
+                        <a class=\"see-more button ie-radius\" href=\"#\">всего 300 заявок</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    </div>
+    <div class=\"product-right right blue table-cell\">
+        <div class=\"info-wrapper white-bg\">
+            <div class=\"company-info-wrapper clearfix\">
+                <div class=\"company-info float-left\">
+                    <div class=\"prod-title clearfix\">
+                        <div class=\"star-panel float-left\">
+                            <div class=\"status float-left green-bg ie-radius\">online</div>
+                            <div class=\"rating float-left\">
+                                <span class=\"star-mini icon-star-colored\"></span>
+                                <span class=\"star-mini icon-star-colored\"></span>
+                                <span class=\"star-mini icon-star-colored\"></span>
+                            </div>
+                        </div>
+                        <div class=\"title\"><a href=\"#\">Стальторг</a></div>
+                    </div>
+                    <p class=\"localization gray60-color\">филиал в Люберцах</p>
+                    <p class=\"web-site\"><a class=\"link\" href=\"#\">www.staltorg.ru</a></p>
+                    <p class=\"web-site\"><a class=\"link\" href=\"#\">www.staltorg.com</a></p>
+                    <p class=\"web-site\"><a class=\"link\" href=\"#\">www.staltorg.ua</a></p>
+                </div>
+                <div class=\"company-logo float-right\">
+                    <a class=\"img-link pattern-small\" href=\"#\">
+                        <img src=\"./markup/pic/product-logo-tmp.jpg\" width=\"64\" height=\"64\" alt=\"image description\"/>
+                    </a>
+                </div>
+            </div>
+            <div class=\"comment-block right-bullet\">
+                <span class=\"text\">Готовы поставить на след. неделе. Позвонить Максиму</span>
+                <span class=\"date\">2 мар 2013 18:20</span>
+            </div>
+            <div class=\"sec-info\">
+                <p>
+                    <a href=\"#\">258 товаров</a> из раздела Арматура
+                </p>
+                <p>
+                    <a href=\"#\">3,814 товаров</a> на сайте
+                </p>
+            </div>
+            <div class=\"reviews-block\">
+                <div class=\"reviews-title\">
+                    <span class=\"title \">Отзывы о компании</span>
+                    <span class=\"review-count\">12</span>
+                    <span class=\"icon-comment\"></span>
+                </div>
+
+                <ul class=\"reviews list\">
+                    <li class=\"icon-positive item\">
+                        <p class=\"text\">
+                            Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                        </p>
+                        <div class=\"info\">
+                            <a href=\"#\" class=\"author\">Николай Чистяков</a>,
+                            <span class=\"period\">3 недели назад</span>
+                        </div>
+                    </li>
+                    <li class=\"icon-negative item\">
+                        <p class=\"text\">
+                            Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                        </p>
+                        <div class=\"info\">
+                            <a href=\"#\" class=\"author\">Николай Чистяков</a>,
+                            <span class=\"period\">3 недели назад</span>
+                        </div>
+                    </li>
+                    <li class=\"icon-positive item\">
+                        <p class=\"text\">
+                            Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                        </p>
+                        <div class=\"info\">
+                            <a href=\"#\" class=\"author\">Николай Чистяков</a>,
+                            <span class=\"period\">3 недели назад</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class=\"reviews-links\">
+                    <a class=\"add-review link\" href=\"#\">Добавить отзыв</a>
+                    <a class=\"all-reviews link\" href=\"#\">Все отзывы</a>
+                </div>
+            </div>
+        </div>
+        <div class=\"premium-product-block\">
+            <ul class=\"topic-list\">
+                <li class=\"item clearfix\">
+                    <div class=\"topic-info float-left\">
+                        <a class=\"title-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        <p class=\"text\">Размер 6, <strong class=\"price red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a href=\"#\" class=\"img-link pattern-small\">
+                                <img src=\"./markup/pic/small-img.jpg\" alt=\"image description\"/>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class=\"item clearfix\">
+                    <div class=\"topic-info float-left\">
+                        <a class=\"title-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        <p class=\"text\">Размер 6, <strong class=\"price red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a href=\"#\" class=\"img-link pattern-small\"></a>
+                        </div>
+                    </div>
+                </li>
+                <li class=\"item clearfix\">
+                    <div class=\"topic-info float-left\">
+                        <a class=\"title-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        <p class=\"text\">Размер 6, <strong class=\"price red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a href=\"#\" class=\"img-link pattern-small\"></a>
+                        </div>
+                    </div>
+                </li>
+                <li class=\"item clearfix\">
+                    <div class=\"topic-info float-left\">
+                        <a class=\"title-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        <p class=\"text\">Размер 6, <strong class=\"price red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a href=\"#\" class=\"img-link pattern-small\"></a>
+                        </div>
+                    </div>
+                </li>
+                <li class=\"item clearfix\">
+                    <div class=\"topic-info float-left\">
+                        <a class=\"title-link\" href=\"#\">Арматура стеклопластиковая АСП-6</a>
+                        <p class=\"text\">Размер 6, <strong class=\"price red-color\">10 <span class=\"icon-rouble\"></span></strong> за погонный метр</p>
+                    </div>
+                    <div class=\"img is-bordered float-right\">
+                        <div class=\"img-holder\">
+                            <a href=\"#\" class=\"img-link pattern-small\"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <a class=\"add-product-text\" href=\"#\">Разместить здесь товары</a>
+        </div>
+
+    </div>
+
+    </div>
+";
+    }
+
+    public function getTemplateName()
+    {
+        return "@markup/portal/suppliers/product/standard.html.twig";
+    }
+
+    public function isTraitable()
+    {
+        return false;
+    }
+
+    public function getDebugInfo()
+    {
+        return array (  38 => 5,  35 => 4,  29 => 3,);
+    }
+}

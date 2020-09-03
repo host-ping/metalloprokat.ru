@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.getAttribute('productCities') %}
+        {% for city in object.getAttribute('productCities') %}
+            {%- if not loop.first -%}, <br>{% endif %}{{- city.title -}}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

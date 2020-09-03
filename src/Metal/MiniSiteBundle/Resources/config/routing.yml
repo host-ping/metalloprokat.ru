@@ -1,0 +1,94 @@
+MetalMiniSiteBundle:Theme:renderCss:
+    path:     /%minisite_compiled_themes_path%/{company_id}.css
+    defaults: { _controller: MetalMiniSiteBundle:Theme:renderCss }
+    requirements:
+        company_id: \d+
+
+MetalMiniSiteBundle:Theme:renderDefaultCss:
+    path:     /%minisite_compiled_themes_path%/default.css
+    defaults: { _controller: MetalMiniSiteBundle:Theme:renderDefaultCss }
+
+MetalMiniSiteBundle:MiniSite:reviews:
+    path:     /reviews
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:reviews }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:about:
+    path:     /about
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:about }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:documents:
+    path:     /documents
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:documents }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:downloadDocument:
+    path:     /documents/{id}/{action}
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:downloadDocument, action: download }
+    requirements:
+        domain: %domain_regex%
+        id: \d+
+        action: download|view
+
+MetalMiniSiteBundle:MiniSite:contact:
+    path:     /contact
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:contact }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:product_view:
+    path:     /price/{id}
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:productView }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        domain: %domain_regex%
+        id: \d+
+
+MetalMiniSiteBundle:MiniSite:view:
+    path:     /
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:index }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+          domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:products_custom_category:
+    path:     /category{category_slug}/
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:products }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        category_slug: \d+
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:products_category:
+    path:     /{category_slug}/
+    host:     "{domain}"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:products }
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        domain: %domain_regex%
+
+MetalMiniSiteBundle:MiniSite:send_mail:
+    path: /employee/send
+    defaults: { _controller:MetalMiniSiteBundle:MiniSite:sendEmail }
+
+MetalMiniSiteBundle:MiniSite:hotOfferProducts:
+    path: /hot
+    defaults: { _controller:MetalMiniSiteBundle:MiniSite:hotOfferProducts }
+

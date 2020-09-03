@@ -1,0 +1,45 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Ответ на заявку {{ demand.id }}{% endblock %}
+
+{% block body_text -%}
+ Ответ на заявку №{{ demand.id }}
+{{ demandAnswer.description }}
+
+{% if demandAnswer.getFixedUserTitle() %}
+Имя отправителя: {{ demandAnswer.getFixedUserTitle() }}
+{% endif %}
+{% if demandAnswer.getFixedCompanyTitle() %}
+Компания отправителя: {{ demandAnswer.getFixedCompanyTitle() }}
+{% endif %}
+{% if demandAnswer.getFixedEmail() %}
+Почта отправителя: {{ demandAnswer.getFixedEmail() }}
+{% endif %}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_header %}
+    {% set subdomain = demand.getCity().getSlugWithFallback()|default('www') %}
+
+    {% if demand.isPublic() and demand.isModerated %}
+        Ответ на вашу <a href="{{ url('MetalDemandsBundle:Demand:view', {'id': demand.getId(), 'category_slug': demand.getCategory.getSlugCombined, 'subdomain': subdomain }) }}" target="_blank">заявку №{{ demand.id }}</a>
+    {% else %}
+        Ответ на вашу заявку №{{ demand.id }}
+    {% endif %}
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        {{ demandAnswer.description }}
+    </p>
+    {% if demandAnswer.getFixedUserTitle() %}
+        <p style="margin: 0; line-height: 1">Имя отправителя: {{ demandAnswer.getFixedUserTitle() }}</p>
+    {% endif %}
+    {% if demandAnswer.getFixedCompanyTitle() %}
+        <p style="margin: 0; line-height: 1">Компания отправителя: {{ demandAnswer.getFixedCompanyTitle() }}</p>
+    {% endif %}
+    {% if demandAnswer.getFixedEmail() %}
+        <p style="margin: 0; line-height: 1">Почта отправителя: {{ demandAnswer.getFixedEmail() }}</p>
+    {% endif %}
+{% endblock %}

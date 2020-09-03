@@ -1,0 +1,20 @@
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set categorySlug = routeParameters['category_slug'] %}
+
+{% if countries %}
+    <ul class="row float-left ">
+        <li class="title">В других странах</li>
+        {% for country in countries %}
+            <li>
+                <a class="is-gradiented js-alternate-text"
+                   data-alternate-text="в {{ country.getTitleLocative }}"
+                   title="{{ fullCategoryTitle }}в {{ country.getTitleLocative }}"
+                   data-href="{{ url(route, {
+                       'category_slug' : category ? categorySlug : null,
+                       'base_host' : country.getBaseHost() }) }}">
+                    {{ fullCategoryTitle }}в {{ country.getTitleLocative }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

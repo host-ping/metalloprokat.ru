@@ -1,0 +1,31 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'demand' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'demand') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/consumers/private-demand.html.twig') }}">Заявки</a>
+                    <span class="count red-bg ie-radius">1</span>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'callbacks') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/consumers/private-callbacks.html.twig') }}">Обратные звонки</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'reviews') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/consumers/private-reviews.html.twig') }}">Отзывы</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'complaints') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/consumers/private-complaints.html.twig') }}">Жалобы</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    {% set activeMenu = 'consumers' %}
+    {{ parent() }}
+{% endblock sidebar %}
+
+
+

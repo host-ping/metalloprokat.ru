@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal.complaints.admin.complaint" class="Metal\ComplaintsBundle\Admin\ComplaintAdmin">
+            <argument>metal.complaints.admin.complaint</argument>
+            <argument>Metal\ComplaintsBundle\Entity\AbstractComplaint</argument>
+            <argument>MetalComplaintsBundle:ComplaintAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="feedback" label="Жалобы" />
+        </service>
+
+        <service id="metal.complaints.admin.block.spam_complaint" class="Metal\ComplaintsBundle\Admin\Block\SpamComplaintBlockService">
+            <argument>metal.complaints.admin.block.spam_complaint</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+    </services>
+</container>

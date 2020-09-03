@@ -1,0 +1,40 @@
+{% extends '@markup/corporate/_corporate_layout.html.twig' %}
+{% block title 'Corporate site - Reviews' %}
+{% block header_menu %}
+    {% set activeMenu = 'reviews' %}
+    {{ parent() }}
+{% endblock header_menu %}
+{% block content %}
+    <div id="content" class="corporate-content content-wide clearfix">
+        <div class="reviews-wrapper">
+            <ul class="reviews">
+                <li class="review">
+                    <div class="review-text">
+                        <p class="text">Мы в восторге от того, что стали клиентами! Денег столько, что фантазия иссякла!</p>
+                    </div>
+                    <div class="user-info clearfix">
+                        <div class="user-photo float-left ie-radius">
+                            <img src="./markup/pic/userpic1.jpg" alt="image description"/>
+                        </div>
+                        <div class="user float-left">
+                            <p class="text">Михаил Лесной, <a href="#" class="link">Авангард Престиж</a></p>
+                        </div>
+                    </div>
+                </li>
+                <li class="review">
+                    <div class="review-text">
+                        <p class="text">Мы в восторге от того, что стали клиентами! Денег столько, что фантазия иссякла!</p>
+                    </div>
+                    <div class="user-info clearfix">
+                        <div class="user-photo float-left ie-radius">
+                            <img src="./markup/pic/userpic1.jpg" alt="image description"/>
+                        </div>
+                        <div class="user float-left">
+                            <p class="text">Михаил Лесной, <a href="#" class="link">Авангард Престиж</a></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

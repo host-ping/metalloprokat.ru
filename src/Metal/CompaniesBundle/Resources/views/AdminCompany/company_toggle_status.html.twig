@@ -1,0 +1,42 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+    <form action=""
+          class="form-horizontal"
+          method="POST"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.comment, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.comment, {'attr' : {'class': 'form-control', 'heigth' : '350px'}}) }}
+                            <span class="help-block sonata-ba-field-help">Нужно указать причину, по которой {% if object.isDeleted() %}включается{% else %}отключается{% endif %} компания</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+
+        {% block formactions %}
+            <div class="well well-small form-actions">
+                <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Отправить">
+                <a href="{{ path('admin_metal_companies_company_list') }}">
+                    <input type="button" class="btn" value="Вернуться к списку">
+                </a>
+            </div>
+        {% endblock formactions %}
+
+    </form>
+{% endblock %}
+
+

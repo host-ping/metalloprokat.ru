@@ -1,0 +1,28 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.filePath %}
+        {% set announcementHelper = brouzie_helper('MetalAnnouncementsBundle:AdminDefault') %}
+        {% set objectSize = announcementHelper.getAnnouncementDimensions(object) %}
+
+        {% if object.isFlash() %}
+            <object type="application/x-shockwave-flash" data="{{ asset(object.webPath) }}" width="{{ objectSize['width'] }}" height="{{ objectSize['height'] }}">
+                <param name="movie" value="{{ asset(object.webPath) }}" />
+                <param name="quality" value="high" />
+                <embed src="{{ asset(object.webPath) }}" quality="high" width="{{ objectSize['width'] }}" height="{{ objectSize['height'] }}"></embed>
+            </object>
+        {% elseif object.isHtml() or object.isZip()  %}
+            <iframe src="{{ asset(object.embedWebPath) }}" width="{{ objectSize['width'] }}" height="{{ objectSize['height'] }}" scrolling="no">
+            </iframe>
+        {% else %}
+            {% if objectSize['width'] or objectSize['height'] %}
+                <img src="{{ asset(object.webPath) }}" width="{{ objectSize['width'] }}" height="{{ objectSize['height'] }}" />
+            {% else %}
+                <img src="{{ asset(object.webPath) }}" width="300" height="150" />
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <b>Нет изображения</b>
+    {% endif %}
+
+{% endblock %}

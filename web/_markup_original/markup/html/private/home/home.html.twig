@@ -1,0 +1,93 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+{% block title 'Private home' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable ">
+            <div class="private-fix-width">
+                <div class="notice-block users-home-block clearfix outline-right">
+                    <div class="left float-left">
+                        <div class="title">Новые уведомления</div>
+                        <ul class="notice list">
+                            <li class="item">
+                                +1 заявка от клиента
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="right float-right">
+                        <span class="icon-flag big"></span>
+                    </div>
+                </div>
+                <div class="complete-info users-home-block clearfix ">
+                    <div class="left float-left">
+                        <div class="title">Мини-сайт заполен на 50% <a href="#" class="link">чем заполнять?</a></div>
+                        <ul class="info list">
+                            <li class="item">
+                                <strong class="percent">+10%</strong>
+                                <a href="#" class="link">Загрузите</a>
+                                логотип
+                            </li>
+                            <li class="item">
+                                <strong class="percent">+10%</strong>
+                                <a href="#" class="link">Напишите</a>
+                                категории продукции
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="progress-bar-wrapper float-right">
+                        <div class="progress-bar ie-radius">
+                            <span class="progress ie-radius" style="width: 50%;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rating-block users-home-block clearfix">
+                    <div class="left float-left">
+                        <div class="title">Ваш рейтинг <a class="link" href="#">зачем нужен рейтинг?</a></div>
+                        <ul class="add-rating list">
+                            <li class="item star-mini icon-star-colored">
+                                <a class="link" href="#">Предоставьте</a>
+                                нам копию свидетельства о регистрации компании?
+                            </li>
+                            <li class="item star-mini icon-star-colored">
+                                <a class="link" href="#">Загружайте</a>
+                                товары (или обновляйте цены) не реже, чем раз в неделю
+                            </li>
+                            <li class="item star-mini icon-star-colored">
+                                Посещайте сайт ежедневно, чтобы оперативно отвечать на запросы потребителей
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="rating float-right">
+                        <span class="star-big icon-star hovered"></span>
+                        <span class="star-big icon-star hovered"></span>
+                    </div>
+                </div>
+                <div class="user-package users-home-block ">
+                    <div class="title">Вы используете <strong>базовый пакет</strong> услуг
+                        <a class="link" href="#">что это?</a>
+                    </div>
+                    <div class="report-block">
+                        <p class="reriod">За июнь:</p>
+                        <ul class="report clearfix">
+                            <li class="item float-left">
+                                <div class="big-count">2154556</div>
+                                <p class="text">человек просмотрел ваши товары</p>
+                            </li>
+                            <li class="item float-left">
+                                <div class="big-count">6</div>
+                                <p class="text">человек оставили заявки</p>
+                            </li>
+                            <li class="item float-left">
+                                <div class="big-count">2</div>
+                                <p class="text">человека попросили перезвонить</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block sidebar %}
+    {% set activeMenu = 'home' %}
+    {{ parent() }}
+{% endblock sidebar %}

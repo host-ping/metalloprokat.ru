@@ -1,0 +1,29 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block actions '' %}
+
+{% block show %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+
+                            <div class="well well-small form-actions">
+                                <div class="input-group">
+                                    <label>Введите номер телефона: <input name="search" type="text" id="search"></label>
+                                       <span class="input-group-btn">
+                                            <input type="submit" class="btn btn-primary" value="Найти" />
+                                       </span>
+                                </div>
+                                <span class="help-block sonata-ba-field-help">Введите номер телефона или его часть для поиска.</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock show %}

@@ -1,0 +1,98 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Header' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                {% block tabs %}
+                    {% set activeTab = 'header' %}
+                    {{ parent() }}
+                {% endblock tabs %}
+                <div class="mini-site-content-wrapper mini-site">
+                    <p class="text">Вы можете загрузить индивидуальную шапку для мини-сайта. Это выделит ваш сайт среди прочих.
+                        Сейчас шапка выглядит так:</p>
+                    <div class="view-header-block company-announcement clearfix">
+                        <div class="loading-mask with-opacity-bg">
+                            <div class="spinner"></div>
+                        </div>
+                        <img class="company-img" src="./markup/pic/crop-img.jpg" alt="image description"/>
+
+                        <form class="load-company-logo form company-logo float-left" action="#">
+                            <fieldset class="right-group">
+                                <div class="photo-wrapper">
+                                    <label class="file-upload">
+                                        <a class="pattern-big" href="#"></a>
+                                        <span class="load-btn button blue-bg ie-radius">Загрузить логотип</span>
+                                        <input type="file"/>
+                                    </label>
+                                    <div class="loading-mask">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                        <div class="company-info-wrapper float-left">
+                            <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+                            <div class="heading">
+                                <div class="company-name">Стальторг</div>
+                                <span>Продажа металлопроката</span>
+                            </div>
+                            <div class="address-phone-wrapper">
+                                <p class="company-phone">+7 (495) 904-53-13</p>
+                                <p class="company-address">Люберцы, <a href="#" class="link">Ялтинская 17</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="header-imgs">
+                        <form class="headers-form form" action="#">
+                            <p class="text">Вы можете выбрать из имеющихся вариантов, или загрузить собственную</p>
+                            <ul class="header-list clearfix">
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item current float-left">
+                                    <a class="img-wrapper" href="#">
+                                        <img src="./markup/pic/scale-img.jpg" alt="image description"/>
+                                    </a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                                <li class="item float-left">
+                                    <a class="img-wrapper" href="#"></a>
+                                </li>
+                            </ul>
+                            <p class="text">Размер картинки должен быть не менее 1008 пикселей в ширину и 192 в высоту.</p>
+                            <div class="submit-wrapper">
+                                <label class="file-upload float-left">
+                                    <span class="load-btn button blue-bg ie-radius">Загрузить
+                                        <div class="loading-mask">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    </span>
+                                    <input type="file"/>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

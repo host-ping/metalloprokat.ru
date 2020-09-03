@@ -1,0 +1,87 @@
+{% if pagerfanta.haveToPaginate %}
+    <li class="see-more-block-wrapper">
+        <style type="text/css">
+            .pagination .disabled-link {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .pagination {
+                display: inline-block;
+            }
+
+            .pagination a {
+                color: #919191;
+                float: left;
+                padding: 5px 12px;
+                text-decoration: none;
+                transition: background-color .3s;
+                border: 1px solid #e2e2e2;
+                margin: 0 4px;
+            }
+
+            .pagination span {
+                color: #919191;
+                float: left;
+                padding: 5px 12px;
+                text-decoration: none;
+                transition: background-color .3s;
+                border: 1px solid #e2e2e2;
+                margin: 0 4px;
+            }
+
+            .pagination .active {
+                background-color: #f1f1f1;
+                color: #262626;
+                border: 1px solid #e2e2e2;
+                pointer-events: none;
+                cursor: default;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #18a3d1;
+                color: #fff;
+            }
+        </style>
+
+        <div class="center">
+            <div class="pagination">
+                {% if pagerfanta.hasPreviousPage() %}
+                    <a class="button {% if project.ajax_pagination_enabled %}js-pagination{% endif %} ie-radius"
+                       href="{{ pagerfanta_page_url(pagerfanta, startAndEndPage.first_page, {'routeParams': routeParameters, 'omitFirstPage': true}) }}" rel="nofollow">&laquo;</a>
+                {% else %}
+                    <a class="button disabled-link ie-radius">&laquo;</a>
+                {% endif %}
+
+                {% for page in range(startAndEndPage.start_page, startAndEndPage.end_page) %}
+                    {% set noFollow = '' %}
+                    {% if page > 3 %}
+                        {% set noFollow = 'rel="nofollow"' %}
+                    {% endif %}
+                    {% if page == startAndEndPage.current_page %}
+                        <span class="active button ie-radius">{{ page }}</span>
+                    {% else %}
+                        <a class="{% if project.ajax_pagination_enabled %}js-pagination{% endif %} {% if page == startAndEndPage.current_page %} active {% endif %}button ie-radius"
+                           href="{{ pagerfanta_page_url(pagerfanta, page, {'routeParams': routeParameters, 'omitFirstPage': true}) }}" {{ noFollow }}>{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if pagerfanta.hasNextPage() %}
+                    <a class="{% if project.ajax_pagination_enabled %}js-pagination{% endif %} button ie-radius"
+                       href="{{ pagerfanta_page_url(pagerfanta, startAndEndPage.nb_pages, {'routeParams': routeParameters, 'omitFirstPage': true}) }}" rel="nofollow">&raquo;</a>
+                {% else %}
+                    <a class="button disabled-link ie-radius">&raquo;</a>
+                {% endif %}
+
+                <div class="loading-mask big g-hidden">
+                    <div class="spinner"></div>
+                    <div class="overflow"></div>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endif %}

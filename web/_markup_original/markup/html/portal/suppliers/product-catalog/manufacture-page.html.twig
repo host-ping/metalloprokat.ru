@@ -1,0 +1,214 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+
+{% block title 'Manufacture Page' %}
+{% block callback '' %}
+{% block content %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="product-inside js-calc-height">
+                <div class="product-info-wrapper clearfix">
+                    <div class="product-img is-bordered float-left">
+                        <a class="img-link pattern-big" href="#">
+                            <img class="js-popup-opener" src="./markup/pic/danone.png" alt="image description" data-popup="#photo"/>
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product_main-title">
+                            Данон
+                        </h1>
+                        <div class="information">
+                            <div class="gray60-color">
+                                <p>Москва, Владимир, Казань, Белгород</p>
+                            </div>
+                            <p class="phone-text">
+                                <strong>+7 (495) 784-55-55</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-description">
+                    <div><strong>Описание</strong></div>
+                    <p class="text">В 1992 году Danone стала одной из первых западных компаний, пришедших на
+                        российский рынок. На центральной московской улице был открыт единственный в мире фирменный
+                        магазин Danone. А через три года начал свою работу первый завод Danone в России.</p>
+                </div>
+                <div id="tabs" class="result-tabs-wrapper tabs demand_tabs clearfix">
+                    <ul class="tabs-list">
+                        <li class="item active js-tabs" data-tab="#similar-products-tab">
+                            <span class="link">Бренды</span>
+                            <span class="count">7</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tabs-content">
+                    <ul class="similar-list catalog-list" id="similar-products-tab">
+                        <li class="item clearfix outline">
+                            <div class="img is-bordered float-right">
+                                <div class="img-holder">
+                                    <a class="img-link pattern-small" href="#">
+                                        <img src="./markup/pic/l-day.jpg" width="36" height="36"
+                                             alt="image description"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="left">
+                                <p class="title is-gradiented">
+                                    <a class="product-link" href="#">Летний день</a>
+                                </p>
+                                <div class="info">
+                                    <p class="text is-gradiented">Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки</p>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="item clearfix outline">
+                            <div class="img is-bordered float-right">
+                                <div class="img-holder">
+                                    <a class="img-link pattern-small" href="#">
+                                        <img src="./markup/pic/l-day.jpg" width="36" height="36"
+                                             alt="image description"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="left">
+                                <p class="title is-gradiented">
+                                    <a class="product-link" href="#">Летний день</a>
+                                </p>
+                                <div class="info">
+                                    <p class="text is-gradiented">Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки, Молочные изделия, Напитки</p>
+                                </div>
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="product-right right white95-bg table-cell static">
+            <div class="js-company-info-fixed">
+                <div class="info-wrapper white-bg">
+                    <div class="title">
+                        <strong>Торгующие компании</strong>
+                    </div>
+                    <div class="premium-product-block topic-companies">
+                        <ul class="topic-list">
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Август-Кий, ООО</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Август-Кий, ООО</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

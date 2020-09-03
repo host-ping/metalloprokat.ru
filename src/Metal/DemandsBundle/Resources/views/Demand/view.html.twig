@@ -1,0 +1,322 @@
+{% extends 'MetalDemandsBundle::base_layout_demand.html.twig' %}
+
+{% block title brouzie_helper('MetalProjectBundle:Seo').getMetaTitleForDemandPage(demand) %}
+
+
+{% set page = app.request.query.get('page', 1) %}
+
+{% set similarDemandsWidget = brouzie_widget('MetalDemandsBundle:SimilarDemands', {
+    'demand' : demand,
+    'category' : app.request.attributes.get('category'),
+    'city' : app.request.attributes.get('city'),
+    'page' : page,
+}) %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getAdditionalMetaTagsForDemand(demand)|raw }}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getMetaPagination(similarDemandsWidget.getParametersToRender().pagerfanta)|raw }}
+{% endblock %}
+
+{% block canonical_url brouzie_helper('MetalProjectBundle:Seo').getCanonicalUrlForDemand(demand) %}
+
+{% block meta_description brouzie_helper('MetalProjectBundle:Seo').getMetaDescriptionForDemandPage(demand) %}
+
+{% block find_provider '' %}
+
+{% block callback %}
+    {% set displayCallbackBlock = true %}
+    {% set targetObject = 'demand' %}
+    {% set callbackFormFrom = 'demand-view' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block breadcrumbs_widget %}
+    {% set breadcrumbsAppendItems = [{
+        'id': 'demand-'~demand.id,
+        'title': 'Потребность №' ~ demand.id,
+        'is_label': true
+    }] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    {% set route = 'MetalDemandsBundle:Demands:list_category' %}
+    {% set routeParameters = {} %}
+    {% if currentCity %}
+        {% set route = 'MetalDemandsBundle:Demands:list_subdomain_category' %}
+        {% set routeParameters = {'subdomain' : currentCity.getSlug() }  %}
+    {% endif %}
+
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="inside-page js-calc-height">
+                <div class="product-info-wrapper">
+                    <h1 class="demand_main-title red-color">Заявка №{{- demand.id -}}</h1>
+                    <div class="demand-periodicity">
+                        {{ demand.city.title }}
+                        <span class="demand-date">{{ projectHelper.formatDate(demand.displayTime) }}</span>
+                        <div class="demand-region gray60-color">{{ demand.city.region.title }}</div>
+                    </div>
+                    <div class="table-holder">
+                        <table class="demand_product demand-table border">
+                            {% for demandItem in demand.getAttribute('demandItems') %}
+                                <tr class="row {% if loop.first %}first{% endif %} {% if loop.last %}last{% endif %}">
+                                    <td class="item col">
+                                        <p class="product-item">{{ loop.index }}</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">{{ demandItem.title }}{% if demandItem.size %} {{ tokens.product_volume_title }} {{ demandItem.size }}{% endif %}</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">
+                                            {% if demandItem.volume %}
+                                                {{ demandItem.volume|number_format_decimal }}
+                                                {% if demandItem.volumeTypeId %}
+                                                    {{ demandItem.volumeType.tokenTransChoice|transchoice(demandItem.volume) }}
+                                                {% endif %}
+                                            {% else %}
+                                                объем договорной
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    {{ include('@MetalDemands/partials/demand_files.html.twig', {
+                        'demand': demand,
+                    }, false) }}
+
+                    <p class="demand_delivery-text">{{ demand.info }}</p>
+                    <div class="demand-info demand-mobile"></div>
+                    <ul class="links demand_links clearfix">
+                        <li class="links_report item float-left clearfix">
+                    <span class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                          data-tooltip-title="Пожаловаться"
+                          data-popup="#complaint-demand"
+                          data-object-id="{{ demand.id }}"
+                          data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : demand.id, 'kind' : 'demand'}) }}">
+                        <span class="icon-complaint"></span>
+                    </span>
+                        </li>
+                        <li class="item width-181 float-left clearfix {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %}"
+                            {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+                            <div
+                                    class="button favorites is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if demand.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                                    data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : demand.id, 'object' : 'demand'}) }}">
+                                <span class="text">В Избранное</span>
+                                <span class="icon-favorite float-right"></span>
+                            </div>
+
+                            <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not demand.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                                 data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : demand.id, 'object' : 'demand'}) }}">
+                                <div class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                                    <span class="text">В Избранном</span>
+                                    <span class="icon-favorite-active float-right"></span>
+                                </div>
+
+                                <div class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                                    <span class="text">Удалить</span>
+                                    <span class="icon-favorite-del float-right"></span>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="print item width-181 float-left">
+                            <div class="print-button button is-bordered ie-radius js-print-page">Распечатать</div>
+                        </li>
+                        <li class="links_answer item width-181 float-left clearfix">
+                            {% if is_granted('ROLE_ALLOWED_VIEW_DEMAND_CONTACTS') %}
+                                <div class="button answer clickable is-bordered green-bg js-popup-opener ie-radius"
+                                        {% if not demand.email %}
+                                     data-popup="#demand-without-email"
+                                        {% else %}
+                                     data-popup="#demand-answer"
+                                     data-demand-id="{{ demand.id }}"
+                                     data-demand-answer-url="{{ path('MetalDemandsBundle:Demand:answer', {'id' : demand.id}) }}"
+                                    {% endif %}
+                                >
+                                    <span class="text">Ответить</span>
+                                    <span class="icon-back float-right"></span>
+                                </div>
+                            {% elseif is_granted('ROLE_USER') %}
+                                <span class="button answer clickable is-bordered green-bg ie-radius js-popup-opener"
+                                      data-popup="#complete-package">
+                        <span class="text">Ответить</span>
+                        <span class="icon-back float-right"></span>
+                        </span>
+                            {% else %}
+                                <span class="button answer clickable is-bordered green-bg ie-radius js-popup-opener"
+                                      data-popup="#login">
+                            <span class="text">Ответить</span>
+                            <span class="icon-back float-right"></span>
+                        </span>
+                            {% endif %}
+                        </li>
+                    </ul>
+
+                    {% if similarDemandsWidget.getDemandsCount() %}
+                        <div id="tabs" class="result-tabs-wrapper tabs demand_tabs clearfix">
+                            <ul class="tabs-list">
+                                <li class="item active ie-radius">
+                                    {% if currentCity %}
+                                        <span class="link clickable">Похожие заявки в {{ currentCity.titleLocative }}</span>
+                                    {% else %}
+                                        <span class="link clickable">Похожие заявки в {{ currentCountry.titleLocative }}</span>
+                                    {% endif %}
+                                    <span class="count">{{ similarDemandsWidget.getDemandsCount()|number_format_decimal }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tabs-content">
+                            <ul class="similar-list" id="similar-demands-container" data-replacement-zone="page.similar_demands_list" data-replacement-callback="scrollToElement">
+                                {{ brouzie_render_widget(similarDemandsWidget) }}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="right table-cell blue">
+            <div class="demand-info">
+                <div class="holder clearfix">
+                    <span class="answered icon-back float-left">{{ demand.answersCount }}</span>
+                    <span class="viewed icon-views float-left">{{ demand.viewsCount }}</span>
+                </div>
+                <div class="text">
+                    <p class="{% if demand.isFromTrader %}trader{% elseif demand.isFromBuyer %}buyer{% endif %}">{{ demand.consumerType.title|capitalize }}</p>
+                    <p class="location">{{ demand.demandPeriodicity.title|capitalize }} потребность</p>
+                </div>
+
+                {% if is_granted('VIEW_DEMAND_CONTACTS', demand) %}
+                    <div class="user-info-block">
+                        <p class="user">{{ demand.getFixedCompanyTitle() }}</p>
+                        <p class="user">{{ demand.getFixedUserTitle() }}</p>
+                        <p class="user-contact">
+                            {% if demand.phone %}<span class="phone-text">{{ demand.phone }}{% if demand.getFixedEmail() %},{% endif %}</span>{% endif %}
+                            {% if demand.getFixedEmail() %}
+                                <!--email_off-->
+                                    <a href="mailto:{{ demand.getFixedEmail() }}">{{ demand.getFixedEmail() }}</a>
+                                <!--/email_off-->
+                            {% endif %}
+                        </p>
+                    </div>
+                {% elseif is_granted('ROLE_USER') %}
+                    <p class="text">Расширенный и полный пакеты дают возможность просматривать контакты потребителей и многое другое. <a href="{{ path('MetalCorpsiteBundle:Default:services') }}">Получить</a></p>
+                {% else %}
+                    <!--noindex-->
+                        <p class="text">
+                            Для просмотра контактной информации о потребителе необходимо <br />
+                            <a href="{{ brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl(true) }}">зарегистрироваться</a>
+                            или
+                            <span class="link clickable js-popup-opener" data-popup="#login">авторизоваться</span>.
+                        </p>
+                    <!--/ noindex -->
+                {% endif %}
+
+                {% if favorite and favorite.comment %}
+                    <div class="comment-block left-bullet">
+                        <span class="text">{{ favorite.comment }}</span>
+                        <span class="date">{{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(favorite.createdAt) }}</span>
+                    </div>
+                {% endif %}
+
+                {% set warnContent %}
+                    Покупателю предоставлено право проверки Поставщика через портал metalloprokat.ru
+                {% endset %}
+                <div class="warn-div-demand" data-encoded-content="{{ warnContent|base64_encode|escape('html_attr') }}">
+                </div>
+
+            </div>
+
+            <div class="seo-block">
+                {% if demand.categories|length > 1 %}
+                    <div class="related-topics">
+                        <div class="related-topics_title">
+                            Связанные разделы
+                        </div>
+                        <ul class="topic-list">
+                            {% for category in demand.categories if category.id != currentCategory.id %}
+                                <li class="item">
+                                    <a class="link"
+                                       href="{{ path(route, routeParameters|merge({'category_slug' : category.slugCombined})) }}">{{ category.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {{ brouzie_render_widget('MetalProductsBundle:PremiumProducts', {
+                    'category' : currentCategory,
+                    'city' : currentCity,
+                    'country' : currentCountry,
+                    'show_category_mode' : 'category'}) }}
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            clone = $('.demand-info').not('.demand-mobile').html();
+            $('.demand-mobile').html(clone+'<br/>');
+        });
+
+        {% if app.request.query.get('print') %}
+            $(window).load(function () {
+                // хак для Оперы
+                window.setTimeout(function() {
+                    window.print();
+                }, 500);
+
+            });
+        {% endif %}
+    </script>
+{% endblock %}
+
+{% block sidebar '' %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'premium', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'left-sidebar', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'background', 'category_id' : currentCategory ? currentCategory.id : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'right-sidebar-1', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'right-sidebar-2', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'demand-view', 'zone_slug' : 'right-sidebar-3', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

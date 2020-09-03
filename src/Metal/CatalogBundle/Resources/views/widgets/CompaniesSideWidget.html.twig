@@ -1,0 +1,51 @@
+{% set currentCity = app.request.attributes.get('city') %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+{% set embedTitle = '' %}
+
+{% if _options['product'] %}
+    {% set embedTitle = _options['product'].brand.value %}
+{% elseif _options['brand'] %}
+    {% set embedTitle = _options['brand'].title %}
+{% elseif _options['manufacturer'] %}
+    {% set embedTitle = _options['manufacturer'].title %}
+{% endif %}
+
+<div class="title">
+    <strong>Компании, торгующие продукцией {{ embedTitle }}</strong>
+</div>
+<div class="premium-product-block topic-companies">
+    <ul class="topic-list">
+        {% for company in companiesViewModel.pagerfanta %}
+            {% set minisiteRouteParams = {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()} %}
+            {% if currentCity %}
+                {% set minisiteRouteParams = minisiteRouteParams|merge({'city' : currentCity.id }) %}
+            {% endif %}
+            {% set companyViewUrl = urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', minisiteRouteParams) %}
+            <li class="item clearfix">
+                <div class="topic-info float-left">
+                    <a class="title-link" href="{{ companyViewUrl }}">{{ company.title }}</a>
+                    <p class="text">{{ company.city.title }}</p>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        {% if company.minisiteEnabled %}
+                            <a class="img-link pattern-small" {% if currentCity %}rel=nofollow{% endif %} data-href="{{ companyViewUrl }}">
+                                {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq64', 'portal') %}
+                                {% if companyLogoUrl %}
+                                    <img src="{{ companyLogoUrl }}" itemprop="image" alt="{{ company.title }}" title="{{ company.title }}" />
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq64', 'portal') %}
+                            {% if companyLogoUrl %}
+                                <img src="{{ companyLogoUrl }}" itemprop="image" alt="{{ company.title }}" title="{{ company.title }}" />
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+

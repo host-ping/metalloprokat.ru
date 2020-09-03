@@ -1,0 +1,14 @@
+{% if attributesCollectionCollection|length %}
+    <h3>Что искали до вас</h3>
+    <ul>
+        {% for attributesCollection in attributesCollectionCollection %}
+            <li><span class="arrow">→</span>
+                <a class="has-arrow" href="{{ url('SprosProjectBundle:Default:index_subdomain_category',
+                    {'category_slug' : category.getUrl(attributesCollection.getUrl()),
+                        'subdomain' : city ? city.slug : null}) }}">
+                    {{ category.title }} {{ attributesCollection.toString() }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

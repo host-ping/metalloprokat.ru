@@ -1,0 +1,23 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Сообщение обратной связи от модератора сайта {{ project.title }}{% endblock %}
+
+{% block body_text -%}
+Модератор {{ senderUserName }} отправил письмо обратной связи.
+
+Текст сообщения: {{ textMessage }}
+Что бы прочитать и ответить, перейдите по ссылке
+{{ url('MetalPrivateOfficeBundle:Support:view', {'id': topicId}) }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Модератор {{ senderUserName }} отправил письмо обратной связи.<br/><br/>
+        Текст сообщения: {{ textMessage }} <br/>
+        <a href="{{ url('MetalPrivateOfficeBundle:Support:view', {'id': topicId}) }}">Что бы прочитать и ответить, перейдите по ссылке</a>
+    </p>
+{% endblock %}
+
+{% block user_agreement '' %}

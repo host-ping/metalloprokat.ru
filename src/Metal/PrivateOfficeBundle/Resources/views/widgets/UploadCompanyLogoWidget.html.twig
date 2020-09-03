@@ -1,0 +1,64 @@
+{% set popupId = 'upload-company-logo' %}
+
+<div id="{{ popupId }}-popup" data-popup-template="#{{ popupId }}-template"
+     class="load-photo-block popup-block opacity-border large"></div>
+
+<script type="text/ng-template" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup" ng-if="logo.url">Редактировать логотип</div>
+        <div class="title-popup" ng-if="!logo.url">Загрузить логотип</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              action="{{ path('MetalPrivateOfficeBundle:Company:saveCompanyLogo') }}"
+              data-file-upload="options"
+              data-replace-file-input="false"
+              data-ajax-form="companyLogoAjaxFormOptions"
+              method="post"
+              enctype="multipart/form-data"
+              class="load-photo-form popup-form"
+              novalidate="novalidate"
+        >
+            <fieldset>
+                <div class="clearfix">
+                    <div class="photo-wrapper float-left">
+                        <div class="img is-bordered">
+                            <span class="pattern-big">
+                                {# FIXME: отказаться от инлайн стилей, почему тут ширина и высота отличаются на 1 пиксель? сделать так, что б логотип выводился по центру по ширине/высоте #}
+                                <img ng-if="logo.url"
+                                     ng-src="<%= logo.url %>"
+                                     style="max-width: 113px; max-height: 112px;"
+                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="data-wrapper float-left">
+                        <div class="field-wrap">
+                            <label class="file-upload">
+                                <span class="file-btn button white-bg is-bordered ie-radius" ng-if="companyLogoFile"><%= companyLogoFile.name %></span>
+                                <span class="file-btn button white-bg is-bordered ie-radius" ng-if="!companyLogoFile">Выбрать из файла...</span>
+                                {{ form_widget(form.uploadedLogo, {'attr' : {'class' : 'file-btn button white-bg is-bordered ie-radius', 'file-model': 'companyLogoFile' }} ) }}
+                            </label>
+                        </div>
+                        <div class="field-wrap"
+                             ng-init="logo.optimizeLogo = logo.optimizeLogo === false ? false : true">
+                            <label for="{{ form.optimizeLogo.vars.id }}">
+                                {{ form_widget(form.optimizeLogo, {'attr': {'class': 'js-styled-checkbox', 'ng-model': 'logo.optimizeLogo', 'styled-checkbox' : ''}}) }}
+                                Оптимизировать изображение</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-wrapper">
+                    <input ng-if="logo.url" class="load-btn button blue-bg ie-radius" type="submit"
+                           value="Сохранить" />
+                    <input ng-if="!logo.url" class="load-btn button blue-bg ie-radius" type="submit"
+                           value="Загрузить" />
+                    <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

@@ -1,0 +1,72 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Metalloprokat.ru ПОВЫШАЕТ ЦЕНЫ НА УСЛУГИ С 01.09.2020{% endblock subject %}
+
+{% block body_text -%}
+
+    Уважаемые поставщики  металла!
+    С 1 сентября 2020 Metalloprokat.ru ВПЕРВЫЕ С 2015 ГОДА ПОВЫШАЕТ ЦЕНЫ НА СВОИ УСЛУГИ:
+
+    Расширенный доступ с 01.09.2020:
+    1 год = 73 500  руб.
+    6 мес. = 46 800 руб.
+    3 мес. = 28 800 руб.
+
+    Полный доступ:
+    1 год = 88 800 руб.
+    6 мес. = 56 500 руб.
+    3 мес. = 33 600 руб.
+
+    По любым вопросам пишите:
+    http://corp.metalloprokat.ru/contacts
+    или звоните:
+    +7 495 268-02-85
+
+
+    С уважением,
+    {{ user.country.domainTitle }}
+    http://www.{{ user.country.baseHost }}
+
+    {{ block('text_footer') }}
+{%- endblock body_text %}
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте{% if subscriber.getUser() %}, {{ subscriber.getUser().getFirstName() }}{% endif %}.
+        <br/>
+        <br/>
+
+        С 1 сентября 2020 Metalloprokat.ru ВПЕРВЫЕ С 2015 ГОДА ПОВЫШАЕТ ЦЕНЫ НА СВОИ УСЛУГИ:
+        <br/><br/>
+
+        До 31.08.2020 года стоимость подключения к Metalloprokat.ru составляет:<br/><br/>
+
+        Расширенный доступ с 01.09.2020:<br/>
+        1 год = 73 500  руб.<br/>
+        6 мес. = 46 800 руб.<br/>
+        3 мес. = 28 800 руб.<br/><br/>
+
+        Полный доступ:<br/>
+        1 год = 88 800 руб.<br/>
+        6 мес. = 56 500 руб.<br/>
+        3 мес. = 33 600 руб.<br/><br/><br/>
+
+        Перечень услуг по подключению Полного и Расширенного доступа можно уточнить на портале:<br/>
+        <a href="http://corp.metalloprokat.ru/media/">http://corp.metalloprokat.ru/media/</a>
+
+        <br/><br/>
+        По любым вопросам пишите - <a href="http://corp.metalloprokat.ru/contacts">http://corp.metalloprokat.ru/contacts</a>
+
+        или звоните:
+
+        +7 495 268-02-85
+
+        <br /><br />
+        С уважением,
+        <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a>
+    </p>
+    {% if hashKey is defined %}
+        <img src="{{- url('MetalNewsletterBundle:NewsletterViewer:track', {
+            'hashKey': hashKey
+        } ) -}}" />
+    {% endif %}
+{% endblock text_part_body %}

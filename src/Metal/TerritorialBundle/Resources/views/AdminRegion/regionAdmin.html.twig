@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        <li><a href="{{ path('admin_metal_territorial_city_list', {'filter' :  {'region' : {'value' : object.id}}}) }}">Города</a></li>
+    </ul>
+{% endblock %}

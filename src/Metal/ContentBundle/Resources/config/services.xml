@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="fm_bbcode.decoda.filter.image.class">Metal\ContentBundle\Bbcodes\ImageFilter</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="metal.content.parsers.mirstroek" class="Metal\ContentBundle\Parsers\ParserMirstroek">
+            <argument>http://www.mirstroek.ru</argument>
+            <argument>/companies</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.building_materials" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=1&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.systems_and_structures" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=133&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.interior_systems" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=400&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.engineering_equipment" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=450&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.equipment_and_tools" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=1050&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.building_objects_and_structures" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=2000&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.building_companies" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=2070&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.parsers.stroyfirm.other" class="Metal\ContentBundle\Parsers\ParserStroyfirm">
+            <argument>http://www.stroyfirm.ru</argument>
+            <argument>/search.php?mode=rs&amp;rubr=9000&amp;pr=0&amp;town=</argument>
+        </service>
+
+        <service id="metal.content.admin.tag" class="Metal\ContentBundle\Admin\TagAdmin">
+            <argument>metal.content.admin.tag</argument>
+            <argument>Metal\ContentBundle\Entity\Tag</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Теги" />
+        </service>
+
+        <service id="metal.content.admin.topic" class="Metal\ContentBundle\Admin\TopicAdmin">
+            <argument>metal.content.admin.topic</argument>
+            <argument>Metal\ContentBundle\Entity\Topic</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sphinxy.index_manager" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Топики" />
+        </service>
+
+        <service id="metal.content.admin.question" class="Metal\ContentBundle\Admin\QuestionAdmin">
+            <argument>metal.content.admin.question</argument>
+            <argument>Metal\ContentBundle\Entity\Question</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sphinxy.index_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Вопросы" />
+        </service>
+
+        <service id="metal.content.admin.comment" class="Metal\ContentBundle\Admin\CommentAdmin">
+            <argument>metal.content.admin.comment</argument>
+            <argument>Metal\ContentBundle\Entity\Comment</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Комментарии/Ответы на вопросы" />
+        </service>
+
+        <service id="metal.content.admin.comment_instagram" class="Metal\ContentBundle\Admin\CommentAdmin">
+            <argument>metal.content.admin.comment_instagram</argument>
+            <argument>Metal\ContentBundle\Entity\InstagramComment</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Комментарии к фото инстаграм" />
+        </service>
+
+        <service id="metal.content.admin.category" class="Metal\ContentBundle\Admin\CategoryAdmin">
+            <argument>metal.content.admin.category</argument>
+            <argument>Metal\ContentBundle\Entity\Category</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Категории" />
+        </service>
+
+        <service id="metal.content.admin.parser_category_associate" class="Metal\ContentBundle\Admin\ParserCategoryAssociateAdmin">
+            <argument>metal.content.admin.parser_category_associate</argument>
+            <argument>Metal\ContentBundle\Entity\ParserCategoryAssociate</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="content" label="Ассоциация категорий парсера" />
+        </service>
+
+        <service id="metal.content.concrete_data_fetcher"
+                 class="Metal\ContentBundle\DataFetching\ContentEntriesDataFetcher" public="false">
+        </service>
+
+        <service id="metal.content.data_fetcher" class="Metal\ProjectBundle\DataFetching\Sphinxy\SphinxyDataFetcher">
+            <argument type="service" id="sphinxy.default_connection" />
+            <argument type="service" id="metal.content.concrete_data_fetcher" />
+        </service>
+
+        <service id="metal.content.entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.content.concrete_entity_loader" />
+        </service>
+
+        <service id="metal.content.concrete_entity_loader"
+                 class="Metal\ContentBundle\DataFetching\ContentEntriesEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.content.content_entry_indexer" class="Metal\ContentBundle\Indexer\ContentEntryIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="content_entry" />
+        </service>
+
+        <service id="metal.content.grabber" class="Metal\ContentBundle\Service\Grabber\Grabber">
+        </service>
+
+        <service id="metal.content.content_sitemap_listener" class="Metal\ContentBundle\EventListener\ContentSitemapListener">
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <argument>%project.family%</argument>
+            <argument type="service" id="service_container" />
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+            <tag name="presta.sitemap.listener" />
+        </service>
+    </services>
+</container>

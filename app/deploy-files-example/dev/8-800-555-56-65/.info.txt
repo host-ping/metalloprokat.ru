@@ -1,0 +1,1 @@
+create symlink for assets: ln -s ../metalloprokat.dev/web/ assets

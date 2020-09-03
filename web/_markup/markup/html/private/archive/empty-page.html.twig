@@ -1,0 +1,31 @@
+{% extends '@markup/private/archive/_archive_layout.html.twig' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'demands' %}
+            {{ parent() }}
+        {% endblock %}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="send-order-wrapper">
+                    <span class="add-button icon-add-btn clickable demand"
+                            >Добавить заявку</span>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="private-view-category view-category demands">
+            <div class="content-scrollable js-scrollable">
+                <ul class="demands list private-fix-width">
+                    <li class="demand_item">
+                        <div class="empty-result">
+                            <p class="message">Здесь будут размещаться заявки, которые вы опубликовали</p>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

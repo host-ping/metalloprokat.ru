@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if field_description.name == 'landingSimple' %}
+            <input type="text" size="50" class="js-select-link-text" value="{{ url('MetalProjectBundle:LandingSimple:view', {'category_id' : object.category.id }) }}"> -
+            <a href="{{ path('MetalProjectBundle:LandingSimple:view', {'category_id' : object.category.id }) }}"
+               target="_blank">перейти</a>
+        {% elseif field_description.name == 'landingWizzard' %}
+            <input type="text" size="40" class="js-select-link-text" value="{{ url('MetalProjectBundle:Landing:view', {'category_id' : object.category.id }) }}"> -
+            <a href="{{ path('MetalProjectBundle:Landing:view', {'category_id' : object.category.id }) }}"
+               target="_blank">перейти</a>
+        {% endif %}
+    </div>
+{% endblock %}

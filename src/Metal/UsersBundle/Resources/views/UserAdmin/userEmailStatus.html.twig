@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {% if object.isEmailConfirmed %}
+        <span class="label label-success">да</span>
+    {% else %}
+        <span class="label label-danger">нет</span>
+        <a href="{{ admin.generateUrl('confirm_user_email', {'id': object.id}) }}" target="_blank">
+            подтвердить
+        </a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{# @var imageHelper \Metal\ProjectBundle\Helper\ImageHelper #}
+
+    <div class="controls sonata-ba-field sonata-ba-field-standard-natural " style="float:left; width: 136px; margin-left: 50px">
+        <img style="display:inline-block; max-width: 136px; max-height: 136px;" src="{{ asset('bundles/metalproject/img/pattern-big.jpg') }}">
+        <div style="max-width: 136px; max-height: 136px;">Без фото</div>
+        <input style="display:block; margin-left: 60px;" type="radio" name="{{ imageName }}" value="null"/>
+    </div>
+
+    {% set i = 0 %}
+    {# @var pagerfanta \Pagerfanta\Pagerfanta #}
+    {% for image in pagerfanta %}
+        {# @var image \Metal\ProductsBundle\Entity\ProductImage #}
+
+        {% set i = i + 1 %}
+        {% if i%4 == 0 %}<div style="display: inline-flex;">{% endif %}
+
+        <div class="controls sonata-ba-field sonata-ba-field-standard-natural " style="float:left; max-height: 200px; height: 200px; width: 136px; {% if i !=1 and (i-1)%4 == 0%}margin-left: 281px{% else %}margin-left: 100px{% endif %};">
+            {% set imageUrl = imageHelper.getPhotoUrlForProductPhoto(image, 'sq136') %}
+            {% if imageUrl %}
+                <img style="display:inline-block; max-width: 136px; max-height: 136px;" src="{{ imageUrl }}" />
+                <div style="max-width: 136px; max-height: 136px; {% if not image.company %}color:darkblue;{% endif %}">{{ image.description }}</div>
+            {% endif %}
+            <input style="display:block; margin-left: 60px;" type="radio" name="{{ imageName }}" value="{{ image.id }}"/>
+        </div>
+
+        {% if i%4 == 0 %}
+            </div><br/><br/>
+        {% endif %}
+    {% endfor %}
+
+<div style="margin-top: 250px;"></div>
+{% if pagerfanta.haveToPaginate %}
+    <div class="pagerfanta text-center">
+        <ul class="pagination">
+            {% if pagerfanta.hasPreviousPage %}
+                <li><a name="{{ imageName }}" data-page="1">Первая</a></li>
+            {% endif %}
+
+            {% set pageStart = pagerfanta.currentPage - 5 %}
+            {% set pageEnd = pagerfanta.currentPage + 5 %}
+            {% for pn in range(pageStart, pageEnd) if pn > 0 and pn <= pagerfanta.nbPages %}
+                <li {% if pn == pagerfanta.currentPage %} class="active"{% endif %}>
+                    <a name="{{ imageName }}" data-page="{{ pn }}">
+                        {{ pn }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if pagerfanta.hasNextPage %}
+                <li><a name="{{ imageName }}" data-page="{{ pagerfanta.nextPage }}">Следующая</a></li>
+                <li><a name="{{ imageName }}" data-page="{{ pagerfanta.nbPages }}">Последняя</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
+
+

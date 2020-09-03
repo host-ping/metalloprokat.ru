@@ -1,0 +1,22 @@
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set categorySlug = routeParameters['category_slug'] %}
+
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+
+{% if cities %}
+    <ul class="row float-left">
+        <li class="title">В других регионах</li>
+        {% for city in cities %}
+            <li>
+                <a class="is-gradiented js-alternate-text"
+                   data-alternate-text="в {{ city.getTitleLocative }}"
+                   title="{{ fullCategoryTitle }}в {{ city.getTitleLocative }}"
+                   href="{{ url(route, {
+                       'category_slug' : category ? categorySlug : null,
+                       'subdomain' : city.getSlugWithFallback() }) }}">
+                    {{ fullCategoryTitle }}в {{ city.getTitleLocative }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

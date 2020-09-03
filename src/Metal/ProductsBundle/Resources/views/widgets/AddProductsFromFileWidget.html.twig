@@ -1,0 +1,65 @@
+{% set popupId = 'add-products' %}
+
+<div id="{{ popupId }}-popup" data-popup-template="#{{ popupId }}-template" class="add-products-block popup-block opacity-border large"></div>
+
+<script type="text/ng-template" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Загрузить товары</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+        <form id="{{ popupId }}-form"
+              action="{{ path('MetalPrivateOfficeBundle:Products:import') }}"
+              data-file-upload="productsImportFileUploadOptions"
+              data-replace-file-input="false"
+              data-ajax-form="productsImportAjaxFormOptions"
+              method="post"
+              enctype="multipart/form-data"
+              class="popup-form"
+              novalidate="novalidate"
+                >
+            <fieldset>
+                <div class="item">
+                    <p>Воспользуйтесь нашим простым шаблоном для формирования списка товаров:</p>
+                    <a class="file-btn button white-bg is-bordered ie-radius" href="{{ app.request.getUriForPath('/'~products_import_blank_file) }}">Скачать шаблон</a>
+                </div>
+                <div class="item clearfix">
+                    <p>Загрузите ваш список товаров, созданный на основе шаблона</p>
+                    <label class="file-upload float-left" ng-class="{disabled: ymlUrl}">
+                        <span ng-if="ymlUrl" class="overflow items"></span>
+                        <span class="file-btn button white-bg is-bordered ie-radius" ng-if="productsFile"><%= productsFile.name %></span>
+                        <span class="file-btn button white-bg is-bordered ie-radius" ng-if="!productsFile">Выбрать файл...</span>
+
+                        {{ form_widget(form.attachment, {'attr' : {'class' : 'file-btn white-bg is-bordered ie-radius', 'file-model': 'productsFile', 'ng-disabled': 'ymlUrl' }}) }}
+                    </label>
+                </div>
+                <!--<ul class="radio-list">-->
+                    <!--<li class="item clearfix">-->
+                        <!--<input id="add" type="radio" name="radio-item" class="radio bg-grey80 float-left"/>-->
+                        <!--<label for="add" class="float-left">Добавить к существующему, обновить одинаковые позиции (рекомендуется)</label>-->
+                    <!--</li>-->
+                    <!--<li class="item clearfix">-->
+                        <!--<input id="del" type="radio" name="radio-item" class="radio bg-grey80 float-left"/>-->
+                        <!--<label for="del" class="float-left">Удалить существующий и закачать новый</label>-->
+                    <!--</li>-->
+                <!--</ul>-->
+                <p>Или укажите ссылку на прайс-лист в формате YML</p>
+                <ul class="radio-list">
+                    <li class="item field-wrap">
+                        {#<span type="text" name="yml_url" ng-model="ymlUrl" class="form-text" ng-disabled="productsFile"> </span>#}
+                        <div ng-class="{disabled: productsFile}">
+                            <span ng-if="productsFile" class="overflow items"></span>
+                            {{ form_widget(form.ymlUrl, {'attr' : {'class' : 'form-text', 'ng-model': 'ymlUrl', 'ng-disabled': 'productsFile' }}) }}
+                        </div>
+                    </li>
+                </ul>
+                <div class="submit-wrapper">
+                    <input class="add-btn button blue-bg ie-radius" type="submit" value="Добавить" />
+                    <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </fieldset>
+            {{ form_widget(form.branchOffice, {'attr' : {'class' : 'g-hidden', 'value' : '<%=filial.id%>'}}) }}
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

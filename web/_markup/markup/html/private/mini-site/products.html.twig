@@ -1,0 +1,450 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Товары' %}
+    {% block content %}
+        <div id="content" class="private-room-content content-right outline-right float-right">
+            {% block tabs %}
+                {% set activeTab = 'products' %}
+                {{ parent() }}
+            {% endblock %}
+            <div class="products-content-wrapper outline-right">
+                <form class="product-management mini-site-products  form js-private-product-container" action="#">
+                    <div class="form-container clearfix">
+                        <div class="products-list">
+                            <div class="heading clearfix">
+                                <div class="check-all block float-left">
+                                    <input type="checkbox" class="js-styled-checkbox bg-grey"/>
+                                </div>
+                                <div class="product-photo block float-left">
+                                    <a class="link icon-check black js-popover-opener" data-popover="#photo-product-filter" href="#">все</a>
+                                    <div id="photo-product-filter" class="drop-wrapper photo-product-filter opacity-border">
+                                        <ul class="dropdown">
+                                            <li class="drop-item">
+                                                <a class="drop-link current" href="#">все</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">с фото</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">без фото</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-name block float-left">
+                                    <input type="text" class="search form-text ie-radius js-popover-opener-focus" data-popover="#categories" placeholder="поиск по товарам"/>
+                                    <button type="submit" class="icon-search-small search-button"></button>
+                                    <div id="categories" class="choose-section drop-wrapper categories-filter opacity-border">
+                                        <div class="heading">
+                                            <div class="drop-item special">
+                                                <div class="link-wrapper">
+                                                    <a href="#" class="drop-link">Спецпредложения</a>
+                                                </div>
+                                                <div class="link-wrapper">
+                                                    <a href="#" class="drop-link">Без категорий</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="sections js-scrollable">
+                                                <ul class="category-list">
+                                                    <li class="drop-item">
+                                                        <a href="#" class="drop-link green-color">Сортовой прокат</a>
+                                                        <ul class="level-inside">
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Арматура</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Балка</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link green-color" href="#">Канатка</a>
+                                                                <ul class="level-inside">
+                                                                    <li class="drop-item">
+                                                                        <a class="drop-link" href="#">Арматура</a>
+                                                                    </li>
+                                                                    <li class="drop-item">
+                                                                        <a class="drop-link green-color" href="#">Балка</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Квадрат</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Арматура</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Балка</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Канатка</a>
+                                                            </li>
+                                                            <li class="drop-item">
+                                                                <a class="drop-link" href="#">Квадрат</a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-price block float-left">
+                                    <a class="link icon-check black" href="#">по цене</a>
+                                </div>
+                                <div class="product-status block float-left">
+                                    <span class="link icon-check black clickable js-popover-opener" data-popover="#status">все</span>
+                                    <div id="status" class="drop-wrapper status-filter opacity-border">
+                                        <ul class="dropdown">
+                                            <li class="drop-item">
+                                                <span class="drop-link current" href="#">все</span>
+                                            </li>
+                                            <li class="drop-item">
+                                                <span class="drop-link icon-check-big complete clickable">промодерировано</span>
+                                            </li>
+                                            <li class="drop-item">
+                                                <span class="drop-link process icon-clock clickable">не промодерировано</span>
+                                            </li>
+                                            <li class="drop-item">
+                                                <span class="drop-link icon-filter-del clickable">не промодерировано</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="filials-list-wrapper float-left">
+                                    <span class="filial icon-check black clickable js-popover-opener" data-popover="#filials-list-filter">Центральный офис</span>
+                                    <div id="filials-list-filter" class="drop-wrapper filials-list-filter opacity-border">
+                                        <ul class="dropdown">
+                                            <li class="drop-item">
+                                                <span class="drop-link current">Центральный офис</span>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">Филиал 1</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">Филиал 2</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">Добавить</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-management-list">
+                                <div class="list js-scrollable">
+                                    <div class="item">
+                                        {#<div class="items overflow"></div>#}
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product  is-gradiented">Шестигранник калиброванный калиброванный</strong>
+                                                <p class="category ">Арматура</p>
+                                                <p class="category green-color">Сортовой прокат</p>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size  is-gradiented">20x30x1523</p>
+                                                <p class="text ">сп</p>
+                                                <span class="icon-help js-helper-opener"
+                                                      data-text="Спецпредложение будет отображаться на главной странице вашего сайта"
+                                                      data-absolute-parent=".products-list"></span>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="complete icon-check-big clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                                <p class="text ">сп</p>
+                                                <span class="icon-help js-helper-opener"
+                                                      data-text="Спецпредложение будет отображаться на главной странице вашего сайта"
+                                                      data-absolute-parent=".products-list"></span>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                                <p class="text ">сп</p>
+                                                <span class="icon-help js-helper-opener"
+                                                      data-text="Спецпредложение будет отображаться на главной странице вашего сайта"
+                                                      data-absolute-parent=".products-list"></span>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="complete icon-check-big clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                                <p class="text ">сп</p>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="fix-holder item-block clearfix">
+                                            <div class="check-all block">
+                                                <input type="checkbox" class="checkbox js-styled-checkbox"/>
+                                            </div>
+                                            <div class="product-photo block">
+                                                <div class="img is-bordered ">
+                                                    <a class="pattern-small" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-name block">
+                                                <strong class="product ">Шестигранник калибров...</strong>
+                                                <span class="category ">Арматура</span>
+                                            </div>
+                                            <div class="product-size block">
+                                                <p class="size ">20x30</p>
+                                            </div>
+                                            <div class="product-price block">
+                                                <p class="price red-color ">
+                                                    <strong>26 000 <span class="icon-rouble"></span></strong>
+                                                </p>
+                                                <p class="vol ">за тонну</p>
+                                            </div>
+                                            <div class="product-status block">
+                                                <span class="process icon-clock clickable "></span>
+                                            </div>
+                                            <div class="product-filial block">
+                                                <span class="filial">Центральный офис</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="loading-mask-wrapper">
+                                        <div class="loading-mask big">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-shadow"></div>
+                    </div>
+                    <fieldset class="bottom-block clearfix">
+                        <p class="choose-products float-left">Выбрано 18 товаров из 2832</p>
+                        <ul class="float-right">
+                            <li class="delete-btn item float-left">
+                                <button type="submit" class="delete button red-bg js-popup-opener ie-radius" data-popup="#delete-product">Удалить</button>
+                            </li>
+                            <li class="replace-btn item float-left">
+                                <button type="submit" class="replace button white-bg is-bordered js-popover-opener ie-radius" data-popover="#choose-section" data-left="0" data-top="250">Перенести в раздел</button>
+                            </li>
+                            <li class="photo-btn-wrapper item float-left">
+                                <button type="submit" class="photo-btn button white-bg is-bordered clearfix ie-radius">
+                                    <span class="text float-left">Связать с фото</span>
+                                    <span class="photo-ico float-right"></span>
+                                </button>
+                            </li>
+                        </ul>
+                        <ul class="float-right">
+                            <li class="delete-btn item float-left">
+                                <button disabled="disabled" type="submit" class="delete button red-bg js-popup-opener ie-radius" data-popup="#delete-product">Удалить</button>
+                            </li>
+                            <li class="replace-btn item float-left">
+                                <button disabled="disabled" type="submit" class="replace button white-bg is-bordered js-popover-opener ie-radius" data-popover="#choose-section" data-left="0" data-top="250">Перенести в раздел</button>
+                            </li>
+                            <li class="photo-btn-wrapper item float-left">
+                                <button type="submit" class="photo-btn button white-bg is-bordered clearfix ie-radius" disabled="disabled">
+                                    <span class="text float-left">Связать с фото</span>
+                                    <span class="photo-ico float-right"></span>
+                                </button>
+                            </li>
+                        </ul>
+                    </fieldset>
+                </form>
+                {#<div class="items overflow"></div>#}
+                {#<div class="loading-mask big js-popup-opener" data-popup="#load-photo">#}
+                    {#<div class="spinner"></div>#}
+                {#</div>#}
+            </div>
+        </div>
+    {% endblock content %}

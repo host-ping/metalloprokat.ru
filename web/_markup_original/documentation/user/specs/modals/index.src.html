@@ -1,0 +1,395 @@
+<link href="css/starting.css" rel="stylesheet">
+<h1>Модальные окна</h1>
+
+<section class="source_section">
+    <h2>Попап</h2>
+    <p>Открытие попапа происходит путем клика по кнопке или ссылке с классом <code>.js-popup-opener</code> и атрибутом
+        <code>data-popup="#%popup-id%"</code></p>
+    <div class="source_example">
+        <div id="promotion-1" class="promotion-popup popup-block opacity-border large">
+            <div class="popup-content">
+                <div class="title-popup">Заголовок</div>
+                <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+
+                <p> Контент окна </p>
+                <div class="submit-wrapper">
+                    <input class="send-button button blue-bg ie-radius" type="submit" value="Оплатить"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Поповер</h2>
+    <div>Открытие поповера происходит путем клика по кнопке или ссылке с классом <code>.js-popover-opener</code> и атрибутом
+        <code>data-popover="#%popover-id%"</code>. Также открывашка попопера имеет ряд дополнительных необязательных атрибутов:
+    <ol>
+        <li><code>data-different-position="true"</code> - если указан, то позиция поповера смещается на величину левого и верхнего паддинга открывашки</li>
+        <li><code>data-offset-left="%number%"</code> - указывается относительное смещение влево, при этом должен быть указан <code>data-different-position="true"</code></li>
+        <li><code>data-offset-top="%number%"</code> - указывается относительное смещение вверх, при этом должен быть указан <code>data-different-position="true"</code></li>
+    </ol>
+    </div>
+        <div class="source_example">
+            <div class="drop-wrapper popover-block  opacity-border">
+                <div class="dropdown">
+                    <p> Контент окна </p>
+                </div>
+            </div>
+        </div>
+</section>
+
+<section class="source_section">
+    <h2>Хелпер</h2>
+        <div class="source_example" style="height: 200px; padding-top: 80px;">
+            <span class="icon-help clickable js-helper-opener" data-text="Ваша компания будет
+                                 отображаться в списке по запросам указанных категорий продукции.">
+                <div class="helper opacity-border">
+                    <div class="content">
+                        Ваша компания будет
+                        отображаться в списке по запросам указанных категорий продукции.
+                    </div>
+                    <div class="b"></div>
+                </div>
+
+            </span>
+        </div>
+</section>
+
+<section class="source_section">
+    <h2>Дейтпикер</h2>
+    <div class="source_example">
+        <div id="datepicker" class="drop-wrapper popover-block datepicker opacity-border" style="display: block;">
+            <div class="heading white-bg">
+                <div class="date icon-calendar">12 мар 2013</div>
+            </div>
+            <div class="calendar-wrapper white95-bg">
+                <div class="calendar-navigation clearfix">
+                    <div class="month float-left">
+                        <ul class="month-list">
+                            <li class="item">Март</li>
+                        </ul>
+                        <div class="nav-btn">
+                            <a class="prev btn" href="#">prev</a>
+                            <a class="next btn" href="#">next</a>
+                        </div>
+                    </div>
+                    <div class="year float-right">
+                        <ul class="year-list">
+                            <li class="item">2013</li>
+                        </ul>
+                        <div class="nav-btn">
+                            <a class="prev btn" href="#">prev</a>
+                            <a class="next btn" href="#">next</a>
+                        </div>
+                    </div>
+                </div>
+                <table class="calendar">
+                    <thead>
+                    <tr class="row">
+                        <th class="col">пн</th>
+                        <th class="col">вт</th>
+                        <th class="col">ср</th>
+                        <th class="col">чт</th>
+                        <th class="col">пт</th>
+                        <th class="col">сб</th>
+                        <th class="col">вс</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="week row">
+                        <td class="first col in-range first-range last-range disabled">
+                            <div class="elem">
+                                <span class="link ie-radius">25</span>
+                            </div>
+                        </td>
+                        <td class="col disabled">26</td>
+                        <td class="col disabled">27</td>
+                        <td class="col disabled">28</td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">1</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">2</a>
+                            </div>
+                        </td>
+                        <td class="last col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">3</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week row">
+                        <td class="first col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">4</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">5</a>
+                            </div>
+                        </td>
+                        <td class="col disabled in-month">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">6</a>
+                            </div>
+                        </td>
+                        <td class="col disabled in-month">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">7</a>
+                            </div>
+                        </td>
+                        <td class="col disabled in-month">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">8</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">9</a>
+                            </div>
+                        </td>
+                        <td class="last col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">10</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week row">
+                        <td class="first col in-range first-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">11</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">12</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">13</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">14</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">15</a>
+                            </div>
+                        </td>
+                        <td class="col in-range current">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">16</a>
+                            </div>
+                        </td>
+                        <td class="last col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">17</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week row">
+                        <td class="first col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">18</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">19</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">20</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">21</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">22</a>
+                            </div>
+                        </td>
+                        <td class="col in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">23</a>
+                            </div>
+                        </td>
+                        <td class="last col in-range last-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">24</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week row">
+                        <td class="first col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">25</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">26</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">27</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">28</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">29</a>
+                            </div>
+                        </td>
+                        <td class="col">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">30</a>
+                            </div>
+                        </td>
+                        <td class="last col first-range in-range">
+                            <div class="elem">
+                                <a class="link ie-radius" href="#">31</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week row">
+                        <td class="first in-range col disabled">
+                            <div class="elem">
+                                <span class="link">1</span>
+                            </div>
+                        </td>
+                        <td class="col in-range disabled">
+                            <div class="elem">
+                                <span class="link">2</span>
+                            </div>
+                        </td>
+                        <td class="col in-range disabled">
+                            <div class="elem">
+                                <span class="link">3</span>
+                            </div>
+                        </td>
+                        <td class="col in-range disabled">
+                            <div class="elem">
+                                <span class="link">4</span>
+                            </div>
+                        </td>
+                        <td class="col in-range disabled">
+                            <div class="elem">
+                                <span class="link">5</span>
+                            </div>
+                        </td>
+                        <td class="col in-range disabled">
+                            <div class="elem">
+                                <span class="link">6</span>
+                            </div>
+                        </td>
+                        <td class="last col last-range in-range disabled">
+                            <div class="elem">
+                                <span class="link">7</span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Балун компании с товарами</h2>
+    <div class="source_example">
+        <div id="balloon" class="drop-wrapper map-balloon opacity-border">
+            <div class="dropdown">
+                <div class="rating clearfix">
+                    <span class="star-mini icon-star-colored"></span>
+                    <span class="star-mini icon-star-colored"></span>
+                    <span class="star-mini icon-star-colored"></span>
+                </div>
+                <div class="title"><a href="#">СтальИнтекс</a></div>
+                <p class="localization gray60-color">филиал в Люберцах</p>
+                <a class="site" href="#">staltorg.ru</a>
+
+                <div class="contacts">
+                    <span class="phone-text">+7 (495) 784</span>
+                    ( <a class="see" href="#">показать</a> )
+                    <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                </div>
+                <div class="more clearfix">
+                    <div class="promo-label label float-left">
+                        <a class="label-link" href="#">Промо</a>
+                    </div>
+                </div>
+                <div class="more clearfix">
+
+                    <div class="product-label label float-left">
+                        <a class="label-link" href="#">еще 95 товаров</a>
+                    </div>
+                    <div class="date float-left">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown white95-bg">
+                <div class="product-info">
+                    <strong><a href="#" class="small-link">Арматура строительная</a></strong>
+
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Балун компании без товаров</h2>
+    <div class="source_example">
+        <div id="balloon-1" class="drop-wrapper map-balloon simple opacity-border">
+            <div class="dropdown">
+                <div class="rating clearfix">
+                    <span class="star-mini icon-star-colored"></span>
+                    <span class="star-mini icon-star-colored"></span>
+                    <span class="star-mini icon-star-colored"></span>
+                </div>
+                <div class="title"><a href="#">СтальИнтекс</a></div>
+                <p class="localization gray60-color">филиал в Люберцах</p>
+                <a class="site" href="#">staltorg.ru</a>
+
+                <div class="contacts">
+                    <span class="phone-text">+7 (495) 784</span>
+                    ( <a class="see" href="#">показать</a> )
+                    <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                </div>
+                <div class="more clearfix">
+                    <div class="product-label label float-left">
+                        <a class="label-link" href="#">еще 95 товаров</a>
+                    </div>
+                    <div class="date float-left">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

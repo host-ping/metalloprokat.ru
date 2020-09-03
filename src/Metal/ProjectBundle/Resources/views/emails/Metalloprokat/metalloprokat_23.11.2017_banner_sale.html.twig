@@ -1,0 +1,24 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Чёрная Пятница на Metalloprokat.ru: только неделю все Центральные баннеры со скидкой 50%{% endblock subject %}
+
+{% block body_text -%}
+Уважаемые наши партнеры!
+
+    Только до конца ноября Центральные баннеры в разделах "Поставщики" и "Потребители" на любой срок со скидкой 50%!
+
+    Все расценки на баннеры можно узнать на https://corp.metalloprokat.ru/media/
+
+    или по телефону +7 (495) 268-02-85
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p>Уважаемые наши партнеры!</p>
+    <p>Только до конца ноября Центральные баннеры в разделах "Поставщики" и "Потребители" на любой срок со скидкой 50%!</p>
+    <p>Все расценки на баннеры можно посмотреть на <a href="http://corp.metalloprokat.ru/media/">corp.metalloprokat.ru/media</a></p>
+    <p>или уточнить по телефону +7 (495) 268-02-85</p>
+    <br/>
+    <p>С уважением, <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+{% endblock %}

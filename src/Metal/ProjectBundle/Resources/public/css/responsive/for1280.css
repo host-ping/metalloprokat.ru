@@ -1,0 +1,161 @@
+body{
+    min-width: 1013px;
+}
+/*Контентная зона*/
+.head-announcements-wrapper .head-announcements,
+.mini-site #main,
+.portal #main{
+    width: 940px;
+}
+.portal #main:not(.main-wide) .content-wide{
+    width: 893px;
+}
+.portal #main:not(.main-wide) .content-wide.table-container{
+    width: 912px;
+}
+#main:not(.main-wide) .premium-announcement.has-announcement{
+    overflow-y: hidden;
+    overflow-x: scroll;
+    width: 892px !important;
+    height: 102px !important;
+}
+#main:not(.main-wide) .premium-announcement.has-announcement.resizable-announcement{
+    overflow-x: hidden;
+    width: 100% !important;
+    height: 90px !important;
+}
+.portal .content-right:before{
+    width: 184px;
+}
+.head-announcements .wrap,
+.wizzard .wrap,
+.mini-site .wrap,
+.portal #main:not(.main-wide) .wrap{
+    width: 912px;
+}
+.portal .search-block .more .wrap{
+    width: 912px;
+}
+
+.portal .view-category .note-wrapper{
+    width: 119px;
+}
+.portal .note-wrapper .text{
+    font-size: 11px;
+}
+.portal .view-category .favorites_demands .demand_item{
+    width: 708px;
+}
+.portal .steps-block{
+    width: 164px;
+}
+.portal .premium-product-block .topic-list .topic-info{
+    width: 180px;
+}
+.portal .product-right .info-wrapper{
+    width: 219px;
+}
+.portal .company-info-wrapper .company-info{
+    width: 155px;
+}
+.portal .right.table-cell{
+    width: auto;
+}
+.view-category .note{
+    width: 140px;
+}
+.inside-page .product-info-wrapper,
+.product-inside .product-info-wrapper{
+    width: auto;
+}
+/*---------------*/
+
+/*Сайдбар*/
+.portal .filters{
+    padding-left: 15px;
+    width: 155px;
+}
+.mini-site .side-left .products-wrapper{
+    width: 153px !important;
+}
+.filters .product .item{
+    width: 165px;
+}
+.mini-site .premium-product-block .img,
+.mini-site .side-left .products-wrapper .count,
+.portal .filters .product .count{
+    display: none;
+}
+.mini-site .side-left,
+.portal .side-left{
+    width: 184px !important;
+}
+.portal .sidebar-content{
+    width: 180px;
+}
+.portal .filters .sell-type-list{
+    padding-right: 0;
+    padding-left: 0;
+}
+.portal .filters .sell-type-list .all,
+.portal .filters .sell-type-list .wholesale{
+    width: 24px;
+}
+.portal .filters .sell-type-list .item-link{
+    padding: 7px 4px 8px;
+}
+.portal .filters .filter .list.three-column .filter-item,
+.portal .filters .filter .list.two-column .filter-item{
+    width: 46%;
+}
+.mini-site .premium-product-block .topic-list .topic-info{
+    width: 130px !important;
+}
+.mini-site .side-left .products-wrapper{
+    padding: 10px 10px 20px 20px !important;
+}
+.mini-site .premium-product-block{
+    padding-left: 20px !important;
+    padding-right: 10px !important;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .topic-list .item + .item{
+    margin-top: 5px !important;
+}
+/*-------*/
+.submit-wrapper.js-show-all{
+    width: 166px;
+}
+
+
+/*Кнопки*/
+.portal #main:not(.main-wide) .width-181{
+    width: 158px;
+}
+/*-------*/
+.wizzard-block .steps-list{
+    width: 360px;
+}
+.wizzard-block .steps-list .step + .step{
+    margin-left: 115px;
+}
+.wizzard-block .steps-list .step + .step:before{
+    content: '';
+    border-top: solid 1px #e2e2e2;
+    display: block;
+    position: absolute;
+    width: 115px;
+    left: -115px;
+    top: 20px;
+}
+
+
+/*********Additional markup***************/
+
+#main.main-wide{
+    width: 100%;
+    max-width: 1280px;
+}
+#main.main-wide .similar-list .item.outline,
+#main.main-wide .demand_tabs{
+    margin-left: -35px;
+}

@@ -1,0 +1,65 @@
+'MetalCatalogBundle:Product:review':
+    path:     /product/review/{id}
+    methods:  [POST]
+    defaults: { _controller: MetalCatalogBundle:Product:review }
+    requirements:
+        id: \d+
+
+'MetalCatalogBundle:Manufacturer:view':
+    path:     /manufacturers/{slug}
+    defaults: { _controller: MetalCatalogBundle:Manufacturer:view }
+    requirements:
+        slug: %company_slug_regex%
+
+'MetalCatalogBundle:Brand:view':
+    path:     /brands/{slug}
+    defaults: { _controller: MetalCatalogBundle:Brand:view }
+    requirements:
+        slug: %company_slug_regex%
+
+'MetalCatalogBundle:Products:catalog_products_list_without_sort':
+    path:      /last-catalog-products/
+    host:      "{subdomain}.{base_host}"
+    defaults: { _controller: MetalCatalogBundle:Products:list, subdomain: www, tab: catalog_products, base_host: %base_host% }
+    requirements:
+        base_host: .+
+
+'MetalCatalogBundle:Brands:brands_list_without_sort':
+    path:      /last-brands/
+    host:      "{subdomain}.{base_host}"
+    defaults: { _controller: MetalCatalogBundle:Brands:list, subdomain: www, tab: brands, base_host: %base_host% }
+    requirements:
+        base_host: .+
+
+'MetalCatalogBundle:Manufacturers:manufacturers_list_without_sort':
+    path:      /last-manufacturers/
+    host:      "{subdomain}.{base_host}"
+    defaults: { _controller: MetalCatalogBundle:Manufacturers:list, subdomain: www, tab: manufacturers, base_host: %base_host% }
+    requirements:
+        base_host: .+
+
+
+'MetalCatalogBundle:Search:search':
+    path:      /search-catalog/
+    defaults: { _controller: MetalCatalogBundle:Search:search }
+
+MetalCatalogBundle:Api:getAttributeValues:
+    path:      /api/catalog/attribute_values/{tab}/{category_id}/{attribute_id}
+    host:      "{subdomain}.{base_host}"
+    methods:  [POST]
+    defaults: { _controller: MetalCatalogBundle:Api:getAttributeValues, subdomain: www, base_host: %base_host% }
+    requirements:
+        tab: manufacturers|brands|catalog_products
+        category_id: \d+
+        attribute_id: \d+
+        base_host: .+
+
+MetalCatalogBundle:Api:getItemsCount:
+    path:      /api/catalog/items_count/{tab}/{category_id}
+    host:      "{subdomain}.{base_host}"
+    methods:  [POST]
+    defaults: { _controller: MetalCatalogBundle:Api:getItemsCount, subdomain: www, base_host: %base_host% }
+    requirements:
+        tab: manufacturers|brands|catalog_products
+        category_id: \d+
+        base_host: .+

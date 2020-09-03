@@ -1,0 +1,22 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div>
+                <span style="background:#428bca; width:10px; height:10px; display:inline-block"></span> - Категория
+            </div>
+            <div>
+                <span style="background:#276db4; width:10px; height:10px; display:inline-block"></span> - Производитель
+            </div>
+            <div>
+                <span style="background:#15b4ad; width:10px; height:10px; display:inline-block"></span> - Бренд
+            </div>
+            <div>
+                <span style="background:#999; width:10px; height:10px; display:inline-block"></span> - Остальные
+                аттрибуты
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal_notifications.telegram.message_formatter"
+                 class="Metal\DemandsBundle\Notifications\Telegram\MessageFormatter">
+            <argument type="service" id="twig" />
+        </service>
+
+        <service id="metal_notifications.onesinal.message_formatter"
+                 class="Metal\DemandsBundle\Notifications\OneSignal\MessageFormatter">
+            <argument type="service" id="twig" />
+        </service>
+
+        <service id="metal_notifications.telegram.botman" class="BotMan\BotMan\BotMan">
+            <factory service="metal_notifications.telegram_factory" method="getBotMan" />
+        </service>
+
+        <service id="metal_notifications.telegram.message_sender"
+                 class="Metal\DemandsBundle\Notifications\Telegram\MessageSender">
+            <argument type="service" id="metal_notifications.telegram.botman" />
+        </service>
+
+        <service id="metal_notifications.telegram.cache" class="BotMan\BotMan\Cache\Psr6Cache">
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="metal_notifications.telegram.storage" class="BotMan\BotMan\Storages\Drivers\FileStorage">
+            <argument>%kernel.cache_dir%</argument>
+        </service>
+
+        <service id="metal_notifications.telegram_factory"
+                 class="Metal\DemandsBundle\Notifications\Telegram\TelegramFactory">
+            <argument>%notifications.telegram_bot_api_token%</argument>
+            <argument type="service" id="metal_notifications.telegram.cache" />
+            <argument type="service" id="metal_notifications.telegram.storage" />
+        </service>
+
+        <service id="metal_notifications.notifier.telegram.public"
+                 class="Metal\DemandsBundle\Notifications\Telegram\TelegramNotifier">
+            <argument type="service" id="metal_notifications.telegram.message_formatter" />
+            <argument type="service"
+                      id="metal.demands.notifications.data_provider.demand_info_provider" />
+            <argument type="service" id="metal_notifications.telegram.message_sender" />
+            <argument>%notifications.telegram_chat_id%</argument>
+        </service>
+
+        <service id="metal_notifications.notifier.telegram.personal"
+                 class="Metal\DemandsBundle\Notifications\Telegram\PersonalTelegramNotifier">
+            <argument type="service" id="metal.demands.notifications.data_provider.telegram_subscriber_provider" />
+            <argument type="service" id="metal.demands.notifications.data_provider.demand_info_provider" />
+            <argument type="service" id="metal.demands.notifications.data_provider.demand_subscription_info_provider" />
+            <argument type="service" id="metal_notifications.telegram.message_formatter" />
+            <argument type="service" id="metal_notifications.telegram.message_sender" />
+        </service>
+
+        <service id="metal_notifications.notifier.onesignal"
+                 class="Metal\DemandsBundle\Notifications\OneSignal\OneSignalNotifier">
+            <argument type="service" id="metal_notifications.onesinal.message_formatter" />
+            <argument type="service"
+                      id="metal.demands.notifications.data_provider.demand_info_provider_onesignal" />
+        </service>
+
+        <service id="metal_notifications.notifier.telegram" class="Metal\DemandsBundle\Notifications\ChainNotifier">
+            <argument type="collection">
+                <argument type="service" id="metal_notifications.notifier.telegram.public" />
+                <argument type="service" id="metal_notifications.notifier.telegram.personal" />
+                <argument type="service" id="metal_notifications.notifier.onesignal" />
+            </argument>
+        </service>
+
+        <service
+                id="metal_notifications.notifier.telegram_one_time"
+                class="Metal\DemandsBundle\Notifications\OneTimeNotifier"
+                decorates="metal_notifications.notifier.telegram"
+        >
+            <argument type="service" id="metal_notifications.notifier.telegram_one_time.inner" />
+            <argument type="constant">Metal\DemandsBundle\Entity\DemandNotification::SERVICE_TELEGRAM</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal_demands.bot_telegram.connector" class="Metal\DemandsBundle\Bot\Telegram\Connector">
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="monolog.logger.telegram" />
+        </service>
+    </services>
+</container>

@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% if object.author %}
+        {% set email = object.author.email %}
+    {% else %}
+        {% set email = object.email %}
+    {% endif %}
+    {{ email }} - <a href="{{ path('admin_metal_project_normalizedemail_list', {'filter': {'email': {'value': email} }}) }}" target="_blank">поиск</a>
+{% endblock %}

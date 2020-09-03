@@ -1,0 +1,83 @@
+{% block root %}
+    <div class="main-menu-wrapper">
+        <div class="wrap clearfix">
+            <input type="checkbox" id="open-menu" class="open-check">
+            <div class="hold-toogle">
+                <label for="open-menu" class="toogle-menu">
+                    <span class="t"></span>
+                    <span class="c"></span>
+                    <span class="b"></span>
+                </label>
+            </div>
+            <div class="menu-holder">
+                <label for="open-menu" class="close-menu">Меню</label>
+                <ul class="main-menu clearfix">
+                    {% set currentItem = null %}
+                    {% for menuItem in item.children if (matcher.isCurrent(menuItem) or matcher.isAncestor(menuItem)) %}
+                        {% set currentItem = menuItem %}
+                    {% endfor %}
+
+                    {% set itemsKeys = item.children|keys %}
+
+                    {% for menuItem in item.children %}
+                        {% set uri = menuItem.uri %}
+                        {% if currentItem and menuItem.getExtra('rawRoutes') %}
+                            {% set uri = path(menuItem.getExtra('rawRoutes')[currentItem.name]) %}
+                        {% endif %}
+
+                        {% set hrefAttr = 'href' %}
+                        {% set noFollow = '' %}
+                        {% if menuItem.name == 'favorites' %}
+                            {% set hrefAttr = 'data-href' %}
+                            {% set noFollow = 'rel="nofollow"' %}
+                        {% endif %}
+
+                        {% set nextKey = itemsKeys[loop.index]|default(-1) %}
+                        {% set nextElement = null %}
+                        {% if item.children[nextKey] is defined %}
+                            {% set nextElement = item.children[nextKey] %}
+                        {% endif %}
+
+                        {% if matcher.isCurrent(menuItem) %}
+                            <li class="active">
+                            <span class="{{ menuItem.getExtra('cls') }} link">{{ menuItem.label }}
+                                {% if menuItem.getExtra('count') %}
+                                    <sup>{{- menuItem.getExtra('count')|number_format_decimal -}}</sup>
+                                {%- endif -%}
+                            </span>
+                            </li>
+                        {% elseif matcher.isAncestor(menuItem) %}
+                            <li class="active">
+                                <a class="{{ menuItem.getExtra('cls') }} link" {{ hrefAttr }}="{{ uri }}" {{ noFollow }}>{{- menuItem.label }}
+                                {% if menuItem.getExtra('count') %}
+                                    <sup>{{ menuItem.getExtra('count')|number_format_decimal -}}</sup>
+                                {%- endif -%}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="{% if nextElement and (matcher.isCurrent(nextElement) or matcher.isAncestor(nextElement)) %}prev-active{% endif %}">
+                                <a class="{{ menuItem.getExtra('cls') }} link {% if menuItem.getExtra('openLoginPopup') or menuItem.getExtra('openCompletePackagePopup') %} js-popup-opener{% endif %}"
+                                {{ hrefAttr }}="{{ uri }}" {% if menuItem.getExtra('openLoginPopup') %} data-popup="#login"{% elseif menuItem.getExtra('openCompletePackagePopup') %}data-popup="#complete-package-favorites"{% endif %} {{ noFollow }}>{{- menuItem.label }}
+                                {% if menuItem.getExtra('count') %}
+                                    <sup>{{ menuItem.getExtra('count')|number_format_decimal -}}</sup>
+                                {%- endif -%}
+                                </a>
+                            </li>
+                        {%- endif %}
+                    {% endfor %}
+                    <li>
+                        {{ brouzie_render_widget('MetalUsersBundle:UserDropdownMenu', {'place' : '2'}) }}
+                    </li>
+                    {% if not app.user or not is_granted('ROLE_USER') %}
+                        <li class="menu-login">
+                            <a class="login link js-popup-opener icon-exit" data-popup="#login" href="#" rel="nofollow">
+                                Вход в кабинет
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <label for="open-menu" class="overlay"></label>
+        </div>
+    </div>
+{% endblock %}

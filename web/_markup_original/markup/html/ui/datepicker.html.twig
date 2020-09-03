@@ -1,0 +1,76 @@
+{% extends '@markup/_base_layout.html.twig' %}
+
+{% block title 'UI-elements' %}
+
+{% block body %}
+    <div style="position: relative; width: 270px; float: left;">
+        {{ include('@markup/ui/_components/datepicker_markup.html.twig') }}
+    </div>
+
+    <div style="position: relative; float: left; margin-left: 500px;">
+        <input type="text" id="date" class="date js-popover-opener" value="20 янв 2014" data-popover="#datepicker-single" />
+        <input type="hidden" id="date-hidden" />
+
+        {% set datepickerConfig = {
+            'selectedDate': '2014-01-20',
+            'targets': [
+                {
+                    "format": "DD.MM.YYYY",
+                    "target": "#date-hidden"
+                },
+                {
+                    "format": "D MMM YYYY",
+                    "target": "#date"
+                }
+            ]
+        } %}
+        <div id="datepicker-single"
+             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+    </div>
+
+
+    <div style="position: relative; float: left; margin-left: 700px;">
+        <input type="text" id="date" class="date js-popover-opener" value="19 янв 2014" data-popover="#datepicker-from" />
+        <input type="hidden" id="date-hidden" />
+
+        {% set datepickerConfig = {
+            'selectedDate': '2014-01-19',
+            'targets': [
+                {
+                    "format": "DD.MM.YYYY",
+                    "target": "#date-hidden"
+                },
+                {
+                    "format": "D MMM YYYY",
+                    "target": "#date"
+                }
+            ]
+        } %}
+        <div id="datepicker-from"
+             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+    </div>
+
+    <div style="position: relative; float: left; margin-left: 800px;">
+        <input type="text" id="date" class="date js-popover-opener" value="30 янв 2014" data-popover="#datepicker-to" />
+        <input type="hidden" id="date-hidden" />
+
+        {% set datepickerConfig = {
+            'selectedDate': '2014-01-30',
+            'targets': [
+                {
+                    "format": "DD.MM.YYYY",
+                    "target": "#date-hidden"
+                },
+                {
+                    "format": "D MMM YYYY",
+                    "target": "#date"
+                }
+            ]
+        } %}
+        <div id="datepicker-to"
+             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+    </div>
+{% endblock %}

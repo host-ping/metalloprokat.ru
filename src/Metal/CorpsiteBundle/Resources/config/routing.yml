@@ -1,0 +1,54 @@
+MetalCorpsiteBundle:Default:informer:
+    path: /products/informer/support/
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: MetalCorpsiteBundle:Default:contacts
+        permanent: true
+
+MetalCorpsiteBundle:Default:index:
+    path:  /
+    defaults: { _controller: MetalCorpsiteBundle:Default:index }
+
+MetalCorpsiteBundle:Default:newYearGreeting:
+    path:  /ny2017/
+    defaults: { _controller: FrameworkBundle:Template:template, template: @MetalCorpsite/Default/newYearGreeting.twig }
+
+MetalCorpsiteBundle:Default:announcementOrder:
+    path:  /media/
+    defaults: { _controller: MetalCorpsiteBundle:Default:announcementOrder }
+
+MetalCorpsiteBundle:Default:services:
+    path:  /services/
+    defaults: { _controller: MetalCorpsiteBundle:Default:services }
+
+MetalCorpsiteBundle:Default:clients:
+    path:  /clients/
+    defaults: { _controller: MetalCorpsiteBundle:Default:clients }
+
+MetalCorpsiteBundle:Default:contacts:
+    path:  /contacts/
+    defaults: { _controller: MetalCorpsiteBundle:Default:contacts }
+
+MetalCorpsiteBundle:Default:promotions:
+    path:  /promotion/
+    defaults: { _controller: MetalCorpsiteBundle:Default:promotions }
+
+MetalCorpsiteBundle:Default:licenseAgreement:
+    path:  /agreement
+    defaults: { _controller: MetalCorpsiteBundle:Default:licenseAgreement }
+
+MetalCorpsiteBundle:Default:orderPayment:
+    path:  /payment_{id}
+    defaults: { _controller: MetalCorpsiteBundle:Default:orderPayment }
+    requirements:
+        id: \d+
+
+MetalCorpsiteBundle:Default:orderPackage:
+    path: /services/order
+    methods: [POST]
+    defaults: { _controller: MetalCorpsiteBundle:Default:orderPackage }
+
+MetalCorpsiteBundle:Default:saveOrderAnnouncement:
+    path: /media/order
+    methods: [POST]
+    defaults: { _controller: MetalCorpsiteBundle:Default:saveOrderAnnouncement }

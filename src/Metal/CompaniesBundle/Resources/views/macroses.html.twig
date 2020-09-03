@@ -1,0 +1,70 @@
+{% macro rating(company, aditionalClass, big) %}
+    {% from _self import star %}
+
+    <div class="rating {{ aditionalClass|default('float-right') }}">
+        {% set codeAccess = company.codeAccess %}
+        {% set rating = company.companyRating %}
+
+        {% if rating %}
+            {% for i in range(0, rating - 1) %}
+                {{ star(codeAccess, big) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro star(packageId, big) %}
+    {% set stars = {
+        1 : 'star-mini icon-star default',
+        2 : 'star-mini icon-star hovered',
+        3 : 'star-mini icon-star-colored',
+        4 : 'star-mini icon-star-colored default',
+        5 : 'star-mini icon-star default',
+    } %}
+
+    {% if big %}
+        {% set stars = {
+            1 : 'star-big icon-star default',
+            2 : 'star-big icon-star hovered',
+            3 : 'star-big icon-star-colored',
+            4 : 'star-big icon-star-colored default',
+        } %}
+    {% endif %}
+
+    <span class="{{ stars[packageId] }}"></span>
+{% endmacro %}
+
+{% macro fileTypeIcon(extension) %}
+    {% set extensionsToImages = {
+        'jpg' : 'jpeg',
+        'jpeg' : 'jpeg',
+        'png' : 'png',
+        'pdf' : 'pdf',
+        'xls' : 'excel',
+        'xlsx' : 'excel',
+        'doc' : 'word',
+        'docx' : 'word'
+    } %}
+
+    <img src="{{ asset('bundles/metalproject/thumbnails/thumbnail-'~extensionsToImages[extension]~'.png') }}" alt="{{ extensionsToImages[extension]|capitalize }}" width="28"/>
+{% endmacro %}
+
+{% macro fileTypeIconsAsJson() %}
+    {% set extensionsToImages = {
+        'jpg' : 'jpeg',
+        'jpeg' : 'jpeg',
+        'png' : 'png',
+        'pdf' : 'pdf',
+        'xls' : 'excel',
+        'xlsx' : 'excel',
+        'doc' : 'word',
+        'docx' : 'word'
+    } %}
+
+    {% set extensionsToImagesUrl = {} %}
+    {% for extension, filetype in extensionsToImages %}
+        {% set extensionsToImagesUrl = extensionsToImagesUrl|merge({(extension): asset('bundles/metalproject/thumbnails/thumbnail-'~extensionsToImages[extension]~'.png')}) %}
+    {% endfor %}
+
+    {{ extensionsToImagesUrl|json_encode|raw }}
+{% endmacro %}

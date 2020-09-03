@@ -1,0 +1,93 @@
+{% if show_company is not defined %}
+   {% set show_company = true %}
+{% endif %}
+
+<div class="box-body">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Автор изменения</th>
+            <th>Тип действия</th>
+            <th>Доп. информация</th>
+            <th>Комментарий</th>
+        </tr>
+        </thead>
+        <tbody class="sonata-ba-body">
+        {% for rowHistory in history %}
+            <tr>
+                <td class="control-group">
+                    {{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(rowHistory.createdAt) }}
+                </td>
+                <td class="control-group">
+                    <span>{{ rowHistory.author.fullName }}</span>
+                    <b>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': rowHistory.author.id}}}) }}">{{ rowHistory.author.id }}</a>)</b>
+                </td>
+                <td class="control-group">
+                    {{ rowHistory.action.title }}
+                </td>
+                <td class="control-group">
+                    {% set const_connect_user = 'Metal\\CompaniesBundle\\Entity\\ValueObject\\ActionTypeProvider::CONNECT_USER' %}
+                    {% set const_change_user_email = 'Metal\\UsersBundle\\Entity\\ValueObject\\ActionTypeProvider::CHANGE_EMAIL' %}
+                    {% set const_user_enabled_status = 'Metal\\UsersBundle\\Entity\\ValueObject\\ActionTypeProvider::ENABLED_STATUS' %}
+                    {% set const_user_disabled_status = 'Metal\\UsersBundle\\Entity\\ValueObject\\ActionTypeProvider::DISABLED_STATUS' %}
+                    {% if rowHistory.user and rowHistory.actionId not in [constant(const_change_user_email), constant(const_user_enabled_status), constant(const_user_disabled_status)] %}
+                        <b>{% if rowHistory.actionId is constant(const_connect_user) %}Присоединенный пользователь{% elseif rowHistory.actionId is constant('Metal\\CompaniesBundle\\Entity\\ValueObject\\ActionTypeProvider::COMPANY_CREATION') %}Пользователь новой компании{% else %}Отсоединенный пользователь{% endif %} - </b>
+                        <span>{{ rowHistory.user.fullName }}</span>
+                        <b>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': rowHistory.user.id}}}) }}">{{ rowHistory.user.id }}</a>)</b>
+
+                        {% if rowHistory.actionId is constant(const_connect_user) and show_company %}
+                            <br />
+                            <b>Компания - </b>
+                            <span>{{ rowHistory.company.title }}</span>
+                            <b>(<a target="_blank" href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': rowHistory.company.id }}}) }}">{{ rowHistory.company.id }}</a>)</b>
+                            {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object': rowHistory.company}, false) }}
+                        {% endif %}
+
+                        {% if rowHistory.actionId is constant('Metal\\CompaniesBundle\\Entity\\ValueObject\\ActionTypeProvider::DISCONNECT_USER') and show_company %}
+                            <br />
+                            <b>От компании - </b>
+                            <span>{{ rowHistory.company.title }}</span>
+                            <b>(<a target="_blank" href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': rowHistory.company.id }}}) }}">{{ rowHistory.company.id }}</a>)</b>
+                            {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object': rowHistory.company}, false) }}
+                        {% endif %}
+                    {% endif %}
+                    {% if rowHistory.relatedCompany.id is defined and rowHistory.relatedCompany.id == object.id %}
+                        <b>Присоединили к компании - </b>
+                        <span>{{ rowHistory.company.title }}</span>
+                        <b>(<a target="_blank" href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': rowHistory.company.id }}}) }}">{{ rowHistory.company.id }}</a>)</b>
+                        {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : rowHistory.relatedCompany}, false) }}
+
+                    {% elseif rowHistory.relatedCompany is defined and rowHistory.relatedCompany %}
+                        <b>Присоединенная компания - </b>
+                        <span>{{ rowHistory.relatedCompany.title }}</span>
+                        <b>(<a target="_blank" href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': rowHistory.relatedCompany.id }}}) }}">{{ rowHistory.relatedCompany.id }}</a>)</b>
+                        {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : rowHistory.relatedCompany}, false) }}
+                    {% endif %}
+                    {% if rowHistory.actionId is constant('Metal\\CompaniesBundle\\Entity\\ValueObject\\ActionTypeProvider::CHANGE_COMPANY_TITLE') %}
+                        <b>Прошлое название </b> - {{ rowHistory.comment }}
+                    {% endif %}
+                    {% if rowHistory.actionId is constant(const_change_user_email) %}
+                        <b>Прошлый email </b> - {{ rowHistory.comment }}
+                    {% endif %}
+                    {% if rowHistory.actionId is constant(const_user_enabled_status) %}
+                        <b>Включенный пользователь</b> -
+                        <span>{{ rowHistory.user.fullName }}</span>
+                        <b>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': rowHistory.user.id}}}) }}">{{ rowHistory.user.id }}</a>)</b>
+                    {% endif %}
+                    {% if rowHistory.actionId is constant(const_user_disabled_status) %}
+                        <b>Отключенный пользователь</b> -
+                        <span>{{ rowHistory.user.fullName }}</span>
+                        <b>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': rowHistory.user.id}}}) }}">{{ rowHistory.user.id }}</a>)</b>
+                    {% endif %}
+                </td>
+                <td class="control-group">
+                    {% if rowHistory.actionId is not constant('Metal\\CompaniesBundle\\Entity\\ValueObject\\ActionTypeProvider::CHANGE_COMPANY_TITLE') %}
+                        {{ rowHistory.comment }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

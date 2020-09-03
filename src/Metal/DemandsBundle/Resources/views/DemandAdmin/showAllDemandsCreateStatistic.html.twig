@@ -1,0 +1,59 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block show %}
+
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Полная статистика созданных заявок
+            </h3>
+        </div>
+        <div class="box-body">
+
+
+            <table class="table table-bordered table-striped sonata-ba-list">
+                <tbody>
+                {% for year, demandsByYear in demandsStatisticByAllTime %}
+                    <tr>
+                        <td colspan="3">Заявки за <strong>{{ year }} </strong>год</td>
+                    </tr>
+                    {% for month, demandsByMonth in demandsByYear %}
+                        <tr>
+                            <td colspan="3">за <strong>{{ month }} </strong></td>
+                        </tr>
+                        {% for demand in demandsByMonth %}
+                            <tr>
+                                <td>
+                                    <div class="btn-group">
+                                        <span class="btn btn-block">{{ loop.index }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ demand.fullName }}
+                                        <strong>(<a target="_blank"
+                                                    href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': demand.userId} } }) }}">{{ demand.userId }}</a>)</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>
+                                            <a target="_blank"
+                                               href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'user': {'value': demand.userId}, 'createdAt': {'value': {'start': demand.dateFrom, 'end': demand.dateTo}} } }) }}">{{ demand.demandsCount }}</a>
+                                        </strong>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+

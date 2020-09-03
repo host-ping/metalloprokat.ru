@@ -1,0 +1,102 @@
+{% extends '@MetalProject/layouts/_portal_layout.html.twig' %}
+
+{# @var \Metal\ProjectBundle\Helper\SeoHelper seoHelper #}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+{% block meta %}
+    {{ seoHelper.getAdditionalMetaTagsDomains()|raw }}
+{% endblock meta %}
+
+{% set subdomain = app.request.attributes.get('subdomain') ?: 'www' %}
+
+{% block search_form %}
+    {% set searchRoute = 'MetalDemandsBundle:Demands:search' %}
+    {% set searchSuggestRoute = 'MetalDemandsBundle:Demands:searchSuggest' %}
+    {% set searchPlaceholder = 'Введите название товара или номер заявки' %}
+    {% set searchClass = 'demand-search' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block breadcrumbs_button %}
+    <div class="add is-gradiented float-right js-collapsable-breadcrumbs-reserve">
+        <span class="add-button icon-add-btn clickable demand"
+              popup-opener="#request-demand"
+              id="open-request-demand-button"
+              data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                {% if currentCity %}
+                    data-city-text="{{ currentCity.title }}"
+                    data-city-id="{{ currentCity.id }}"
+                {% endif %}
+                {% if currentCategory %}
+                    data-product-text="{{ currentCategory.title }}"
+                {% endif %}
+                >Добавить заявку</span>
+    </div>
+{% endblock breadcrumbs_button %}
+
+{% block breadcrumbs_widget %}
+    {% set breadcrumbsRoute = 'MetalDemandsBundle:Demands:list_category' %}
+    {% set breadcrumbsHomepageRoute = 'MetalDemandsBundle:Default:index' %}
+    {% set breadcrumbsRouteParams = {} %}
+
+    {% if currentTerritory.getKind() != 'country' %}
+        {% set breadcrumbsRoute = 'MetalDemandsBundle:Demands:list_subdomain_category' %}
+        {% set breadcrumbsHomepageRoute = 'MetalDemandsBundle:Demands:list_subdomain' %}
+        {% set breadcrumbsRouteParams = {'subdomain' : currentTerritory.getSlug() } %}
+    {% endif %}
+
+    {{ brouzie_render_widget('MetalCategoriesBundle:Breadcrumbs', {
+        'category': currentCategory,
+        'city' : currentCity,
+        'region' : currentRegion,
+        'country' : currentCountry,
+        'counter_name': 'demands_count',
+        'route': breadcrumbsRoute,
+        'route_params': breadcrumbsRouteParams,
+        'homepage_route': breadcrumbsHomepageRoute,
+        'homepage_route_params': breadcrumbsRouteParams,
+        'append_items': breadcrumbsAppendItems|default({})
+    }) }}
+{% endblock %}
+
+{#{% block find_provider %}#}
+    {#{% set displayFindProviderBlock = true %}#}
+    {#{% set fromForFindProvider = fromForFindProvider|default('frontpage-demands') %}#}
+
+    {#{{ parent() }}#}
+{#{% endblock %}#}
+
+{% block additional_popups %}
+    {% set routeTypeForHeader = 'demands_list' %}
+    {% set loadingRoute = 'MetalDemandsBundle:Api:territorial' %}
+    {% set counterName = 'demands_count' %}
+
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'demand'}) }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Расширенный и полный пакеты дают возможность ответить на заявку и многое другое.'}) }}
+{% endblock %}
+
+{% block search_cities %}
+    {{ brouzie_render_widget('MetalTerritorialBundle:Cities', {
+        'id' : 'search-cities',
+        'counter_name' : 'demands_count',
+        'loading_route' : 'MetalDemandsBundle:Api:territorial',
+        'route_type' : 'search',
+        'ng_controller': 'Metal.CitiesWidgetSearchPopover'
+    }) }}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% if app.request.query.get('open_popup') %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Brouzie.Popups.openPopup($('#request-demand'), $('#open-request-demand-button'));
+
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+

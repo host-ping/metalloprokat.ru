@@ -1,0 +1,21 @@
+<html>
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,800&subset=latin,cyrillic-ext,latin-ext,cyrillic'
+          rel='stylesheet' type='text/css'>
+</head>
+{% set currentCountry = brouzie_helper('MetalProjectBundle').getCurrentCountry() %}
+<body>
+<div style="text-align: center; width: 980px; margin: 200px auto; text-align: center; font-family: 'Open Sans'">
+    <h1 class="title" style="color: #f16961; font-size: 36px; margin-bottom: 30px; font-weight: 600;">Извините,
+        произошла ошибка сервера.</h1>
+    <br style="font-size: 16px; margin-bottom: 0px;">
+    Попробуйте <a href="#" onclick="window.location.reload();">обновить страницу</a>
+    или <a href="{{ app.request.getUriForPath('/') }}">вернуться на главную страницу</a>
+    </br>
+    <br />
+    Если проблема сохраняется, вы можете связаться с нами по телефону
+    <br />
+    <span style="font-weight: bold;">{{ currentCountry.supportPhone }}</span>
+</div>
+</body>
+</html>

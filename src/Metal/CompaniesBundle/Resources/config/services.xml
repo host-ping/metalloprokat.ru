@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.companies.company_voter" class="Metal\CompaniesBundle\Acl\Voter\CompanyVoter">
+            <argument type="service" id="security.access.decision_manager" />
+            <tag name="security.voter" />
+        </service>
+
+        <service id="metal.companies.admin.company" class="Metal\CompaniesBundle\Admin\CompanyAdmin">
+            <argument>metal.companies.admin.company</argument>
+            <argument>Metal\CompaniesBundle\Entity\Company</argument>
+            <argument>MetalCompaniesBundle:CompanyAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sonata.notification.backend" />
+            <argument type="service" id="sphinxy.index_manager" />
+            <argument type="service" id="bazinga_geocoder.geocoder" />
+            <argument type="service" id="metal.project.cloudflare_service" />
+            <argument type="service" id="session.flash_bag" />
+            <argument type="service" id="metal.companies.company_service"/>
+            <argument type="service" id="security.token_storage"/>
+            <call method="addChild">
+                <argument type="service" id="metal.support.admin.topic" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.announcements.admin.announcement" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.mini_site.admin.mini_site_cover" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.products.admin.product" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.services.admin.package_order" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.products.admin.product_image" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="metal.users.admin.user" />
+            </call>
+            <tag name="sonata.admin" manager_type="orm" group="clients" label="Компании" />
+        </service>
+
+        <service id="metal.companies.admin.company_delivery_city" class="Metal\CompaniesBundle\Admin\CompanyCityAdmin">
+            <argument>metal.companies.admin.company_delivery_city</argument>
+            <argument>Metal\CompaniesBundle\Entity\CompanyCity</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="companies" show_in_dashboard="false" label="Города доставки" />
+        </service>
+
+        <service id="metal.companies.admin.user_city" class="Metal\CompaniesBundle\Admin\UserCityAdmin">
+            <argument>metal.companies.admin.user_city</argument>
+            <argument>Metal\CompaniesBundle\Entity\UserCity</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="companies" show_in_dashboard="false" label="Привязка к городам" />
+        </service>
+
+        <service id="metal.companies.admin.company_category" class="Metal\CompaniesBundle\Admin\CompanyCategoryAdmin">
+            <argument>metal.companies.admin.company_category</argument>
+            <argument>Metal\CompaniesBundle\Entity\CompanyCategory</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="categories" show_in_dashboard="false" label="Категории" />
+        </service>
+
+        <service id="metal.companies.admin.company_phone" class="Metal\CompaniesBundle\Admin\CompanyPhoneAdmin">
+            <argument>metal.companies.admin.company_phone</argument>
+            <argument>Metal\CompaniesBundle\Entity\CompanyPhone</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="categories" show_in_dashboard="false" label="Телефоны" />
+        </service>
+
+        <service id="metal.companies.admin.promocode" class="Metal\CompaniesBundle\Admin\PromocodeAdmin">
+            <argument>metal.companies.admin.promocode</argument>
+            <argument>Metal\CompaniesBundle\Entity\Promocode</argument>
+            <argument>MetalCompaniesBundle:PromocodeAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="clients" label="Промокоды" />
+        </service>
+
+        <service id="metal.companies.companies_indexer" class="Metal\CompaniesBundle\Indexer\CompaniesIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="companies" />
+        </service>
+
+        <service id="metal.companies.company_service" class="Metal\CompaniesBundle\Service\CompanyService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sphinxy.index_manager" />
+            <argument type="service" id="sphinxy.default_connection" />
+        </service>
+
+        <service id="metal.companies.consumer.branch_office_creation_consumer" class="Metal\CompaniesBundle\Consumer\BranchOfficeCreationConsumer">
+            <argument type="service" id="metal.companies.company_service" />
+            <tag name="sonata.notification.consumer" type="branch_office_creation" />
+        </service>
+
+        <service id="metal.companies.consumer.branch_office_removal_consumer" class="Metal\CompaniesBundle\Consumer\BranchOfficeRemovalConsumer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal.companies.company_service" />
+            <tag name="sonata.notification.consumer" type="branch_office_removal" />
+        </service>
+
+        <service id="metal.companies.consumer.company_attributes_change_consumer" class="Metal\CompaniesBundle\Consumer\CompanyAttributesChangeConsumer">
+            <argument type="service" id="sphinxy.default_connection" />
+            <tag name="sonata.notification.consumer" type="company_attributes_change" />
+        </service>
+
+        <service id="metal.companies.consumer.company_categories_change_consumer" class="Metal\CompaniesBundle\Consumer\CompanyCategoriesChangeConsumer">
+            <argument type="service" id="sphinxy.index_manager" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.notification.consumer" type="company_categories_change" />
+        </service>
+
+        <service id="metal.companies.consumer.city_delivery_change_consumer" class="Metal\CompaniesBundle\Consumer\CityDeliveryChangeConsumer">
+            <argument type="service" id="metal.companies.company_service" />
+            <tag name="sonata.notification.consumer" type="city_delivery_change" />
+        </service>
+
+        <service id="metal.companies.company_review_mailer" class="Metal\CompaniesBundle\Service\CompanyReviewMailer">
+            <argument type="service" id="metal.newsletter.mailer" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal_companies.event_listener.url_rewrite_listener" class="Metal\CompaniesBundle\EventListener\UrlRewriteListener">
+            <tag name="doctrine.orm.entity_listener" entity="Metal\CompaniesBundle\Entity\Company" event="postPersist" />
+            <tag name="doctrine.orm.entity_listener" entity="Metal\CompaniesBundle\Entity\Company" event="postUpdate" />
+        </service>
+
+        <service id="metal_companies.event_listener.virtual_product_listener" class="Metal\CompaniesBundle\EventListener\VirtualProductListener">
+            <tag name="doctrine.orm.entity_listener" entity="Metal\CompaniesBundle\Entity\Company" event="postUpdate" />
+        </service>
+
+        <service id="validator.companies.slug_available" class="Metal\CompaniesBundle\Validator\Constraints\CompanySlugValidator">
+            <argument type="service" id="brouzie.helper_factory" />
+            <tag name="validator.constraint_validator" alias="slug_validator" />
+        </service>
+
+        <service id="metal.companies.admin.block.unprocessed_company_document"
+                 class="Metal\CompaniesBundle\Admin\Block\UnprocessedCompanyDocumentBlockService">
+            <argument>metal.companies.admin.block.unprocessed_company_document</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+    </services>
+</container>

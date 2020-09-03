@@ -1,0 +1,127 @@
+{% set defaultHelper = brouzie_helper('MetalContentBundle') %}
+{% set orderBySubject = app.request.query.get('subject', false) %}
+{% set currentPeriod = app.request.query.get('filter', 'all') %}
+{% set currentOrder = app.request.query.get('sort', 'all') %}
+{% set route = app.request.attributes.get('_route') %}
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+{% set currentCategory = app.request.attributes.get('content_category') %}
+{% set contentSeoHelper = brouzie_helper('MetalContentBundle:Seo') %}
+
+<div class="sort-view clearfix">
+    <div class="order-block float-right">
+        {% set ordersByCount = defaultHelper.getOrdersByCount %}
+        <span class="order-link icon-check black link clickable js-popover-opener" data-popover="#counts">
+            {% if currentOrder not in ordersByCount|keys %}
+                {{ ordersByCount['all'].title }}
+            {% else %}
+                {{ ordersByCount[currentOrder].title }}
+            {% endif %}
+        </span>
+        <div id="counts" class="drop-wrapper order-list opacity-border">
+            <ul class="dropdown">
+                {% for key, order in ordersByCount %}
+                    <li class="drop-item">
+                        {% if currentOrder == key %}
+                            <span class="drop-link current">{{ order.title }}</span>
+                        {% else %}
+                            <a class="drop-link"
+                               href="{{- path(route, routeParameters|merge({'sort' : order.query})) -}}">{{ order.title }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="order-block float-right">
+        {% set periods = defaultHelper.getPeriods %}
+        <span class="period-link icon-check black link clickable js-popover-opener" data-popover="#periods">
+            {% if currentPeriod not in periods|keys %}
+                {{ periods['all'].title }}
+            {% else %}
+                {{ periods[currentPeriod].title }}
+            {% endif %}
+        </span>
+
+        <div id="periods" class="drop-wrapper order-list opacity-border">
+            <ul class="dropdown">
+                {% for key, period in periods %}
+                    <li class="drop-item">
+                        {% if currentPeriod == key %}
+                            <span class="drop-link current">{{ period.title }}</span>
+                        {% else %}
+                            <a class="drop-link"
+                               href="{{- path(route, routeParameters|merge({'filter' : period.query})) -}}">{{ period.title }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% set subjects = defaultHelper.getSubjects %}
+    <div class="order-block float-right">
+        {% for subject in subjects %}
+            {% if subject.id == orderBySubject %}
+                <a class="order-link icon-check black link js-popover-opener"
+                   data-popover="#subjects">{{ subject.title }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if orderBySubject not in subjects|keys %}
+            <a class="order-link icon-check black link js-popover-opener" data-popover="#subjects">Все
+                темы</a>
+        {% endif %}
+        <div id="subjects" class="drop-wrapper order-list opacity-border">
+            <ul class="dropdown">
+                {% for subject in subjects %}
+                    {% if subject.id == orderBySubject %}
+                        <li class="drop-item">
+                            <span class="drop-link current">{{ subject.title }}</span>
+                        </li>
+                    {% else %}
+                        <li class="drop-item">
+                            <a class="drop-link"
+                               href="{{ path(route, routeParameters|merge({ 'subject' : subject.id, 'page' : null })) }}">{{ subject.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% if entry_type == 'question' %}
+        <ul class="links float-right">
+            <li class="item width-141">
+                <div class="button send-button blue-bg js-popup-opener ie-radius"
+                    {% if app.user %}
+                        data-popup="#add-content-question"
+                        data-entry-url="{{ path('MetalContentBundle:ContentEntry:add', {'entry_type' : 'ENTRY_TYPE_QUESTION'}) }}"
+                    {% else %}
+                        data-popup="#stroy-login"
+                    {% endif %}
+                >
+                    <span class="text">Задать вопрос</span>
+                </div>
+            </li>
+        </ul>
+    {% else %}
+        <ul class="links float-right">
+            <li class="item width-181">
+                <div class="button send-button green-bg js-popup-opener ie-radius"
+                    {% if app.user %}
+                        data-popup="#add-content-topic"
+                        data-entry-url="{{ path('MetalContentBundle:ContentEntry:add', {'entry_type' : 'ENTRY_TYPE_TOPIC'}) }}"
+                    {% else %}
+                        data-popup="#stroy-login"
+                    {% endif %}>
+
+                    <span class="text">Добавить публикацию</span>
+                </div>
+            </li>
+        </ul>
+    {% endif %}
+    {% if currentCategory %}
+        <div class="links float-left">
+            <h1 class="title">{{ contentSeoHelper.getH1TitleForContentEntryPages(currentCategory) }}{% if entry_type == 'question' %} &mdash; Вопросы{% endif %}</h1>
+        </div>
+    {% endif %}
+</div>

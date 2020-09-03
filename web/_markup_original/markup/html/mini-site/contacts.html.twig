@@ -1,0 +1,304 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Contacts' %}
+{% block content %}
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+            <ul class="list">
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/reviews.html.twig') }}" class="link">Отзывы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+                </li>
+                <li class="item active">
+                    <span class="link">Контакты</span>
+                </li>
+            </ul>
+        </div>
+        <div class="contacts content-holder">
+            <div class="company-contacts clearfix">
+                <div id="branch-office-2" class="branch-office js-branch-offices clearfix">
+                    <div class="map-wrapper is-bordered float-right">
+                        <div class="heading clearfix">
+                            <a class="link float-right" href="#">Открыть в Яндекс.Картах</a>
+                        </div>
+                        <div class="map">
+                            <span class="map-point icon-position" style="top: 50px; left: 150px;"></span>
+                            <img alt="image description" src="./markup/pic/mini-site-map.jpg">
+                        </div>
+                    </div>
+                    <div class="company-information">
+                        <p class="city">Центральный офис</p>
+                        <div class="info-holder">
+                            <p class="web-site"><a class="link" href="#">www.staltorg.ru</a></p>
+                            <p class="web-site"><a class="link" href="#">www.staltorg.com</a></p>
+                            <p class="web-site"><a class="link" href="#">www.staltorg.ua</a></p>
+
+                            <p class="address">Крещатик, 20</p>
+                        </div>
+                        <div class="info-holder float-left">
+                            <div class="item-wrapper clearfix">
+                                <span class="l-elem float-left">Телефон:</span>
+                                <span class="r-elem float-left"><i class="c-code">+7</i> (916) 389 - 94 - 29 рабочий телефон</span>
+                            </div>
+                            <div class="item-wrapper clearfix">
+                                <span class="l-elem float-left">E-mail:</span>
+                                <span class="r-elem float-left"><a href="#" class="link">info@staltorg.ru</a></span>
+                            </div>
+
+                        </div>
+                        <ul class="links float-left">
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="branch-office-3" class="branch-office js-branch-offices clearfix">
+                    <div class="map-wrapper is-bordered float-right">
+                        <div class="heading clearfix">
+                            <a class="link float-right" href="#">Открыть в Яндекс.Картах</a>
+                        </div>
+                        <div class="map">
+                            <span class="map-point icon-position" style="top: 50px; left: 150px;"></span>
+                            <img alt="image description" src="./markup/pic/mini-site-map.jpg">
+                        </div>
+                    </div>
+                    <div class="company-information">
+                        <p class="city">Москва</p>
+                        <div class="info-holder">
+                            <p class="address">пр. Гедмина, 38</p>
+                        </div>
+                        <div class="info-holder float-left">
+                            <div class="item-wrapper clearfix">
+                                <span class="l-elem float-left">Телефон:</span>
+                                <span class="r-elem float-left"><i class="c-code">+7</i> (916) 389 - 94 - 29 рабочий телефон</span>
+                            </div>
+                            <div class="item-wrapper clearfix">
+                                <span class="l-elem float-left">E-mail:</span>
+                                <span class="r-elem float-left"><a href="#" class="link">info@staltorg.ru</a></span>
+                            </div>
+
+                        </div>
+                        <ul class="links float-left">
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="last-block clearfix">
+                    <div class="title">
+                        <h1><span class="offices icon-check link js-popover-opener" data-popover="#offices">Киев</span></h1>
+                        <div id="offices" class="drop-wrapper offices-list opacity-border js-popover" data-switchable-block-set=".js-branch-offices">
+                            <ul class="dropdown menu-drop">
+                                <li class="drop-item">
+                                    <a class="link drop-link current js-block-switcher" href="#" data-switch-block="#branch-office-1">Центральный офис</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link drop-link js-block-switcher" href="#" data-switch-block="#branch-office-2">Киев</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link drop-link js-block-switcher" href="#" data-switch-block="#branch-office-3">Вильнюс</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="map-wrapper is-bordered float-right">
+                        <div class="heading clearfix">
+                            <a class="link float-right" href="#">Открыть в Яндекс.Картах</a>
+                        </div>
+                        <div class="map">
+                            <span class="map-point icon-position" style="top: 50px; left: 150px;"></span>
+                            <img alt="image description" src="./markup/pic/mini-site-map.jpg">
+                        </div>
+                    </div>
+
+                    <div id="branch-office-1" class="branch-office js-branch-offices clearfix">
+                        <div class="company-information">
+                            <div class="info-holder">
+                                <p class="web-site"><a class="link" href="#">www.staltorg.ru</a></p>
+                                <p class="address">Люберцы, Ялтинская, 17</p>
+                            </div>
+                            <div class="info-holder float-left">
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">Телефон:</span>
+                                    <span class="r-elem float-left"><i class="c-code">+7</i> (916) 389 - 94 - 29 рабочий телефон</span>
+                                </div>
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">E-mail:</span>
+                                    <span class="r-elem float-left"><a href="#" class="link">info@staltorg.ru</a></span>
+                                </div>
+
+                            </div>
+                            <ul class="links float-left">
+                                <li class="links_answer item width-182 float-left clearfix">
+                                    <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="contact admin-button-wrapper float-left">
+                    <a class="admin-button button gray60-bg ie-radius" href="#">редактировать филиалы</a>
+                </div>
+            </div>
+            <div class="company-contacts details clearfix">
+                <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+                <a class="admin-button button primary float-right ie-radius js-pint" href="#">распечатать</a>
+                <div class="minisite-title">Реквизиты компании</div>
+                <table class="company-details table">
+                    <tbody>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Юридический адрес</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">Люберцы, Ялтинская 17</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Почтовый адрес</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">Люберцы, Ялтинская 17</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">ИНН</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785448</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">КПП</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785448</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">ОГРН</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785448</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">ФИО руководителя</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">Иванов В.И</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Номер р/счета в рублях</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785445454/858</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Номер корр. счета</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785448</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Бик банка</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">1254785448</p>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="col">
+                                <p class="name">Наименование банка</p>
+                            </td>
+                            <td class="col">
+                                <p class="text">Простобанк</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="staff clearfix">
+                <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+                <div class="staff-title">Сотрудники</div>
+                <ul class="staff-list">
+                    <li class="employee clearfix">
+                        <div class="employee-info float-left">
+                            <div class="employee-name">Семен Меркушев</div>
+                            <div class="position">директор по маркетингу</div>
+                            <div class="info-holder float-left">
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">Телефон:</span>
+                                    <span class="r-elem float-left"><i class="c-code">+7</i> (916) 389 - 94 - 29 рабочий телефон</span>
+                                </div>
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">E-mail:</span>
+                                    <span class="r-elem float-left"><a href="#" class="link">info@staltorg.ru</a></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="right float-right">
+                            <div class="pic float-right">
+                                <a class="img-link pattern-big" href="#">
+                                    <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                </a>
+                            </div>
+                            <div class="button-wrapper float-left">
+                                <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="employee clearfix">
+                        <div class="employee-info float-left">
+                            <div class="employee-name">Семен Меркушев</div>
+                            <div class="position">директор по маркетингу</div>
+                            <div class="info-holder float-left">
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">Телефон:</span>
+                                    <span class="r-elem float-left"><i class="c-code">+7</i> (916) 389 - 94 - 29 рабочий телефон</span>
+                                </div>
+                                <div class="item-wrapper clearfix">
+                                    <span class="l-elem float-left">E-mail:</span>
+                                    <span class="r-elem float-left"><a href="#" class="link">info@staltorg.ru</a></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="right float-right">
+                            <div class="pic float-right">
+                                <a class="img-link pattern-big" href="#"></a>
+                            </div>
+                            <div class="button-wrapper float-left">
+                                <a class="primary write-btn button ie-radius" href="#">написать</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

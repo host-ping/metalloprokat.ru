@@ -1,0 +1,43 @@
+{% set popupId = _options['widget_id'] %}
+{% set categories =  _options['categories'] %}
+
+{% set categoriesControllerOptions = {
+'saveItemsUrl': path('MetalPrivateOfficeBundle:PrivateCustomCategories:saveCategoriesByLevels')
+} %}
+
+<div id="{{ popupId }}" class="choose-section drop-wrapper popover-block opacity-border"
+     ng-controller="Metal.Core as coreController" ng-cloak>
+    <div class="heading">
+        <p class="title"><strong>Выбор раздела</strong></p>
+    </div>
+    <div class="bottom">
+        <div class="js-searchable-block" ng-controller="Metal.Categories as categoriesController">
+            <fieldset
+                    ng-init='categoriesController.options = {{ categoriesControllerOptions|json_encode|raw }}; categories = {{ categories|json_encode|raw }}; categoryFilter = ""'>
+                <div class="search_field-wrapper">
+                    <input class="search_form-text form-text js-search-query ie-radius" ng-model="categoryFilter" placeholder="Поиск">
+                    <button class="icon-search-small search-button" type="submit"></button>
+                </div>
+            </fieldset>
+            <div class="sections js-scrollable" style="overflow: auto;">
+                <ul class="find-list level-inside category-list-wrapper">
+                    <li class="drop-item"
+                        ng-repeat="category in categories|flattenTreeFilter:categoryFilter track by category.id">
+                        <div ng-class="{'level1': category.depth == 1, 'level2': category.depth == 2, 'level3': category.depth == 3, 'level4': category.depth == 4}">
+                            <span class="bullet"></span>
+                            <span class="drop-link clickable js-popover-self-closer"
+                                  ng-if="category.allowProducts || category.isUserDefined"
+                                  ng-click="{{ _options['ng_click']|replace({'%id%':  'category.id', '%title%':  'category.title'})|raw }}"
+                            >
+                                <%= category.title %>
+                            </span>
+                            <span class="drop-link current" ng-if="!category.allowProducts && !category.isUserDefined">
+                                <%= category.title %>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

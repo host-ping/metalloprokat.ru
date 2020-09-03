@@ -1,0 +1,81 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}23+8=31% от Metalloprokat.ru{% endblock subject %}
+
+{% block body_text -%}
+Уважаемые поставщики!
+
+В период с 24.02.2016 по 15.03.2016 подключение ко всем сервисам Metalloprokat.ru на срок 12 месяцев для вас с праздничной скидкой 23+8=31%
+
+    Условия подключения:
+                                        Доступ
+                      Расширенный                    Полный
+    12 месяцев   56 000 руб. 38 640 руб.     67 000 руб. 46 230 руб.
+
+
+С сервисами, входящими в Полный и Расширенный доступ можно ознакомиться здесь: http://corp.metalloprokat.ru/services/
+
+По любым вопросам пишите:
+http://corp.metalloprokat.ru/contacts
+или звоните:
++7 495 268-02-85
+
+
+С уважением,
+{{ user.country.domainTitle }}
+http://www.{{ user.country.baseHost }}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Уважаемые поставщики!
+    <br/>
+    <br/>
+    В период с 24.02.2016 по 15.03.2016 подключение ко всем сервисам <a href="http://www.{{ user.country.baseHost }}">Metalloprokat.ru</a> на срок 12 месяцев для вас с праздничной скидкой 23+8=31%
+    <br/>
+    <br/>
+        Условия подключения:
+    <br/>
+
+    <table cellpadding="2" cellspacing="2" style="width: 100%">
+        <tbody>
+        <tr>
+            <td style="background-color: #CCCCCC;">&nbsp;</td>
+            <td colspan="2" style="background-color: #CCCCCC; text-align: center;">Доступ</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;Расширенный</td>
+            <td>
+                &nbsp;Полный</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;12 месяцев</td>
+            <td>
+                &nbsp;<strike>56 000 руб.</strike> <font color="red">38 640 руб.</font></td>
+            <td>
+                &nbsp;<strike>67 000 руб.</strike> <font color="red">46 230 руб.</font></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/><br/>
+    С сервисами, входящими в Полный и Расширенный доступ можно ознакомиться здесь: <a href="http://corp.metalloprokat.ru/services/">http://corp.metalloprokat.ru/services/</a>
+
+    <br/><br/>
+    По любым вопросам пишите - <a href="http://corp.metalloprokat.ru/contacts">http://corp.metalloprokat.ru/contacts</a>
+
+    или звоните:
+
+    +7 495 268-02-85
+
+    <br /><br />
+    С уважением,
+    <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a>
+    </p>
+{% endblock %}

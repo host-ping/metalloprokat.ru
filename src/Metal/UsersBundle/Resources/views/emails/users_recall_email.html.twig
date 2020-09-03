@@ -1,0 +1,28 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Актуализируйте цены на вашу продукцию{% endblock %}
+
+{% block body_text %}
+Здравствуйте, {{ user.firstName }}.
+
+Вы не заходили на {% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %} уже более {{ daysCount }} дней и позиции вашего прайс листа стали отображаться ниже в списке. Пожалуйста, актуализируйте цены, чтобы поднять позиции наверх.
+Для этого пройдите по ссылке {{ url('MetalPrivateOfficeBundle:Products:list', {'from': 'email'}) }}
+{{ block('text_footer') }}
+{% endblock body_text %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Здравствуйте, {{ user.firstName }}.
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-family: Arial;font-size: 14px;color: #171F26;">
+        Вы не заходили на
+        <strong>{% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %}</strong> уже более {{ daysCount }} дней и позиции вашего прайс листа стали отображаться ниже в списке. Пожалуйста, актуализируйте цены, чтобы поднять позиции наверх.
+    </p>
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="{{ url('MetalPrivateOfficeBundle:Products:list', {'from': 'email'}) }}" style="display: inline-block; background: #18A3D1; color: #fff; text-transform: uppercase;
+                padding: 5px 10px; text-decoration: none; border-radius: 4px;">Актуализировать цены</a>
+    </div>
+{% endblock %}

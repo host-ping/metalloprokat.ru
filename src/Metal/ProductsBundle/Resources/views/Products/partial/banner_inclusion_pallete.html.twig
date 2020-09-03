@@ -1,0 +1,22 @@
+{% set categoryId = category ? category.id : null %}
+{% set onlyCompanyId = only_company_id is defined ? only_company_id : null %}
+{% set bannerInsertPosition = {
+    3: 'products-content-1',
+    6: 'products-content-2',
+    9: 'products-content-3',
+    12: 'products-content-4',
+    15: 'products-content-5',
+    18: 'products-content-6',
+    21: 'products-content-7'
+} %}
+
+{% if bannerInsertPosition[index] is defined %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+        'source_type_slug' : source_type_slug,
+        'zone_slug' : bannerInsertPosition[index],
+        'category_id' : categoryId,
+        'tag_type' : 'li',
+        'additional_class' : additional_class,
+        'only_company_id' : onlyCompanyId
+    }) }}
+{% endif %}

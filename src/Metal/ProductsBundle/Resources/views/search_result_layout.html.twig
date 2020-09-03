@@ -1,0 +1,409 @@
+{% extends 'MetalCompaniesBundle:Default:base_layout_company.html.twig' %}
+
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+
+{% set routeType = '' %}
+{% set displaySort = app.request.attributes.get('sort', true) %}
+{% set activeTab = app.request.attributes.get('tab', 'products') %}
+{% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+{# @var attributesCollection \Metal\AttributesBundle\Entity\DTO\AttributesCollection #}
+
+{% set activeTabParams = {
+    'products' : {'counter_name' : 'products_count', 'route_type' : 'products_list'},
+    'companies' : {'counter_name' : 'companies_count', 'route_type' : 'companies_list'},
+    'manufacturers' : {'counter_name' : 'manufacturers_count', 'route_type' : 'manufacturers_list'},
+    'brands' : {'counter_name' : 'brands_count', 'route_type' : 'brands_list'},
+    'catalog_products' : {'counter_name' : 'catalog_products_count', 'route_type' : 'catalog_products_list'}
+} %}
+
+
+{% if activeTab not in activeTabParams|keys %}
+    {% set activeTab = 'products' %}
+{% endif %}
+
+{% set _counterName = project.suppliers_menu_counter_name %}
+{% if activeTab in activeTabParams|keys %}
+    {% set _counterName = activeTabParams[activeTab]['counter_name'] %}
+    {% set routeType = activeTabParams[activeTab]['route_type'] %}
+{% endif %}
+
+{% if activeTab == 'companies' and not displaySort %}
+    {% set routeType = 'last_companies_list' %}
+{% endif %}
+
+{% if activeTab == 'products' and not displaySort %}
+    {% set routeType = 'last_products_list' %}
+{% endif %}
+
+{% set currentCategory = brouzie_helper('MetalProjectBundle').getCurrentCategory() %}
+{# @var \Metal\ProductsBundle\Helper\ProductsListSeoHelper productsListSeoHelper #}
+{% set productsListSeoHelper = brouzie_helper('MetalProductsBundle:ProductsListSeo') %}
+
+{% set productTabsWidget = brouzie_widget('MetalProductsBundle:ProductsTabs', {
+    'category' : currentCategory,
+    'active_tab' : activeTab,
+    'counts' : {
+        'products_count' : productsViewModel.count|default(null),
+        'companies_count': companiesViewModel.count|default(null)
+    },
+    'display_sort' : displaySort,
+    'current_route' : productTabsWidgetCurrentRoute|default(null),
+    'route_parameters' : productTabsRouteParameters|default(null),
+    }) %}
+
+{% block sidebar %}
+    {% set seoText = '' %}
+    {% if project.family == 'metalloprokat' and currentCategory and activeTab == 'products' %}
+        {% set seoText = productsListSeoHelper.getSeoTextForCategoryPage(productTabsWidget) %}
+    {% endif %}
+
+    {% if project.family == 'product' and currentCategory and activeTab == 'products' %}
+        {% set seoText = productsListSeoHelper.renderStringTemplate('В каталоге можно сравнить цены на {{ category_accusative|lcfirst }} и выбрать компанию-поставщика для того, чтобы купить {{ category_accusative|lcfirst }} оптом в {{ territory_locative }}.') %}
+    {% endif %}
+
+    {{ brouzie_render_widget('MetalProductsBundle:ProductSidebar', {
+        'current_route': app.request.attributes.get('_route'),
+        'route_parameters': app.request.attributes.get('_route_params')|merge({'page': null}),
+        'seo_text' : seoText,
+    }) }}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        {{ brouzie_render_widget('MetalProjectBundle:AgeConfirm', {
+            'category' : category
+        }) }}
+    {% endif %}
+
+    <div id="content" class="content-right outline-right float-right banner-zone">
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        {% set routeParametersForH1 = app.request.attributes.get('_route_params') %}
+        {% set routeParametersForH1 = routeParametersForH1|merge(app.request.query.all()) %}
+        {% set routeParametersForH1 = routeParametersForH1|merge({'page': null}) %}
+
+        <div class="main-title" ng-controller="Metal.CitiesWidgetPopoverOpener as citiesWidgetPopoverOpenerController">
+            {% block main_title_for_portal_page %}
+                {% set humanH1Content %}
+                    {% if currentCategory %}
+                        {% if activeTab == 'companies' %}
+                            Компании, торгующие {{ currentCategory.getTitleAblativeForEmbed() }}
+                        {% elseif activeTab == 'products' %}
+                            {{ brouzie_helper('MetalProductsBundle:ProductsListSeo').getHeadTitleForHumansForCategoryPage() }}
+                        {% elseif activeTab == 'brands' %}
+                            Бренды {{ currentCategory.getTitleGenitiveForEmbed() }}
+                        {% elseif activeTab == 'manufacturers' %}
+                            Производители {{ currentCategory.getTitleGenitiveForEmbed() }}
+                        {% elseif activeTab == 'catalog_products' %}
+                            {{ currentCategory.title }}{% if project.family != 'stroy' %} — продукты{% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if activeTab == 'companies' %}
+                            Компании, торгующие {{ tokens.product_title.instrumental }}
+                        {% elseif activeTab == 'products' %}
+                            Предложения
+                        {% elseif activeTab == 'brands' %}
+                            Бренды
+                        {% elseif activeTab == 'manufacturers' %}
+                            Производители
+                        {% elseif activeTab == 'catalog_products' %}
+                            Продукты
+                        {% endif %}
+                    {% endif %}
+
+                    {% for attribute, attributeValues in attributesCollection %}
+                        {% for attributeValue in attributeValues %}
+                            <span class="accepted-filter ie-radius">{{ attributeValue.value }}
+                                <a href="{{ path(currentRoute, routeParametersForH1|merge({'category_slug': currentCategory.getUrl(attributesCollection.getUrl(null, attributeValue))})) }}" class="icon-filter-del"></a>
+                            </span>
+                        {% endfor %}
+                    {% endfor %}
+
+                    <span class="region-link link icon-check clickable js-popover-opener" data-popover="#cities-tabs"
+                          ng-click='citiesWidgetPopoverOpenerController.loadPopover("cities-tabs")'
+                          data-different-position="true">в {{ currentTerritory.titleLocative }}</span>
+                {% endset %}
+
+                {% if activeTab == 'companies' %}
+                    <h1 data-encoded-content="{{ humanH1Content|base64_encode|escape('html_attr') }}">{{- brouzie_helper('MetalCompaniesBundle:CompaniesListSeo').getHeadTitleForCompanyCatalogPage(productTabsWidget) -}}</h1>
+                {% elseif activeTab == 'products' %}
+                    <h1 data-encoded-content="{{ humanH1Content|base64_encode|escape('html_attr') }}">{{- brouzie_helper('MetalProductsBundle:ProductsListSeo').getHeadTitleForCategoryPage(currentCategory, productTabsWidget) -}}</h1>
+                {% elseif activeTab == 'brands' %}
+                    <h1 data-encoded-content="{{ humanH1Content|base64_encode|escape('html_attr') }}">{{- brouzie_helper('MetalCatalogBundle:Seo').getHeadTitleForBrandsPage() -}}</h1>
+                {% elseif activeTab == 'manufacturers' %}
+                    <h1 data-encoded-content="{{ humanH1Content|base64_encode|escape('html_attr') }}">{{- brouzie_helper('MetalCatalogBundle:Seo').getHeadTitleForManufacturersPage() -}}</h1>
+                {% elseif activeTab == 'catalog_products' %}
+                    <h1 data-encoded-content="{{ humanH1Content|base64_encode|escape('html_attr') }}">{{- brouzie_helper('MetalCatalogBundle:Seo').getMetaTitleForProductsPage() -}}</h1>
+                {% endif %}
+
+                {% if currentCity %}
+                    {% set concreteCity = app.request.query.get('concrete_city') %}
+                    {% set routeParametersForTab = app.request.attributes.get('_route_params') %}
+                    {% set routeParametersForTab = routeParametersForTab|merge(app.request.query.all()) %}
+                    {% set routeParametersForTab = routeParametersForTab|merge({'page': null}) %}
+                    {% set routeParametersForTab = {'subdomain': 'www'}|merge(routeParametersForTab)|merge({'tab' : null, 'view' : null, 'order' : null}) %}
+                    <form class="filter-city js-filter-form" action="{{ path(currentRoute, routeParametersForTab|merge({'concrete_city': null})) }}" method="GET">
+                        <fieldset>
+                            <div class="field-wrap">
+                                <input name="concrete_city"
+                                       value="1"
+                                       id="concrete-city-id"
+                                       class="js-styled-checkbox js-filter-check bg-grey"
+                                        {% if concreteCity %}
+                                            checked="checked"
+                                        {% endif %}
+                                       type="checkbox" />
+
+                                <label for="concrete-city-id"
+                                       title="Искать только в {{ currentCity.titleLocative }} (без учета филиалов и доставки)">Искать только
+                                    в {{ currentCity.titleLocative }}</label>
+
+                                {% for param, value in app.request.query.all() if param not in ['concrete_city'] %}
+                                    {% if value is iterable %}
+                                        {% for val in value %}
+                                            <input name="{{ param }}[]" value="{{ val }}" type="hidden" />
+                                        {% endfor %}
+                                    {% else %}
+                                        <input name="{{ param }}" value="{{ value }}" type="hidden" />
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                    </form>
+                {% endif %}
+            {% endblock %}
+        </div>
+
+
+        {% set warnContent %}
+            <noindex>Уважаемые покупатели! Перед оплатой счета убедитесь, воспользовавшись поиском на сайте, что поставщик присутствует в нашем каталоге. Перевод денег на карты частным лицам нежелателен. Проверьте, не внесена ли компания в <a href="http://www.metal-trade.ru/trade/debetor/" target="_blank">Список недобросовестных поставщиков</a></noindex>
+        {% endset %}
+        <div class="warn-div" data-encoded-content="{{ warnContent|base64_encode|escape('html_attr') }}">
+        </div>
+
+        {% block tabs %}
+            {{ brouzie_render_widget(productTabsWidget) }}
+        {% endblock %}
+
+        {% set companiesCount = productTabsWidget.getCounts()['companies_count'] %}
+        {% set productsCount = productTabsWidget.getCounts()['products_count'] %}
+
+        {% block tab_content %}
+            {% block search_results %}
+                {# override this block in children #}
+            {% endblock search_results %}
+
+            {% block search_result_info %}
+
+                {% if currentCategory %}
+                    {% set routeCompanies = 'MetalProductsBundle:Products:companies_list_category_subdomain' %}
+                    {% set routeProducts = 'MetalProductsBundle:Products:list_category_subdomain' %}
+                {% else %}
+                    {% set routeCompanies = 'MetalProductsBundle:Products:companies_list_subdomain' %}
+                    {% set routeProducts = 'MetalProductsBundle:Products:products_list_subdomain' %}
+                {% endif %}
+
+                {% if currentCategory %}
+                    {% set productParams = app.request.attributes.get('products_parameters') %}
+
+                    {% block seo_linking_top %}
+                        {% if not currentCategory.allowProducts and activeTab == 'products' %}
+                            {{ brouzie_render_widget('MetalProductsBundle:Subcategories', {
+                                'category' : currentCategory,
+                                'city' : currentCity,
+                                'country' : currentCountry
+                            }) }}
+                        {% endif %}
+                    {% endblock %}
+
+                    <div class="search-info-block outline-right clearfix js-sibling-calculated-block">
+                        <div class="block-title">Не нашли что искали?</div>
+                        {% set categorySlug = brouzie_helper('MetalCategoriesBundle').getCategoryWithParamString(currentCategory, productParams) %}
+                        {% set routeParameters = {'subdomain': app.request.attributes.get('subdomain', 'www'), 'category_slug' : categorySlug } %}
+                        {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+                        {% set routeParameters = routeParameters|merge({'view' : null, 'order' : null, 'page' : null}) %}
+
+                        {% set attributeValueTitleForSeo = '' %}
+                        {% if attributesCollection.getAttributesValuesIds()|length == 1 %}
+                            {% set attributeValueTitleForSeo = ' ' ~ attributesCollection.toString('', '', 'value', true) %}
+                        {% endif %}
+
+                        <div class="search-info-list">
+                            <ul class="items">
+                                {% if activeTab == 'products' and companiesCount %}
+                                    <li class="item icon-lamp">
+                                        У нас есть еще
+                                        <a class="link clickable" href="{{ path(routeCompanies, routeParameters|merge({'tab' : null})) }}">
+                                            {{ companiesCount|number_format_decimal }} {{ 'from_companies_by_count'|transchoice(companiesCount, [], 'MetalCompaniesBundle') -}}</a>,
+                                        {{ 'which_trade'|transchoice(companiesCount, [], 'MetalCompaniesBundle')  }} {{ currentCategory.titleAblative|lower -}}
+                                        {{ attributeValueTitleForSeo }}
+                                        {% if currentCity %}
+                                            в {{ currentCity.getTitleLocative -}}
+                                        {% endif %}.
+                                    </li>
+                                {% elseif activeTab == 'companies' and productsCount %}
+                                    <li class="item icon-lamp">
+                                        У нас есть еще
+                                        <a class="link clickable" href="{{ path(routeProducts, routeParameters|merge({'tab' : null})) }}">
+                                            {{ productsCount|number_format_decimal }} {{ 'products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle')  }}</a>
+                                        в разделе {{ currentCategory.getTitle()|lower -}}
+                                        {{ attributeValueTitleForSeo }}
+                                        {% if currentCity %}
+                                            в {{ currentCity.getTitleLocative -}}
+                                        {% endif %}.
+                                    </li>
+                                {% endif %}
+                                {#<li class="item">Подпишитесь на эту страницу, мы пришлем вам письмо, как только здесь появятся товары.</li>#}
+                                <li class="item icon-lamp">
+                                    Отправьте
+                                    <span class="link clickable demand"
+                                          popup-opener="#request-demand"
+                                          data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                                            {% if currentCity %}
+                                                data-city-text="{{ currentCity.title }}"
+                                                data-city-id="{{ currentCity.id }}"
+                                            {% endif %}
+                                            {% if currentCategory %}
+                                                data-product-text="{{ currentCategory.title }}"
+                                            {% endif %}
+                                            >заявку на {{ currentCategory.titleAccusative|lower -}}
+                                        {{ attributeValueTitleForSeo }}
+                                        {% if currentCity and currentCity.getTitleLocative %}
+                                            в {{ currentCity.getTitleLocative -}}
+                                        {% endif -%}
+                                    </span>, мы найдем вам поставщика.
+                                </li>
+                                {% if companiesCount and project.family == 'product' %}
+                                    <li class="item">
+                                        {% set template = '
+                                            Если вы хотите купить {{ category_accusative|lcfirst }}
+                                            оптом с доставкой в {{ territory_locative }} по лучшей цене, наш каталог из
+                                            {{ "%count_formatted% компании|%count_formatted% компаний|%count_formatted% компаний"|pluralize(companies_count) }}
+                                            на {{ domain_title }} в вашем распоряжении' %}
+
+                                        {{- productsListSeoHelper.renderStringTemplate(template, {'companies_count': companiesCount})|normalize_whitespace -}}
+                                    </li>
+                                {% endif %}
+
+                                {% set description = productsListSeoHelper.getDescriptionForCategoryPage() %}
+                                {% if description %}
+                                    <li class="item">
+                                        {{ description|raw|nl2br }}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% block seo_linking_bottom %}
+                            <div class="more-columns clearfix">
+                                {% set currentPage = app.request.query.get('page', 1) %}
+
+                                {{ brouzie_render_widget('MetalProductsBundle:SeeAlsoCategories', {
+                                    'category' : currentCategory,
+                                    'country' : currentCountry,
+                                    'city' : currentCity|default(null),
+                                    'region' : currentRegion|default(null),
+                                    'products_parameters' : app.request.attributes.get('products_parameters'),
+                                    'page' : currentPage,
+                                    'route_name' : currentRoute
+                                }) }}
+
+                                {% if project.widgets_other_cities_enabled %}
+                                    {{ brouzie_render_widget('MetalProductsBundle:OtherCities', {
+                                        'category' : currentCategory,
+                                        'country' : currentCountry,
+                                        'city' : currentCity|default(null),
+                                        'attributes_collection' : attributesCollection,
+                                        'page' : currentPage,
+                                        'counter_name' : _counterName,
+                                        'route_type' : routeType
+                                    }) }}
+                                {% endif %}
+
+                                {% if project.widgets_other_countries_enabled %}
+                                    {{ brouzie_render_widget('MetalProductsBundle:OtherCountries', {
+                                        'category' : currentCategory,
+                                        'country' : currentCountry,
+                                        'attributes_collection' : attributesCollection,
+                                        'counter_name' : _counterName,
+                                        'route_type' : routeType
+                                    }) }}
+                                {% endif %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endif %}
+            {% endblock search_result_info %}
+        {% endblock tab_content %}
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {% set productParams = app.request.attributes.get('products_parameters') %}
+
+    {% set routeTypeForHeader = routeType %}
+
+    {% set attributesIds = [] %}
+    {% for productsParameters in app.request.attributes.get('products_parameters') %}
+        {% set attributesIds = attributesIds|merge([productsParameters['parameterOption']['id']]) %}
+    {% endfor %}
+
+    {% if filterParameters is not defined %}
+        {% set filterParameters = {
+        'attributes_ids' : attributesIds,
+        'price_from' : app.request.query.get('price_from'),
+        'price_to' : app.request.query.get('price_to'),
+        'cattr' : app.request.query.get('cattr')
+        } %}
+    {% endif %}
+
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'product'}) }}
+
+    {% block cities_tabs %}
+        {% set citiesWidgetOptions = [] %}
+        {% if not currentCategory %}
+            {% set citiesWidgetOptions = {
+                'counter_name' : _counterName,
+                'loading_route' : 'MetalProductsBundle:Api:territorial',
+                'route_type' : routeType
+            } %}
+
+            {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions) }}
+            {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions|merge({'id' : 'cities-tabs'})) }}
+        {% else %}
+            {% set attributesIds = [] %}
+            {% for productsParameters in app.request.attributes.get('products_parameters') %}
+                {% set attributesIds = attributesIds|merge([productsParameters['parameterOption']['id']]) %}
+            {% endfor %}
+
+            {% set citiesWidgetOptions = {
+                'category' : currentCategory,
+                'counter_name' : _counterName,
+                'loading_route' : 'MetalProductsBundle:Api:territorial',
+                'route_type' : routeType,
+            } %}
+
+            {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions|merge(
+                {'category_slug' : currentCategory.getSlugCombined()}) )
+            }}
+
+            {% set citiesWidgetOptions = citiesWidgetOptions|merge({
+                'id' : 'cities-tabs',
+                'category_slug' : app.request.attributes.get('category_slug'),
+                'route_type' : routeType,
+                'filter_parameters' : {
+                    'attributes_ids' : attributesIds,
+                    'price_from' : app.request.query.get('price_from'),
+                    'price_to' : app.request.query.get('price_to'),
+                    'cattr' : app.request.query.get('cattr')
+                }
+            }) %}
+
+            {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions) }}
+        {% endif %}
+    {% endblock %}
+
+    {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': false}) }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : true}) }}
+{% endblock %}

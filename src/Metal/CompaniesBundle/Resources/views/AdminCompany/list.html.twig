@@ -1,0 +1,13 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block actions %}
+    {{ parent() }}
+
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('merge') }}">
+            <i class="fa fa-code-fork"></i>
+            Объединение
+        </a>
+    </li>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set categories = user.attribute('users_categories') %}
+
+<div class="popup-content">
+    <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+
+    <div class="user-info clearfix">
+        <div class="img-wrapper is-bordered float-left">
+            {% set avatarUrl = imageHelper.getAvatarUrl(user, 'sq84') %}
+            {% if avatarUrl %}
+                <img src="{{ avatarUrl }}" alt="{{ user.fullName }}" title="{{ user.fullName }}" />
+            {% else %}
+                <div class="pattern-small"></div>
+            {% endif %}
+        </div>
+        <div class="name float-left">{{ user.fullName }}</div>
+    </div>
+    <div class="interests">
+        <div class="block-title"><strong>Интересы</strong></div>
+        {% if categories %}
+            {% for parentTitle, children in categories %}
+                <p class="interest-item">
+                    {{ parentTitle }}:
+                    {% for child in children %}
+                        {# FIXME: разобраться с хостом и генерировать ссылку через path #}
+                        <a href="{{ url('MetalContentBundle:Topics:list', {'category_slug' : child.slugCombined}) }}">{{ child.title }}</a>
+                        {%- if not loop.last %},{% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+
+            {% else %}
+                <p class="interest-item gray60-color centered">
+                    У пользователя пока нет интересов.
+                </p>
+        {% endif %}
+    </div>
+</div>

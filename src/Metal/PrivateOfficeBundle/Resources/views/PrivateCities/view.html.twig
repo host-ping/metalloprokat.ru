@@ -1,0 +1,43 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Города / Управление информацией / '~titleSuffix %}
+
+{% set company = app.user.company %}
+{% set maxPossibleCompanyCitiesCount = company.getMaxPossibleCompanyCitiesCount() %}
+{% set companyCitiesCount = company.getCompanyCitiesCount() %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Cities.js'
+    combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{#{% set ddd = office|transchoice(null, [], 'MetalPrivateOfficeBundle') %}#}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right" ng-controller="Metal.Cities as citiesController">
+        {{ block('tabs') }}
+
+        <div class="content-scrollable js-scrollable">
+            <div class="management-content-wrapper">
+                {{ include ('MetalPrivateOfficeBundle:partials:filial_form.html.twig', {
+                    'form' : form,
+                    'simpleForm': simpleForm,
+                    'branches' : branches,
+                    'branch' : branch
+                }, false) }}
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalSupportBundle:TopicCorpSite') }}
+    <div id="add-company-city-error-popup"></div>
+{% endblock %}

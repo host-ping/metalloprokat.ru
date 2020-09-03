@@ -1,0 +1,237 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+
+{% set statusFilter = app.request.query.get('statusFilter') %}
+{% set photoFilter = app.request.query.get('photoFilter') %}
+{% set sort = app.request.query.get('sort') %}
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+
+{% block title 'Товары / Мини-сайт / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Products.js'
+    combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    {% set productsControllerOptions = {
+    'loadMoreProductsUrl': path('MetalPrivateOfficeBundle:PrivateCustomCategories:loadProductsById'),
+    'loadMoreCompanyPhotosUrl': path('MetalPrivateOfficeBundle:Products:loadCompanyPhotos'),
+    'loadProductsIdsUrl': path('MetalPrivateOfficeBundle:Products:loadProductsIdsUrl', {'checkCustomCategories': 1}),
+    'deleteProductsUrl': path('MetalPrivateOfficeBundle:Products:delete'),
+    'disconnectPhotoFromProductUrl': path('MetalPrivateOfficeBundle:Products:disconnectPhotoFromProduct'),
+    'moveProductsToCategoryUrl': path('MetalPrivateOfficeBundle:PrivateCustomCategories:moveToCategory'),
+    'actualizeProductsUrl': path('MetalPrivateOfficeBundle:Products:actualize'),
+    'loadCategoriesUrl': path('MetalPrivateOfficeBundle:Products:loadCategoriesByFilialId', {'addCustomCategories': 1}),
+    'forCustomCategories': true
+    } %}
+    <div ng-controller="Metal.Core as coreController" ng-cloak>
+        <div ng-controller="Metal.Products as productsController">
+
+            <div id="content" class="private-room-content content-right outline-right float-right"
+                 ng-init='productsController.options = {{ productsControllerOptions|json_encode|raw }}; productsUpdatedAt = "{{ formatHelper.formatDateTime(company.getCounter().getProductsUpdatedAt()) }}"'
+            >
+                {{ block('tabs') }}
+
+                {% set filtersStatuses = [
+                {'query' : null, 'title' : 'все', 'class' : '', 'descr' : ''},
+                {'query' : 'moderated', 'title' : 'промодерировано', 'class' : 'icon-check-big complete'},
+                {'query' : 'unmoderated', 'title' : 'не промодерировано', 'class' : 'icon-clock process'},
+                {'query' : 'exceeding', 'title' : 'превышен лимит', 'class' : 'icon-filter-del'}
+                ] %}
+
+                {% set filtersPhotos = [
+                {'query' : null, 'title' : 'все', 'cutTitle' : 'все'},
+                {'query' : 'with', 'title' : 'с фото', 'cutTitle' : 'с'},
+                {'query' : 'without', 'title' : 'без фото', 'cutTitle' : 'без'},
+                ] %}
+
+                {% set orderByVariants = [
+                {'query' : null, 'title' : 'по дате'},
+                {'query' : 'price', 'title' : 'по цене'},
+                {'query' : 'abc', 'title' : 'по алфавиту'}
+                ] %}
+
+                <div class="products-content-wrapper outline-right">
+                    <div class="product-management mini-site-products form js-private-product-container">
+                        <div class="form-container clearfix">
+                            <div class="products-list">
+                                <div class="heading clearfix">
+                                    <div class="check-all block float-left">
+                                        <input type="checkbox" class="js-styled-checkbox bg-grey"
+                                               ng-click="productsController.toggleAllProductsSelection($event.target.checked)"
+                                               ng-checked="products.size() > 0 && selectedProductsIds.length == products.size()"
+                                               styled-checkbox
+                                        />
+                                    </div>
+                                    <div class="product-photo block float-left" ng-init='filtersPhotos = {{ filtersPhotos|json_encode|raw }};'>
+                                        <span class="link icon-check black clickable js-popover-opener"
+                                              data-popover="#photo-product-filter"><%= productsLoadingConfig.filtersPhotos.cutTitle %></span>
+
+                                        <div id="photo-product-filter" class="drop-wrapper photo-product-filter opacity-border">
+                                            <ul class="dropdown">
+                                                <li class="drop-item" ng-repeat="filtersPhoto in filtersPhotos">
+                                        <span ng-class="{current: productsLoadingConfig.filtersPhotos.query == filtersPhoto.query}"
+                                              class="drop-link js-popover-self-closer"
+                                              ng-click="productsLoadingConfig.filtersPhotos = filtersPhoto; productsController.reloadProducts();"><%= filtersPhoto.title %></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    {{ include('@MetalPrivateOffice/PrivateProducts/partials/filter_category_partial.html.twig') }}
+
+                                    <div class="product-price block float-left" ng-init='orderByVariants = {{ orderByVariants|json_encode|raw }};'>
+                                        <span class="link icon-check black clickable js-popover-opener"
+                                              data-popover="#products-list-sorting"><%= productsLoadingConfig.orderBy.title %></span>
+
+                                        <div id="products-list-sorting" class="drop-wrapper status-filter opacity-border">
+                                            <ul class="dropdown">
+                                                <li class="drop-item" ng-repeat="orderByVariant in orderByVariants">
+                                        <span ng-class="{current: productsLoadingConfig.orderBy.query == orderByVariant.query}"
+                                              class="drop-link js-popover-self-closer"
+                                              ng-click="productsLoadingConfig.orderBy = orderByVariant; productsController.reloadProducts();"><%= orderByVariant.title %></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="product-status block float-left" ng-init='filtersStatuses = {{ filtersStatuses|json_encode|raw }};'>
+                                        <span class="<%= productsLoadingConfig.filtersStatuses.class %> link link js-popover-opener clickable"
+                                              data-popover="#status"><span class="icon-check black" ng-if="!productsLoadingConfig.filtersStatuses.class"><%= productsLoadingConfig.filtersStatuses.title %></span></span>
+
+                                        <div id="status" class="drop-wrapper status-filter opacity-border">
+                                            <ul class="dropdown">
+                                                <li class="drop-item" ng-repeat="filtersStatus in filtersStatuses">
+                                                    <span ng-class="{current: productsLoadingConfig.filtersStatuses.query == filtersStatus.query}"
+                                                        class="<%= filtersStatus.class %> filtersStatus.class drop-link clickable js-popover-self-closer"
+                                                        ng-click="productsLoadingConfig.filtersStatuses = filtersStatus; productsController.reloadProducts();"><%= filtersStatus.title %>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    {% if app.user.company.city %}
+                                        <div class="filials-list-wrapper float-left"
+                                             ng-init='productsLoadingConfig.filtersStatuses = {{ filtersStatuses|first|json_encode|raw }}; productsLoadingConfig.filtersPhotos = {{ filtersPhotos|first|json_encode|raw }}; productsLoadingConfig.orderBy = {{ orderByVariants|first|json_encode|raw }}; filials.addAll({{ branches|json_encode|raw }});'>
+                                            <span class="filial icon-check black clickable js-popover-opener" data-popover="#filials-list-filter"><%= filial.title %></span>
+                                            <div id="filials-list-filter" class="drop-wrapper filials-list-filter opacity-border">
+                                                <div class="js-scrollable">
+                                                    <ul class="dropdown">
+                                                        <li class="drop-item" ng-repeat="branchOffice in filials.all()">
+                                            <span
+                                                    class="drop-link clickable js-popover-self-closer"
+                                                    ng-class="{current : branchOffice.id == filial.id}"
+                                                    ng-click="productsController.setFilial(branchOffice)"
+                                            ><%= branchOffice.title %></span>
+                                                        </li>
+                                                        <li class="drop-item">
+                                                            <a class="drop-link" href="{{ path('MetalPrivateOfficeBundle:Cities:view') }}">Добавить</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="product-management-list">
+                                    {# Устанавливаем филиал и триггерим загрузку товаров #}
+                                    <div class="list js-scrollable" id="products-scroll-container"
+                                         ng-init="productsController.setFilial(filials.at(0))">
+                                        {{ include ('MetalPrivateOfficeBundle:partials:private_products_list.html.twig', {
+                                            'company': company,
+                                            'fromCustomProducts': true
+                                        }, false) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="bottom-shadow"></div>
+                        </div>
+                        <fieldset class="bottom-block clearfix">
+                            <div class="choose-products float-left" ng-show="selectedProductsIds.length > 0">
+                                <span translate
+                                      translate-n="selectedProductsIds.length"
+                                      translate-plural="selected_products_n">selected_products_n</span><br />
+                                    из <span ng-bind="allProductsIds.length"></span>
+                            </div>
+
+                            <div class="choose-products all-products float-left" ng-show="selectedProductsIds.length == 0">
+                                <span translate
+                                      translate-n="allProductsIds.length"
+                                      translate-plural="total_products_n">total_products_n</span>
+                            </div>
+
+                            <ul class="float-right">
+                                <li class="delete-btn item float-left">
+                                    <button type="button" class="delete button red-bg ie-radius {#js-popup-opener#}"
+                                            ng-disabled="selectedProductsIds.length < 1"
+                                            ng-click="coreController.confirm('Вы действительно хотите удалить выбранные товары?', productsController.deleteProducts)"
+                                            data-popup="#delete-product">Удалить
+                                    </button>
+                                </li>
+                                <li class="replace-btn item float-left">
+                                    {% if categories %}
+                                        <button type="submit" class="replace button white-bg is-bordered ie-radius js-popover-opener"
+                                                ng-disabled="selectedProductsIds.length < 1"
+                                                data-different-position="true"
+                                                data-popover="#choose-section" data-left="0" data-offset-top="-250">Перенести в раздел
+                                        </button>
+                                    {% else %}
+                                        <a class="replace button white-bg is-bordered ie-radius"
+                                            href="{{ path('MetalPrivateOfficeBundle:PrivateCustomCategories:categories') }}">
+                                            Перенести в раздел
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </fieldset>
+                    </div>
+
+                    <div ng-show="globalOperationProcessing">
+                        <div class="items overflow">
+                        </div>
+                        <div class="loading-mask big">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ brouzie_render_widget('MetalProductsBundle:AddProductsFromFile', {'company_id': company.id}) }}
+            {{ brouzie_render_widget('MetalProductsBundle:ProductForm', {'company' : company, 'existing_product_editing' : false}) }}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductCategory', {'categories': categories, 'widget_id': 'choose-section', 'ng_click': "coreController.confirm('Вы действительно хотите перенести выбранные товары в раздел?', [productsController.moveProductsToCategory, [%id%]])"})}}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductCategory', {'categories': categories, 'widget_id': 'choose-section-inline', 'ng_click': "productsController.moveProductToCategory(%id%, %title%)"})}}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block user_alert %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductsWithoutCategoryNotice', {'check_custom_category': true}) }}
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    <div id="errors-load-products" class="popup-block opacity-border large"></div>
+    {% if not company.packageChecker.isCustomCategoriesAllowed() %}
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Возможность присоеденять товары к произвольным категориям доступна при подключении Расширенного или Полного пакета услуг ', 'widget_id': 'complete-package-custom-categories', 'popup_non_closable' : true} )}}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Brouzie.Popups.openPopup($('#complete-package-custom-categories'));
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+

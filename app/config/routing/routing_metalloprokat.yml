@@ -1,0 +1,137 @@
+admin:
+    resource: "@MetalProjectBundle/Resources/config/routing_admin.yml"
+    prefix: /_admin
+    host: %base_host_admin_panel%
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /_admin
+    host: %base_host_admin_panel%
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    host:     %images_host%
+
+liip_imagine_filter:
+    path: /media/cache/{filter}/{path}
+    host:     %images_host%
+    methods: GET
+    defaults: {_controller: %liip_imagine.controller.filter_action%}
+    requirements:
+        filter: '[A-z0-9_\-]*'
+        path: '.+'
+
+'MetalContentBundle:AlbumAdmin:createAlbum':
+    path:    /content/albums/
+    host: %base_host_admin_panel%
+    methods: POST
+    defaults: { _controller: MetalContentBundle:AlbumAdmin:createAlbum }
+
+'MetalContentBundle:AlbumAdmin:list':
+    path:    /content/albums/
+    host: %base_host_admin_panel%
+    defaults: { _controller: MetalContentBundle:AlbumAdmin:list }
+
+'MetalContentBundle:AlbumAdmin:uploadPhoto':
+    path:    /content/albums/{id}/photo
+    host: %base_host_admin_panel%
+    methods: POST
+    defaults: { _controller: MetalContentBundle:AlbumAdmin:uploadPhoto }
+
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+    prefix: /_gcb
+
+metal_users_authentication:
+    resource: "@MetalUsersBundle/Resources/config/routing_authentication.yml"
+    prefix:   /
+
+metal_attributes:
+    resource: "@MetalAttributesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_statistic:
+    resource: "@MetalStatisticBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_private_office:
+    resource: "@MetalPrivateOfficeBundle/Resources/config/routing.yml"
+    host:     %base_host_private_office%
+    prefix:   /
+
+metal_services_payment:
+    resource: "@MetalServicesBundle/Resources/config/routing.yml"
+    host:     %host_prefix%%base_host%
+    prefix:   /
+
+metal_complaints:
+    resource: "@MetalComplaintsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_callbacks:
+    resource: "@MetalCallbacksBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_users:
+    resource: "@MetalUsersBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_newsletter:
+    resource: "@MetalNewsletterBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_companies:
+    resource: "@MetalCompaniesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_territorial:
+    resource: "@MetalTerritorialBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_categories:
+    resource: "@MetalCategoriesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_mini_site:
+    resource: "@MetalMiniSiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_demands:
+    resource: "@MetalDemandsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_corpsite:
+    resource: "@MetalCorpsiteBundle/Resources/config/routing.yml"
+    host: %base_host_corp_site%
+    prefix:   /
+
+metal_project:
+    resource: "@MetalProjectBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_announcements:
+    resource: "@MetalAnnouncementsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_products:
+    resource: "@MetalProductsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+grabber_test:
+    resource: "@MetalGrabbersBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_catalog:
+    resource: "@MetalCatalogBundle/Resources/config/routing.yml"
+    prefix:   /
+
+metal_content:
+    resource: "@MetalContentBundle/Resources/config/routing.yml"
+    host:     %host_prefix%%base_host%
+    prefix:   /
+
+# include secondary path routing for faster url generation
+secondary:
+    resource: routing_metalloprokat_secondary.yml
+    prefix: /

@@ -1,0 +1,44 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Ответ {{ title }}{% endblock %}
+
+{% block body_text -%}
+    Здравствуйте, {{ userName }}.
+Мы ответили {{ title }}
+
+{{ object.getMessage() }}
+
+{% if object.topic.sentFrom == constant('SOURCE_PRIVATE_OFFICE', object.topic) %}
+Ответить {{ url('MetalPrivateOfficeBundle:Support:view', {'id': object.topic.id}) }}
+{% endif %}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_header %}<div>Здравствуйте, {{ userName }}.</div>{% endblock %}
+
+{% block text_part_body %}
+    <div>
+        Мы ответили {{ title }}<br/><br/>
+        <table cellpadding="10">
+            <tr>
+                <td bgcolor="#F2F0ED">
+                    <p style="font-size: 13px;">{{ object.getMessage()|nl2br }}</p>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        {% if object.topic.sentFrom == constant('SOURCE_PRIVATE_OFFICE', object.topic) %}
+            <a style="display: inline-block;
+                      padding: 5px 10px;
+                      background: #18A3D1;
+                      text-align: center;
+                      color: #fff;
+                      border-radius: 4px;
+                      text-transform: uppercase;
+                      text-decoration: none;" href="{{ url('MetalPrivateOfficeBundle:Support:view', {'id': object.topic.id}) }}">Ответить</a>
+
+        {% endif %}
+    </div>
+{% endblock %}
+{% block user_agreement '' %}

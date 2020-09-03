@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.isContractPrice() %}
+            <p>дог.</p>
+        {% else %}
+            <p>{{ object.price|number_format_decimal }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block title 'Медийная реклама / Статистика / '~titleSuffix %}
+
+{% block filters %}
+    {% set additionalRouteParameters = {'id' : announcement.id} %}
+    {{ parent() }}
+{% endblock filters  %}
+
+{% block before_periods %}
+    {% set currentBunnerId = announcement.id %}
+    <li class="item float-left">
+        <span class="announcement-link icon-check black clickable float-left js-popover-opener js-tooltip-opener"
+              data-tooltip-title="{{ formattingHelper.formatDate(announcement.startsAt) }} - {{ formattingHelper.formatDate(announcement.endsAt) }}"
+              data-popover="#announcement">
+            Баннер №{{ currentBunnerId }}
+            <span class="zone-title">({{ announcement.zone.title }})</span>
+        </span>
+        <span class="announcement-view clickable float-left js-popup-opener" data-popup="#announcement-preview"></span>
+        <div id="announcement" class="drop-wrapper announcement-list opacity-border">
+            <div class="js-scrollable">
+                <ul class="dropdown">
+                    {% for announcementItem in announcements if announcementItem.zone.cost %}
+                        <li class="drop-item">
+                            {% if announcementItem.id == currentBunnerId %}
+                                <span class="drop-link current">Баннер №{{ announcementItem.id }}</span>
+                            {% else %}
+                                <a class="drop-link" href="{{ path('MetalPrivateOfficeBundle:Statistic:media', {'id' : announcementItem.id}) }}">Баннер №{{ announcementItem.id }}</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </li>
+{% endblock before_periods %}
+
+{% block content_inner %}
+
+    <div class="media-tab">
+        {% block statistic_chart  %}
+            {% set chartRules = {
+                series: [
+                    {
+                        title: 'Показы',
+                        field: 'displaysCount',
+                    },
+                    {
+                        title: 'Переходы',
+                        field: 'redirectsCount',
+                    }
+                ]
+            } %}
+
+            {{ parent() }}
+        {% endblock statistic_chart %}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+        {% set columns = {
+            'date' : {'query': null, 'cls': 'date col', 'title': 'Дата'},
+            'redirectsCount': {'query': 'redirectsCount', 'cls': 'views col', 'title': 'Показы'},
+            'displaysCount': {'query': 'displaysCount', 'cls': 'switch col', 'title': 'Переходы'},
+            'ctr': {'query': 'ctr', 'cls': 'ctr col', 'title': 'CTR, %'}
+            } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                'redirectsCount',
+                'displaysCount'
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="views col">{{ summarizedValues.displaysCount|number_format_decimal }}</td>
+                    <td class="switch col">{{ summarizedValues.redirectsCount|number_format_decimal }}</td>
+                    <td class="ctr col">{{ (summarizedValues.redirectsCount / (summarizedValues.displaysCount ?: 1) * 100)|number_format_decimal({'fraction_digits': 2})  }}</td>
+                </tr>
+
+                {% for statsItem in statsResultViewModel.stats %}
+                    {% set isWeekend = false %}
+                    {% if currentGrouping == 'day' %}
+                        {% set isWeekend = formattingHelper.isWeekend(statsItem.date) %}
+                    {% endif %}
+                    <tr class="row">
+                        <td class="date col {% if isWeekend %}red-color{% endif %}">{{ formattingHelper.formatStatsDate(statsItem.date, currentGrouping, statsItem.previousEntry ? statsItem.previousEntry.date : null)|raw }}</td>
+                        <td class="views col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.displaysCount == 0 %} null {% endif %}">{{ statsItem.displaysCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="switch col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.redirectsCount == 0 %} null {% endif %}">{{ statsItem.redirectsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="ctr col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.ctr == 0 %} null {% endif %}">{{ statsItem.ctr|number_format_decimal({'fraction_digits': 2}) }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content_inner %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    <div class="photo popup-block opacity-border large" id="announcement-preview">
+        <div class="popup-wrapper clearfix">
+            <div class="img-content {% if announcement.zone.width == 150 %}float-left{% endif %}">
+                {% if announcement.isFlash() %}
+                    <object type="application/x-shockwave-flash" data="{{ asset(announcement.webPath, version=announcement.version) }}" width="{{ announcement.zone.width }}" height="{{ announcement.zone.height }}">
+                        <param name="movie" value="{{ asset(announcement.webPath, version=announcement.version) }}" />
+                        <param name="quality" value="high" />
+                        <embed src="{{ asset(announcement.webPath, version=announcement.version) }}" quality="high" width="{{ announcement.zone.width }}" height="{{ announcement.zone.height }}"></embed>
+                    </object>
+                {% elseif announcement.isHtml() or announcement.isZip()  %}
+                    <iframe src="{{ asset(announcement.embedWebPath, version=announcement.version) }}" width="{{ announcement.zone.width }}" height="{{ announcement.zone.height }}" scrolling="no"></iframe>
+                {% else %}
+                    <img width="{{ announcement.zone.width }}" height="{{ announcement.zone.height }}" alt="{{ announcement.fileOriginalName }}" title="{{ announcement.fileOriginalName }}" src="{{ asset(announcement.webPath, version=announcement.version) }}">
+                {% endif %}
+            </div>
+            <div class="popup-content float-left">
+                <div class="announcement-information">
+                    <p class="info">
+                        <strong>Зона: </strong>{{ announcement.zoneTypeTitle }}
+                    </p>
+                    <p class="info">
+                        <strong>Размер: </strong>{{ announcement.zone.width }}x{{ announcement.zone.height }}
+                    </p>
+                    <p class="info">
+                        <strong>Дата активности: </strong> {{ formattingHelper.formatDate(announcement.startsAt) }} - {{ formattingHelper.formatDate(announcement.endsAt) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock additional_popups %}

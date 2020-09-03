@@ -1,0 +1,252 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalProjectBundle/Resources/public/js/libs/Highstock/js/highstock.src.js'
+        '@MetalProjectBundle/Resources/public/js-integration/chart.js'
+        filter='?uglifyjs2'
+        combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}
+
+{% set statsHelper = brouzie_helper('MetalStatisticBundle') %}
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% set route = app.request.attributes.get('_route') %}
+{% set groupingModes = {
+    'day' : {'query': null, 'title' : 'По дням'},
+    'week' : {'query': 'week', 'title' : 'По неделям'},
+    'month' : {'query': 'month', 'title' : 'По месяцам'},
+} %}
+
+{% set currentGrouping = app.request.query.get('group', 'day') %}
+{% if groupingModes[currentGrouping] is not defined %}
+    {% set currentGrouping = 'day' %}
+{% endif %}
+
+{% set periods = {
+    'week' : {'query' : 'week', 'title' : 'За неделю'},
+    'month' : {'query' : 'month', 'title' : 'За месяц'},
+    'year' : {'query' : null, 'title' : 'За год'},
+    'custom' : {'query' : 'custom', 'title' : 'За период', 'popover': '#datepicker-period-from'},
+    'all' : {'query' : 'all', 'title' : 'За все время'}
+} %}
+
+{% set currentPeriod = app.request.query.get('period', 'year') %}
+{% if periods[currentPeriod] is not defined %}
+    {% set currentPeriod = 'year' %}
+{% endif %}
+
+{% if app.request.query.get('date_from') or app.request.query.get('date_to') %}
+    {% set currentPeriod = 'custom' %}
+{% endif %}
+
+{% block content %}
+    <div id="content" class="statistic-content private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+
+        {% block filters %}
+            {% set additionalRouteParameters = additionalRouteParameters|default({}) %}
+            <div class="statistic filters-block outline-right clearfix">
+                <ul class="sort-period list float-left">
+                    {% block before_periods '' %}
+                    {% block periods %}
+                        <li class="item float-left">
+                            <span class="period-link icon-check black clickable link js-popover-opener" data-popover="#periods">
+                                {{ periods[currentPeriod].title }}
+                            </span>
+
+                            <div id="periods" class="drop-wrapper period-list opacity-border">
+                                <ul class="dropdown">
+                                    {% for key, period in periods %}
+                                        <li class="drop-item">
+                                            {% if currentPeriod == key %}
+                                                <span class="drop-link current">{{ period.title }}</span>
+                                            {% elseif period.popover is defined %}
+                                                <span class="drop-link clickable js-popover-opener"
+                                                   data-popover="{{ period.popover }}"
+                                                   >{{ period.title }}</span>
+                                            {% else %}
+                                                <a class="drop-link"
+                                                   href="{{ path(route, {'period': period.query}|merge(additionalRouteParameters)) }}">{{ period.title }}</a>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="item float-left">
+                            {{ include('@MetalProject/partials/datepicker_range.html.twig', {'dateFrom': statsResultViewModel.dateFrom, 'dateTo': statsResultViewModel.dateTo}, false) }}
+                        </li>
+                    {% endblock periods %}
+
+                    {% block grouping_modes %}
+                        <li class="item float-left">
+                            <span class="period-link icon-check black clickable link js-popover-opener" data-popover="#groupping-modes">
+                                {{ groupingModes[currentGrouping].title }}
+                            </span>
+
+                            <div id="groupping-modes" class="drop-wrapper period-list opacity-border">
+                                <ul class="dropdown">
+                                    {% set routeParameters = {
+                                        'period': app.request.query.get('period'),
+                                        'date_from': app.request.query.get('date_from'),
+                                        'date_to': app.request.query.get('date_to')
+                                    } %}
+
+                                    {% for key, groupingMode in groupingModes %}
+                                        <li class="drop-item">
+                                            {% if currentGrouping == key %}
+                                                <span class="drop-link current">{{ groupingMode.title }}</span>
+                                            {% else %}
+                                                <a class="drop-link" href="{{ path(route, routeParameters|merge({'group': groupingMode.query})|merge(additionalRouteParameters)) }}">{{ groupingMode.title }}</a>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    {% endblock grouping_modes %}
+                </ul>
+
+                {% block viewing_modes %}
+                    {% if viewingModes is not defined %}
+                        {% set viewingModes = [] %}
+                    {% endif %}
+
+                    {% set viewingModesParams = {
+                        'date_from': app.request.query.get('date_from'),
+                        'date_to': app.request.query.get('date_to'),
+                        'period': app.request.query.get('period')
+                    } %}
+                    <div class="all float-right">
+                        {% for viewItem in viewingModes if viewItem.path == route %}
+                            <span class="period-link icon-check black clickable link js-popover-opener" data-popover="#viewing-modes">{{ viewItem.title }}</span>
+                        {% endfor %}
+                        <div id="viewing-modes" class="drop-wrapper viewing-list opacity-border">
+                            <ul class="dropdown">
+                                {% for viewItem in viewingModes %}
+                                    <li class="drop-item">
+                                        {% if viewItem.path == route %}
+                                            <span class="drop-link current">{{ viewItem.title }}</span>
+                                        {% else %}
+                                            <a class="drop-link" href="{{ path(viewItem.path, viewingModesParams) }}">{{ viewItem.title }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endblock viewing_modes %}
+
+                {% block chart_fields %}
+                    {% if chartsRules is defined %}
+                        <div class="chart-fields-wrapper float-right">
+                            {% set currentField = chartsRules|first %}
+                            <span class="chart-link icon-check black clickable link js-popover-opener js-chart-current-field" data-popover="#chart-fields">{{ currentField.commonTitle }}</span>
+                            <div id="chart-fields" class="drop-wrapper fields-list opacity-border">
+                                <ul class="dropdown js-popover-self-closer">
+                                    <script type="text/javascript">
+                                        var chartData = {};
+                                    </script>
+                                    {% for key, chartRules in chartsRules %}
+                                        {% set pieChartData = statsHelper.getPieData(statsResultViewModel.stats, chartRules, chartLabelField) %}
+
+                                        <script type="text/javascript">
+                                            chartData[{{ key }}] = {{ pieChartData|json_encode|raw }};
+                                        </script>
+                                        <li class="drop-item">
+                                            <span class="drop-link clickable js-chart-shower {% if loop.first %}current{% endif %}"
+                                                  data-col-index="{{ key }}"
+                                                  data-chart-show="#chart-wrapper-{{ key }}">
+                                                {{ chartRules.commonTitle }}
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock chart_fields %}
+            </div>
+        {% endblock filters %}
+
+        {% block loading_mask %}
+            {% if app.user.company.counter.updateStatistics %}
+                <div class="scrollable-table content-scrollable js-scrollable" title="Идет обновление статистики">
+                    <div class="items overflow"></div>
+                    <div class="loading-mask big">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% set chartsHidden = 'hidden' == app.request.cookies.get('charts_state', 'hidden') %}
+        {% block content_inner %}
+            {% block statistic_chart %}
+                {% if chartRules is defined %}
+                    <div class="toggle-wrapper line-chart {% if chartsHidden %} g-hidden{% endif %}">
+                        <div class="income-graph-wrapper js-chart-wrapper">
+                            <div id="line-chart" class="graph-container"></div>
+                        </div>
+                    </div>
+
+                    <p class="js-toggle-chart toggle-chart icon-check-collapse black clickable {% if chartsHidden %} g-hidden{% endif %}" data-toggle-save="hidden">Скрыть график</p>
+                    <p class="js-toggle-chart toggle-chart icon-check black clickable {% if not chartsHidden %} g-hidden{% endif %}" data-toggle-save="visible">Показать график</p>
+
+                    {% set chatSeries = statsHelper.getSeriesByRules(statsResultViewModel.stats, chartRules) %}
+                    {% set chatDateAxis = statsHelper.getDateAxis(statsResultViewModel.stats, currentGrouping) %}
+
+                    <script type="text/javascript">
+                        $('document').ready(function(){
+                            initializeLineChart($('#line-chart'), {{ chatDateAxis|json_encode|raw }}, {{ chatSeries|json_encode|raw }});
+                        });
+                    </script>
+                {% endif %}
+            {% endblock %}
+
+            {% block statistic_pie_chart %}
+                {% if chartsRules is defined %}
+                    <div class="toggle-wrapper pie-chart {% if chartsHidden %} g-hidden{% endif %}">
+                        {% for key, chartRules in chartsRules %}
+                            <div id="chart-wrapper-{{ key }}" class="income-graph-wrapper js-chart-wrapper {% if not loop.first %}g-hidden{% endif %} clearfix">
+                                <div id="pie-chart-{{ key }}" class="graph-container clearfix"></div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <p class="js-toggle-chart toggle-chart icon-check-collapse black clickable {% if chartsHidden %} g-hidden{% endif %}" data-toggle-save="hidden">Скрыть график</p>
+                    <p class="js-toggle-chart toggle-chart icon-check black clickable {% if not chartsHidden %} g-hidden{% endif %}" data-toggle-save="visible">Показать график</p>
+                {% endif %}
+            {% endblock %}
+
+            {% block table_head %}
+                {% if columns is not defined %}
+                    {% set columns = [] %}
+                {% endif %}
+
+                <table class="graph-head stat-table {% if chartLabelField is defined %}js-pie-table-head {% endif %}">
+                    <tr class="row">
+                        {% set routeParameters = app.request.attributes.get('_route_params') %}
+                        {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+
+                        {% for key, column in columns %}
+                            <td class="{{ column.cls }}" >
+                                <a class="head-title {% if currentOrder == key %} sorted {{ currentOrderDirection == 'asc' ? 'asc' : 'desc' }}{% endif %}"
+                                   href="{{ path(route, routeParameters|merge({'sort': column.query, 'order': currentOrder == key and currentOrderDirection == 'desc' ? 'asc' : null})) }}">{{ column.title }}
+                                </a>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            {% endblock table_head %}
+        {% endblock content_inner %}
+    </div>
+{% endblock content %}
+
+

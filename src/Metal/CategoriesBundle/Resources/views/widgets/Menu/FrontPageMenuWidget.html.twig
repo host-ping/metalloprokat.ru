@@ -1,0 +1,18 @@
+{% if rootMenuItems|length > 5 %}
+    {{ include ('@MetalCategories/widgets/Menu/front_page_items.html.twig', {
+        'rootMenuItems' : rootMenuItems|slice(0, 4),
+        '_options' : _options
+    }, false) }}
+    {{ include ('@MetalCategories/widgets/Menu/front_page_items.html.twig', {
+        'rootMenuItems' : rootMenuItems|slice(4, 8),
+        '_options' : _options
+    }, false) }}
+{% else %}
+    {{ include ('@MetalCategories/widgets/Menu/front_page_items.html.twig', {
+        'rootMenuItems' : rootMenuItems,
+        '_options' : _options
+    }, false) }}
+{% endif %}
+
+
+

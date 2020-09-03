@@ -1,0 +1,193 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{# currentCategory нужна для подсветки текущей активной категории #}
+{% set currentCategory = product.customCategory ?: product.category %}
+{% set productCity = product.company.city %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{% if app.request.attributes.get('city') %}
+    {% set productCity = app.request.attributes.get('city') %}
+{% endif %}
+
+{% set criteria = {
+    'company_id' : product.company.id,
+    'category_id' : product.category.id,
+    'cities_ids' : product.company.city.id
+} %}
+
+{% set productTabsWidget = brouzie_widget('MetalProductsBundle:ProductTabs', {
+    'product' : product,
+    'city' : product.company.city,
+    'active_tab' : 'similar-products-tab',
+    'page' : app.request.query.get('page', 1),
+    'available_tabs' : ['similar-products-tab'],
+    'active_tab' : 'similar-products-tab',
+    'disabled_normalize_price' : true,
+    'product_view_url_mode': 'minisite',
+    'use_pagination': false
+}) %}
+
+{% block meta %}
+    {% if productTabsWidget is defined %}
+        {{ brouzie_helper('MetalProjectBundle:Seo').getMetaPagination(productTabsWidget.getProducts().products.pagerfanta)|raw }}
+    {% endif %}
+{% endblock %}
+
+{% block title brouzie_helper('MetalProjectBundle:Seo').getMetaTitleForMiniSiteProductPage(product) %}
+{% block meta_description brouzie_helper('MetalProjectBundle:Seo').getMetaDescriptionForMiniSiteProductPage(product) %}
+{% block canonical_url brouzie_helper('MetalProjectBundle:Seo').getCanonicalUrlForMiniSiteProduct(product) %}
+
+{% block tab_content %}
+    <div class="product content-holder">
+        {% if isCompanyModerator %}
+            <div class="admin-button-wrapper clearfix">
+                <a href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Products:list', {'_secure' : product.company.country.secure}) }}?q={{ product.id }}" class="admin-button button gray60-bg float-right ie-radius">изменить</a>
+            </div>
+        {% endif %}
+        <div class="product-inside">
+            <div class="product-info-wrapper clearfix">
+                <div class="product-img is-bordered float-left">
+                    <span class="img-link pattern-big">
+                        {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq136', 'minisite') %}
+                        {% if imageUrl %}
+                            <img
+                                {% if product.image.photo.name %}
+                                    class="clickable js-popup-opener" data-popup="#product-photo"
+                                {% endif %}
+                                    src="{{ imageUrl }}" alt="{{ product.title }}" title="{{ product.title }}"/>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="product-info">
+                    <h1 class="product_main-title">{{- brouzie_helper('MetalProjectBundle:Seo').getHeadTitleForMiniSiteProductPage(product) -}}</h1>
+                    <div class="information">
+                        {% if product.isDeleted() %}
+                            <div class="gray80-color" ng-include="'product-disabled'"></div>
+                            <script type="text/ng-template" id="product-disabled">
+                                Товар отключен
+                            </script>
+                            {% if enabledProduct %}
+                                <a class="show-price-btn button green-bg ie-radius" href="{{ path('MetalMiniSiteBundle:MiniSite:product_view', {'id': enabledProduct.getId(), 'domain': enabledProduct.getCompany().getDomain()}) }}">Показать цену</a>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if product.isModerated() %}
+                            {% if product.size %}
+                                <p class="size-price gray60-color">{{ tokens.product_volume_title|capitalize }} {{ product.getCutSize() }}
+                            {% endif %}
+                            {% if product.isContractPrice() %}
+                                <span class="gray60-color">цена договорная</span>
+                            {% else %}
+                                {% if product.isPriceFrom %}от {% endif %}
+                                <strong class="price">
+                                    {{ product.price|number_format_decimal }}
+                                    <span class="{{ product.currency.symbolClass }}"></span>
+                                    <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                                </strong>
+                                {% if product.measureId %}за {{ product.measure.tokenPrice }}{% endif %}
+                            {% endif %}</p>
+                        {% endif %}
+                    </div>
+                    <ul class="links demand_links clearfix">
+
+                        <li class="links_report item float-left clearfix">
+                            <span
+                               class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                               data-tooltip-title="Пожаловаться"
+                               data-popup="#complaint-product"
+                               data-object-id="{{ product.id }}"
+                               data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : product.id, 'kind' : 'product'}) }}">
+                                <span class="icon-complaint"></span>
+                            </span>
+                        </li>
+
+                        <li class="item width-182 float-left clearfix {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %}"
+                            {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+                            <span
+                                    class="button favorites is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if product.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                                    data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : product.id, 'object' : 'product'}) }}">
+                                <span class="text">В Избранное</span>
+                                <span class="icon-favorite float-right"></span>
+                            </span>
+
+                            <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not product.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                                 data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : product.id, 'object' : 'product'}) }}">
+                                <span class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                                    <span class="text">В Избранном</span>
+                                    <span class="icon-favorite-active float-right"></span>
+                                </span>
+
+                                <span class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                                    <span class="text">Удалить</span>
+                                    <span class="icon-favorite-del float-right"></span>
+                                </span>
+                            </div>
+                        </li>
+
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <span class="primary button send-button clickable ie-radius"
+                               popup-opener="#request-private-demand"
+                               data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                               data-demand-text="Заявка для компании {{ product.company.title }}"
+                               data-product-text="{{ product.title }}"
+                               data-company-id="{{ product.company.id }}"
+                               data-product-id="{{ product.id }}"
+                               data-product-category-id="{{ product.category.id }}"
+                               {% if not product.isContractPrice() %}
+                                   data-volume-type="{{ product.measureId }}"
+                               {% endif %}
+                               data-source-type-id="8"
+                                    >Отправить заявку
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% if product.productDescription.description %}
+                <div class="product-description">
+                    <div><strong>Описание</strong></div>
+                    <p class="text">{{ product.productDescription.description|nl2br }}</p>
+                </div>
+            {% endif %}
+
+            <div class="see-also">
+                {% set attributes = product.getAttribute('attributes') %}
+                {% set categorySlug = brouzie_helper('MetalCategoriesBundle').getCategoryWithParamString(product.category, attributes) %}
+                {% set routeParameters = {'category_slug' : categorySlug, 'subdomain' : product.company.city.getSlugWithFallback(), '_secure' : product.company.country.secure} %}
+                {% set productsHelper = brouzie_helper('MetalMiniSiteBundle:Product') %}
+                <p class="text">Смотрите также: <a href="{{ urlHelper.generateUrl('MetalProductsBundle:Products:list_category_subdomain', routeParameters) }}" class="link clickable">{{ product.category.title }} {{ productsHelper.getOptionsByProduct(attributes) }}</a></p>
+            </div>
+
+            {% if productTabsWidget.getProducts().products.count > 1 %}
+                {{ brouzie_render_widget(productTabsWidget) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block company_employees %}
+    {% if currentCompany.packageChecker.isAdditionalContactsBlockShouldBeVisible() %}
+        {{ brouzie_render_widget('MetalCompaniesBundle:CompanyEmployees', {
+            'company': currentCompany,
+            'product_external_url': product.externalUrl
+        }) }}
+    {% endif %}
+{% endblock company_employees %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    {% if product.image and product.image.photo.name %}
+        {% set imageUrlForPopup = imageHelper.getPhotoUrlForProduct(product, 'sq600', 'minisite') %}
+        {% if imageUrlForPopup %}
+            <div class="photo popup-block opacity-border large" id="product-photo">
+                <div class="img-content">
+                    <img alt="{{ product.title }}" title="{{ product.title }}" src="{{ imageUrlForPopup }}">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'product'}) }}
+{% endblock %}

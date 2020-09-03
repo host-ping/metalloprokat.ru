@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal_attributes.cache.attributes_collection_normalizer" class="Metal\AttributesBundle\Cache\AttributesCollectionNormalizer">
+            <tag name="brouzie_widgets.object_normalizer" priority="100" />
+        </service>
+
+        <service id="metal.attributes.admin.attribute" class="Metal\AttributesBundle\Admin\AttributeAdmin">
+            <argument>metal.attributes.admin.attribute</argument>
+            <argument>Metal\AttributesBundle\Entity\Attribute</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="addChild">
+                <argument type="service" id="metal.attributes.admin.attribute_value" />
+            </call>
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Атрибуты" />
+        </service>
+
+        <service id="metal.attributes.admin.attribute_value" class="Metal\AttributesBundle\Admin\AttributeValueAdmin">
+            <argument>metal.attributes.admin.attribute_value</argument>
+            <argument>Metal\AttributesBundle\Entity\AttributeValue</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Значения атрибутов" />
+        </service>
+
+        <service id="metal.attributes.admin.attribute_value_category" class="Metal\AttributesBundle\Admin\AttributeValueCategoryAdmin">
+            <argument>metal.attributes.admin.attribute_value_category</argument>
+            <argument>Metal\AttributesBundle\Entity\AttributeValueCategory</argument>
+            <argument>MetalAttributesBundle:AttributeValueCategoryAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Значения атрибутов в категориях" />
+        </service>
+    </services>
+</container>

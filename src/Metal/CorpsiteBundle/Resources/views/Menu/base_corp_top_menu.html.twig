@@ -1,0 +1,24 @@
+{% block root %}
+    <div class="corporate-menu float-left">
+        <input type="checkbox" id="open-menu" class="open-check">
+        <div class="hold-toogle">
+            <label for="open-menu" class="toogle-menu">
+                <span class="t"></span>
+                <span class="c"></span>
+                <span class="b"></span>
+            </label>
+        </div>
+        <div class="menu-holder">
+            <label for="open-menu" class="close-menu">Меню</label>
+            <ul id="menu" class="menu">
+            {% for menuItem in item.children %}
+                <li class="item float-left {% if matcher.isCurrent(menuItem) %} active {% endif %}">
+                   <a class="link ie-radius" href="{{ menuItem.uri }}">{{ menuItem.label }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <label for="open-menu" class="overlay"></label>
+        <div class="nav-overlay">&nbsp;</div>
+    </div>
+{% endblock %}

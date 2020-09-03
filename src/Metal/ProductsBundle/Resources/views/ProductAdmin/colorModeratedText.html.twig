@@ -1,0 +1,31 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.isDeleted() %}
+            <p style="color:#ff0000"><b>{{ object.title }}</b></p>
+        {% elseif object.isLimitExceeding() %}
+            <p style="color:#b48306"><b>{{ object.title }}</b></p>
+        {% elseif object.isModerated() %}
+            <p style="color:#009900"><b>{{ object.title }}</b></p>
+        {% elseif object.isPending() %}
+            <p style="color:#15b4ad"><b>{{ object.title }}</b></p>
+        {% elseif object.isProcessing() %}
+            <p style="color:#276db4"><b>{{ object.title }}</b></p>
+        {% else %}
+            <p><b>{{ object.title }}</b></p>
+        {% endif %}
+
+
+        {% if object.getCategory() %}
+            <a class="label label-primary" title="Категория" href="{{ path('admin_metal_categories_category_edit', {'id': object.category.id }) }}" target="_blank">{{ object.category.getTitleWithParent() }}</a>
+        {% endif %}
+
+        {% set attributesCollection = object.getAttribute('product_attributes_collection') %}
+        {% for attribute, attributeValues in attributesCollection %}
+            {% for attributeValue in attributeValues %}
+                <span class="label label-default" title="{{ attribute.title }}">{{ attributeValue.value }}</span>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

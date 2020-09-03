@@ -1,0 +1,73 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.list.has('batch') and not app.request.isXmlHttpRequest %}
+    <td class="sonata-ba-list-field sonata-ba-list-field-batch">
+        {{ object|render_list_element(admin.list['batch']) }}
+    </td>
+{% endif %}
+
+{% block row %}
+    {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+    {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(object, 'sq72', 'admin') %}
+    {% set routeParams = {'domain' : object.domain, '_secure' : object.packageChecker.isHttpsAvailable()} %}
+    {% set companyViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', routeParams) %}
+    <table class="table table-bordered table-striped inside-table">
+        <tr>
+            <td>
+                <b>Id:</b> {{ object|render_list_element(admin.list['id']) }} <br />
+                <b>Название:</b> {{ object|render_list_element(admin.list['title']) }}{{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : object}, false) }}<br />
+                <b>Город:</b> {{ object|render_list_element(admin.list['city']) }} <br />
+                {% if object.address %}
+                    <b>Адрес:</b> {{ object|render_list_element(admin.list['address']) }} <br />
+                {% endif %}
+                {% if object.paymentDetails.uploadedAt %}
+                    <b>Дата загрузки документа:</b> {{ object|render_list_element(admin.list['paymentDetails.uploadedAt']) }} <br />
+                {% endif %}
+                {% if object.sites %}
+                    <b>Сайты:</b>
+                    {% for site in object.sites%}
+                        <a href="{{ site }}" target="_blank" rel="noopener noreferrer">{{ site }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    <br/>
+                {% endif %}
+                {% if companyLogoUrl %}
+                    <img src="{{ companyLogoUrl }}" alt="{{ object.title }}">
+                {% endif %}
+            </td>
+            <td>
+                <b>Промодерировано товаров:</b> {{ object.getAttribute('productsCount') ?: 0 }} <br />
+                <b>Слаг:</b> <a href="{{ companyViewUrl }}" target="_blank"> {{ object|render_list_element(admin.list['slug']) }} </a> <br />
+                {% if object.manager %}
+                    <b>Менеджер:</b> <a href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.manager.id }}}) }}">{{ object.manager.fullName }}</a><br />
+                {% endif %}
+                {% if object.getAttribute('is_parsed') %}
+                    <b style="color: #00a65a">Компания была спарсена автоматически</b> <br />
+                {% endif %}
+                <b>Дата создания:</b> {{ object|render_list_element(admin.list['createdAt']) }} <br />
+                <b>Дата редактирования:</b> {{ object|render_list_element(admin.list['updatedAt']) }} <br />
+            </td>
+            <td>
+                <b>Закрепленные пользователи:</b> {{ object|render_list_element(admin.list['user']) }}
+            </td>
+            <td>
+                <b>Действия:</b> {{ object|render_list_element(admin.list['topic']) }}
+            </td>
+        </tr>
+    </table>
+    <tr>&nbsp;</tr>
+{% endblock %}
+
+{% if admin.list.has('_action') and not app.request.isXmlHttpRequest %}
+    <td class="sonata-ba-list-field sonata-ba-list-field-_action" objectId="{{ admin.id(object) }}">
+        {{ object|render_list_element(admin.list['_action']) }}
+    </td>
+{% endif %}

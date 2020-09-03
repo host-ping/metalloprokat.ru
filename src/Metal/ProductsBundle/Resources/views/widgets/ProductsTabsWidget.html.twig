@@ -1,0 +1,182 @@
+{% set activeTab = _options['active_tab'] %}
+{% set displaySort = _options['display_sort'] %}
+
+{% set currentRoute = _options['current_route'] %}
+{% if currentRoute is null %}
+    {% set currentRoute = app.request.attributes.get('_route') %}
+{% endif %}
+
+{% set routeParameters = _options['route_parameters'] %}
+{% if routeParameters is null %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+    {% set routeParameters = routeParameters|merge({'page': null}) %}
+{% endif %}
+
+{% set routeParametersForTab = {'subdomain': 'www'}|merge(routeParameters)|merge({'tab' : null, 'view' : null, 'order' : null}) %}
+
+<div class="result-tabs-wrapper outline-right clearfix">
+    <div id="tabs" class="tabs float-left">
+        <ul class="clearfix">
+            {% for key, tab in tabs|slice(0, 2) %}
+                <li class="{% if activeTab == key %} active ie-radius {% endif %}">
+                    {% if activeTab == key %}
+                        <span>{{ tab['title'] }}</span>
+                    {% else %}
+                        <a class="link" href="{{ path(tab['route'], routeParametersForTab) }}">{{ tab['title']}}</a>
+                    {% endif %}
+
+                    {% if tab['count'] %}
+                        <span class="count">{{ tab['count']|number_format_decimal }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+
+            {% if tabs|length > 2 %}
+                <li>
+                    <span class="link icon-check black js-popover-opener" data-popover="#more-tabs">Еще</span>
+                    <div id="more-tabs" class="drop-wrapper more-tabs opacity-border">
+                        <ul class="dropdown clearfix">
+                            {% for key, tab in tabs|slice(2) %}
+                                <li class="{% if activeTab == key %} active ie-radius {% endif %}">
+                                    {% if activeTab == key %}
+                                        <span>{{ tab['title'] }}</span>
+                                    {% else %}
+                                        <a class="link" href="{{ path(tab['route'], routeParametersForTab) }}">{{ tab['title']}}</a>
+                                    {% endif %}
+
+                                    {% if tab['count'] %}
+                                        <span class="count">{{ tab['count']|number_format_decimal }}</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% set defaultOrder = 'company_rating' %}
+    {% set activeOrder = routeParameters['order']|default(defaultOrder) %}
+
+    {% set activeView = routeParameters['view']|default('first') %}
+
+    {% if activeView == 'map' %}
+        <div class="map-filter float-left">
+            {% if activeTab == 'companies' %}
+                <span class="link icon-position-color float-left active js-map-toggle" data-filter="allCompanies">Все</span>
+            {% else %}
+                <span class="link icon-position-color float-left clickable js-map-toggle" data-filter="allCompanies">Все</span>
+            {% endif %}
+
+            {% if activeTab == 'products' %}
+                <span class="icon-position link float-left active js-map-toggle" data-filter="withProductsOnly">C товарами</span>
+            {% else %}
+                <span class="icon-position link float-left clickable js-map-toggle" data-filter="withProductsOnly">C товарами</span>
+            {% endif %}
+
+        </div>
+    {% endif %}
+    <div class="sort-view float-right clearfix">
+        {#<div class="export-block float-left">#}
+            {#<a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт и подписка</a>#}
+            {#<div id="export-feed" class="drop-wrapper export-feed_links opacity-border">#}
+                {#<div class="dropdown">#}
+                    {#<div class="export-links block clearfix">#}
+                        {#<p class="title">Экспорт</p>#}
+                        {#<a class="button small-btn blue-bg float-left ie-radius" href="#">XLS</a>#}
+                        {#<a class="button small-btn blue-bg float-left ie-radius" href="#">CSV</a>#}
+                    {#</div>#}
+                    {#<div class="feed-links block clearfix">#}
+                        {#<p class="title">Подписка</p>#}
+                        {#<a class="button small-btn blue-bg float-left ie-radius" href="#">rss</a>#}
+                        {#<a class="button small-btn blue-bg float-left js-popup-opener ie-radius" href="#" data-popup="#subscribe">e-mail</a>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+
+        {% set orderTypes = {
+            'products' : {'company_rating' : 'По рейтингу', 'price' : 'По цене', 'date' : 'По дате'},
+            'companies' : {'company_rating' : 'По рейтингу', 'title' : 'По названию', 'date' : 'По дате'}
+        }
+        %}
+
+        {% if activeTab in orderTypes|keys %}
+            {% if activeView != 'map' and displaySort %}
+                {# TODO: #MET-565 добавить 'city' : 'По городу'#}
+
+                <div class="order-block float-left">
+                    <span class="order-link icon-check black link clickable js-popover-opener" data-popover="#order">{{ orderTypes[activeTab][activeOrder]|default(orderTypes[activeTab]['company_rating']) }}</span>
+                    <div id="order" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            {% for type, orderType in orderTypes[activeTab] %}
+                                <li class="drop-item">
+                                    {% if activeOrder == type %}
+                                        <span class="drop-link current">{{ orderType }}</span>
+                                    {% else %}
+                                        {% if type == defaultOrder %}
+                                            <a class="drop-link" data-href="{{ path(currentRoute, routeParameters|merge({'order' : null})) }}">{{ orderType }}</a>
+                                        {% else %}
+                                            <a class="drop-link" data-href="{{ path(currentRoute, routeParameters|merge({'order' : type})) }}">{{ orderType }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% set viewKinds = {
+                    'products' : {
+                        'first' : {'title' : 'Список', 'is_enabled' : true, 'class' : 'icon-view-list'},
+                        'pallete' : {'title' : 'Галерея', 'is_enabled' : true, 'class' : 'icon-view-grid'},
+                        'map' : {'title' : 'Карта', 'is_enabled' : true, 'class' : 'icon-baloon'}
+                    },
+                    'companies' : {
+                        'first' : {'title' : 'Список', 'is_enabled' : true, 'class' : 'icon-view-list'},
+                        'pallete' : {'title' : 'Галерея', 'is_enabled' : false, 'class' : 'icon-view-grid'},
+                        'map' : {'title' : 'Карта', 'is_enabled' : true, 'class' : 'icon-baloon'}
+                    }
+                }
+            %}
+
+            {% if not viewKinds[activeTab][activeView]|default(false) or not viewKinds[activeTab][activeView]['is_enabled'] %}
+                {% set activeView = 'first' %}
+            {% endif %}
+            <div class="view-block float-right">
+                <ul class="view-list">
+                    {% for kind, view in viewKinds[activeTab] %}
+                        <li class="list js-tooltip-opener
+                                {% if kind == activeView %}active{% else %}{% if view['is_enabled'] %}enable{% else %}disabled{% endif %}{% endif %} ie-radius"
+                            data-tooltip-title="{{ view.title }}">
+                            {% if kind == activeView or not view['is_enabled'] %}
+                                <span class="item {{ view.class }}"></span>
+                            {% else %}
+                                {% if kind == 'map' %}
+                                    {% set currentTerritory = app.request.attributes.get('territory') %}
+                                    {% set routeForMap = 'MetalProductsBundle:Products:companies_list' %}
+                                    {% set routeParametersForMap = routeParameters|merge({'subdomain' : currentTerritory.slug}) %}
+
+                                    {% if _options['category'] %}
+                                        {% set routeForMap = 'MetalProductsBundle:Products:companies_list_category_subdomain' %}
+                                        {% set routeParametersForMap = routeParametersForMap|merge({'category_slug' : _options['category'].getSlugCombined }) %}
+                                    {% endif %}
+
+                                    <a class="item icon-baloon" href="{{ path(routeForMap, routeParametersForMap|merge({'view' : kind, 'tab' : null})) }}"></a>
+                                {% elseif kind == 'first' %}
+                                    <a class="item icon-view-list" href="{{ path(currentRoute, routeParameters|merge({'view' : null})) }}"></a>
+                                {% else %}
+                                    <a class="item icon-view-grid" href="{{ path(currentRoute, routeParameters|merge({'view' : kind})) }}"></a>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+    </div>
+</div>

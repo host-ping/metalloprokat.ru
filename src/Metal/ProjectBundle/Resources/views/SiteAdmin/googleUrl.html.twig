@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set url = 'https://www.google.com/webmasters/tools/dashboard?hl=ru&siteUrl='~object.googleSiteId %}
+    <a href="{{ url }}" target="_blank" rel="noopener noreferrer">{{ object.googleSiteId }}</a>
+{% endblock %}

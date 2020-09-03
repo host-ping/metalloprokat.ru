@@ -1,0 +1,25 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}
+Новый ответ
+{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ review.getFixedUserTitle() }}!
+
+На Ваш отзыв для компании {{ employee.company.title}} ({{ employee.company.city.title }}) был оставлен ответ пользователем {{ employee.fullName }} ({{ employee.email }}).
+
+Что бы просмотреть ответ, перейдите по ссылке {{ url('MetalMiniSiteBundle:MiniSite:reviews', {'domain' :  employee.company.domain})|raw }}#review-{{ review.id }}.
+
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ review.getFixedUserTitle() }}!<br/>
+        <br/>
+        На Ваш отзыв для компании <b>{{ employee.company.title}} ({{ employee.company.city.title }})</b> был оставлен ответ пользователем <b>{{ employee.fullName }} ({{ employee.email }})</b>.<br/>
+        Что бы просмотреть отзыв, перейдите по <a href="{{ url('MetalMiniSiteBundle:MiniSite:reviews', {'domain' :  employee.company.domain})|raw }}#review-{{ review.id }}">ссылке</a>.<br/>
+    </p>
+{% endblock %}

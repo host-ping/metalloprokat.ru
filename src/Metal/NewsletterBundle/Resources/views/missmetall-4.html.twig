@@ -1,0 +1,67 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Мисс Металлургия 2013{% endblock %}
+
+{% block body_text %}
+    Друзья!
+
+    С понедельника открыто голосование за участниц конкурса "Мисс Металлургия 2013".
+    На текущий момент зарегистрировалось более 120 участниц, за которых проголосовало уже более 3000 человек. Мы выбираем 10 участниц следующего тура. Присоединяйтесь! Внимание - для голосования нужно зайти на анкету участницы, нажать кнопку "Отдать голос", войти через предложенную социальную сеть, а затем еще раз нажать кнопку "Отдать голос". Ваш голос будет учтен, как только кнопка заменится серой надписью "Вы уже проголосовали за эту участницу".
+
+    ПРИНЯТЬ УЧАСТИЕ В ГОЛОСОВАНИИ http://2013.missmetal.ru/contestants?sort=news
+
+    Если вы не ждали этого письма, отпишитесь от рассылки, перейдя по ссылке {{ unsubscribeUrl }} .
+{% endblock %}
+
+{% block text_part_header %}
+    Друзья!
+{% endblock %}
+
+{% block html_header %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#171F26">
+        <tr>
+            <td valign="middle" style="padding: 23px; padding-right: 0; font-family: Arial; color: #FFFFFF; font-size: 24px; font-weight: bold; line-height: 24px;">
+                <span style="color: #FFFFFF; text-decoration: none;">
+                    <img src="{{ email_images_base_url~'/logo-metalloprokat.gif' }}" alt="Металлопрокат.ру" title="Металлопрокат.ру" border="0" width="201" height="30" style="vertical-align: top;" />
+                </span>
+            </td>
+            <td valign="middle" align="right" style="padding: 23px; padding-left: 0; font-family: Arial; color: #A6A39D; font-size: 13px; line-height: 19px;">
+                {% set datePeriod -%}16 октября 2013{%- endset %}
+                {% if datePeriod %}{{ datePeriod }}  &bull;  {% endif %}<span style="color: #2972A6; text-decoration: none;">www.metalloprokat.ru</span>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        С понедельника открыто голосование за участниц конкурса "Мисс Металлургия 2013".
+    </p>
+    <p style="font-size: 12px;">
+        На текущий момент зарегистрировалось более 120 участниц, за которых проголосовало уже более 3000 человек. Мы выбираем 10 участниц следующего тура. Присоединяйтесь!
+    </p>
+    <p style="font-size: 12px;">
+        Внимание &mdash; для голосования нужно зайти на анкету участницы, нажать кнопку "Отдать голос", войти через предложенную социальную сеть, а затем еще раз нажать кнопку "Отдать голос". Ваш голос будет учтен, как только кнопка заменится серой надписью "Вы уже проголосовали за эту участницу".
+    </p>
+    <p style="text-align: center">
+        <a style="
+        font-size: 9px;
+        height: 25px;
+        line-height: 26px;
+        font-weight:bold;
+        width: 186px;
+        background: none repeat scroll 0 0 #E8427C;
+        color: #FFFFFF;
+        display: inline-block;
+        text-decoration: none;
+        border-radius: 3px 3px 3px 3px;
+        font-family: 'kelson_sans_rubold', 'arial,helvetica', 'sans-serif';
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;" href="http://2013.missmetal.ru/contestants?sort=news">ПРИНЯТЬ УЧАСТИЕ В ГОЛОСОВАНИИ</a>
+    </p>
+{% endblock %}
+
+{% block date_period '16 октября 2013' %}
+
+{% block user_agreement '' %}

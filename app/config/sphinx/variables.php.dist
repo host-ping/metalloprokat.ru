@@ -1,0 +1,10 @@
+<?php
+
+return array(
+    'log_dir' => '/var/log/sphinxsearch',
+    'index_dir' => '/var/lib/sphinxsearch/data',
+    'plugin_dir' => '/usr/lib/sphinxsearch',
+    'pid_file' => '/var/run/sphinxsearch.pid',
+    'mysql_port' => 9306,
+    'max_children' => 30,
+);

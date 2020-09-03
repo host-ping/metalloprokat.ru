@@ -1,0 +1,9 @@
+MetalNewsletterBundle:Subscription:unsubscribe:
+    path:   /user/unsubscribe
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalNewsletterBundle:Subscription:unsubscribe }
+
+MetalNewsletterBundle:NewsletterViewer:track:
+    path:   /newsletter/track/{hashKey}
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalNewsletterBundle:NewsletterViewer:track }

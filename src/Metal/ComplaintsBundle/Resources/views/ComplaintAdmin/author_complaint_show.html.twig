@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% if object.user %}
+        {{ object.userName }}
+        <strong>
+            (<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.user.id} } }) }}">{{ object.user.id }}</a>)
+        </strong>
+    {% endif %}
+{% endblock %}

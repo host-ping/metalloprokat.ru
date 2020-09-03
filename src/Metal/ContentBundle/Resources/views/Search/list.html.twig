@@ -1,0 +1,86 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+
+{% block title %}
+    Результаты поиска по запросу: "{{ app.request.query.get('q') }}"
+{% endblock %}
+
+{% block content %}
+    {% set defaultHelper = brouzie_helper('MetalContentBundle') %}
+    {% set currentOrder = app.request.query.get('sort', 'all') %}
+    {% set filterByType = app.request.query.get('type', 'all') %}
+    {% set route = app.request.attributes.get('_route') %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+
+    <div id="content" class="content-wide table-container js-calc-height outline-left">
+        <div class="left table-cell">
+            <div class="sort-view clearfix">
+                <div class="order-block float-right">
+                    {% set ordersBySearch = defaultHelper.getOrdersForSearch %}
+                    <span class="order-link icon-check black link clickable js-popover-opener" data-popover="#counts">
+                        {% if currentOrder not in ordersBySearch|keys %}
+                            {{ ordersBySearch['all'].title }}
+                        {% else %}
+                            {{ ordersBySearch[currentOrder].title }}
+                        {% endif %}
+                    </span>
+                    <div id="counts" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            {% for key, order in ordersBySearch  %}
+                                <li class="drop-item">
+                                    {% if currentOrder == key %}
+                                        <span class="drop-link current">{{ order.title }}</span>
+                                    {% else %}
+                                        <a class="drop-link"
+                                           href="{{- path(route, routeParameters|merge({'sort' : order.query})) -}}">{{ order.title }}</a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="order-block float-right">
+                    {% set filtersByType = defaultHelper.getFiltersByType %}
+                    <span class="order-link icon-check black link clickable js-popover-opener" data-popover="#types">
+                        {% if filterByType not in filtersByType|keys %}
+                            {{ filtersByType['all'].title }}
+                        {% else %}
+                            {{ filtersByType[filterByType].title }}
+                        {% endif %}
+                    </span>
+                    <div id="types" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            {% for key, order in filtersByType  %}
+                                <li class="drop-item">
+                                    {% if filterByType == key %}
+                                        <span class="drop-link current">{{ order.title }}</span>
+                                    {% else %}
+                                        <a class="drop-link"
+                                           href="{{- path(route, routeParameters|merge({'type' : order.query})) -}}">{{ order.title }}</a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="title">Результаты поиска по запросу: "{{ app.request.query.get('q') }}"</h1>
+            <div class="view-category products">
+                <ul class="product list">
+                    {{ include ('@MetalContent/partial/list_content_entries.html.twig', {
+                        'pagerfanta' : pagerfanta,
+                        'showEntityType': showEntityType
+                    }, false) }}
+                </ul>
+            </div>
+        </div>
+        <div class="product-right right table-cell">
+            <div class="info-wrapper white-bg">
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

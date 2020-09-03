@@ -1,0 +1,223 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+{% block title 'Услуги / '~titleSuffix %}
+
+{% block content %}
+    {% set user = app.user %}
+    {% set isPromotional = false %}
+    {% set hasAdditionalPayment = false %}
+
+    <div id="msg" class="g-hidden">
+        <div class="alert alert-success">
+            Ваша заявка отправлена!
+        </div>
+    </div>
+
+    <div class="service-wrapper {% if project.family == 'metalloprokat' and isPromotional %}promotionPeriod{% endif %}">
+        <div class="table-box-holder">
+        {% if isPromoExist %}
+            <p style="font-size: 1.6em; color: red; margin-bottom: 30px; margin-left: 82px; font-weight: bold;">Внимание, акция! <a href="{{ path('MetalCorpsiteBundle:Default:promotions') }}">Посмотреть</a> </p>
+        {% endif %}
+        <div class="table-box-holder">
+            <table class="service">
+                <thead>
+                <tr class="row top">
+                    <th class="package-name col">
+                        <span>Пакет услуг</span>
+                    </th>
+                    {% for package in packages %}
+                        <th class="base-package col">
+                            {{ companyMacroses.star(package.id) }}
+                            <p>{{ package.title }}</p>
+                            {% if package.id == 5 %}
+                                <span class="link clickable js-popup-opener" data-popup="#metalindex-description">подробнее</span>
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+
+                {% for periodId, periodTitle in periods %}
+                    <tr class="row bottom">
+                        <th class="package-name-wrapper col">
+                            <div class="package-name">
+                                <span class="black">{{ periodTitle|capitalize }}</span>
+                            </div>
+                        </th>
+                        {% for package in packages %}
+                            {% if package.isBasePackage %}
+                                <th class="base-package col">
+                                    <p class="price">Бесплатно</p>
+                                </th>
+                            {% else %}
+                                <th class="large-package col package-prices">
+                                    {% if not package.getPriceByPeriod(periodId) %}
+                                        <p class="price">&mdash;</p>
+                                    {% else %}
+                                        <p class="price"
+                                           data-cost-package-id="{{ package.id }}">{{ package.getPriceByPeriod(periodId) }} <span
+                                                    class="icon-rouble"></span></p>
+                                        <span class="buy-btn button green-bg clickable ie-radius"
+                                              popup-opener="#order-service"
+                                              data-package-id="{{ package.id }}"
+                                              data-period="{{ periodId }}"
+                                                {% if user and user.company %}
+                                                    {% if user.company.city %}
+                                                        data-city-text="{{ user.company.city.title }}"
+                                                        data-city-id="{{ user.company.city.id }}"
+                                                    {% endif %}
+                                                    data-user-name="{{ user.fullName }}"
+                                                    data-company-id="{{ user.company.id }}"
+                                                    data-company-title="{{ user.company.title }}"
+                                                    data-user-phone="{{ user.phone ? user.phone : '' }}"
+                                                    data-user-email="{{ user.email }}"
+                                                {% endif %}
+                                              data-period-id="{{ periodId }}">Купить</span>
+                                    {% endif %}
+                                </th>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </thead>
+
+                <script>
+                    $(document).ready(function () {
+                        $(document).ajaxSuccess(function (event, request, settings) {
+                            var response = jQuery.parseJSON(request.responseText);
+                            if (response.status == 'success') {
+                                $("#msg").removeClass('g-hidden');
+                            }
+                        });
+                    });
+                </script>
+
+                <tbody>
+                {% if project.family == 'metalloprokat' %}
+                    <tr class="row">
+                        <td colspan="19" class="title col">
+                            <p class="title-text">Размещение по России и СНГ:</p>
+                            <table style="width:100%;" class="service">
+                                <tr><td style="width:30%">
+                                        <table>
+                                            <tr><td rowspan="3" style="padding-right:15px; font-weight: 600;">Россия</td><td>12 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">130000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;6 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">82000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;3 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">50000 </span>руб</td></tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:30%">
+                                        <table >
+                                            <tr><td rowspan="3" style="padding-right:15px; font-weight: 600;">СНГ</td><td>12 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">104000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;6 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">67000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;3 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">40000 </span>руб</td></tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:30%">
+                                        <table>
+                                            <tr><td rowspan="3" style="padding-right:15px; font-weight: 600;">Россия+СНГ</td><td>12 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">160000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;6 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">97000 </span>руб</td></tr>
+                                            <tr><td>&nbsp;&nbsp;3 мес. - <span style="color: #919191;font-size: 18px;line-height: 20px;font-weight:600">58000 </span>руб</td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% for rootServiceItem in serviceItemsTree[0] %}
+                    <tr class="row">
+                        <td class="title col" colspan="{{ rootServiceItem|length }}">
+                            <p class="title-text">{{ rootServiceItem.title }}</p>
+                        </td>
+                    </tr>
+                    {% for serviceItem in serviceItemsTree[rootServiceItem.id] %}
+                        {% set description = serviceItem.description %}
+                        {% if serviceItem.additionalPayment %}
+                            {% set hasAdditionalPayment = true %}
+                        {% endif %}
+
+                        <tr class="row {% if loop.index is even %}even{% else %}odd{% endif %}">
+                            <td class="package-name col">
+                                <p class="name js-helper-opener"
+                                   data-text="{{ description|striptags|nl2br|escape('html_attr') }}">{{ serviceItem.title|striptags|nl2br|raw }}</p>
+                            </td>
+
+                            {% for package in packages %}
+                                <td class="base-package col">
+                                    {% if package.id != 5 %}
+                                        {% if serviceItem.isAvailableForPackage(package) %}
+                                            {% if serviceItem.additionalPayment %}
+                                                <a class="spec-anchor" href="#spec-anchor">*</a>
+                                            {% elseif serviceItem.getValueForPackage(package) %}
+                                                {{ serviceItem.getValueForPackage(package) }}
+                                            {% else %}
+                                                <span class="icon-check-big"></span>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if hasAdditionalPayment %}
+            <div class="spec-inform">
+                <span class="spec-anchor">*</span>
+                <a name="spec-anchor"></a>
+                <span>Оплачивается дополнительно.</span>
+            </div>
+        {% endif %}
+            <div class="spec-inform">
+                <span class="spec-anchor">*</span><span class="spec-anchor">*</span>
+
+                <a name="spec-anchor"></a>
+                <span>Стоимость просмотра контактов по одной заявке (без подключения доступа по одному из пакетов) в разделе "Потребители" - от 1000 руб.</span>
+            </div>
+    </div>
+
+    {% if project.family == 'metalloprokat' and isPromotional %}
+        <div class="promotion-right float-right">
+            <div class="promo-title">
+                <p>
+                    АКЦИЯ!
+                </p>
+                <span>
+                    2015 по ценам 2014!
+                </span>
+            </div>
+
+            <p>Подключитесь или продлите доступ к услугам портала до конца марта 2015г. по ценам 2014 года!</p>
+            <p>Для клиентов, подключенных к сервисам портала - весь год при своевременном продлении доступа действует
+                <span style="color:#f00">антикризисная</span> цена 2014 года!</p>
+        </div>
+    {% endif %}
+
+    {% if project.family == 'metalloprokat' %}
+        <div id="metalindex-description" class="metalindex-description popup-block opacity-border large">
+            <p>Компания «МЕТАЛЛОПРОКАТ.РУ» (ведущий российский металлургический интернет-портал) представляет проект <a href="http://www.metalindex.ru" target="_blank">МеталлИндекс</a> (котировки)<br/>
+                Аудитория проекта - маркетологи, аналитики, специалисты по стратегическому планированию, сбыту и снабжению, а также руководители металлургических компаний.</p>
+
+            <p>
+                <a href="http://www.metalindex.ru" target="_blank">МеталлИндекс</a> состоит из следующих разделов
+            <ul>
+                <li><b>Индексы (цены)</b>:</li>
+                <ul>
+                    <li>1. <b>Цены Лондонской биржи металлов (Цены LME)</b>.</li>
+                    <li>2. <b>Мировые цены</b>:
+                        (Базовые и Младшие металлы, Легирующие и Базовые ферросплавы, Драгоценные металлы, Железнорудное сырье, Чугун,
+                        Заготовка и сортовой прокат, Слябы и плоский прокат, Нержавеющая сталь и Нержавеющий лом, Лом и сплавы цветных металлов, Лом черных металлов).</li>
+                    <li>3. <b>Российский рынок</b>.
+                        Индекс цен российского рынка рядового металлопроката и оцинковки</li>
+                </ul>
+            </ul>
+            </p>
+
+        </div>
+    {% endif %}
+    
+{% endblock content %}
+

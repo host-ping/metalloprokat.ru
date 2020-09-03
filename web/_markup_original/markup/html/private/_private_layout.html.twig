@@ -1,0 +1,127 @@
+{% extends '@markup/_base_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="./markup/css/private.css" type="text/css"/>
+    <link rel="stylesheet" href="./markup/css/corporate.css" type="text/css"/>
+    <link rel="stylesheet" href="./markup/css/mini-site.css" type="text/css"/>
+
+{% endblock stylesheets %}
+
+{% block body_additional_class 'no-scroll private-room' %}
+{% block body %}
+    <div class="private-container container">
+        <div id="header" class="clearfix">
+            <div class="wrap">
+                {% block header %}
+                    <div class="private-heading float-left">
+                        <p class="private-title">Личный кабинет <span class="private-numb green-color"><sup>#</sup>13512</span></p>
+                    </div>
+                    <div class="logo-block float-right">
+                        <div class="logo float-left">
+                            <a href="/">
+                                <img src="./markup/img/logo.png" width="36" height="27" alt="металлопрокат.ру"/>
+                            </a>
+                        </div>
+                        <div class="logo-text float-left">
+                            <p>
+                                <a class="header-logo-text" href="#">металлопрокат.ру</a>
+                            </p>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        {% block user_alert '' %}
+        <div id="main" class="no-padding">
+            <div class="wrap clearfix">
+                <div class="wrapper outline clearfix">
+                    {% block content %}
+                        {% block tabs '' %}
+                        {% block filters '' %}
+                    {% endblock %}
+                    {% block sidebar %}
+                        {% set defaultActiveMenu = 'home' %}
+                        <div id="sidebar" class="private-room side-left outline-left float-left">
+                            <div class="private-menu-wrapper js-scrollable js-calc-height-private-menu">
+                                <ul class="private-info list">
+                                    <li class="main-info item">
+                                        <div class="info-wrapper">
+                                            <div class="row-block clearfix">
+                                                <div class="rating float-right">
+                                                    <span class="star-mini icon-star-colored"></span>
+                                                    <span class="star-mini icon-star-colored"></span>
+                                                    <span class="star-mini icon-star-colored"></span>
+                                                </div>
+                                                <a class="title is-gradiented" href="#">Стальторг</a>
+                                            </div>
+                                        </div>
+                                        <p class="user">Василий Уткин</p>
+                                        <div class="package-info">
+                                            <p>Вы используете <strong>полный плюс, СНГ пакет</strong> услуг</p>
+                                            <p>Действие услуги до <strong class="red-color">16 апр 2016</strong></p>
+                                        </div>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'home') %} active {% endif %}">
+                                        <a class="link is-gradiented" href="{{ path('private/home/home.html.twig') }}">Сводка</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'management') %} active {% endif %}">
+                                        <strong class="count ie-radius float-right">800000</strong>
+                                        <a class="link is-gradiented" href="{{ path('private/management/products.html.twig') }}">Управление информацией</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'consumers') %} active {% endif %}">
+                                        <strong class="count ie-radius float-right">4</strong>
+                                        <a class="link is-gradiented" href="{{ path('private/consumers/private-demand.html.twig') }}">Клиенты</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'subscriptions') %} active {% endif %}">
+                                        <a class="link is-gradiented" href="{{ path('private/subscriptions/demands.html.twig') }}">Подписки</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'archive') %} active {% endif %}">
+                                        <a class="link is-gradiented" href="{{ path('private/archive/demands.html.twig') }}">Мои Заявки</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'statistics') %} active {% endif %}">
+                                        <a class="link is-gradiented" href="{{ path('private/statistics/income.html.twig') }}">Статистика</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'services') %} active {% endif %}">
+                                        <strong class="count ie-radius float-right">3</strong>
+                                        <a class="link is-gradiented" href="{{ path('private/services/services.html.twig') }}">Счета и услуги</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'mini-site') %} active {% endif %}">
+                                        <a class="link is-gradiented" href="{{ path('private/mini-site/header.html.twig') }}">Мини-сайт</a>
+                                    </li>
+                                    <li class="item clearfix {% if (activeMenu|default(defaultActiveMenu) == 'support') %} active {% endif %}">
+                                        <strong class="count ie-radius float-right">800000</strong>
+                                        <a class="link is-gradiented" href="{{ path('private/support/list.html.twig') }}">Техническая поддержка</a>
+                                    </li>
+                                    <li class="quit item clearfix">
+                                        <a class="link" href="#">Выход</a>
+                                    </li>
+                                </ul>
+                                <div class="information">
+                                    <div class="questions">
+                                        <p class="text gray60-color">Вопросы?</p>
+                                        <p class="text"><span class="phone-text">+7 (495) 984-06-52</span> или <a class="email-link" href="#">пишите</a></p>
+                                    </div>
+                                    <div class="manager">
+                                        <div class="manager-img float-left">
+                                            <img src="./markup/pic/operator.jpg" alt="image description"/>
+                                        </div>
+                                        <div class="manager-info float-left">
+                                            <div class="manager-name">
+                                                <p class="name">Галина Шильдяева</p>
+                                                <p class="text gray60-color">вам поможет</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    {% endblock sidebar %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer '' %}
+    {% include '@markup/_popups.html.twig' %}
+{% endblock body %}

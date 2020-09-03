@@ -1,0 +1,260 @@
+# эта команда производит полный сброс проекта в initial state. Не запускать ее на лайве
+#metal:project:reset-project --companies-products-users --banners --demands --statistics --support-orders
+
+metal:companies:synchronize
+metal:companies:company-service-update --truncate
+metal:companies:random-rating
+#metal:companies:update-company-rating
+#metal:companies:update-packages
+metal:companies:generate-slugs --truncate
+
+# full category sync
+metal:categories:refresh
+
+# 50 items per execute, use --limit if you need
+metal:companies:address
+
+# нужно выполнять после развертывания проекта на локалке или смены доменов
+metal:territorial:update-countries
+
+metal:categories:update-attributes-slugs
+metal:categories:update-landing-page
+
+metal:companies:update-last-visit
+
+metal:companies:update-products-existence
+
+brouzie:indexer:populate-index products --truncate --no-debug
+sphinxy:populate-index --truncate companies
+sphinxy:populate-index --truncate --batch-size=250 demands
+sphinxy:populate-index --truncate categories
+sphinxy:populate-index --truncate product_attributes
+sphinxy:populate-index --truncate catalog_products
+sphinxy:populate-index --truncate content_entry --batch-size=100
+redis:flushdb --client=cache -n
+
+metal:stats:import-product-changes
+-d memory_limit=512M metal:stats:import --truncate # --start-date 2013-01-01
+metal:stats:synchronize --truncate
+
+metal:companies:category-update
+
+metal:stats:populate-days
+
+#metal:announcements:import-old
+#metal:announcements:import-old-stats
+#metal:announcements:import-old-search
+
+metal:project:compile-url-rewrites --truncate
+
+metal:support:synchronize-counters
+metal:users:synchronize-counters
+metal:companies:import-phones
+
+rm app/var/sessions/*
+
+metal:products:convert-prices
+metal:products:normalize-measure
+metal:products:actualize-paid-clients
+metal:products:update-exchange-rates --normalize-price
+metal:products:notify-updated
+
+# cd /path/to/project
+# mkdir web/netcat_files
+# ln -s -r upload/u web/netcat_files/u
+# ln -s -r upload/announcements web/announcements
+
+metal:users:set-right-to-edit
+
+metal:stats:remove-bots-from-announcement-stats
+metal:stats:remove-bots-from-stats-element
+metal:companies:update-company-type
+
+metal:companies:include-company-main-office
+
+metal:products:set-products-item-hash
+metal:products:fix-duplicate-titles
+
+metal:categories:populate-menu-items
+
+metal:companies:refresh-normalized-company-title
+metal:categories:remove-wrong-product-attributes
+
+metal:demands:create-demands-items-attributes-values
+metal:demands:fix-collisions
+metal:demands:def-city
+metal:territorial:populate-structure #--truncate
+metal:demands:redefine-city
+metal:products:move-products
+
+metal:project:migrate-attributes
+metal:project:migrate-attributes --step2
+metal:attributes:refresh-attribute-value-priorities
+
+metal:products:process-imported-products
+metal:companies:fix-failed-registrations
+
+metal:companies:synchronize-company-site
+
+# 50 items per execute, use --limit if you need
+metal:territorial:update-city-coordinates
+
+# arguments:
+# %id_города, который останется%
+# %id_города, который мержим%
+metal:territorial:merge-cities
+
+metal:grabbers:parse
+
+# metal:project:convert-2old-attributes --truncate
+metal:categories:generate-category-friends
+
+metal:newsletter:process-sendmail-log
+metal:newsletter:validate-emails
+
+metal:companies:generate-new-company-slug
+
+metal:categories:generate-category-friends --truncate
+metal:categories:generate-parameter-friends --truncate
+
+metal:stats:dump-stats-product-changes --delete-rows --all
+
+metal:territorial:update-city-code
+metal:companies:associate-with-city-code
+
+metal:products:associate-products-with-images
+
+#metal:products:track-products-display
+
+metal:products:create-virtual-products
+metal:companies:synchronize-counters
+
+metal:project:normalize-phones --truncate
+
+metal:companies:fix-company-phone-as-string
+
+metal:catalog:create-brands-and-manufacturers
+metal:catalog:link-categories --truncate
+metal:catalog:link-cities --truncate
+metal:catalog:link-brands-manufacturers
+
+metal:companies:synchronize-counters
+
+# только для продукта
+metal:attributes:update-slugs --truncate
+metal:project:convert-2old-attributes --truncate
+metal:categories:refresh-product-categories --refresh-attributes
+
+metal:companies:generate-promocodes --starts-at=16.11.2015 --ends-at=31.12.2015 --limit=300
+
+metal:companies:refresh-company-titles --refresh=cities # --refresh=categories
+
+metal:categories:validate-extended-pattern
+
+metal:project:normalize-user-avatars | tee normalize-user-avatars.log
+
+metal:categories:test-category-extended-pattern #product
+
+# проставляет винительный падеж в attribute_value для вида и типа
+metal:attributes:set-value-accusative
+
+metal:project:normalize-company-logos | tee normalize-company-logos.log
+metal:project:normalize-product-photos | tee normalize-product-photos.log
+metal:project:fix-normalize-product-photos | tee fix-normalize-product-photos.log
+
+#Нужно выполнить MET-1923
+metal:companies:site-update
+
+metal:companies:fix-logos
+metal:companies:update-company-city-and-category-status
+
+metal:products:update-allowed-add-count-products
+#Проверка пакетов пользователя после metal:products:update-allowed-add-count-products
+SELECT * FROM Message142 AS product
+  JOIN Message75 AS company ON company.Message_ID = product.Company_ID AND company.code_access = 0
+WHERE product.is_allowed_add_in_sphinx = 1 AND product.Checked IN (0,1,3,4) AND product.is_virtual = false
+GROUP BY product.show_on_portal
+HAVING COUNT(*) > 50;
+
+SELECT * FROM Message142 AS product
+JOIN Message75 AS company ON company.Message_ID = product.Company_ID AND company.code_access = 3
+WHERE product.show_on_portal = 1 AND product.Checked IN (0,1,3,4) AND product.is_virtual = false
+GROUP BY product.show_on_portal
+HAVING COUNT(*) > 500;
+
+SELECT * FROM Message142 AS product
+  JOIN Message75 AS company ON company.Message_ID = product.Company_ID AND company.code_access IN(1,2)
+WHERE (product.show_on_portal = 0 OR product.is_allowed_add_in_sphinx = 0) AND product.Checked IN (0,1,3,4) AND product.is_virtual = false;
+
+metal:catalog:fix-collision-product-country
+
+metal:instagram:update-instagram-account
+
+
+#Для пересчета статистики добавленных/обновленных продуктов
+metal:recalculate-stats-product-change-per-month
+
+
+metal:stats:create-stats-tables --connection=archive
+metal:project:transfer-data announcement_stats_element date_created_at
+metal:project:transfer-data announcement_stats_element date_created_at --mode=only-delete --batch-delete-size=50000
+metal:project:transfer-data stats_element date_created_at
+metal:project:transfer-data stats_element date_created_at --mode=only-delete --batch-delete-size=50000
+metal:stats:synchronize --today
+
+#нужно пересчитать хеши продуктам
+metal:products:set-products-item-hash --truncate
+metal:products:delete-duplicate-products --all-companies
+
+php app/console metal:grabbers:parse-proxy --validate --insert
+
+metal:project:add-cloudflare-ns
+
+
+metal:products:update-product-attributes
+
+
+metal:stats:remove-bots-from-announcement-stats --connection=default --connection=archive
+metal:stats:remove-bots-from-stats-element --connection=default --connection=archive
+
+metal:stats:synchronize --connection=default --connection=archive --truncate
+
+#Перегоняем старые архивы stats_product_change-%s.sql.gz в архивную базу данных
+metal:stats:transfer-statistic
+
+metal:demands:fix-demand-file-path
+
+#Тестово выполнить с --company-id=29250
+metal:stats:synchronize --connection=archive --connection=default --for-days=9
+
+
+1. Находим фирму платника где есть данные в счетчиках, логинемся под ними и открываем http://my.metalloprokat.ru/statistic/incoming
+2. Выполняем app/console metal:stats:synchronize --days=1 --company-id=%COMPANY_ID% --recalculate=counters
+--days=1 означает что делаем пересчет за 2 дня если --days=0 то только за сегодня
+3. Открываем рядом еще одну страницу и смотрим чтоб данные были одинаковые http://my.metalloprokat.ru/statistic/incoming
+Так можно протестить любую из статистик 'counters', 'users_visiting', 'stats_element', 'stats_announcement', 'products_change'
+
+#Выполнить для проката
+SELECT company_id FROM stats_category WHERE show_products_count = 32767 GROUP BY company_id;
+SELECT company_id FROM stats_daily WHERE show_products_count = 32767 GROUP BY company_id;
+SELECT company_id FROM stats_city WHERE show_products_count = 32767 GROUP BY company_id;
+#Полученный список компаний подставить в --company-id=%COMPANY_ID% --company-id=%COMPANY_ID%
+app/console metal:stats:synchronize --company-id=%COMPANY_ID% --recalculate=stats_element --connection=archive --connection=default
+
+metal:catalog:normalize-files
+
+metal:project:normalize-files
+
+metal:products:create-related-entries
+
+metal:stats:remove-bot-entries --user-agent="BUbiNG (+http://law.di.unimi.it/BUbiNG.html)" --user-agent="Barkrowler/0.7 (+http://www.exensa.com/crawl)"
+
+
+curl -XDELETE 'metalloprokat-elasticsearch:9200/products?pretty'
+fos:elastica:reset --index=products --force
+brouzie:indexer:populate-index products --truncate --no-debug
+
+enqueue:consume default --setup-broker -vvv --time-limit="now + 2 minutes"
+enqueue:consume demands --setup-broker -vvv --time-limit="now + 2 minutes"
+
+metal:project:insert-user-canonical-phone

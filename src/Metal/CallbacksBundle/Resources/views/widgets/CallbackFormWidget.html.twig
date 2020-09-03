@@ -1,0 +1,67 @@
+{% set popupId = 'callback' %}
+{% if _options.for_moderator %}
+    {% set popupId = 'callback-moderator' %}
+    {% if _options.for_product %}
+        {% set popupId = 'callback-moderator-for-product' %}
+    {% endif %}
+{% endif %}
+{% if not _options.for_moderator and _options.for_product %}
+    {% set popupId = 'callback-for-product' %}
+{% endif %}
+
+<div id="{{ popupId }}"
+     class="callback-form popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Перезвоните мне</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form" class="popup-form js-ajax-form-submit"
+              method="post"
+              novalidate="novalidate"
+              data-success="close-popup"
+              data-bind-attr="action:callback-url">
+            <fieldset>
+                {% if _options.for_product %}
+                    <div class="group clearfix">
+                        <p class="text is-gradiented float-left" data-bind-text="callback-text" data-bind-attr="title:callback-text"></p>
+                        {% if form.volume is defined %}
+                            <div class="product-volume-wrapper field-wrap float-left">
+                                {{ form_widget(form.volume, {'attr' : {'placeholder' : 'Объем', 'class' : 'volume form-text ie-radius'}}) }}
+                            </div>
+                        {% endif %}
+                        {% if form.volumeTypeId is defined %}
+                            <div class="product-hundredweight-wrapper field-wrap float-left">
+                                {{ form_widget(form.volumeTypeId, {'attr' : {'class' : 'jq-selectbox jqselect hundredweight form-select', 'data-bind-value' : 'volume-tipe'}}) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div class="phone-wrapper field-wrap">
+                    {{ form_widget(form.phone, {'attr' : {'placeholder' : 'Телефон', 'class': 'phone callback-form_phone form-text ie-radius' }}
+                    ) }}
+                </div>
+
+                {% if not _options.for_moderator %}
+                    <div class="inform-wrapper {% if _options.payment_company %}g-hidden{% endif %}">
+                        <input id="callback_inform" type="checkbox" name="create_demand" checked="checked"
+                               class="inform js-styled-checkbox bg-white" value="1" />
+                        <label for="callback_inform">Сообщить другим поставщикам</label>
+                            <span class="icon-help js-helper-opener"
+                                  data-text="Мы сообщим о вашей потребности поставщикам и вы получите гораздо больше предложений, чтобы выбрать оптимальное."></span>
+                    </div>
+                {% endif %}
+
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit"
+                           value="Отправить"/>
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+

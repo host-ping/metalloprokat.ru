@@ -1,0 +1,36 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_newsletter_subscriber_list') }}">Статистика рассылок за текущие
+                        сутки</a>
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <caption>
+
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Количество писем</th>
+                    <tr>
+                    </thead>
+                    <tbody>
+                    {% for element in result %}
+                        <tr>
+                            <td>{{ element['label'] }}</td>
+                            <td class="text-right">{{ element['count']|default(0)|number_format_decimal }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

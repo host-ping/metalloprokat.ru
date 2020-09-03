@@ -1,0 +1,90 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+    <form action=""
+          class="form-horizontal"
+          method="POST"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <fieldset>
+            <div class="box box-success">
+                <div class="box-body">
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            <label class="control-label required" >Название создаваемой компании</label>
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                {{ form_widget(form.companyTitle, {'attr': {'class' : 'form-control'}}) }}
+                                {{ form_errors(form.companyTitle) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            <label class="control-label required" >Тип</label>
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                {{ form_widget(form.companyType) }}
+                                {{ form_errors(form.companyType) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            <label class="control-label required" >Город</label>
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                {{ form_widget(form.cityTitle, {
+                                    'attr' : {
+                                        'class' : 'form-control',
+                                        'typeahead' : '',
+                                        'typeahead-loading' : 'typeaheadLoading',
+                                        'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                                        'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                        'typeahead-model' : 'city'
+                                    }
+                                }) }}
+                                {{ form_errors(form.cityTitle) }}
+                                {{ form_widget(form.city, {'attr' : {
+                                    'class' : 'hidden',
+                                    'ng-model' : 'city.id',
+                                    'initial-value' : ''
+                                } }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            <label class="control-label required">Пользователь</label>
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                {{ form_widget(form.user, {'attr': {'class' : 'form-control'}}) }}
+                                <span class="help-block sonata-ba-field-help">ID пользователя, который станет директором компании</span>
+                                {{ form_errors(form.user) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+        {% block formactions %}
+            <div class="well well-small form-actions">
+                <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Создать">
+                <a href="{{ path('admin_metal_companies_company_list') }}">
+                    <input type="button" class="btn" value="Вернуться к списку">
+                </a>
+            </div>
+        {% endblock formactions %}
+
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}
+
+
+

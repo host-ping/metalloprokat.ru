@@ -1,0 +1,64 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% block title %}
+    О компании — {{ currentCompany.title }}
+{% endblock %}
+
+{% block tab_content %}
+    {% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+    <div class="about content-holder" itemscope itemtype="http://schema.org/Organization">
+        {% if isCompanyModerator %}
+            <div class="admin-button-wrapper float-right">
+                <a class="admin-button button gray60-bg  ie-radius"
+                   href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalPrivateOfficeBundle:Company:edit', {'_secure' : currentCompany.packageChecker.isHttpsAvailable()}) }}">изменить</a>
+            </div>
+        {% endif %}
+        <h1 class="minisite-title">О компании</h1>
+        {#<p style="font-size: 20px; line-height: 28px;">На основе типажей мы можем сделать вывод,#}
+        {#какие именно возможности необходимы пользователям и на какой уровень развития пользователя в интернете#}
+        {#нужно ориентироваться.</p>#}
+        <p itemprop="description" itemtype="http://schema.org/Thing">{{ textHelper.formatCompanyDescription(currentCompany.companyDescription.description)|raw }}</p>
+
+        {% if companyCategories %}
+            <div class="delivery-product">
+                <div class="title">Поставляем продукцию</div>
+                <p>
+                    {% for companyCategory in companyCategories %}
+                        <span itemprop="category" itemtype="http://schema.org/Offer">
+                            {{- companyCategory.category.title -}}
+                        </span>
+                        {%- if loop.last %}.{% else %}, {% endif -%}
+                    {% endfor %}
+                </p>
+            </div>
+        {% endif %}
+
+        {% if cities %}
+            <div class="delivery-product">
+                {% if cities['filials'] %}
+                    <div class="title">Филиалы</div>
+                    <p>
+                        {% for filialCity in cities['filials'] %}
+                            {{- filialCity.city.title }}{% if loop.last %}.{% else %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if cities['deliveries'] %}
+                    <div class="title">Осуществляем доставку в города</div>
+                    <p>
+                        {% for deliveryCity in cities['deliveries'] %}
+                            {{- deliveryCity.city.title }}{% if loop.last %}.{% else %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        {% elseif companyDeliveryText %}
+            <div class="delivery-product">
+                <div class="title">Осуществляем доставку в города</div>
+                <p>
+                    {{ companyDeliveryText }}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

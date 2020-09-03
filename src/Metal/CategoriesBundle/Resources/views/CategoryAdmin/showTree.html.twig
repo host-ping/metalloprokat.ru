@@ -1,0 +1,64 @@
+{% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div>
+                <span class="disabled-category legend-item"></span> &mdash; Выключена
+            </div>
+            <div>
+                <span class="enabled-category legend-item"></span> &mdash; Включена
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% macro recursiveCategory(item, treeCategories, admin, depth) %}
+    {% set itemId = item ? item.getId() : 0 %}
+    {% set depth = depth|default(0) %}
+    {% set hasChildren = treeCategories[itemId] is defined %}
+    {% set isCollapsed = depth > 1 %}
+    {% if item %}
+        <span class="category
+            {% if item.isEnabled %}category-enabled{% else %}category-disabled{% endif %}
+            {% if item.allowProducts() %} bolder {% endif %}
+            {% if hasChildren %}js-tree-label
+                {% if isCollapsed %}item-collapsed{% else %}item-expanded{% endif %}
+            {% endif %}"
+              data-collapse-child="#tree-children-{{ itemId }}"><b>{{ itemId }}</b> {{ item.getTitle() }}</span>
+        {% if item.hasAttribute('category_attributes_titles') %}
+            ({% for attributeTitle in item.getAttribute('category_attributes_titles') %}
+                {% if not loop.first %}, {% endif %}
+                <span class="label label-default">{{ attributeTitle }}</span>
+            {% endfor %})
+        {% endif %}
+        ( {{ item.priority }} )
+        <a href="{{ admin.generateObjectUrl('edit', item) }}">ред.</a>
+    {% endif %}
+
+    {% if hasChildren %}
+        <ul id="tree-children-{{ itemId }}" {% if isCollapsed %}class="hidden"{% endif %}>
+            {% for childItem in treeCategories[itemId] %}
+                <li>
+                    {{ _self.recursiveCategory(childItem, treeCategories, admin, depth + 1) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% block show %}
+    <div class="box box-primary">
+
+
+        <div class="box-header with-border">
+            <span class="collapse-expand js-hide">Свернуть все</span> /
+            <span class="collapse-expand js-show">Развернуть все</span>
+        </div>
+
+        <div class="box-body">
+            {{ _self.recursiveCategory(null, treeCategories, admin) }}
+        </div>
+    </div>
+{% endblock show %}

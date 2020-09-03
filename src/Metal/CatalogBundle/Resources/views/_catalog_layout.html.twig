@@ -1,0 +1,6 @@
+{% set template = 'MetalProjectBundle::index.html.twig' %}
+{% if app.request.attributes.get('_route') != 'MetalProductsBundle:Products:products_index_subdomain' %}
+    {% set template = 'MetalProductsBundle::search_result_layout.html.twig' %}
+{% endif %}
+{% extends template %}
+

@@ -1,0 +1,35 @@
+{% set parameters = {} %}
+{% set route = 'MetalProductsBundle:Products:list_category' %}
+{% if _options['city'] %}
+    {% set route = 'MetalProductsBundle:Products:list_category_subdomain' %}
+    {% set parameters = {'subdomain' : _options['city'].slug} %}
+{% endif %}
+
+{% if categories %}
+    <div class="product-links-wrapper clearfix">
+        {% for categoryId, category in categories %}
+            <div class="product-link float-left">
+                <span class="category-title clickable float-left js-popover-opener"
+                      data-popover="#subcategory-{{ categoryId }}">
+                    <span class="name float-left">{{ category.title }}</span>
+                    <span class="icon-check black float-left"></span>
+                    <span class="is-gradiented"></span>
+                </span>
+    
+                <div id="subcategory-{{ categoryId }}" class="drop-wrapper product-links-list opacity-border">
+                    <ul class="dropdown">
+                        <li class="drop-item">
+                            <span class="drop-link current">{{ category.title }}</span>
+                        </li>
+                        {% for attribute in category.attributes %}
+                            <li class="drop-item">
+                                <a class="drop-link"
+                                   href="{{ path(route, parameters|merge({'category_slug' : attribute.slug})) }}">{{ attribute.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

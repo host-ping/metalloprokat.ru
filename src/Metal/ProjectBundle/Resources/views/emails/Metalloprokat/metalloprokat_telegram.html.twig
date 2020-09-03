@@ -1,0 +1,20 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Подпишитесь на наш телеграм-канал и получайте заявки в режиме онлайн!{% endblock subject %}
+
+{% block body_text -%}
+Уважаемые наши партнеры!
+
+    Теперь вы можете подписаться на  телеграмм-канал  Металлопрокат.ру и получать информацию о свежих заявках в режиме  (on-line) на любом мобильном устройстве или ПК".
+
+    http://tgwidget.xyz/metalloprokat_ru
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p>Уважаемые наши партнеры!</p>
+    <p>Теперь вы можете подписаться на  телеграмм-канал  Металлопрокат.ру и получать информацию о свежих заявках в режиме  (on-line) на любом мобильном устройстве или ПК!</p>
+    <p><table><tr><td><a href="http://tgwidget.xyz/metalloprokat_ru"><img src="//assets.metalloprokat.ru/bundles/metalproject/img/metalloprokat/telegr.png" style="width:70px; height:70px;" alt="Подписаться"></a></td><td><a href="http://tgwidget.xyz/metalloprokat_ru">Подписаться</a></td></tr></table></p>
+    <p>С уважением, <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+{% endblock %}

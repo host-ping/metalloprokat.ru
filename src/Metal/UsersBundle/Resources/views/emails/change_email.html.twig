@@ -1,0 +1,19 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Изменение электронной почты{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ user.firstName }}.
+
+Для изменения электронной почты, пожалуйста, перейдите по ссылке
+{{ url('MetalUsersBundle:Registration:confirmNewEmail', {'code' : user.changeEmailCode, 'id' : user.id })|raw }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ user.firstName }}.<br/><br/>
+        Для изменения электронной почты, пожалуйста, перейдите по <a href="{{ url('MetalUsersBundle:Registration:confirmNewEmail', {'code' : user.changeEmailCode, 'id' : user.id }) }}">ссылке</a>.
+    </p>
+{% endblock %}

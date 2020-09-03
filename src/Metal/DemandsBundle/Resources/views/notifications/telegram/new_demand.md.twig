@@ -1,0 +1,10 @@
+{# @var \Metal\DemandsBundle\Notifications\Model\DemandInfo demandInfo #}
+[№{{ demandInfo.id }}]({{ demandInfo.viewUrl }}) *{{ demandInfo.cityTitle }}*
+
+{% for item in demandInfo.items %}
+{{ item.position }}. {{ item.title }} {% if item.volume %}{{ item.volume|number_format_decimal }} {% if item.unit %}{{ item.unit.tokenTransChoice|transchoice(item.volume) }}{% endif %}{% else %}объем договорной{% endif %}{{ '  ' }}
+{% endfor %}
+
+_{{ demandInfo.consumerType.title }}, {{ demandInfo.demandPeriodicity.title }}_{{ '  ' }}
+{{ tags|join(' ') }}{{ '  ' }}
+[Контактная информация]({{ demandInfo.viewUrl }})

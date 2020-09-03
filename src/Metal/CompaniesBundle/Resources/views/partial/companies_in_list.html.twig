@@ -1,0 +1,246 @@
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+{% set productsPerCompanyCount = 4 %}
+{% set companyHelper = brouzie_helper('MetalCompaniesBundle') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+
+{% for favoriteCompany in favoriteCompanies %}
+    {% set productCount = favoriteCompany.getAttribute('productsCount')|default(0) %}
+    {% set company = favoriteCompany.company %}
+    {% set reviewsCount = company.counter.reviewsCount %}
+
+    <table class="company list">
+        <tr class="favorite-item clearfix">
+
+            {% set hasComment = favoriteCompany.comment|length %}
+            <td class="notes-form float-left">
+                <form action="{{ path('MetalUsersBundle:Favorite:addComment', {'id' : favoriteCompany.id, 'object' : 'favoriteCompany'}) }}"
+                        method="post"
+                        novalidate="novalidate">
+                    <fieldset>
+                        <div class="note-wrapper is-bordered js-favorite-comment {% if hasComment %} focus {% endif %}">
+                            <div class="area-wrapper g-hidden" data-favorite="textarea">
+                                <textarea name="form[comment]"
+                                          class="note js-favorite-comment-field ie-radius"></textarea>
+
+                                <div class="send-button-wrapper">
+                                    <input type="submit" class="button send-button gray60-bg js-favorite-comment-submit ie-radius" value="ok"/>
+
+                                    <div class="loading-mask g-hidden">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="placeholder js-placeholder-text">{% if not hasComment %}Написать комментарий{% endif %}</span>
+                            <div class="text-wrapper {% if not hasComment %} g-hidden {% endif %}" data-favorite="text">
+                                <span class="text js-favorite-comment-text">{{ favoriteCompany.comment }}</span>
+                                <span class="date js-favorite-comment-date">{{ hasComment ? projectHelper.formatDateTime(favoriteCompany.commentUpdatedAt) : '' }}</span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </td>
+
+            <td class="view-company float-left">
+                <div class="holder">
+                    <div class="top-block clearfix">
+                        <div class="company-logo float-left">
+                            {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq64', 'portal') %}
+                            {% set minisiteUrl = urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) %}
+                            {% if company.minisiteEnabled %}
+                                <a target="_blank" class="img-link pattern-small" href="{{ minisiteUrl }}">
+                                    {% if companyLogoUrl %}
+                                        <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" />
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                {% if companyLogoUrl %}
+                                    <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" />
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="company-info float-left">
+                            <div class="prod-title clearfix">
+                                <div class="star-panel float-right">
+                                    {% if companyHelper.isCompanyOnline(company) %}
+                                        <div class="status green-bg float-left ie-radius">Онлайн</div>
+                                    {% endif %}
+                                    {{ companyMacroses.rating(company) }}
+                                </div>
+                                <div class="title">
+                                    {% if company.minisiteEnabled %}
+                                        <a target="_blank" href="{{ minisiteUrl }}" title="{{ company.title }}" class="is-gradiented-bottom">
+                                            {{ company.title }}
+                                        </a>
+                                    {% else %}
+                                        <span>{{ company.title }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="localization gray60-color">{{ company.city.title }}</p>
+                            {% if company.site %}
+                                <a target="_blank" rel="noopener noreferrer" data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {'source' : 'companies-list', 'object-id' : company.id, 'object-kind' : 'company'}) }}">
+                                    {{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(company.site) }}
+                                </a>
+                            {% endif %}
+                            <div class="contacts clearfix">
+                                {% if company.phonesAsString and company.isContactsShouldBeVisible()%}
+                                    <p class="phone-text float-left">
+                                        <span class="phone-text float-left">
+                                            <span class="curr-phone float-left js-phone"
+                                                data-object-id="{{ company.id }}"
+                                                data-object-kind="company"
+                                                data-source="favorites-companies"
+                                                data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                                data-phone-of-company="{{ company.id }}"
+                                                >{{ company.getPhonesAsString() }}</span>
+                                        </span>
+                                        <span class="callback link clickable js-popup-opener"
+                                           data-popup="#callback"
+                                           data-callback-url="{{ path('MetalCallbacksBundle:Callback:save', {'id' : company.id, 'target_object' : 'company', 'from': 'favorites-companies'}) }}"
+                                           data-callback-text="Свяжитесь со мной по вопросам сотрудничества"
+                                                >обратный звонок</span>
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <span class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                               data-tooltip-title="Пожаловаться" data-popup="#complaint-company"
+                               data-object-id="{{ company.id }}"
+                               data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : company.id, 'kind' : 'company'}) }}">
+                                <span class="icon-complaint"></span>
+                            </span>
+                        </li>
+                        {% if company.minisiteEnabled %}
+                            <li class="links_comment item medium float-left clearfix">
+                                <a target="_blank" rel="nofollow" data-href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:reviews', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }}" class="button comment is-bordered ie-radius">
+                                    <span class="text">Отзывы</span>
+                                    <span class="icon-comment {% if reviewsCount %}active{% endif %} float-right"></span>
+                                    {% if reviewsCount %}
+                                        <span class="count red-color float-right">{{ reviewsCount }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="item medium float-left {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %} clearfix"
+                            {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+                                <span
+                                        class="button favorites is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if favoriteCompany %}g-hidden{% endif %}"
+                                        data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : company.id, 'object' : 'company'}) }}">
+                                    <span class="text">В Избранное</span>
+                                    <span class="icon-favorite float-right"></span>
+                                </span>
+
+                            <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not favoriteCompany %}g-hidden{% endif %}"
+                                 data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : company.id, 'object' : 'company'}) }}">
+                                    <span class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                                        <span class="text">В Избранном</span>
+                                        <span class="icon-favorite-active float-right"></span>
+                                    </span>
+
+                                    <span class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                                        <span class="text">Удалить</span>
+                                        <span class="icon-favorite-del float-right"></span>
+                                    </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            {% if productCount %}
+                <td class="send-order float-left">
+                    <div class="holder clearfix">
+                        <div class="tooltip-holder clearfix">
+                            <div class="img-wrapper">
+                                {% for favorite in favoriteCompany.getAttribute('favorites') %}
+                                    <div id="inform-tooltip-{{ favorite.product.id }}" class="product-informer tooltip grey with-bullet g-hidden">
+                                        <p class="title is-gradiented">{{ favorite.product.title }}</p>
+                                        <p class="info">
+                                            {% if favorite.product.size %}
+                                                {{ tokens.product_volume_title|capitalize }} {{ favorite.product.getCutSize() }},
+                                            {% endif %}
+                                            {% if favorite.product.isContractPrice() %}
+                                                <span class="gray60-color">цена договорная</span>
+                                            {% else %}
+                                                {% if favorite.product.isPriceFrom %}от {% endif %}
+                                                <strong class="price red-color">
+                                                    {{ favorite.product.price|number_format_decimal }}
+                                                    <span class="{{ favorite.product.currency.symbolClass }}"></span>
+                                                    <span class="currency {% if favorite.product.currency.symbolClass %}g-hidden{% endif %}">{{ favorite.product.currency.token }}</span>
+                                                </strong>
+                                                {% if favorite.product.measureId  %}
+                                                    за {{ favorite.product.measure.tokenPrice }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+
+                                {% for favorite in favoriteCompany.getAttribute('favorites') %}
+                                    {% if loop.index <= productsPerCompanyCount %}
+                                        <div class="img is-bordered float-left">
+                                            <div class="img-holder">
+                                                {% set subdomain = favorite.product.company.city.getSlugWithFallback %}
+                                                <a class="img-link pattern-small js-tooltip-opener" data-tooltip="#inform-tooltip-{{ favorite.product.id }}" href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id' : favorite.product.id, 'subdomain' : subdomain}) }}">
+                                                    {% set imageUrl = imageHelper.getPhotoUrlForProduct(favorite.product, 'sq40', 'portal') %}
+                                                    {% if imageUrl %}
+                                                        <img src="{{ imageUrl }}" alt="{{ favorite.product.title }}" data-popup="#photo" title="{{ favorite.product.title }}"/>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if productCount > productsPerCompanyCount %}
+                                    <div class="img is-bordered float-left">
+                                        <div class="img-holder">
+                                        <span class="img-link clickable js-popup-opener" data-popup="#favorite-product-{{ company.id }}">
+                                            <span class="icon-points"></span>
+                                        </span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if productCount > productsPerCompanyCount %}
+                            <span class="link clickable js-popup-opener" data-popup="#favorite-product-{{ company.id }}">{{ productCount }}
+                                {{ 'favorite_product_count'|transchoice(productCount, {}, 'MetalProductsBundle') }}</span>
+                        {% endif %}
+                    </div>
+                    <span class="send-order_send-button button clickable send-button red-bg ie-radius"
+                       popup-opener="#request-private-demand"
+                       data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                       data-demand-text="Заявка для компании {{ company.title }}"
+                       data-company-id="{{ company.id }}"
+                            >Отправить заявку</span>
+                </td>
+            {% else %}
+                <td class="send-order no-result favorite-result float-left">
+
+                    <div class="holder clearfix">
+                        <p class="empty">Нет избранных товаров</p>
+                    </div>
+                    <span class="send-order_send-button button clickable send-button red-bg ie-radius"
+                       popup-opener="#request-private-demand"
+                       data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                       data-demand-text="Заявка для компании {{ company.title }}"
+                       data-company-id="{{ company.id }}"
+                            >Отправить заявку</span>
+
+                </td>
+            {% endif %}
+        </tr>
+    </table>
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}
+

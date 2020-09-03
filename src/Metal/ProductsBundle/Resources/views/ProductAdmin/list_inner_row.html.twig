@@ -1,0 +1,50 @@
+{{ include('@SonataAdmin/CRUD/list_inner_row.html.twig', { 'object' : object, 'admin' : admin}, false) }}
+
+</tr>
+<tr>
+    <td></td>
+    {% set form = admin.getFormForObject(object) %}
+    <td colspan="11">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="product_{{ object.id }}" action="{{ admin.generateObjectUrl('edit_inline', object) }}"
+                      {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+                      class="js-inline-submit">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th>{{ form_label(form.title) }}</th>
+                            <th>{{ form_label(form.size) }}</th>
+                            <th>{{ form_label(form.price) }}</th>
+                            <th>{{ form_label(form.measureId) }}</th>
+                            <th>{{ form_label(form.isPriceFrom) }}</th>
+                            <th>{{ form_label(form.isSpecialOffer) }}</th>
+                            <th>{{ form_label(form.imageTitle) }}</th>
+                            <th>{{ form_label(form.checked) }}</th>
+                            <th>{{ form_label(form.position) }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="sonata-ba-list-field" style="width: 25%;">{{ form_widget(form.title, {'attr': {'class': 'form-control', 'style': 'width: 100%;'}}) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.size, {'attr': {'class': 'form-control'}}) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.measureId) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.isPriceFrom) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.isSpecialOffer) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.imageTitle, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 5px;'}}) }} {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.checked) }}</td>
+                            <td class="sonata-ba-list-field">{{ form_widget(form.position) }}</td>
+                            <td>
+                                <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сохранить" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+
+    </td>

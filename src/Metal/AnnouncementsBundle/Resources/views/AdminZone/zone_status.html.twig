@@ -1,0 +1,22 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block field %}
+
+    {% if object.getAttribute('zone_status') %}
+        {% for zoneStatus in object.getAttribute('zone_status') %}
+            <b>{{ zoneStatus.getStatuses[zoneStatus.status] }}</b>
+            с {{ formatHelper.formatDate(zoneStatus.startsAt, 'full') }}
+            по {{ formatHelper.formatDate(zoneStatus.endsAt, 'full') }}<br />
+            {% if zoneStatus.company %}
+                <div>
+                    <div>
+                        {{ zoneStatus.company.title }} (<b><a href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': zoneStatus.company.id}}}) }}">{{ zoneStatus.company.id }}</a></b>)
+                        {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : zoneStatus.company}, false) }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

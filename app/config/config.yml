@@ -1,0 +1,905 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: parameters.php }
+    - { resource: security.yml }
+    - { resource: parameters/country_host.yml}
+
+parameters:
+#    liip_imagine.meta_data.reader.class: 'Imagine\Image\Metadata\DefaultMetadataReader'
+    assets_base_urls: [//assets.%base_host%]
+    framework_session_cookie_domain: .%base_host%
+    #TODO: админка должна быть доступна только с рос домена
+    base_host_admin_panel: %host_prefix%%base_host%
+    private_office_subdomain: my
+    base_host_private_office: %private_office_subdomain%.%base_host%
+    category_with_parameters_slug_regex: "[-\/0-9a-zA-Z\.:,_]+?"
+    domain_regex: "[-_0-9a-zA-Z\.]+"
+    company_slug_regex: "[-0-9a-zA-Z_]+?"
+    security_main_firewall: secured_area
+    minisite_compiled_themes_path: minisite/v13
+    company_update_online_timeout: "-10 minutes"
+    company_display_online_timeout: "-12 minutes"
+    security.user_checker.class: Metal\UsersBundle\Security\Core\User\UserChecker
+    replace_premium_date_from: '2017-03-15 00:00:00'
+    replace_premium_date_to: '2017-03-17 00:00:00'
+    # при добавлении изменений на страницу со статистикой - обязательно проверять насколько логично выводятся цифры на просмотре продуктов/телефонов и на просмотре банеров
+    # н-р при просмотре банеров на товаре может выводиться 10 просмотров, а всего товары просматривались 8 раз
+    multiply_statistics:
+        - coefficient: 1.15
+          date_from : "2014-07-16"
+          date_to : "2014-07-23"
+
+        - coefficient: 1.3
+          date_from : "2014-07-23"
+          date_to : "now"
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing/routing_%hostname_package_routing%.yml"
+        strict_requirements: %kernel.debug%
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    assets:
+        version: 588
+        version_format: %%s?_assets_version=%%s
+        #version_format: %%2$s/%%1$s
+        base_urls: %assets_base_urls%
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:
+        name: METALL_SID
+        cookie_domain: %framework_session_cookie_domain%
+        save_path: %kernel.root_dir%/var/sessions
+    fragments:       ~
+
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    form:
+        resources:
+            - 'MetalProjectBundle:Form:form_layout.html.twig'
+            - 'MetalProjectBundle:Form:captcha.html.twig'
+            - 'SonataCoreBundle:Form:datepicker.html.twig'
+            - 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig'
+            - 'VichUploaderBundle:Form:fields.html.twig'
+    globals:
+    #   http_prefix - тоже глобальная переменная (см. HttpExtension)
+        spros_yandex_metrika_id: %spros_yandex_metrika_id%
+        base_url: 'http://%base_host%'
+        email_images_base_url: 'http://www.%base_host%/upload/mail-assets'
+        company_crm_url: %company_crm_url%
+        livetex_id: %livetex_id%
+        livetex_color: %livetex_color%
+        products_import_blank_file: %products_import_blank_file%
+        project:
+            title: %project.title%
+            family: %project.family%
+            favicon: %project.favicon%
+            email_logo_path: %project.email_logo_path%
+            base_host: %base_host%
+            copyright_title: %project.copyright_title%
+            copyright_year: %project.copyright_year%
+            share_logo: %project.share_logo%
+            rspm_title: %project.rspm_title%
+            email_rspm_template_name: %project.email_rspm_template_name%
+            suppliers_menu_counter_name: %project.suppliers_menu_counter_name%
+            suppliers_route_subdomain: %project.suppliers_route_subdomain%
+            suppliers_route: %project.suppliers_route%
+            catalog_enabled: %project.catalog_enabled%
+            promocode_enabled: %project.promocode_enabled%
+            per_page_for_product_page: %project.per_page_for_product_page%
+            cookie_domain: %framework_session_cookie_domain%
+            portal_enabled: %project.portal_enabled%
+            menu_name: %project.menu_name%
+            corp_menu_name: %project.corp_menu_name%
+            empty_tabs_enabled: %project.empty_tabs_enabled%
+            mailru_counter_id: %prokat_mailru_counter_id%
+            yandex_metrika_id: %prokat_yandex_metrika_id%
+            google_analytics_id: %google_analytics_id%
+            google_tag_manager_id: %google_tag_manager_id%
+            widgets_other_cities_enabled: %project.widgets_other_cities_enabled%
+            widgets_other_countries_enabled: %project.widgets_other_countries_enabled%
+            ajax_pagination_enabled: %project.ajax_pagination_enabled%
+        tokens:
+            product_volume_title: %tokens.product_volume_title%
+            product_title:
+                nominative: %tokens.product_title.nominative%
+                instrumental: %tokens.product_title.instrumental%
+                genitive: %tokens.product_title.genitive%
+            supplier_of: %tokens.supplier_of%
+            suppliers: %tokens.suppliers%
+            supplier: %tokens.supplier%
+            catalog: %tokens.catalog%
+            market_title: %tokens.market_title%
+            companies: %tokens.companies%
+            catalog_companies: %tokens.catalog_companies%
+            companies_info: %tokens.companies_info%
+
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:
+        - SprosProjectBundle
+        - MetalProjectBundle
+        - MetalCompaniesBundle
+        - MetalPrivateOfficeBundle
+        - MetalCorpsiteBundle
+        - MetalDemandsBundle
+        - MetalContentBundle
+    assets:
+        angular:
+            inputs:
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-locale_ru.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-gettext.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-initial-value.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-collection.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/bindonce.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/typeahead/bloodhound.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/typeahead/typeahead.jquery.js'
+                - '@MetalProjectBundle/Resources/public/js/Brouzie/Popups.js'
+                - '@MetalProjectBundle/Resources/public/js/Brouzie/Popups-angular.js'
+                - '@MetalProjectBundle/Resources/public/js/Brouzie/Typeahead-angular.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/angular-initialization.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.iframe-transport.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload-process.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload-angular.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/ajaxform/jquery.ajaxform.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/ajaxform/jquery.ajaxform-angular.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/angular-ui-tree-master/dist/angular-ui-tree.js'
+                - '@MetalProjectBundle/Resources/public/js-integration/libs/angular-vs-repeat-master/angular-vs-repeat.js'
+    filters:
+        cssrewrite: ~
+        phpcssembed: ~
+        uglifycss:
+            bin: /usr/local/bin/uglifycss
+        uglifyjs2:
+            bin: /usr/local/bin/uglifyjs
+
+doctrine:
+    dbal:
+        default_connection:       default
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+            csv: Metal\ProjectBundle\Doctrine\CsvType
+        connections:
+            default:
+                dbname:   %database_name%
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
+                mapping_types:
+                    enum: string
+            archive:
+                dbname:   %database_archive_name%
+                driver:   %database_archive_driver%
+                host:     %database_archive_host%
+                port:     %database_archive_port%
+                user:     %database_archive_user%
+                password: %database_archive_password%
+                charset:  UTF8
+                mapping_types:
+                    enum: string
+                options:
+                    # PDO::MYSQL_ATTR_INIT_COMMAND
+                    1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+        dql:
+            numeric_functions:
+                #Нужна для построения фасета периодов в личном кабинете
+                IFNULL: Metal\ProjectBundle\Doctrine\IfNullFunction
+                rand: Metal\ProjectBundle\Doctrine\RandFunction
+                month: Oro\ORM\Query\AST\Functions\SimpleFunction
+            datetime_functions:
+                date: Oro\ORM\Query\AST\Functions\SimpleFunction
+
+doctrine_migrations:
+    organize_migrations: BY_YEAR_AND_MONTH
+
+monolog:
+    channels: [grabber, telegram]
+    handlers:
+        grabber_file:
+            type:     service
+            id:       metal.grabbers.monolog.handler.doctrine_dbal
+            channels: [grabber]
+        grabber_console:
+            type:   console
+            verbosity_levels:
+                VERBOSITY_NORMAL: DEBUG
+            channels: [grabber]
+#            formatter: my_formatter
+        telegram:
+            # log all messages (since debug is the lowest level)
+            level:    debug
+            type:     stream
+            path:     '%kernel.logs_dir%/telegram.log'
+            channels: [telegram]
+
+swiftmailer:
+    default_mailer: instant_mailer
+    mailers:
+        instant_mailer:
+            transport: %mailer_transport%
+            host:      %mailer_host%
+            username:  %mailer_user%
+            password:  %mailer_password%
+            spool:     { type: memory }
+        delayed_mailer:
+            transport: %mailer_transport%
+            host:      %mailer_host%
+            username:  %mailer_user%
+            password:  %mailer_password%
+            spool:
+                type: file
+                path: %kernel.root_dir%/var/spool
+
+metal_project:
+    routing_parser_cache_provider: metal_project.routing.routing_parser.cache.array
+    cache_app_service: metal_project.cache.adapter.null
+#    cache_app_service: metal_project.cache.adapter.redis
+
+brouzie_widgets:
+    cache_provider: cache.app
+
+sonata_block:
+    default_contexts: [admin]
+    blocks:
+        sonata.admin.block.admin_list:
+        metal.complaints.admin.block.spam_complaint:
+        metal.product.admin.block.products_processing_queue:
+        metal.newsletter.admin.block.newsletter_statistic:
+        metal.callbacks.admin.block.unprocessed_callback:
+        metal.support.admin.block.unprocessed_support_topic:
+        metal.services.admin.block.unprocessed_package_order:
+        metal.announcements.admin.block.unprocessed_order_announcement:
+        metal.companies.admin.block.unprocessed_company_document:
+        metal.demands.admin.block.created_demand:
+        metal.demands.admin.block.source_demand:
+        metal.project.admin.block.statistic:
+        metal.project.admin.block.statistic_search:
+        metal.users.admin.block.wizzard_register:
+        metal.grabbers.admin.block.site_statistic:
+        metal.catalog.admin.block.added_products:
+
+sonata_admin:
+    show_mosaic_button: false
+    title: %project.title%
+    title_logo: '%project.logo%'
+    options:
+        html5_validate: false
+        use_icheck: false
+#        use_select2: false
+    templates:
+        #layout:    SonataAdminBundle::standard_layout.html.twig
+        layout:    MetalProjectBundle:Admin:standard_layout.html.twig
+        list:      MetalProjectBundle:Admin:list.html.twig
+        user_block: MetalProjectBundle:Admin:user_block.html.twig
+        list_block: SonataAdminBundle::Block/block_admin_list.html.twig
+    security:
+        handler: metal.users.security.handler.role
+    dashboard:
+        blocks:
+            - { position: left, type: sonata.admin.block.admin_list }
+            - { position: right, type: metal.complaints.admin.block.spam_complaint }
+            - { position: right, type: metal.product.admin.block.products_processing_queue }
+            - { position: right, type: metal.newsletter.admin.block.newsletter_statistic }
+            - { position: right, type: metal.callbacks.admin.block.unprocessed_callback }
+            - { position: right, type: metal.support.admin.block.unprocessed_support_topic }
+            - { position: right, type: metal.announcements.admin.block.unprocessed_order_announcement }
+            - { position: right, type: metal.companies.admin.block.unprocessed_company_document }
+            - { position: right, type: metal.services.admin.block.unprocessed_package_order }
+            - { position: right, type: metal.demands.admin.block.created_demand }
+            - { position: right, type: metal.demands.admin.block.source_demand }
+            - { position: right, type: metal.project.admin.block.statistic }
+            - { position: right, type: metal.users.admin.block.wizzard_register }
+            - { position: right, type: metal.grabbers.admin.block.site_statistic }
+            - { position: right, type: metal.project.admin.block.statistic_search }
+            - { position: right, type: metal.catalog.admin.block.added_products }
+
+        groups:
+            clients:
+                label: Клиенты
+            banners:
+                label: Баннера
+            demands:
+                label: Заявки
+            products:
+                label: Товары
+            feedback:
+                label: Обратная связь
+            categories:
+                label: Категории
+            project:
+                label: Проект
+            territorial:
+                label: Территориальная структура
+            newsletter:
+                label: Рассылка
+            minisite_covers:
+                label: Шапки минисайта
+            corp_site:
+                label: Корпоративный сайт
+            static_pages:
+                label: Статические страницы
+            services:
+                label: Сервисы
+            grabbers:
+                label: Граббер
+            seo:
+                label: SEO
+            ipban:
+                label: Блокировка IP адресов
+            catalog:
+                label: Каталог
+            content:
+                label: Контент
+
+sonata_doctrine_orm_admin:
+    templates:
+        form:   [ MetalProjectBundle:Admin:form_admin_fields.html.twig ]
+        types:
+            list:
+                integer:    MetalProjectBundle:Admin:list_decimal.html.twig
+
+buzz:
+    browsers:
+        webmaster.yandex:
+            client: curl
+            host: https://webmaster.yandex.ru
+        accounts.google:
+            client: curl
+            host: https://accounts.google.com
+        api.google:
+            client: curl
+            host: https://www.googleapis.com
+        geocode.yandex:
+            client: curl
+            host: http://geocode-maps.yandex.ru
+        grabber:
+            client: curl
+        downloader:
+            client: curl
+        verify_inviter:
+            client: curl
+            host: http://%base_host_verify_invite%/get_user_info_for_invite_project
+
+bazinga_geocoder:
+    providers:
+        sypexgeo:
+            binary_file: %kernel.root_dir%/../vendor/zapimir/sypexgeo/SxGeoCity.dat
+        yandex:
+            locale: ru
+            toponym: house
+
+stof_doctrine_extensions:
+    default_locale: ru_RU
+    uploadable:
+        default_file_path:       %kernel.root_dir%/../upload
+        mime_type_guesser_class: Stof\DoctrineExtensionsBundle\Uploadable\MimeTypeGuesserAdapter
+        default_file_info_class: Stof\DoctrineExtensionsBundle\Uploadable\UploadedFileInfo
+    orm:
+        default:
+           uploadable: true
+           tree: true
+
+brouzie_sphinxy:
+    connections:
+        default:
+            alias: default
+            dsn: %sphinx_dsn%
+            logging: %kernel.debug%
+
+fos_elastica:
+    clients:
+        default:
+            url: %elasticsearch_dsn%
+#            logger: false
+    indexes:
+        products:
+            types:
+                product:
+                    properties:
+                        title: { type: text }
+                        company_title: { type: text }
+                        company_id: { type: integer }
+                        price: { type: float }
+                        category_id: { type: short }
+                        categories_ids: { type: short }
+                        custom_categories_ids: { type: integer }
+                        phone_cities_ids: { type: short }
+                        company_city_id: { type: short }
+                        product_city_id: { type: short }
+                        cities_ids: { type: short }
+                        regions_ids: { type: short }
+                        countries_ids: { type: short }
+                        attributes_ids: { type: integer }
+                        created_at: { type: date }
+                        day_updated_at: { type: date }
+                        company_access: { type: byte }
+                        company_rating: { type: byte }
+                        company_attributes_ids: { type: byte }
+                        day_company_created_at: { type: date, format: yyyyMMdd }
+                        city_title: { type: keyword }
+                        company_last_visited_at: { type: date }
+                        is_special_offer: { type: boolean }
+                        visibility_status: { type: byte }
+                        is_virtual: { type: boolean }
+                        show_on_portal: { type: boolean }
+                        priority_show: { type: byte }
+                        priority_show_territorial: { type: object }
+                        attributes: { type: object }
+                        product_position: { type: integer }
+                        is_hot_offer: { type: boolean }
+                        hot_offer_position: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Metal\ProductsBundle\Entity\Product
+                        provider: ~
+                        finder: ~
+                        listener:
+                            enabled: false
+                    _routing:
+                        required: true
+
+enqueue:
+    transport:
+        default: "%enqueue_dsn%"
+    client:
+        traceable_producer: %kernel.debug%
+
+snc_redis:
+    clients:
+        cache:
+            type: predis
+            alias: cache
+            dsn: %redis_dsn_cache%
+        session:
+            type: predis
+            alias: session
+            dsn: %redis_dsn_session%
+
+white_october_pagerfanta:
+    exceptions_strategy:
+        out_of_range_page: to_http_not_found
+        not_valid_current_page: to_http_not_found
+
+sensio_framework_extra:
+    router:   { annotations: false }
+    request:  { converters: true, auto_convert: false }
+    view:     { annotations: false }
+    cache:    { annotations: true }
+    security: { annotations: true }
+
+cmf_routing:
+    chain:
+        routers_by_id:
+            router.default: 200
+            router.attributes_loader: 150
+            router.secondary: 100
+
+sonata_notification:
+    backend: sonata.notification.backend.runtime
+    admin:
+        enabled: false
+
+jh9_robokassa:
+    login: %robokassa_login%
+    password1: %robokassa_password%
+    password2: %robokassa_password_result%
+    test: false
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        demand_attachment:
+            uri_prefix: /demands
+            upload_destination: %upload_dir%/demands
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 2}
+        company_logo:
+            uri_prefix: /companies
+            upload_destination: %upload_dir%/companies
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        company_file:
+            uri_prefix: /company_documents
+            upload_destination: %upload_dir%/company_documents
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        landing_template_file:
+            uri_prefix: /landing_templates
+            upload_destination: %upload_dir%/landing_templates
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        content_image:
+            uri_prefix: /netcat_files/188/372
+            upload_destination: %web_dir%/netcat_files/188/372
+            namer: vich_uploader.namer_hash
+        topic_image:
+            uri_prefix: /topics
+            upload_destination: %upload_dir%/topics
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        product_photo:
+            uri_prefix: /products
+            upload_destination: %upload_dir%/products
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        user_photo:
+            uri_prefix: /users
+            upload_destination: %upload_dir%/users
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        manufacturer_logo:
+            uri_prefix: /catalog_manufacturer
+            upload_destination: %upload_dir%/catalog_manufacturer
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        brand_logo:
+            uri_prefix: /catalog_brand
+            upload_destination: %upload_dir%/catalog_brand
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        client_photo:
+            uri_prefix: /corpsite
+            upload_destination: %upload_dir%/corpsite
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        mini_site_cover:
+            uri_prefix: /cover
+            upload_destination: %upload_dir%/cover
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        payment_details_file:
+            uri_prefix: /payment_details
+            upload_destination: %upload_dir%/payment_details
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        company_registration_price:
+            uri_prefix: /company_registration_price
+            upload_destination: %upload_dir%/company_registration_price
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        catalog_product_photo:
+            uri_prefix: /catalog_products
+            upload_destination: %upload_dir%/catalog_products
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+        instagram_photo:
+            uri_prefix: /instagram
+            upload_destination: %upload_dir%/instagram
+            namer: vich_uploader.namer_hash
+            directory_namer:
+                service: vich_uploader.directory_namer_subdir
+                options: {chars_per_dir: 2, dirs: 1}
+
+liip_imagine:
+    driver: %imagine_driver%
+    loaders:
+        default:
+            filesystem:
+                data_root: %upload_dir%
+    filter_sets:
+        landing_template_small:
+            quality: 90
+            filters:
+                thumbnail: { size: [156, 96], mode: outbound }
+                strip: ~
+        landing_template_big:
+            quality: 90
+            filters:
+                thumbnail: { size: [1200, 768], mode: outbound }
+                strip: ~
+        minisite_cover_small:
+            quality: 90
+            filters:
+                thumbnail: { size: [156, 96], mode: outbound }
+                strip: ~
+        minisite_cover_big:
+            quality: 90
+            filters:
+                thumbnail: { size: [1008, 192], mode: outbound }
+                strip: ~
+        products_sq28:
+            quality: 85
+            filters:
+                thumbnail: { size: [28, 28], mode: outbound }
+                strip: ~
+        products_sq40:
+            quality: 85
+            filters:
+                thumbnail: { size: [40, 40], mode: outbound }
+                strip: ~
+        products_sq600:
+            quality: 85
+            filters:
+                thumbnail: { size: [600, 600], mode: outbound }
+                strip: ~
+        products_sq136:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: outbound }
+                strip: ~
+        products_sq68:
+            quality: 85
+            filters:
+                thumbnail: { size: [68, 68], mode: outbound }
+                strip: ~
+        products_sq188:
+            quality: 85
+            filters:
+                thumbnail: { size: [188, 188], mode: outbound }
+                strip: ~
+        products_sq250:
+            quality: 85
+            filters:
+                thumbnail: { size: [250, 250], mode: outbound }
+                strip: ~
+        products_sq28_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [28, 28], mode: inset }
+                background: { size: [28, 28], color: '#FFF' }
+                strip: ~
+        products_sq40_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [40, 40], mode: inset }
+                background: { size: [40, 40], color: '#FFF' }
+                strip: ~
+        products_sq64_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                background: { size: [64, 64], color: '#FFF' }
+                strip: ~
+        products_sq600_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [600, 600], mode: inset }
+                background: { size: [600, 600], color: '#FFF' }
+                strip: ~
+        products_sq136_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                background: { size: [136, 136], color: '#FFF' }
+                strip: ~
+        products_sq188_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [188, 188], mode: inset }
+                background: { size: [188, 188], color: '#FFF' }
+                strip: ~
+        products_sq250_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [250, 250], mode: inset }
+                background: { size: [250, 250], color: '#FFF' }
+                strip: ~
+        logo_sq64:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                strip: ~
+        logo_sq72:
+            quality: 85
+            filters:
+                thumbnail: { size: [72, 72], mode: inset }
+                strip: ~
+        logo_sq136:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                strip: ~
+        logo_sq168:
+            quality: 85
+            filters:
+                thumbnail: { size: [168, 168], mode: inset }
+                strip: ~
+        logo_sq64_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                background: { size: [64, 64], color: '#FFF' }
+                strip: ~
+        logo_sq72_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [72, 72], mode: inset }
+                background: { size: [72, 72], color: '#FFF' }
+                strip: ~
+        logo_sq136_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                background: { size: [136, 136], color: '#FFF' }
+                strip: ~
+        logo_sq168_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [168, 168], mode: inset }
+                background: { size: [168, 168], color: '#FFF' }
+                strip: ~
+        announcement:
+            quality: 90
+            filters:
+                thumbnail: { size: [768, 2028], mode: inset }
+                background: { color: '#FFF' }
+                strip: ~
+        catalog_logo_sq28:
+            quality: 85
+            filters:
+                thumbnail: { size: [28, 28], mode: inset }
+                strip: ~
+        catalog_logo_sq40:
+            quality: 85
+            filters:
+                thumbnail: { size: [40, 40], mode: inset }
+                strip: ~
+        catalog_logo_sq64:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                strip: ~
+        catalog_logo_sq136:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                strip: ~
+        users_sq24:
+            quality: 85
+            filters:
+                thumbnail: { size: [24, 24], mode: outbound }
+                strip: ~
+        users_sq28:
+            quality: 85
+            filters:
+                thumbnail: { size: [28, 28], mode: outbound }
+                strip: ~
+        users_sq36:
+            quality: 85
+            filters:
+                thumbnail: { size: [36, 36], mode: outbound }
+                strip: ~
+        users_sq60:
+            quality: 85
+            filters:
+                thumbnail: { size: [60, 60], mode: outbound }
+                strip: ~
+        users_sq84:
+            quality: 85
+            filters:
+                thumbnail: { size: [84, 84], mode: outbound }
+                strip: ~
+        users_56x96:
+            quality: 85
+            filters:
+                thumbnail: { size: [56, 96], mode: outbound }
+                strip: ~
+        users_sq168:
+            quality: 85
+            filters:
+                thumbnail: { size: [168, 168], mode: outbound }
+                strip: ~
+        topics_sq136_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                background: { size: [136, 136], color: '#FFF' }
+                strip: ~
+        topic_image_sq40:
+            quality: 85
+            filters:
+                thumbnail: { size: [40, 40], mode: inset }
+                strip: ~
+
+        instagram_photo_sq290:
+            quality: 85
+            filters:
+                thumbnail: { size: [290, 290], mode: outbound }
+                strip: ~
+        instagram_photo_sq178:
+            quality: 85
+            filters:
+                thumbnail: { size: [178, 178], mode: outbound }
+                strip: ~
+
+        instagram_photo_sq640:
+            quality: 85
+            filters:
+                thumbnail: { size: [640, 640], mode: outbound }
+                strip: ~
+
+        content_image_sq64_non_optim:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                background: { size: [64, 64], color: '#FFF' }
+                strip: ~
+
+        client_review_logo_sq40:
+            quality: 85
+            filters:
+                thumbnail: { size: [40, 40], mode: inset }
+                strip: ~
+
+        client_review_logo_sq64:
+            quality: 85
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+                strip: ~
+
+        client_review_logo_sq136:
+            quality: 85
+            filters:
+                thumbnail: { size: [136, 136], mode: inset }
+                strip: ~
+
+gregwar_captcha:
+    width: 433
+    height: 80
+    length: 6
+
+vipx_bot_detect:
+    metadata_file: 'bots.yml'
+
+ornicar_akismet:
+    api_key:        %akismet.api_key%
+    url:            http://%base_host_corp_site%
+
+ewz_recaptcha:
+    enabled: %recaptcha.enabled%
+    public_key: %recaptcha.public_key%
+    private_key: %recaptcha.private_key%
+    locale_key: %kernel.default_locale%
+
+fm_bbcode:
+    filter_sets:
+        default:
+          strict: false # if you want to parse attr values without quotes
+          locale: ru
+          xhtml: true
+          filters: [default, url, image]
+          whitelist: [b, i, u, url, img]

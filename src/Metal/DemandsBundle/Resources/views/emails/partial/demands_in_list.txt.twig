@@ -1,0 +1,20 @@
+{% set demandItems = demand.hasAttribute('demandItems') ? demand.getAttribute('demandItems') : demand.demandItems %}
+{% set demandItemsLength = demandItems|length %}
+№{{ demand.id }} {{ demand.getFixedCityTitle()|trim }} {{ brouzie_helper('MetalProjectBundle:Formatting').formatDate(demand.displayTime) }}
+{% set demandItemsToShow = demand_items_limit is null ? demandItems : demandItems|slice(0, demand_items_limit) %}
+
+{% for demandItem in demandItemsToShow %}
+    {{ loop.index }}    {{ demandItem.title|trim }}    {% if demandItem.volume %}{{ demandItem.volume|number_format_decimal }} {% if demandItem.volumeTypeId %}{{ demandItem.volumeType.tokenTransChoice|transchoice(demandItem.volume) }}{% endif %}{% else %}объем договорной{% endif %}{% if loop.first %}{% if view_user_name %}    {{ demand.getFixedUserTitle() }}{% endif %}  {{ demand.demandPeriodicity.title }} потребность{% endif %}
+
+{% endfor %}
+{% set demandUrl = null %}
+{% if demand.isPublic %}
+{% if demand.isModerated %}
+{% set demandUrl = url('MetalDemandsBundle:Demand:view', {'id': demand.getId(), 'category_slug': demand.getCategory.getSlugCombined, 'subdomain': demand.getCity().getSlugWithFallback()|default('www') }) %}
+{% endif %}
+{% elseif to_company %}
+{% set demandUrl = url('MetalPrivateOfficeBundle:Demands:list', {'filter': 'unwatched' }) %}
+{% endif %}
+{% if demand_items_limit is not null %}
+{% if demand_items_limit < demandItems|length %}Всего {{ demandItems|length }} {{ 'demands_by_count'|transchoice(demandItems|length, [], 'MetalDemandsBundle') }}{% endif %} {{ demandUrl }}
+{% endif %}

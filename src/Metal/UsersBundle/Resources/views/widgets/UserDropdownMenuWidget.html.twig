@@ -1,0 +1,121 @@
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+{% if not app.user or not is_granted('ROLE_USER') %}
+    <div class="user-block float-right">
+        <a class="login js-popup-opener icon-exit" data-popup="#login" href="#" rel="nofollow"><span class="login-text">Вход в кабинет</span></a>
+        <a class="register-link"
+           href="{{ urlHelper.getRegistrationUrl() }}" rel="nofollow">Регистрация</a>
+    </div>
+{% else %}
+    {% set company = app.user.company %}
+    {% set secure = brouzie_helper('MetalProjectBundle').getCurrentCountry().secure %}
+    {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+    {% set notificationSum = notificationFromModerator %}
+
+    {% if company %}
+        {% set notificationSum = notificationSum + totalCount %}
+    {% endif %}
+
+    {% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+    <div class="user-block login-user float-right">
+        <div class="user-block-holder js-popover-opener clearfix {% if not company %}without-company{% endif %}" data-popover="#user-menu{{ place }}">
+            <span class="msgs {% if not notificationSum %}disabled{% endif %} clickable float-left">
+                <span class="icon-flag float-left"></span>
+                {% if notificationSum %}
+                    <span class="msg-count float-left">{{ notificationSum }}</span>
+                {% endif %}
+            </span>
+
+            <div class="user-photo float-left">
+                <span class="img-link link pattern-small ie-radius">
+                    {% set avatarUrl = imageHelper.getAvatarUrl(app.user, 'sq24') %}
+                    {% if avatarUrl %}
+                        <img src="{{ avatarUrl }}" alt="{{ app.user.fullName }}"
+                             title="{{ app.user.fullName }}" />
+                    {% endif %}
+                </span>
+            </div>
+            <span class="user-name-wrapper icon-check float-left">
+                <span class="user-name clickable {#is-gradiented#}" {#FIXME: отключенно для тикета #MET-2407 #}
+                      title="{{ app.user.fullName }}">{{ app.user.fullName }}</span>
+            </span>
+        </div>
+
+        <div id="user-menu{{ place }}" class="u-menu drop-wrapper opacity-border">
+            <ul class="dropdown list">
+
+                {% if company %}
+                    <li class="company-name first clearfix">
+                        {{ companyMacroses.rating(company) }}
+                        {% if company.minisiteEnabled %}
+                            <a href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }}" class="company-name-link">{{ company.title }}</a>
+                        {% else %}
+                            <span class="company-name-link">{{ company.title }}</span>
+                        {% endif %}
+                    </li>
+                {% endif %}
+
+                <li class="private-room clearfix">
+                    <a class="link" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Default:index', {'_secure' : secure}) }}">Личный кабинет</a>
+                    {% if is_granted('ROLE_SUPPLIER') %}
+                        <div class="sec-links">
+                            <span class="link">прайс-лист,</span>
+                            <span class="link">статистика,</span>
+                            <span class="link">оплата</span>
+                        </div>
+                    {% endif %}
+                </li>
+
+                {% for item in menuItems %}
+                    <li class="drop-item clearfix">
+                        <a target="{{ item['target'] }}" class="drop-link" href="{{ item['url'] }}">{{ item['title'] }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if company %}
+                    {% set companyCounter = company.counter %}
+                    {% set clientWaitingCallback = newCallbacksCount + newDemandsCount %}
+                    {% if newCallbacksCount %}
+                        {% set clientWaitingCallbackUrl = urlHelper.generateUrl('MetalPrivateOfficeBundle:Callbacks:list', {'_secure' : secure}) %}
+                    {% else %}
+                        {% set clientWaitingCallbackUrl = urlHelper.generateUrl('MetalPrivateOfficeBundle:Demands:list', {'_secure' : secure}) %}
+                    {% endif %}
+                    <li class="drop-item clearfix">
+                        {% if clientWaitingCallback %}
+                            <strong class="count ie-radius float-right">{{ clientWaitingCallback }}</strong>
+                        {% endif %}
+                        <a class="drop-link" href="{{ clientWaitingCallbackUrl }}" title="Клиенты ожидают ответа">Клиенты ожидают ответа</a>
+                    </li>
+                    {% if app.user.getHasEditPermission() %}
+                        <li class="drop-item clearfix">
+                            <a class="drop-link" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Details:edit', {'_secure' : secure}) }}" title="Реквизиты и счета">Реквизиты и счета</a>
+                        </li>
+                    {% endif %}
+                    <li class="drop-item clearfix">
+                        {% if companyCounter.newCompanyReviewsCount %}
+                            <strong class="count ie-radius float-right">{{ companyCounter.newCompanyReviewsCount }}</strong>
+                        {% endif %}
+                        <a class="drop-link" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Reviews:list', {'_secure' : secure}) }}" title="Отзывы о компании">Отзывы о компании</a>
+                    </li>
+                    <li class="drop-item clearfix">
+                        {% if companyCounter.newComplaintsCount %}
+                            <strong class="count ie-radius float-right">{{ companyCounter.newComplaintsCount }}</strong>
+                        {% endif %}
+                        <a class="drop-link" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Complaint:list', {'_secure' : secure}) }}" title="Жалобы">Жалобы</a>
+
+                    </li>
+                {% endif %}
+                <li class="drop-item clerfix">
+                    {% if notificationFromModerator %}
+                        <strong class="count ie-radius float-right">{{ notificationFromModerator }}</strong>
+                    {% endif %}
+                    <a class="drop-link" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Support:list', {'_secure' : secure}) }}" title="Сообщения от модератора">Сообщения от модератора</a>
+                </li>
+
+                <li class="quit drop-item clearfix">
+                    <a class="drop-link" href="{{ urlHelper.getLogoutUrl() }}">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endif %}

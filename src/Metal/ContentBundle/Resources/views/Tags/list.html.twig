@@ -1,0 +1,27 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+
+{% block title 'Метки' %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalContentBundle:Seo').getAdditionalMetaTagsForContentTags()|raw }}
+{% endblock %}
+
+{% block inside_left %}
+    <div class="view-category products questions js-calc-height">
+        <h1 class="title icon-clip">Метки</h1>
+        <ul class="tags-list clearfix">
+            {% for tag in tags %}
+                <li class="item float-left gray60-color is-gradiented">
+                    <a class="link"
+                       href="{{ path('MetalContentBundle:Tag:view', {'id' : tag['id']}) }}">{{ tag['title'] }}</a>
+                    ({{ tag['contentEntriesCount'] }})
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+{% endblock inside_left %}
+
+{% block inside_right %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'entry_type' : 'ENTRY_TYPE_TOPIC'}) }}
+{% endblock inside_right %}

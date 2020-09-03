@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.fallbackFilePath %}
+        {% set announcementHelper = brouzie_helper('MetalAnnouncementsBundle:AdminDefault') %}
+        {% set objectSize = announcementHelper.getAnnouncementDimensions(object) %}
+        {% if objectSize['width'] or objectSize['height'] %}
+            <img src="{{ asset(object.fallbackWebPath) }}" width="{{ objectSize['width'] }}" height="{{ objectSize['height'] }}" />
+        {% else %}
+            <img src="{{ asset(object.fallbackWebPath) }}" width="300" height="150" />
+        {% endif %}
+    {% endif %}
+{% endblock %}

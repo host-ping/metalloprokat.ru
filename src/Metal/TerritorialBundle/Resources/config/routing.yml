@@ -1,0 +1,27 @@
+MetalTerritorialBundle:Suggest:getCities:
+    path: /suggest/cities
+    defaults:  { _controller: MetalTerritorialBundle:Suggest:getCities, use_country: false }
+
+MetalTerritorialBundle:Suggest:getRegions:
+    path: /suggest/regions
+    defaults:  { _controller: MetalTerritorialBundle:Suggest:getRegions, use_country: false }
+
+MetalTerritorialBundle:Api:getCities:
+    path: /api/cities
+    defaults:  { _controller: MetalTerritorialBundle:Api:getCities }
+
+MetalTerritorialBundle:Api:getRegions:
+    path: /api/regions
+    defaults:  { _controller: MetalTerritorialBundle:Api:getRegions }
+
+MetalTerritorialBundle:Suggest:getCitiesForCountry:
+    path: /suggest/cities/for-country
+    defaults:  { _controller: MetalTerritorialBundle:Suggest:getCities }
+
+MetalTerritorialBundle:Suggest:getAllCities:
+    path: /suggest/cities/all
+    defaults:  { _controller: MetalTerritorialBundle:Suggest:getCities, filter_cities: false }
+
+MetalTerritorialBundle:Suggest:getTerritoriesByLevels:
+    path: /suggest/territories.json
+    defaults:  { _controller:  MetalTerritorialBundle:Suggest:getTerritoriesByLevels }

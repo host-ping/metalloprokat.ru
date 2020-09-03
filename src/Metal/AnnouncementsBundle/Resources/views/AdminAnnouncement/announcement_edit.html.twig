@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block notice %}
+    {{ parent() }}
+
+    <div class="alert alert-warning alert-dismissable">
+        swf-баннеры не рекомендуются к загрузке<br />
+        HTML5-баннеры нужно загружать в zip-архиве, в котором присутствует файл с названием index.html. <a href="https://yadi.sk/i/-7TQbzKSvvuyZ">ИНСТРУКЦИЯ</a>.
+    </div>
+{% endblock notice %}

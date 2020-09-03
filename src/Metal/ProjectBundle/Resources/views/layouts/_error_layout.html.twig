@@ -1,0 +1,73 @@
+{% extends 'MetalProjectBundle:layouts:_portal_layout.html.twig' %}
+
+{% set currentCity = brouzie_helper('MetalProjectBundle').getCurrentCity() %}
+{% set country = brouzie_helper('MetalProjectBundle').getCurrentCountry() %}
+{% set company = app.request.attributes.get('company') %}
+
+{% block additional_popups '' %}
+{% block callback '' %}
+{% block banner '' %}
+{% block breadcrumbs '' %}
+{% block side_announcements '' %}
+{% block search_form '' %}
+{% block head_banner '' %}
+
+{% block header %}
+    {% set subdomain = 'www' %}
+    {% if currentCity %}
+        {% set subdomain = currentCity.slug %}
+    {% endif %}
+    <div class="left float-left">
+        <div class="logo float-left">
+            {{ block('logo') }}
+        </div>
+        <div class="logo-text float-left">
+            <p>
+                <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': subdomain}) }}"
+                   class="header-logo-text">{{ country.domainTitle|default(project.title) }}</a>
+            </p>
+        </div>
+    </div>
+
+    {% block login %}
+        {{ brouzie_render_widget('MetalUsersBundle:UserDropdownMenu', {'place' : '1'}) }}
+    {% endblock %}
+
+    <div id="login" class="login-form popup-block opacity-border large">
+        <div class="popup-content">
+            <div class="title-wrapper clearfix">
+                <div class="title-popup float-left">Авторизация</div>
+                <a class="register-link float-right"
+                   href="{{ brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl() }}"
+                   rel="nofollow">Регистрация</a>
+            </div>
+            <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+            <form id="login-form" class="popup-form" action="{{ path('login_check') }}" method="post">
+                <fieldset>
+                    <div class="email-wrapper field-wrap">
+                        <input name="_username" class="email form-email" type="email" placeholder="Электронная почта" />
+                    </div>
+                    <div class="password-wrapper field-wrap">
+                        <input name="_password" class="password form-text" type="password" placeholder="Пароль" />
+                    </div>
+                    <div class="login-info clearfix">
+                        <div class="check-wrapper float-left">
+                            <input id="login-form-remember-me" name="_remember_me" type="checkbox" checked="checked"
+                                   class="inform js-styled-checkbox bg-white" />
+                            <label for="login-form-remember-me">Запомнить меня</label>
+                        </div>
+                        <span class="forgot-link clickable float-right js-popup-closer js-popup-opener"
+                              data-popup="#recover-password">Забыл пароль</span>
+                    </div>
+
+                    <div class="submit-wrapper">
+                        <input class="popup-form_send-button send-button button blue-bg" type="submit" value="Войти" />
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+
+    {{ brouzie_render_widget('MetalUsersBundle:RecoverPassword') }}
+{% endblock %}

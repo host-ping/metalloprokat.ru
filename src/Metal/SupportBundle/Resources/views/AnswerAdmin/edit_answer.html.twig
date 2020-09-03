@@ -1,0 +1,10 @@
+{% extends admin.getTemplate('edit') %}
+
+{% block formactions %}
+    <div class="clearfix">
+        <div class="well well-small form-actions">
+            <input type="submit" class="btn btn-success" name="btn_update_and_edit" value="Сохранить">
+            <a href="{{ path('admin_metal_support_topic_show', {'id' : object.topic.id}) }}" class="btn btn-primary" name="btn_update_and_edit">Вернуться назад</a>
+        </div>
+    </div>
+{% endblock formactions %}

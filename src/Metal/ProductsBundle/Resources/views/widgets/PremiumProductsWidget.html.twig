@@ -1,0 +1,83 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set hostname = app.request.getHttpHost() %}
+{% set category = _options['category'] %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+{% set countryForUrl = _options['country'] ? _options['country'] : app.request.attributes.get('country') %}
+
+<div class="premium-product-block">
+    {% if products|length > 0 %}
+        {% if category and _options['country'] %}
+            {% if _options['show_category_mode'] == 'other_companies' %}
+                {% set url = urlHelper.generateUrl('MetalProductsBundle:Products:list_category_domain', {'category_slug' : category.slugCombined, 'domain' : 'www.'~_options['country'].baseHost, '_secure' : countryForUrl.secure }) %}
+                <div class="category-title">
+                    <a class="title-link link" href="{{ url }}" {% if hostname not in url %}target="_blank"{% endif %}>{{ category.title }}</a>
+                        других компаний
+                </div>
+            {% elseif _options['show_category_mode'] == 'category' %}
+                {# TODO: по-хорошему нужно завести отдельную опцию на ссылку - использовать ли в ссылке на категорию домен города или нет #}
+                {% set url = urlHelper.generateUrl('MetalProductsBundle:Products:list_category_subdomain', {'subdomain': app.request.attributes.get('subdomain', 'www'), 'category_slug' : category.slugCombined, '_secure' : countryForUrl.secure }) %}
+                <div class="category-title">Товары из раздела <a class="link" href="{{ url }}">{{ category.getTitleForEmbed() }}</a></div>
+            {% endif %}
+        {% elseif _options['country'] and _options['show_category_mode'] == 'other_companies' %}
+            <div class="category-title">
+                Предложения других компаний
+            </div>
+        {% endif %}
+
+        <ul class="topic-list">
+            {% for product in products %}
+                {% set productUrl = productHelper.generateProductUrl(product, true) %}
+
+                {% set isTargetBlank = hostname not in productUrl %}
+
+                <li class="item clearfix">
+                    <div class="topic-info float-left">
+                        <a class="title-link" {% if isTargetBlank %}target="_blank"{% endif %}
+                           href="{{ productUrl }}">{{ product.title }}</a>
+
+                        <p class="text">
+                            {% if product.size %}
+                                {{ tokens.product_volume_title|capitalize }} {{ product.getCutSize() }},
+                            {% endif %}
+                            {% if product.isContractPrice() %}
+                                <span class="price gray60-color">цена договорная</span>
+                            {% else %}
+                                {% if product.isPriceFrom %}от {% endif %}
+                                <span class="strong red-color
+                                    {% if product.getAttribute('normalized_price') %}other-currency js-helper-opener{% endif %}"
+                                    data-text="примерно <span class='red-color'>
+                                    {{ product.getAttribute('normalized_price')|number_format_decimal }}
+                                    <span class='{{ app.request.attributes.get('country').currency.symbolClass }}'></span></span>"
+                                >
+                                    {{ product.price|number_format_decimal }}
+                                    <span class="{{ product.currency.symbolClass }}"></span>
+                                    <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                                </span>
+                                {% if product.measureId %}за {{ product.measure.tokenPrice }}{% endif %}
+                            {% endif %}
+                    </div>
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a data-href="{{ productUrl }}" {% if isTargetBlank %}target="_blank"{% endif %}
+                               class="img-link pattern-small">
+                                {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq28', _options['context']) %}
+                                {% if imageUrl %}
+                                    <img src="{{ imageUrl }}"
+                                         alt="{{ product.title }}" title="{{ product.title }}" />
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') %}
+        {% set url = path('MetalCorpsiteBundle:Default:services') %}
+    {% else %}
+        {% set url = brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl() %}
+    {% endif %}
+    <a href="{{ url }}" class="add-product-text">Разместить здесь товары</a>
+</div>

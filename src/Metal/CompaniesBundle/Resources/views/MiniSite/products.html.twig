@@ -1,0 +1,179 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% block title brouzie_helper('MetalProjectBundle:Seo').getMetaTitleForMiniSiteProductsPage() %}
+{% block meta_description brouzie_helper('MetalProjectBundle:Seo').getMetaDescriptionsForMiniSiteProductsPage() %}
+{% block meta %}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getMetaPagination(pagerfanta)|raw }}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getAdditionalMetaTagsForMinisiteProducts()|raw }}
+{% endblock %}
+
+{% block tab_content %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set activeCityId = app.request.get('city') %}
+    <div class="filters-block clearfix">
+        <div class="search-wrapper float-left">
+            <form action="{{ path(currentRoute, routeParameters) }}" method="GET">
+                <fieldset>
+                    <input class="search-field form-text ie-radius" type="text" name="q" value="{{ app.request.query.get('q')|escape('html_attr') }}" placeholder="Поиск" />
+                    {% if activeCityId %}
+                        <input class="g-hidden" type="text" name="city" value="{{ activeCityId }}"/>
+                    {% endif %}
+                    <button class="icon-search-small search-button" type="submit"></button>
+                </fieldset>
+            </form>
+        </div>
+        {% set sorts = {
+                'price' : {'query' : 'price', 'title' : 'По цене'},
+                'title' : {'query' : 'title', 'title' : 'По названию'},
+                'updated_at' : {'query' : 'updated_at', 'title' : 'По дате'}
+            }
+        %}
+
+        {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+        {% set routeParameters = routeParameters|merge({'page': null}) %}
+
+        {% if category and category.allowProducts %}
+            <div class="product-parameters table-container float-left">
+                {% for attribute, attributeValues in attributesCollection %}
+                    <div class="table-cell">
+                        <div class="product-link">
+                        <span class="link js-popover-opener clickable clearfix" data-popover="#attribute-values-{{ attribute.code }}">
+                            {% set currentAttributeValue = null %}
+                            {% if currentAttributesCollection.containsAttribute(attribute) %}
+                                {% set currentAttributeValue = currentAttributesCollection[attribute]|first %}
+                            {% endif %}
+                            {% if currentAttributeValue %}
+                                <span title="{{ attribute.title }}: {{ currentAttributeValue.value }}" class="name float-left">
+                                    {{ currentAttributeValue.value }}
+                                </span>
+                            {% else %}
+                                <span title="{{ attribute.title }}" class="name float-left">
+                                    {{ attribute.title }}
+                                </span>
+                            {% endif %}
+                            <span class="icon-check black float-left"></span>
+                            <span class="is-gradiented"></span>
+                        </span>
+                            <div id="attribute-values-{{ attribute.code }}"
+                                 class="drop-wrapper popover-block views-list opacity-border">
+                                <div class="js-scrollable">
+                                    <ul class="dropdown">
+                                        <li class="drop-item">
+                                            {% if (currentAttributeValue) %}
+                                                <a data-href="{{ path(currentRoute, routeParameters|merge({'category_slug': currentCategory.getUrl(currentAttributesCollection.getUrl(null, currentAttributeValue))})) }}"
+                                                   class="drop-link">{{ attribute.title }}</a>
+                                            {% else %}
+                                                <span class="drop-link current">{{ attribute.title }}</span>
+                                            {% endif %}
+                                        </li>
+
+                                        {% for attributeValue in attributeValues %}
+                                            <li class="drop-item {% if currentAttributesCollection.containsAttributeValue(attributeValue) %}first{% endif %}">
+                                                {% if currentAttributesCollection.containsAttributeValue(attributeValue) %}
+                                                    <span class="drop-link current">{{ attributeValue.value }}</span>
+                                                {% else %}
+                                                    <a data-href="{{ path(currentRoute, routeParameters|merge({'category_slug': currentCategory.getUrl(currentAttributesCollection.getUrl(attributeValue, currentAttributeValue))})) }}"
+                                                       class="drop-link">{{ attributeValue.value }}</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="sort-view float-right">
+            {% if branchOfficesCities|length > 1 %}
+                <div class="location block float-left">
+                    <span class=" link js-popover-opener icon-check black clickable" data-popover="#city" data-index="1001">
+                        {% if activeCityId and branchOfficesCities[activeCityId] is defined %}
+                            {{ branchOfficesCities[activeCityId].title }}
+                        {% else %}
+                            Все филиалы
+                        {% endif %}
+                    </span>
+                    <div id="city" class="drop-wrapper popover-block city-list opacity-border">
+                        <ul class="dropdown">
+                            {% for branchOfficeCity in branchOfficesCities %}
+                                {% if loop.first %}
+                                    {% if activeCityId %}
+                                        <li class="drop-item">
+                                            <a href="{{ path(currentRoute, routeParameters|merge({'city' : null})) }}" class="drop-link is-gradiented">Все города</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item first">
+                                            <span class="drop-link current is-gradiented">Все города</span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if activeCityId and branchOfficeCity.id == activeCityId %}
+                                    <li class="drop-item first">
+                                        <span class="drop-link current is-gradiented">{{ branchOfficeCity.title }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="drop-item">
+                                        <a href="{{ path(currentRoute, routeParameters|merge({'city' : branchOfficeCity.id})) }}" class="drop-link is-gradiented">{{ branchOfficeCity.title }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            {#<div class="export-block float-left">#}
+                {#<a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт и подписка</a>#}
+                {#<div id="export-feed" class="drop-wrapper export-feed_links opacity-border">#}
+                    {#<div class="dropdown">#}
+                        {#<div class="export-links block clearfix">#}
+                            {#<p class="title">Экспорт</p>#}
+                            {#<a class="primary button small-btn float-left ie-radius" href="#">XLS</a>#}
+                            {#<a class="primary button small-btn float-left ie-radius" href="#">CSV</a>#}
+                        {#</div>#}
+                        {#<div class="feed-links block clearfix">#}
+                            {#<p class="title">Подписка</p>#}
+                            {#<a class="primary button small-btn float-left ie-radius" href="#">rss</a>#}
+                            {#<a class="primary button small-btn float-left js-popup-opener ie-radius" href="#" data-popup="#subscribe">e-mail</a>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+            <div class="order-block float-left">
+                {% set order = app.request.query.get('order', 'updated_at') %}
+                <span class="link order-link icon-check black clickable js-popover-opener" data-popover="#order">{{ sorts[order].title }}</span>
+                <div id="order" class="drop-wrapper order-list opacity-border">
+                    <ul class="dropdown">
+                        {% for typeSort in sorts %}
+                            {% if typeSort.query == order %}
+                                <li class="drop-item">
+                                    <span class="drop-link current">{{ typeSort.title }}</span>
+                                </li>
+                            {% else %}
+                                <li class="drop-item">
+                                    <a class="drop-link" data-href="{{ path(currentRoute, routeParameters|merge({'order' : typeSort.query})) }}">{{ typeSort.title }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 class="minisite-title product-list-title">{{- brouzie_helper('MetalProjectBundle:Seo').getHeadTitleForMiniSiteProductsPage() -}}</h1>
+    <ul class="product similar-list">
+        {{ include('MetalCompaniesBundle:partial:products_in_list_mini.html.twig', {
+            'pagerfanta' : pagerfanta,
+            'company': company
+        }, false) }}
+    </ul>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'product'}) }}
+{% endblock %}
+

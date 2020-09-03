@@ -1,0 +1,24 @@
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set demandHelper = brouzie_helper('MetalDemandsBundle') %}
+
+{% set subdomain = app.request.attributes.get('subdomain') ?: 'www' %}
+
+{% for similarDemand in pagerfanta %}
+    {% set demandItem = demandHelper.getBestDemandItemForCategory(similarDemand, _options['category']) %}
+    {% set demandUrl = demandHelper.generateDemandUrl(similarDemand) %}
+    <li class="item outline">
+        <div class="title is-gradiented">
+            <a class="product-link"
+               href="{{ demandUrl }}"
+               title="{{ demandItem.title }}" rel="nofollow">{{ demandItem.title }}</a>
+        </div>
+
+        <div class="similar-demand">
+            <strong class="demand-count red-color">№{{ similarDemand.id }}</strong>
+            <span class="text">{{ similarDemand.demandPeriodicity.title|capitalize }} потребность</span>
+            <span class="demand-date">от {{ projectHelper.formatDate(similarDemand.displayTime) }} </span>
+        </div>
+    </li>
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}

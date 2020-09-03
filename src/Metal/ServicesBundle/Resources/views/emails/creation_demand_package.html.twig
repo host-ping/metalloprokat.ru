@@ -1,0 +1,23 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Заявка на пакет услуг.{% endblock %}
+
+{% block body_text -%}
+    Заявка на пакет услуг {{ package.getPackageName()|lower }}.
+
+Компания {{ companyTitle }} заказала пакет услуг {{ package.getPackageName()|lower }} {{ package.getPackagePeriodName() }}.
+{{ url('admin_metal_services_packageorder_edit', {'id': package.id}) }}
+    {{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Заявка на пакет {{ package.getPackageName()|lower }}.
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        Компания {{ companyTitle }} заказала пакет услуг <a href="{{ url('admin_metal_services_packageorder_edit', {'id': package.id}) }}">{{ package.getPackageName()|lower }}</a> {{ package.getPackagePeriodName() }}.
+    </p>
+{% endblock %}

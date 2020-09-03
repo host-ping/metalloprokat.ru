@@ -1,0 +1,682 @@
+.mini-site #main .wrapper{padding: 0;}
+.company-announcement{
+    padding: 12px 0;
+    height: 168px;
+    position: relative;
+}
+.mini-site #main{
+    padding-top: 12px;
+}
+.mini-site #main .wrap > .announcement{
+    margin-top: -12px;
+}
+.company-announcement .wrap{position: relative;}
+.company-announcement .company-img{
+    position: absolute;
+    top: -12px;
+    left: -13px;
+}
+.company-announcement .company-logo{margin: 0 12px 0 10px;}
+.mini-site .company-link.big-pattern{
+    width: 168px;
+    height: 168px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.mini-site .company-link.big-pattern img{
+    max-width: 168px;
+    width: 168px;
+    max-height: 168px;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+}
+.company-announcement .company-info-wrapper{
+    padding: 30px;
+    height: 108px;
+    min-width: 280px;
+    max-width: 560px;
+    margin: 0;
+}
+.mini-site .company-info-wrapper .curr-phone.is-gradiented:after{
+    background: none !important;
+}
+.mini-site.container .add-photo-wrapper{
+    position: relative;
+}
+.mini-site.container .photo-btns-wrapper .file-upload.with-icon{
+    right: 0;
+}
+.translucent{
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70); /* IE 5.5+*/
+    -moz-opacity: 0.7; /* Mozilla 1.6 и ниже */
+    -khtml-opacity: 0.7; /* Konqueror 3.1, Safari 1.1 */
+    opacity: 0.7; /* CSS3 - Mozilla 1.7b +, Firefox 0.9 +, Safari 1.2+, Opera 9+ */
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.company-announcement .background{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.company-announcement .company-info-wrapper .admin-button{margin: -29px -24px 0 0;}
+.company-announcement .company-info-wrapper .company-name{
+    font-size: 24px;
+    line-height: 26px;
+}
+.company-announcement .company-info-wrapper .heading span{
+    font-size: 13px;
+    line-height: 20px;
+    color: #777;
+}
+.company-announcement .company-info-wrapper .heading{
+    margin-bottom: 3px;
+    max-height: 50px;
+    overflow: hidden;
+}
+.address-phone-wrapper p{
+    font-size: 16px;
+    line-height: 24px;
+}
+.mini-site .side-left .scroll-wrap{
+    min-height: 50px;
+ }
+.mini-site .side-left{
+    width: 250px;
+    padding-bottom: 10px;
+}
+.mini-site .filters-block .block{
+    margin: 4px 5px 0;
+}
+.mini-site .filters-block .block:not(:first-child){
+    margin-left: 0;
+}
+.mini-site .filters-block .block:first-child{
+    margin-left: 10px;
+}
+.mini-site .filters-block .product-link{
+    /*max-width: 65px;*/
+    width: auto;
+    /*min-width: 45px;*/
+    padding: 0;
+}
+.mini-site .filters-block .product-link .icon-check:after{
+    position: relative;
+    top: auto;
+}
+.mini-site .filters-block .product-link .name{
+    max-width: 69%;
+}
+.mini-site .filters-block .product-link .is-gradiented{
+    left: inherit;
+    right: 30%;
+}
+.mini-site .filters-block .sort-view .block:not(:last-child) .link,
+.mini-site .filters-block .product-parameters .link{
+    margin: 0;
+}
+.mini-site .product-parameters{
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*text-align: justify;*/
+    /*text-align-last: justify;*/
+    width: 342px;
+    height: 30px;
+    margin-left: 15px;
+
+    table-layout: fixed;
+}
+.mini-site .product-parameters .table-cell{
+    width: 100%;
+    vertical-align: middle;
+    padding-top: 6px;
+}
+.mini-site .parameters-list{
+    left: -24px;
+    top: -14px;
+}
+.mini-site .side-left .products-wrapper{
+    padding: 10px 20px 20px 27px;
+    position: relative;
+    width: 203px;
+}
+.mini-site .side-left .products-wrapper.empty-category-menu{
+    padding-bottom: 0;
+}
+.mini-site .side-left .title{
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 11px;
+}
+
+.mini-site .side-left .product-categories-list .level-1{
+    font-weight: 600;
+    padding-left: 16px;
+    position: relative;
+}
+.mini-site .side-left .product-categories-list .level-1 .check-link{
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+.mini-site .side-left .product-categories-list .level-1 .check-link.collapsed{
+    transform: rotate(-90deg);
+}
+.mini-site .side-left .product-categories-list .level-1 .check-link .icon-check:after{
+    margin: 0;
+}
+.side-left .product-categories-list .link:hover .elem,
+.side-left .product-categories-list .link.active .elem{
+    color: #292929;
+}
+.mini-site .product-inside .product-img {
+    margin-right: 24px;
+    padding: 11px;
+    background: #fff;
+}
+.mini-site .product-inside .product-img .img-link{
+    width: 136px;
+    height: 136px;
+    text-align: center;
+}
+.mini-site .product-inside .product-img img{
+    max-width: 136px;
+    max-height: 136px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+}
+.mini-site .product .product-inside .button.favorites.delete{
+    background: #18A3D1;
+    border-color: #18A3D1;
+}
+.mini-site .product .product-inside .button.report:hover{
+    background: #e18141;
+}
+.mini-site .similar-list .item .links-wrapper .report:hover{
+    background: #e18141;
+    border-color: #e18141;
+}
+.mini-site .similar-list .item .links-wrapper .item{
+    margin: 0 ;
+    padding: 0;
+    border: none 0;
+}
+.mini-site .similar-list .item .links-wrapper .item + .item{
+    margin-left: 8px;
+}
+
+.mini-site .premium-product-block{
+    border: 0 none;
+}
+.mini-site .premium-product-block.employees-block{
+    border-top: solid 1px;
+    border-bottom: solid 1px;
+}
+.mini-site .right-announcement-wrapper .announcement{
+    margin: 0;
+    padding: 0;
+}
+.mini-site .right-announcement-wrapper .announcement.has-announcement{
+    margin-bottom: 5px;
+}
+.mini-site .head-announcements-wrapper .announcement{
+    margin: 0;
+    padding: 0;
+}
+.mini-site .right-announcement-wrapper.employees-block-wrapper .scroll-wrapper{
+    width: 150px;
+    max-height: 610px !important;
+    height: 610px;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block{
+    padding: 10px 15px 0 !important;
+    border: none;
+    width: 120px;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .topic-wrapper{
+    max-height: 520px;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .topic-info{
+    width: auto;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .position{
+    font-size: 10px;
+    line-height: 12px;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .employee-name{
+    overflow: hidden;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .img.is-gradiented:after{
+    right: 100%;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .img.is-gradiented{
+    overflow: visible;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .topic-list .item{
+    margin-bottom: 0;
+}
+.mini-site .right-announcement-wrapper .premium-product-block.employees-block .topic-list .item + .item{
+    margin-top: 10px;
+}
+.mini-site .premium-product-block .topic-list .topic-info{
+    width: 160px;
+}
+.mini-site .premium-product-block .company-info{
+    margin-bottom: 15px;
+}
+.mini-site .premium-product-block.employees-block .web-site{
+    margin-bottom: 4px;
+    max-height: 24px;
+}
+.mini-site .premium-product-block .company-title{
+    font-size: 16px;
+    margin: 0;
+}
+.mini-site .premium-product-block .topic-list .employee-name{
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+.mini-site .premium-product-block .topic-list .position{
+    font-size: 12px;
+    color: #777;
+}
+.mini-site .premium-product-block .topic-list .employee-info{
+    margin-bottom: 8px;
+}
+.mini-site .premium-product-block .topic-list .write-btn{
+    text-align: center;
+    padding: 6px 0;
+}
+/*Mini Site Content*/
+.mini-site .content{
+    width: 756px;
+}
+.company-menu{
+    padding: 10px 24px 9px 22px;
+    position: relative;
+}
+.contact.admin-button-wrapper{
+    width: 100%;
+}
+.contacts .details .table{
+    width: 100%;
+}
+.contacts .details .table .text{
+    color: #919191;
+}
+.contacts .details .button{
+    margin-left: 10px;
+}
+.main-page .admin-button-wrapper{
+    width: 515px;
+}
+.admin-button-wrapper .admin-button{
+    position: static;
+    display: inline;
+    margin-left: 3px;
+    margin-top: 4px;
+}
+.company-menu .item{
+    display: inline;
+    margin-right: 25px;
+}
+.company-menu .item .link{
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    color: #262626;
+}
+.company-menu .item .link:hover{
+    color: #18A3D1;
+}
+.mini-site .content-holder{
+    padding: 20px 25px 0 34px;
+    position: relative;
+}
+.mini-site .main-page.content-holder{
+    padding-top: 20px;
+    padding-right: 25px;
+    padding-left: 24px;
+}
+.mini-site .document-list-title{
+    padding: 20px 22px 0;
+}
+.mini-site .about.content-holder .admin-button-wrapper{margin-bottom: 15px;}
+.mini-site .about.content-holder p{
+    font-size: 13px;
+    line-height: 20px;
+    margin-bottom: 20px;
+}
+.about.content-holder .delivery-product .title{
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 18px;
+    font-weight: 400;
+    color: #919191;
+}
+
+.mini-site .product-inside .information{
+    margin-bottom: 20px;
+    min-height: 53px;
+}
+.mini-site .tabs{
+    margin-right: -25px;
+    margin-left: -34px;
+}
+.mini-site .tabs li.active .link{font-weight: 600;}
+.mini-site .tabs-content .similar-list .item{
+    padding-right: 25px;
+    padding-left: 34px;
+    margin-right: -25px;
+    margin-left: -34px;
+}
+.mini-site .product-description .text{
+    font-size: 13px;
+    line-height: 20px;
+}
+.mini-site .search-wrapper{
+    width: 180px;
+}
+.mini-site .search-wrapper .form-text{
+    padding: 7px 32px 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.mini-site .search-wrapper .search-button{
+    background: none;
+    border: 0 none;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    font-size: 12px;
+}
+.mini-site .contacts.content-holder{
+    padding-top: 20px;
+}
+.mini-site .main-page .minisite-title,
+.mini-site .about .minisite-title,
+.mini-site .contacts .minisite-title{
+    margin-left: 0;
+}
+.mini-site .company-contacts{
+    padding-bottom: 40px;
+    margin-right: -25px;
+    margin-left: -34px;
+    padding-right: 25px;
+    padding-left: 34px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.mini-site .contacts .staff{position: relative;}
+.mini-site .company-information{
+    width: 300px;
+}
+.mini-site #content .contacts .title{
+    margin-bottom: 20px;
+    line-height: 38px;
+}
+.mini-site .title .offices{
+    color: #262626;
+    font-weight: 400;
+    position: relative;
+    display: inline-block;
+    font-size: 24px;
+    line-height: 28px;
+}
+.mini-site .offices:after{
+    position: absolute;
+    top: 13px;
+}
+.mini-site .offices-list .drop-item{margin-bottom: 8px;}
+.mini-site .offices-list .drop-link{
+    font-weight: 400;
+
+}
+.mini-site .offices-list .drop-item.first .drop-link{margin-bottom: 0;}
+.mini-site .branch-office .map-wrapper{
+    margin: 0;
+}
+.mini-site .branch-office-map{
+    width: 298px;
+    height: 251px;
+}
+.mini-site .map-wrapper{
+    height: 215px;
+    overflow: hidden;
+}
+.mini-site .branch-office{
+    margin-bottom: 20px;
+}
+.mini-site .branch-office .city{
+    font-size: 22px;
+    line-height: 24px;
+    margin-bottom: 25px;
+}
+.mini-site .map-wrapper{
+    margin-top: -45px;
+}
+.mini-site .contacts .info-holder{
+    margin-bottom: 20px;
+}
+.mini-site .contacts .employee-info .info-holder{margin-bottom: 0;}
+.mini-site .contacts .info-holder .item-wrapper{
+    overflow: hidden;
+}
+.info-holder .web-site .link,
+.info-holder .address,
+.info-holder .l-elem,
+.info-holder .r-elem{
+    font-size: 13px;
+    line-height: 20px;
+}
+.info-holder .l-elem,
+.info-holder .c-code,
+.info-holder .address{
+    color: #919191;
+    font-style: normal;
+}
+.info-holder .l-elem{
+    width: 65px;
+    margin-right: 5px;
+}
+.info-holder .r-elem{
+    width: 75%;
+}
+.minisite-title,
+.mini-site .staff .staff-title{
+    font-size: 16px;
+    line-height: 24px;
+    color: #919191;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.minisite-title{
+    margin-left: 22px;
+}
+.mini-site .main-page .minisite-title{
+    max-height: 30px;
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+.mini-site .staff-list .employee + .employee{margin-top: 20px;}
+.mini-site .staff-list .employee-info{
+    width: 470px;
+}
+.staff-list .employee-name{
+    font-size: 24px;
+    line-height: 24px;
+    color: #262626;
+    margin-bottom: 3px;
+}
+.staff-list .position{
+    font-size: 13px;
+    line-height: 20px;
+    color: #919191;
+}
+.staff-list .info-holder{
+    margin: 8px 0 0;
+    width: 380px;
+}
+.staff-list .img-link{
+    width: 84px;
+    height: 84px;
+    display: block;
+
+}
+.staff-list .button-wrapper{
+    margin-right: 12px;
+}
+.staff-list .button-wrapper .write-btn{
+    padding: 6px 15px;
+}
+
+.mini-site .big-pattern{
+    background: url("../img/pattern-big-dark.jpg") no-repeat;
+    width: 188px;
+    height: 189px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.mini-site .big-pattern img{
+    max-width: 188px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    max-height: 188px;
+}
+.mini-site .deals{
+    position: relative;
+    width: 705px;
+}
+/*.mini-site .deals .announcement{*/
+    /*margin-left: -14px;*/
+/*}*/
+.deals .item{
+    background: #fff;
+    border: 1px solid #E2E2E2;
+    width: 234px;
+    height: 397px;
+    margin-top: -1px;
+    margin-left: -1px;
+}
+
+.deals .item .hover-block{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+.deals .item .hover-block:hover{
+    top: -4px;
+    left: -4px;
+    padding: 4px;
+    background: url("../img/border-opacity.png");
+    z-index: 4;
+}
+.deals .item .hover-block .dropdown{
+    width: 188px;
+    background: #fff8e8;
+}
+.deals .item .hover-block .dropdown .size,
+.deals .item .hover-block .dropdown .price,
+.deals .item .hover-block .dropdown .title a{
+    font-size: 13px;
+    line-height: 20px;
+}
+.deals .item .hover-block .dropdown .info{
+    height: 105px;
+    margin: 15px 0;
+}
+
+.deals .item .hover-block .dropdown .button{margin-bottom: 11px;}
+.mini-site .see-also{margin-bottom: 15px;}
+.mini-site .see-also .text{
+    font-size: 13px;
+    line-height: 20px;
+    color: #919191;
+}
+.company-menu .item.active .link{
+    color: #919191;
+}
+.mini-site .review-list,
+.mini-site .deals,
+.mini-site .staff-list,
+.mini-site .similar-list{
+    margin-bottom: 25px;
+}
+.mini-site .similar-list .item.announcement{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.mini-site .similar-list .item.announcement.has-announcement{
+    padding: 15px 10px 10px;
+    margin: 0;
+    border-bottom: 1px dashed #fff;
+}
+.mini-site .similar-list .item.announcement:hover{
+    background: none;
+}
+.mini-site .product-list-title,
+.mini-site .reviews-title{
+    margin-top: 20px;
+}
+.mini-site .u-menu .dropdown{background: #fff;}
+.mini-site .announcement{
+    padding-top: 12px;
+}
+.mini-site .left-announcement.announcement{padding: 0;}
+.mini-site .announcements .announcement{
+    padding-top: 0;
+}
+.mini-site .deals .is-gradiented-bottom{
+    max-height: 75px;
+}
+.mini-site .deals .is-gradiented-bottom:after{
+    top: 56px;
+}
+.mini-site .deals .see-more-block{
+    padding: 0;
+}
+.mini-site .deals .see-more-block-wrapper{
+    width: 100%;
+    padding: 0;
+}
+.mini-site .similar-list .see-more-block-wrapper{
+    padding: 0 35px 0 37px;
+}
+.mini-site .content-holder .similar-list .see-more-block-wrapper{
+    padding: 0;
+}
+.search-info-block.mini-site-links{
+    background: none;
+    margin-top: -20px;
+    position: relative;
+}
+.mini-site-links .link{
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.mini-site #main .right-announcement-wrapper,
+.mini-site #main .left-announcement-wrapper{
+    margin-top: -12px;
+
+}
+
+.mini-site #main .right-announcement-wrapper.employees-block-wrapper{
+    margin-top: 0;
+}
+/*Mini Site Content*/

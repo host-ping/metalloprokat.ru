@@ -1,0 +1,24 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block show %}
+    {{ parent() }}
+
+    <form action=""
+          class="form-horizontal"
+          method="POST"
+            {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+    >
+
+        {% if object.isDeleted %}
+            <div class="well well-small form-actions">
+                <input type="submit" name="reopen" class="btn btn-success" value="Вернуть в обработку" />
+            </div>
+
+        {% else %}
+            <div class="well well-small form-actions">
+                <input type="submit" name="delete" class="btn btn-danger" value="Удалить" />
+            </div>
+        {% endif %}
+
+    </form>
+{% endblock show %}

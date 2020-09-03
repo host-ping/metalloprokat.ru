@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% if object.sentFrom is constant('SOURCE_ADMIN', object) %}
+            <li><a href="{{ path('admin_metal_support_topic_edit', {'id' : object.id}) }}">Редактировать</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

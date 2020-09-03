@@ -1,0 +1,20 @@
+{% set activeCountry = _options['country'] %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+<div id="country" class="drop-wrapper popover-block countries opacity-border">
+    <div class="cities_top">
+        <ul class="dropdown menu-drop">
+            <li class="drop-item first">
+                <span class="drop-link current is-gradiented" title="{{ activeCountry.title }}">
+                    {{ activeCountry.title }}
+                </span>
+            </li>
+            {% for country in countries if country != activeCountry %}
+                <li class="drop-item">
+                    <a class="drop-link is-gradiented" title="{{ country.title }}"
+                       href="{{ urlHelper.generateUrl('MetalProjectBundle:Default:index_subdomain', {'subdomain' : 'www', 'base_host' : country.baseHost, '_secure' : country.secure}) }}" rel="nofollow">{{ country.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+time.seconds_ago : %count% секунду|%count% секунды|%count% секунд
+time.minutes_ago : %count% минуту|%count% минуты|%count% минут
+time.hours_ago : %count% час|%count% часа|%count% часов
+time.days_ago : %count% день|%count% дня|%count% дней
+time.weeks_ago : %count% неделю|%count% недели|%count% недель
+time.monthes_ago : %count% месяц|%count% месяца|%count% месяцев
+time.years_ago : %count% год|%count% года|%count% лет

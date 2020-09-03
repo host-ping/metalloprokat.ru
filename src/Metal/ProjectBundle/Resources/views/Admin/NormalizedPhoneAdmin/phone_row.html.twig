@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.phone %}
+            {% if admin.datagrid.filters.phone.value.value is defined and admin.datagrid.filters.phone.value.value %}
+                <div>
+                    {% set value = admin.datagrid.filters.phone.value.value %}
+                    {{ object.phone|replace({(value) : '<strong style="color:red">'~value~'</strong>'})|raw }}
+                </div>
+            {% else %}
+                <div>
+                    {{ object.phone }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

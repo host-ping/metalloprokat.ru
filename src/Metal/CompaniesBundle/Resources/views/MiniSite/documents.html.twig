@@ -1,0 +1,42 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% block title %}
+    Документы — {{ currentCompany.title }}
+{% endblock %}
+
+{% block tab_content %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="documents">
+        <div class="document-list-title clearfix">
+            {% if isCompanyModerator %}
+                <a class="admin-button button gray60-bg ie-radius float-right" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalPrivateOfficeBundle:MiniSite:documents', {'_secure' : currentCompany.country.secure}) }}">управлять</a>
+            {% endif %}
+            <h1 class="minisite-title">Документы</h1>
+        </div>
+        <ul class="similar-list">
+            {% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+            {% for document in documents %}
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            {{ companyMacroses.fileTypeIcon(document.extension) }}
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <a class="primary button send-button ie-radius" data-href="{{ path('MetalMiniSiteBundle:MiniSite:downloadDocument', {'id' : document.id, 'domain': currentCompany.domain}) }}">Скачать</a>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" target="_blank" data-href="{{ path('MetalMiniSiteBundle:MiniSite:downloadDocument', {'id' : document.id, 'domain': currentCompany.domain, 'action': 'view'}) }}">{{ document.title }}</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">{{ formattingHelper.formatFilesize(document.file.size) }}</p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

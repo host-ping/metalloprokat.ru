@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal.territorial.admin.city" class="Metal\TerritorialBundle\Admin\CityAdmin">
+            <argument>metal.territorial.admin.city</argument>
+            <argument>Metal\TerritorialBundle\Entity\City</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal.project.cloudflare_service" />
+            <argument type="service" id="session.flash_bag" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <tag name="sonata.admin" manager_type="orm" group="territorial" label="Города" />
+        </service>
+
+        <service id="metal.territorial.admin.region" class="Metal\TerritorialBundle\Admin\RegionAdmin">
+            <argument>metal.territorial.admin.region</argument>
+            <argument>Metal\TerritorialBundle\Entity\Region</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal.project.cloudflare_service" />
+            <argument type="service" id="session.flash_bag" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <tag name="sonata.admin" manager_type="orm" group="territorial" label="Области" />
+        </service>
+
+        <service id="metal.territorial.admin.country" class="Metal\TerritorialBundle\Admin\CountryAdmin">
+            <argument>metal.territorial.admin.country</argument>
+            <argument>Metal\TerritorialBundle\Entity\Country</argument>
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="territorial" label="Страны" />
+        </service>
+
+        <service id="metal.territorial.admin.city_code" class="Metal\TerritorialBundle\Admin\CityCodeAdmin">
+            <argument>metal.territorial.admin.city_code</argument>
+            <argument>Metal\TerritorialBundle\Entity\CityCode</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="territorial" label="Коды городов" />
+        </service>
+
+        <service id="metal.territorial.city_service" class="Metal\TerritorialBundle\Service\CityService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+    </services>
+
+</container>

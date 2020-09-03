@@ -1,0 +1,39 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'address' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'address') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/address.html.twig') }}">Адрес</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'header') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/header.html.twig') }}">Шапка</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'colors') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/colors.html.twig') }}">Цвета</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'button') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/button.html.twig') }}">Кнопка</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'documents') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/documents.html.twig') }}">Документы</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'news') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/news.html.twig') }}">Новости</a>
+                </li>
+		        <li class="item {% if (activeTab|default(defaultActiveTab) == 'categories') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/categories.html.twig') }}">Категории</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'products') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/mini-site/products.html.twig') }}">Товары</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    {% set activeMenu = 'mini-site' %}
+    {{ parent() }}
+{% endblock sidebar %}

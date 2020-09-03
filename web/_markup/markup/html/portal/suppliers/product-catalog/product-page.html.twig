@@ -1,0 +1,210 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+
+{% block title 'Product' %}
+{% block callback '' %}
+{% block content %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="product-inside js-calc-height">
+                <div class="product-info-wrapper clearfix">
+                    <div class="product-img is-bordered float-left">
+                        <a class="img-link pattern-big" href="#">
+                            <img class="js-popup-opener" src="./markup/pic/lday-prod.jpg" alt="image description" data-popup="#photo" width="136"/>
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product_main-title">
+                            Молоко "Летний день" 3,5% 1л.
+                        </h1>
+                    </div>
+                </div>
+                <div class="product-description">
+                    <div><strong>Описание</strong></div>
+                    <p class="text">В 1992 году Danone стала одной из первых западных компаний, пришедших на
+                        российский рынок. На центральной московской улице был открыт единственный в мире фирменный
+                        магазин Danone. А через три года начал свою работу первый завод Danone в России.</p>
+                </div>
+                <div id="tabs" class="result-tabs-wrapper tabs demand_tabs catalog-tabs clearfix">
+                    <ul class="tabs-list clearfix">
+                        <li class="item active js-tabs" data-tab="#similar-products-tab">
+                            <span class="count float-right">1</span>
+                            <span class="link">Отзывы</span>
+                        </li>
+                        <li class="item js-tabs" data-tab="#similar-products-tab">
+                            <span class="count float-right">10</span>
+                            <span class="link">Молочные продукты, яйца, сыры Простоквашино</span>
+                        </li>
+                        <li class="item js-tabs" data-tab="#similar-products-tab">
+                            <span class="count float-right">59</span>
+                            <span class="link">Молочные продукты, яйца, сыры других брендов</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tabs-content">
+                    <div class="similar-list reviews-block">
+                        <ul class="reviews list">
+                            <li class="icon-positive item outline">
+                                <p class="text">
+                                    Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                                </p>
+                                <div class="info">
+                                    <span class="author">Николай Чистяков</span>,
+                                    <span class="period">3 недели назад</span>
+                                </div>
+                            </li>
+                            <li class="icon-negative item outline">
+                                <p class="text">
+                                    Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                                </p>
+                                <div class="info">
+                                    <span class="author">Николай Чистяков</span>,
+                                    <span class="period">3 недели назад</span>
+                                </div>
+                            </li>
+                            <li class="icon-positive item outline">
+                                <p class="text">
+                                    Покупал у них водонагреватель и в принципе никаких претензий к ним нет.
+                                </p>
+                                <div class="info">
+                                    <span class="author">Николай Чистяков</span>,
+                                    <span class="period">3 недели назад</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="product-right right white95-bg table-cell static">
+            <div class="js-company-info-fixed">
+                <div class="info-wrapper white-bg">
+                    <div class="premium-product-block topic-companies">
+                        <p class="title">
+                            <strong>Компании, торгующие продукцией Простоквашино</strong>
+                        </p>
+                        <ul class="topic-list">
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Август-Кий, ООО</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Август-Кий, ООО</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">МеНас, ОАО КСПКБ</a>
+                                    <p class="text">Киев</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item clearfix">
+                                <div class="topic-info float-left">
+                                    <a class="title-link" href="#">Вивас, ООО Фирма</a>
+                                    <p class="text">Одесса</p>
+                                </div>
+                                <div class="img is-bordered float-right">
+                                    <div class="img-holder">
+                                        <a href="#" class="img-link pattern-small"></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="add-companies-wrapper">
+                        <p class="title">
+                            <strong>Торгуете продукцией Простоквашино или биопродуктами?</strong>
+                        </p>
+                        <a href="#" class="button green-bg ie-radius centered">Добавить компанию и товары</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

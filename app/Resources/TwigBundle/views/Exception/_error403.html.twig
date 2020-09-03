@@ -1,0 +1,16 @@
+{% extends '@MetalProject/layouts/_error_layout.html.twig' %}
+
+{% block content %}
+    <h1 class="error-title">Ошибка 403</h1>
+    <p class="error-description">Доступ запрещен.</p>
+    {% if app.user and is_granted('ROLE_PREVIOUS_ADMIN') %}
+        {% set routeParameters = {} %}
+        {% set route = app.request.attributes.get('_route') %}
+        {% set routeParameters = routeParameters|merge(app.request.attributes.get('_route_params')|default({})) %}
+        {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+        {% set routeParameters = routeParameters|merge({'_switch_user' : '_exit'}) %}
+
+        <p class="text">Возможно, это произошло из-за того, что вы залогинены под чужим пользователем. Попробуйте
+            <a href="{{ path(route, routeParameters) }}">вернуться в свою учетную запись</a>.</p>
+    {% endif %}
+{% endblock %}

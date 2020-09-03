@@ -1,0 +1,50 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Вы в полуфинале! Чемпионат Metalloprokat.ru по летним скидкам (10-20-30%) продолжается!{% endblock subject %}
+
+{% block body_text -%}
+    Уважаемые наши партнеры!
+
+    Подключите  доступ к порталу metalloprokat.ru на ЧЕМПИОНСКИХ  условиях: 3 мес.-10%, 6 мес.-20%, 1 мес.-30%
+
+    Расширенный доступ (10 городов размещения + город регистрации) 21600 вместо 24000 (квартал), 31200 вместо 39000 (полгода), 42700 вместо 61000 (год)
+
+    Полный доступ (20 городов +город регистрации) 25200 вместо 28 000 (квартал), 37600 вместо 47000 (полгода), 51800 вместо 74000 (год)
+
+
+    СРОКИ АКЦИИ: до 31.07.2018 включительно
+
+    ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ
+
+    Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: https://corp.metalloprokat.ru/services/
+
+    или по телефону +7 (495) 268-02-85
+
+    {{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p>Уважаемые наши партнеры!</p>
+    <p>Подключите  доступ к порталу metalloprokat.ru на ЧЕМПИОНСКИХ  условиях:<br/>
+        3 мес.<b style="color: green; font-size: 14px;">-10%</b>, 6 мес.<b style="color: green; font-size: 14px;">-20%</b>, 1 мес.<b style="color: green; font-size: 14px;">-30%</b></p>
+    <p>
+        <b>РАСШИРЕННЫЙ</b> доступ (10 городов размещения + город регистрации) <strike style="color: red;">24 000</strike> <b style="color: green; font-size: 14px;">21 600</b> (квартал), <strike style="color: red;">39 000</strike> <b style="color: green; font-size: 14px;">31 200</b> (полгода), <strike style="color: red;">61 000</strike> <b style="color: green; font-size: 14px;">42 700</b> (год)
+    </p>
+    <p>
+        <b>ПОЛНЫЙ</b> доступ (20 городов +город регистрации) <strike style="color: red;">28 000</strike> <b style="color: green; font-size: 14px;">25 200</b> (квартал), <strike style="color: red;">47 000</strike> <b style="color: green; font-size: 14px;">37 600</b> (полгода), <strike style="color: red;">74 000</strike> <b style="color: green; font-size: 14px;">51 800</b> (год)
+    </p>
+    <br/><br/>
+    <p>СРОКИ АКЦИИ: до 31.07.2018 включительно</p>
+    <p>ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ</p>
+    <p>Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: <a href="https://corp.metalloprokat.ru/services/">corp.metalloprokat.ru/services</a></p>
+    <p>или по телефону +7 (495) 268-02-85</p>
+    <br/>
+    <p>С уважением, <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+
+    {% if hashKey is defined %}
+        <img src="{{- url('MetalNewsletterBundle:NewsletterViewer:track', {
+            'hashKey': hashKey
+        } ) -}}" />
+    {% endif %}
+
+{% endblock %}

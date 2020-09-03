@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        Brouzie.Popups.openPopup($('#select-company-city'));
+    });
+</script>
+
+<div id="select-company-city" class="select-company-city popup-block opacity-border large" data-popup-non-closable="true">
+    <div class="popup-content">
+        <div class="title-popup">Укажите город компании</div>
+
+        <fieldset>
+            <a class="send-button button blue-bg float-left ie-radius" href="{{ path('MetalPrivateOfficeBundle:Company:edit') }}">выбрать город</a>
+        </fieldset>
+    </div>
+</div>

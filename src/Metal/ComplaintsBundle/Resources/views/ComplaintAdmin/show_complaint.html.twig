@@ -1,0 +1,136 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block show %}
+    {{ parent() }}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <a href="{{ path('admin_metal_announcements_orderannouncement_list') }}">Необработанные заказы на
+                    баннера</a>
+            </h3>
+        </div>
+        <div class="box-body">
+            {% if object.demand is defined %}
+                {% set demand = object.demand %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="sonata-ba-view-title">
+                        <th colspan="2"> Заявка</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="sonata-ba-view-container">
+                        <th>Id заявки</th>
+                        <td>
+                            <strong><a target="_blank"
+                                       href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'id': {'value': demand.id}, 'private': {'value' : ''} } }) }}">{{ demand.id }}</a></strong>
+                        </td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Комментарий</th>
+                        <td>{{ demand.body }}</td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Ip заявки</th>
+                        <td>{{ demand.ip }}</td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Ip пользователя</th>
+                        <td>
+                            {% if demand.user %}
+                                {% for ip in demand.user.getAttribute('user_ips') %}
+                                    <ul>
+                                        <li>
+                                            {{ ip }}
+                                        </li>
+                                    </ul>
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Автор</th>
+                        <td>
+                            {% if demand.user %}
+                                {{ demand.user.getFullName }}
+                                <strong>(<a target="_blank"
+                                            href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': demand.user.id} } }) }}">{{ demand.user.id }}</a>)</strong>
+                                <br/>
+                                {% set complaintDemandsIdsForUser = demand.user.getAttribute('complaint_demands_ids') %}
+                                {% if complaintDemandsIdsForUser %}
+                                    <strong>Другие заявки пользователя, помеченные как спам:</strong>
+                                    {% for demandForUserId in complaintDemandsIdsForUser %}
+                                        <strong><a target="_blank"
+                                                   href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'id': {'value': demandForUserId}, 'private': {'value' : ''} } }) }}">{{ demandForUserId }}</a>
+                                        </strong>{% if not loop.last %}, {% else %}.{% endif %}
+                                    {% endfor %}
+                                    <br/>
+                                {% endif %}
+                                <a target="_blank"
+                                   href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'user': {'value': demand.user.id}, 'private': {'value' : ''} } }) }}">Все
+                                    заявки пользователя</a><br/>
+                                <br/>
+                            {% else %}
+                                {{ demand.person }}<br/>
+                                Email:  {{ demand.email }}<br/>
+                                Тел.: {{ demand.phone }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Информация</th>
+                        <td>{{ demand.info }}</td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <th>Позиции</th>
+                        <td>
+                            {% for item in demand.demandItems %}
+                                <ul>
+                                    {{ loop.index }}
+                                    <li>
+                                        <strong>Описание</strong> - {{ item.title }}
+                                    </li>
+                                    {% if item.volume %}
+                                        <li>
+                                            <strong>Оъем</strong> - {{ item.volume }}
+                                        </li>
+                                    {% endif %}
+                                    {% if item.volumeType %}
+                                        <li>
+                                            <strong>Единицы измерения</strong> - {{ item.volumeType.title }}
+                                        </li>
+
+                                    {% endif %}
+                                    {% if item.category %}
+                                        <li>
+                                            <strong>Категория</strong> - {{ item.category.title }}
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+            <form action=""
+                  class="form-horizontal"
+                  method="POST"
+                  {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+
+                {% if not object.isProcessed %}
+                    <div class="well well-small form-actions">
+                        <input type="submit" name="process" class="btn btn-success" value="Решена"/>
+                    </div>
+                {% else %}
+                    <div class="well well-small form-actions">
+                        <input type="submit" name="reopen" class="btn btn-danger" value="Переоткрыть"/>
+                    </div>
+                {% endif %}
+
+            </form>
+        </div>
+    </div>
+{% endblock show %}

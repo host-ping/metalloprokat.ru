@@ -1,0 +1,260 @@
+{% extends '@markup/private/management/_managemet_layout.html.twig' %}
+{% block title 'Сотрудники' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                {% block tabs %}
+                    {% set activeTab = 'employee' %}
+                    {{ parent() }}
+                {% endblock %}
+                <div class="management-content-wrapper">
+                    <div class="clearfix">
+                        <div class="left-group float-left">
+                            <ul class="staff-list">
+                                <li class="employee item clearfix">
+                                    <span class="close-item icon-popup-close clickable"></span>
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                            <form action="#">
+                                                <fieldset>
+                                                    <div class="check-item">
+                                                        <input id="check-1" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-1">Право редактировать компанию и филиалы</label>
+                                                    </div>
+                                                    <div class="check-item">
+                                                        <input id="check-2" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-2">Право на использование сервисов</label>
+                                                    </div>
+                                                    <div class="check-item">
+                                                        <input id="check-5" type="checkbox" class="red-color js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-5">Право на вход в личный кабинет</label>
+                                                    </div>
+                                                    <div class="check-item clearfix">
+                                                        <div class="employee-rating float-right">
+                                                            <input type="text" class="form-text" placeholder="Приоритет"/>
+                                                            <span class="icon-help js-helper-opener"
+                                                                  data-text="Отображает приоритет вывода сотрудников в контактах минисайта от большего к меньшему"
+                                                                    ></span>
+                                                        </div>
+                                                        <input id="check-6" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-6">Отображать на минисайте</label>
+
+                                                    </div>
+                                                    <div class="submit-wrapper">
+                                                        <input type="submit" value="Сохранить" class="save-btn button blue-bg"/>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern-small" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <span class="close-item icon-popup-close clickable"></span>
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                            <form action="#">
+                                                <fieldset>
+                                                    <div class="check-item">
+                                                        <input id="check-3" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-3">Право редактировать компанию и филиалы</label>
+                                                    </div>
+                                                    <div class="check-item">
+                                                        <input id="check-4" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"/>
+                                                        <label for="check-4">Право на использование сервисов</label>
+                                                    </div>
+                                                    <div class="submit-wrapper">
+                                                        <input type="submit" value="Сохранить" class="save-btn button blue-bg"/>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern-small" href="#"></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <span class="close-item icon-popup-close clickable"></span>
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="employee item clearfix">
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">Семен Меркушев</div>
+                                        <div class="position">директор по маркетингу</div>
+                                        <div class="info-holder">
+                                            <div class="item-wrapper clearfix">
+                                                <div class="l-elem float-left">Телефон:</div>
+                                                <div class="r-elem float-left"><span class="c-code">+7</span> (916) 389 - 94 - 29</div>
+                                                <div class="l-elem float-left">Skype:</div>
+                                                <div class="r-elem float-left">ivanushka322</div>
+                                                <div class="l-elem float-left">E-mail:</div>
+                                                <div class="r-elem float-left"><a href="#">info@staltorg.ru</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                            <a class="img-link pattern" href="#">
+                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-group float-right">
+                            <div class="help-block icon-help">
+                                <p class="text">При наличии филиалов ваши товары будут отображаться в регионах ваших
+                                    филиалов.</p>
+                                <p class="text">Для добавления филиалов необходимо выбрать и оплатить
+                                    <a class="link" href="#">доступ к порталу</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

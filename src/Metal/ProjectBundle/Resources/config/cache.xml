@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="metal_project.cache.adapter.redis" class="Symfony\Component\Cache\Adapter\RedisAdapter"
+                 public="false">
+            <argument type="service" id="snc_redis.cache_client" />
+            <argument />
+            <argument>18000</argument>
+            <!--TODO: configure ttl -->
+        </service>
+
+        <service id="metal_project.cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter"
+                 public="false">
+        </service>
+
+        <service id="metal_project.cache.adapter.tag_aware" class="Symfony\Component\Cache\Adapter\TagAwareAdapter"
+                 public="false">
+            <argument /> <!-- replaced in extension -->
+        </service>
+
+        <service id="cache.app" alias="metal_project.cache.adapter.tag_aware" />
+
+        <service id="validator.mapping.cache.doctrine.apcu"
+                 class="Symfony\Component\Validator\Mapping\Cache\DoctrineCache" public="false">
+            <argument type="service">
+                <service class="Doctrine\Common\Cache\ApcuCache">
+                    <call method="setNamespace">
+                        <argument>%validator.mapping.cache.prefix%</argument>
+                    </call>
+                </service>
+            </argument>
+        </service>
+    </services>
+</container>

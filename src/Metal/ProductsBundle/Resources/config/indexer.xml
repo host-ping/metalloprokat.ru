@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="metal_products.indexer.products_provider"
+                 class="Metal\ProductsBundle\Indexer\ProductsProvider"
+                 public="false">
+            <argument id="doctrine.orm.default_entity_manager" type="service" />
+        </service>
+
+        <service id="metal_products.indexer.traceable_products_provider"
+                 class="Brouzie\Components\Indexer\Provider\TraceableProvider"
+                 public="false">
+            <argument />
+            <argument type="service" id="logger" />
+        </service>
+
+        <service id="metal_products.indexer.elastica.product_normalizer"
+                 class="Metal\ProductsBundle\Indexer\Elastica\ElasticaProductNormalizer"
+                 public="false" />
+
+        <service id="metal_products.indexer.elastica.products_operation_mapper"
+                 class="Metal\ProductsBundle\Indexer\Elastica\ProductsOperationMapper"
+                 public="false" />
+
+        <service id="metal_products.indexer.elastica.persister"
+                 class="Brouzie\Components\Indexer\Elastica\ElasticaPersister"
+                 public="false">
+            <argument type="service" id="fos_elastica.index.products" />
+            <argument type="service" id="metal_products.indexer.elastica.products_operation_mapper" />
+            <argument type="collection">
+                <argument key="routing_field">company_id</argument>
+                <argument key="type">product</argument>
+            </argument>
+        </service>
+
+        <service id="metal_products.indexer.elastica.normalizable_persister"
+                 class="Brouzie\Components\Indexer\Persister\NormalizerAwarePersister"
+                 public="false">
+            <argument id="metal_products.indexer.elastica.persister" type="service" />
+            <argument id="metal_products.indexer.elastica.product_normalizer" type="service" />
+        </service>
+
+        <service id="metal_products.indexer.sphinxy.product_normalizer"
+                 class="Metal\ProductsBundle\Indexer\Sphinxy\SphinxyProductNormalizer"
+                 public="false" />
+
+        <service id="metal_products.indexer.sphinxy.products_operation_mapper"
+                 class="Metal\ProductsBundle\Indexer\Sphinxy\ProductsOperationMapper"
+                 public="false" />
+
+        <service id="metal_products.indexer.sphinxy.persister"
+                 class="Brouzie\Bridge\Sphinxy\Indexer\SphinxyPersister"
+                 public="false">
+            <argument type="service" id="sphinxy.default_connection" />
+            <argument>products</argument>
+            <argument type="service" id="metal_products.indexer.sphinxy.products_operation_mapper" />
+        </service>
+
+        <service id="metal_products.indexer.sphinxy.normalizable_persister" public="false"
+                 class="Brouzie\Components\Indexer\Persister\NormalizerAwarePersister">
+            <argument type="service" id="metal_products.indexer.sphinxy.persister" />
+            <argument type="service" id="metal_products.indexer.sphinxy.product_normalizer" />
+        </service>
+
+        <service id="metal_products.indexer.persister"
+                 class="Brouzie\Components\Indexer\Persister\ChainPersister"
+                 public="false">
+            <argument type="collection">
+                <argument type="service" id="metal_products.indexer.elastica.normalizable_persister" />
+                <argument type="service" id="metal_products.indexer.sphinxy.normalizable_persister" />
+            </argument>
+        </service>
+
+        <service id="brouzie.components.indexer.real_index_manager"
+                 class="Brouzie\Components\Indexer\Indexer\BatchedIndexer"
+                 public="false">
+            <argument type="service" id="metal_products.indexer.products_provider" />
+            <argument type="service" id="metal_products.indexer.persister" />
+        </service>
+
+        <!-- main indexer, only one public service -->
+        <service id="metal_products.indexer.products"
+                 class="Brouzie\Components\Indexer\Async\QueuedIndexer"
+                 public="true">
+            <argument type="service" id="Enqueue\Client\Producer" />
+            <argument type="service" id="brouzie.components.indexer.real_index_manager" />
+        </service>
+
+        <!-- queue processors -->
+        <service id="brouzie.components.indexer.async.processor.reindex_ids_processor"
+                 class="Brouzie\Components\Indexer\Async\Processor\ReindexIdsProcessor">
+            <argument type="service" id="brouzie.components.indexer.real_index_manager" />
+            <tag name="enqueue.client.processor" />
+        </service>
+
+        <service id="brouzie.components.indexer.async.processor.update_processor"
+                 class="Brouzie\Components\Indexer\Async\Processor\UpdateProcessor">
+            <argument type="service" id="brouzie.components.indexer.real_index_manager" />
+            <tag name="enqueue.client.processor" />
+        </service>
+
+        <service id="brouzie.components.indexer.async.processor.delete_ids_processor"
+                 class="Brouzie\Components\Indexer\Async\Processor\DeleteIdsProcessor">
+            <argument type="service" id="brouzie.components.indexer.real_index_manager" />
+            <tag name="enqueue.client.processor" />
+        </service>
+
+        <!-- console command -->
+        <service id="brouzie.components.indexer.command.populate_index_command"
+                 class="Brouzie\Components\Indexer\Command\PopulateIndexCommand">
+            <argument type="service" id="metal_products.indexer.products" />
+            <tag name="console.command" />
+        </service>
+
+    </services>
+</container>
+
+
+

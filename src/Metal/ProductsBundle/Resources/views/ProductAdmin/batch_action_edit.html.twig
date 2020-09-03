@@ -1,0 +1,368 @@
+{% extends admin.getTemplate('edit') %}
+
+{% block notice %}
+    {% if form.imageEditable is not defined or productsNotProcessed %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% if form.imageEditable is not defined %}
+                    <div class="alert alert-warning">
+                        Поля "Филиал" и "Привязать фото" недоступны так как выбранные товары пренадлежат разным
+                        компаниям.
+                    </div>
+                {% endif %}
+
+                {% if productsNotProcessed %}
+                    <div class="alert alert-warning">
+                        {{ productsNotProcessed }} {{ 'products_not_processed'|transchoice(productsNotProcessed, [], 'MetalProductsBundle') }}
+                        для редактирования.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block form %}
+    <script>
+        $(document).ready(function () {
+            $('[data-enable]').bind('change', function (e) {
+                var $checkbox = $(e.target);
+
+                var $relatedEl = $('#products-edit [name="' + $checkbox.data('enable') + '"]');
+
+                if ($relatedEl.is('select')) {
+                    $relatedEl.select2('enable', $checkbox.prop('checked'));
+                } else {
+                    $relatedEl.prop('disabled', !$checkbox.prop('checked'));
+                }
+            }).trigger('change');
+        });
+
+    </script>
+
+    <div class="box box-primary">
+
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Пакетное редактирование товаров
+            </h3>
+        </div>
+
+        <div class="box-body">
+
+            <form class="form-horizontal"
+                  id="products-edit"
+                  method="post"
+                  {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+                {% if form.vars.errors|length > 0 %}
+                    <div class="sonata-ba-form-error">
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.isSpecialOfferEditable, {'attr': {
+                                'data-enable': form.isSpecialOffer.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.isSpecialOffer, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.isSpecialOffer) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.isHotOfferEditable, {'attr': {
+                                'data-enable': form.isHotOffer.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.isHotOffer, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.isHotOffer) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.isPriceFromEditable, {'attr': {
+                                'data-enable': form.isPriceFrom.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.isPriceFrom, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.isPriceFrom) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.categoryEditable, {'attr': {
+                                'data-enable': form.categoryTitle.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.categoryTitle, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.categoryTitle, {
+                                'attr' : {
+                                    'class': 'form-control',
+                                    'typeahead': '',
+                                    'typeahead-prefetch-url': path('MetalCategoriesBundle:Suggest:getCategories', {'allow_products': true}),
+                                    'typeahead-model': 'category',
+                                    'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.category, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.category, {'attr': {
+                                'class': 'form-control g-hidden',
+                                'ng-model': 'category.id',
+                                'initial-value': ''
+                            } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.checkedEditable, {'attr': {
+                                'data-enable': form.checked.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.checked, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.checked) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.measureIdEditable, {'attr': {
+                                'data-enable': form.measureId.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.measureId, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.measureId) }}
+                        </div>
+                    </div>
+                </div>
+
+                {% if form.branchOfficeEditable is defined %}
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            <div>
+                                {{ form_widget(form.branchOfficeEditable, {'attr': {
+                                    'data-enable': form.branchOffice.vars['full_name']
+                                } }) }}
+                            </div>
+                            {{ form_label(form.branchOffice, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                                {{ form_widget(form.branchOffice) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if form.imageEditable is defined %}
+                    <style>
+                        .checkbox label:after {
+                            content: '';
+                            display: table;
+                            clear: both;
+                        }
+
+                        .checkbox .cr {
+                            position: relative;
+                            display: inline-block;
+                            border: 1px solid #a9a9a9;
+                            border-radius: .25em;
+                            width: 1.3em;
+                            height: 1.3em;
+                            float: left;
+                            margin-right: .5em;
+                        }
+
+                        .checkbox .cr .cr-icon {
+                            position: absolute;
+                            font-size: .8em;
+                            line-height: 0;
+                            top: 50%;
+                            left: 20%;
+                        }
+
+                        .checkbox label input[type="checkbox"] {
+                            display: none;
+                        }
+
+                        .checkbox label input[type="checkbox"] + .cr > .cr-icon {
+                            transform: scale(3) rotateZ(-20deg);
+                            opacity: 0;
+                            transition: all .3s ease-in;
+                        }
+
+                        .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon {
+                            transform: scale(1) rotateZ(0deg);
+                            opacity: 1;
+                        }
+
+                        .checkbox label input[type="checkbox"]:disabled + .cr {
+                            opacity: .5;
+                        }
+                    </style>
+                    <script>
+                        function getProductsImages(page, resetField) {
+                            var $search = $('#search-product-images-txt');
+                            if (resetField === true) {
+                                $search.val('');
+                            }
+
+                            $.ajax({
+                                method: "GET",
+                                url: "{{ path('admin_metal_companies_company_product_get_products_images', {'id' : app.request.attributes.get('id')} ) }}",
+                                data: {page: page, name: $search.val(), only_company: $('#only_company').is(":checked")}
+                            }).done(function (data) {
+                                $('#append-images').html(data);
+                                $('[data-enable]').trigger('change');
+                            });
+                        }
+
+                        $(document).ready(function () {
+
+                            $('#products-edit').on('keyup keypress', function (e) {
+                                var keyCode = e.keyCode || e.which;
+                                if (keyCode === 13) {
+                                    e.preventDefault();
+                                    console.log('Enter submit disable.')
+                                    return false;
+                                }
+                            });
+
+                            getProductsImages(1, true);
+
+                            $(document).delegate('#search-product-images-btn', 'click', function () {
+                                getProductsImages(1);
+                            });
+
+                            $(document).delegate('#reset-search-image-btn', 'click', function () {
+                                getProductsImages(1, true);
+                            });
+
+                            $(document).delegate('.pagerfanta ul.pagination li a', 'click', function () {
+                                getProductsImages($(this).data('page'));
+                            });
+                        });
+                    </script>
+
+                    <div class="row control-group">
+                        <div class="col-md-5">
+                            {{ form_label(form.image, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                            <div>
+                                {{ form_widget(form.imageEditable, {'attr': {
+                                    'data-enable': form.image.vars['full_name']
+                                } }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="input-group col-md-12">
+                                    <input id="search-product-images-txt" name="{{ form.image.vars['full_name'] }}"
+                                           type="text" class="form-control input-lg"
+                                           placeholder="Введите название"/>
+                                    <span class="input-group-btn">
+                                <button id="search-product-images-btn" name="{{ form.image.vars['full_name'] }}"
+                                        class="btn btn-info btn-lg" type="button">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                                <button id="reset-search-image-btn" name="{{ form.image.vars['full_name'] }}"
+                                        class="btn btn-info btn-lg" type="button">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div><span style="background:darkblue; width:10px; height:10px; display:inline-block"></span> -
+                        Общее изображении (не принадлежит компании)
+                    </div>
+                    <div><span style="background:#333; width:10px; height:10px; display:inline-block"></span> -
+                        Изображении компании
+                    </div>
+                    <div class="checkbox">
+                        <label style="font-size: 2.8em">
+                            <input type="checkbox" name="only_company" id="only_company">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            Только для компании
+                        </label>
+                    </div>
+                    <div style="margin-top: 50px;"></div>
+                    <div id="append-images" class="row control-group"></div>
+                    {% do form.image.setRendered() %}
+                {% endif %}
+
+                {% for key, value in app.request.request.all() if key != 'metal_productadmin' %}
+                    {% if value is iterable %}
+                        {% for valueItem in value %}
+                            <input type="hidden" name="{{ key }}[]" value="{{ valueItem }}"/>
+                        {% endfor %}
+                    {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                    {% endif %}
+                {% endfor %}
+
+                <input type="hidden" name="submitted" value="yes"/>
+
+                {{ form_rest(form) }}
+
+                {% block formactions %}
+                    <div class="clearfix">
+                        <div class="well well-small form-actions">
+                            <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сохранить">
+                            {% set currentRoute = app.request.attributes.get('_route') %}
+                            {% set rotesForCompanyProducts = {
+                            'edit': 'admin_metal_companies_company_product_edit',
+                            'batch': 'admin_metal_companies_company_product_batch'
+                            } %}
+
+                            {% if currentRoute in rotesForCompanyProducts %}
+                                {% set productsListUrl = path('admin_metal_companies_company_product_list', {'id': app.request.attributes.get('id')}) %}
+                            {% else %}
+                                {% set productsListUrl = path('admin_metal_products_product_list') %}
+                            {% endif %}
+
+                            <a href="{{ productsListUrl }}">
+                                <input type="button" class="btn" value="Вернуться к списку">
+                            </a>
+                        </div>
+                    </div>
+
+                {% endblock formactions %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

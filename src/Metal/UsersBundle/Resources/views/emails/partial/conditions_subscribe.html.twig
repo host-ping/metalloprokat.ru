@@ -1,0 +1,81 @@
+Условия подключения:
+
+{% set hasAdditionalPayment = false %}
+<table border="0" cellpadding="1" cellspacing="1" style="font-size: 12;" width="100%">
+    <tr style="background-color: #999999">
+        <td>
+            &nbsp;</td>
+        <td colspan="{{ packages|length + 1 }}" style="text-align: center;">
+            Доступ
+        </td>
+    </tr>
+
+    <tr>
+        <td>&nbsp;</td>
+        {% for package in packages %}
+            <td style="text-align: center;">
+                {{ package.title }}
+            </td>
+        {% endfor %}
+    </tr>
+
+    {% for periodId, periodTitle in periods %}
+        <tr>
+            <td>
+                {{ periodTitle }}
+            </td>
+            {% for package in packages %}
+                <td style="text-align: right;">
+                    {% set price = package.getPriceByPeriod(periodId) %}
+                    {% if not price %}
+                        — &nbsp;
+                    {% else %}
+                        {{ price|number_format_decimal }} руб.&nbsp;
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+
+    {% for rootServiceItem in serviceItemsTree[0] %}
+        {% if not loop.first %}
+            <tr>
+                <td colspan="{{ packages|length + 2 }}">&nbsp;</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td colspan="{{ packages|length + 2 }}" style="text-align: center;">
+                <strong>{{ rootServiceItem.title }}{% if rootServiceItem.linkPattern %}: <a
+                        href="{{ http_prefix }}://{{ rootServiceItem.linkPattern|replace({'%base_host%': country.baseHost}) }}">{{ rootServiceItem.linkPattern|replace({'%base_host%': country.baseHost}) }}</a>{% endif %}
+                </strong>
+            </td>
+        </tr>
+
+        {% for serviceItem in serviceItemsTree[rootServiceItem.id] %}
+            {% if serviceItem.additionalPayment %}
+                {% set hasAdditionalPayment = true %}
+            {% endif %}
+
+            <tr{% if loop.index is even %} style="background-color: #CCCCCC"{% endif %}>
+                <td>
+                    {{ serviceItem.title }}
+                </td>
+
+                {% set mark = '&#10004;' %}
+                {% if serviceItem.additionalPayment %}
+                    {% set mark = '*' %}
+                {% endif %}
+
+                {% for package in packages %}
+                    <td style="text-align: center;">
+                        {% if serviceItem.isAvailableForPackage(package) %}{{ mark|raw }}{% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endfor %}
+</table>
+{% if hasAdditionalPayment %}
+    <br />
+    <p>* Оплачивается дополнительно.</p>
+{% endif %}

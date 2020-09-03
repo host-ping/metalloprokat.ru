@@ -1,0 +1,76 @@
+#TODO: возможно как-то реально оптимизировать это, если перенести host и requirements для host на уровень выше и сделать инклюд
+MetalMiniSiteBundle:MiniSite:view_subdomain:
+    path:      /
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:index }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:reviews_subdomain:
+    path:      /reviews
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:reviews }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:about_subdomain:
+    path:      /about
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:about }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:documents_subdomain:
+    path:      /documents
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:documents }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:download_document_subdomain:
+    path:      /documents/{id}
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:downloadDocument }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:contact_subdomain:
+    path:      /contact
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults: { _controller: MetalMiniSiteBundle:MiniSite:contact }
+    requirements:
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:product_view_subdomain:
+    path:      /price/{id}
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:productView }
+    requirements:
+        id: "\d+"
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:products_custom_category_subdomain:
+    path:      /category{category_slug}/
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain') and request.attributes.has('category') and request.attributes.get('custom_company_category')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:products }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        host: "%minisite_hostnames_pattern%"
+
+MetalMiniSiteBundle:MiniSite:products_category_subdomain:
+    path:      /{category_slug}/
+    host:      "{subdomain}.{host}"
+    condition: "request.attributes.get('company_on_subdomain') and request.attributes.has('category')"
+    defaults:  { _controller: MetalMiniSiteBundle:MiniSite:products }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        host: "%minisite_hostnames_pattern%"
+

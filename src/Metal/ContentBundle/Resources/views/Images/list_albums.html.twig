@@ -1,0 +1,160 @@
+{% extends 'SonataAdminBundle::empty_layout.html.twig' %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <style type="text/css">
+        .active {
+            font-weight: bold;
+        }
+        input[type=file],
+        input[type=submit],
+        .clickable{
+            cursor: pointer;
+        }
+
+        /** Album popup  **/
+        .left-block{
+            float: left;
+            width: 230px;
+            overflow: auto;
+        }
+        .right-block{
+            float: left;
+            width: 500px;
+            overflow: auto;
+        }
+        .popup-container{
+            padding: 0 20px;
+        }
+        .albums-list{
+            margin-bottom: 25px;
+            padding: 0;
+        }
+        .albums-list .item,
+        .images-list .item{
+            list-style: none;
+        }
+        .album-title{
+            text-align: center;
+        }
+        .albums-list .album.item{
+            padding-left: 20px;
+        }
+        .images-list{
+            padding: 20px;
+            background: #fff;
+            min-height: 500px;
+            overflow-y: auto;
+        }
+        .form-wrapper input{
+            margin: 10px;
+        }
+        .form-wrapper input[type="file"]{
+            float: left;
+        }
+        .form-wrapper input[type="submit"]{
+            float: right;
+        }
+        .images-list .item{
+            margin: 5px;
+            float: left;
+            width: 100px;
+        }
+
+        .images-list img {
+            width: 100%;
+            height: auto;
+        }
+
+        .skin-black .wrapper {
+            background-color: #fff !important;
+        }
+    </style>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <script type="application/javascript">
+        var ALBUM_CREATE_URL = '{{ path('MetalContentBundle:AlbumAdmin:createAlbum') }}';
+
+        ngApp.controller('Metal.Albums', ['$scope', '$http', function ($scope, $http) {
+            $scope.activeAlbum = null;
+
+            this.createAlbum = function () {
+                var albumTitle = window.prompt('Название альбома');
+                if (!albumTitle) {
+                    return;
+                }
+
+                $http.post(ALBUM_CREATE_URL, {
+                    title: albumTitle
+                }).then(function () {
+                    window.location.reload();
+                });
+            };
+
+            this.setActiveAlbum = function (albumId) {
+                $scope.activeAlbum = albumId;
+            };
+
+            this.selectPhoto = function (photoUrl) {
+                var windowManager = top.tinymce.activeEditor.windowManager;
+
+                var insertCallback = windowManager.getParams().insertCallback;
+                insertCallback(photoUrl, {});
+                windowManager.close();
+            };
+        }]);
+
+    </script>
+
+    <div ng-controller="Metal.Albums as albumsController">
+        <div class="popup-container clearfix">
+            <div class="left-block">
+                <h4>Альбомы</h4>
+                <ul class="albums-list">
+                    <li class="item clickable" ng-click="albumsController.createAlbum()"><i class="fa fa-plus-circle"></i>
+                        Добавить
+                        новый
+                    </li>
+                    {% for album in albums %}
+                        <li ng-click="albumsController.setActiveAlbum({{ album.id }})"
+                            class="album item clickable"
+                            ng-class="{'active': activeAlbum == {{ album.id }}}">{{ album.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+            {% for album in albums %}
+                <div class="right-block" ng-show="activeAlbum == {{ album.id }}">
+                    <h4 class="album-title">{{ album.title }}</h4>
+                    <ul class="images-list clearfix">
+                        {% for photo in album.getAttribute('content_images') %}
+                            {% set imageUrl = vich_uploader_asset(photo, 'uploadedImage') %}
+                            <li ng-click="albumsController.selectPhoto('{{ imageUrl }}')" class="item clickable pattern-small">
+                                {% if imageUrl %}
+                                    <img
+                                            alt="{{ photo.image.name }}"
+                                            title="{{ photo.image.name }}"
+                                            src="{{ imageUrl }}" />
+                                {% endif %}
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+                    <div class="form-wrapper">
+                        <form action="{{ path('MetalContentBundle:AlbumAdmin:uploadPhoto', {'id': album.id}) }}"
+                              method="post" enctype="multipart/form-data">
+                            <div class="clearfix">
+                                <input type="file" name="image" />
+                                <input type="submit" value="Загрузить" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock sonata_admin_content %}

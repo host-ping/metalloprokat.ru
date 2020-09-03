@@ -1,0 +1,365 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+{% block title 'Main page' %}
+
+{% block search_form %}
+    {% set searchClass = 'product-search' %}
+    <div class="search-block clearfix">
+        <form action="#" class="search-form">
+            <fieldset id="search-fixed" class="main-block js-fixed {{ searchClass }}">
+                <div class="wrap clearfix">
+                    <div class="search-field-wrap float-left">
+                        <span class="icon-search-big"></span>
+                        <input type="text" placeholder="Введите название товара или компании" class="search-input"/>
+                    </div>
+                    <div class="search-submit-wrapper float-right">
+                        <a href="#" class="change-location icon-check js-popover-opener float-left" data-popover="#cities" data-different-position="true" data-index="2000">Москва и Область</a>
+                        <input type="submit" value="Найти" class="button search-submit blue-bg float-left ie-radius"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="more">
+                <div class="wrap">
+
+                    <div class="info centered">
+                        <p><strong>Тысячи</strong> поставщиков с нами! <strong class="phone-text">8 (800) 555-56-65</strong> <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a></p>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block breadcrumbs %}
+    <div class="breadcrumbs-wrapper">
+        <div class="breadcrumbs empty-breadcrumbs outline clearfix">
+            <div class="site-info float-left">
+                <a href="#" class="link">7337 заявки</a> от потребителей в России
+            </div>
+            {% block breadcrumbs_button %}
+                <div class="add float-right">
+                    <a class="add-button demand icon-add-btn" href="#">Добавить заявку</a>
+                </div>
+            {% endblock breadcrumbs_button %}
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block callback '' %}
+{% block content %}
+    <div id="content" class="content-wide main-page">
+        {#<div class="announcement has-announcement add-on-announcement" style="width:400px; height: 40px; margin: 0 auto;">#}
+            {#<a href="#">#}
+                {#<img src="./markup/pic/ann.png" alt="image description" width="400" height="40"/>#}
+            {#</a>#}
+        {#</div>#}
+        {% block sub_banners %}
+            <div class="product-categories-wrapper table-container">
+                <div class="content-banner table-cell">
+                    <img src="./markup/pic/main-sub-banner200.png" alt="image description">
+                </div>
+                <div class="content-banner table-cell">
+                    <img src="./markup/pic/main-sub-banner200.png" alt="image description">
+                </div>
+                <div class="content-banner table-cell">
+                    <img src="./markup/pic/main-sub-banner200.png" alt="image description">
+                </div>
+
+            </div>
+        {% endblock sub_banners %}
+        <div class="product-categories-wrapper">
+            <ul class="product-categories table-container">
+                <li class="item table-cell js-popover-centered">
+                    <div class="item-wrapper">
+                        <div class="holder js-popover-opener" data-popover="#cat-1">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/metalloprokat/ferrous-metallurgy.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Продукция из черных металлов</a>
+                        </div>
+                        <div class="drop-wrapper opacity-border" id="cat-1">
+                            <div class="heading">
+                                <div class="block-title">Продукция из черных металлов</div>
+                            </div>
+                            <ul class="dropdown">
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">517593</span>
+                                        <span class="elem is-gradiented">Лист стальной, металлический</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="link clearfix" href="#">
+                                        <span class="gray60-color float-right">51</span>
+                                        <span class="elem is-gradiented">Арматура</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/metalloprokat/non-ferrous-metallurgy.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Продукция из цветных металлов</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img">
+                                <a href="#">
+                                    <img src="./markup/img/metalloprokat/semis.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Сырье и полуфабрикаты</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img" style="margin-bottom: 16px">
+                                <a href="#">
+                                    <img src="./markup/img/metalloprokat/equipment.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Оборудование</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item table-cell">
+                    <div class="item-wrapper">
+                        <div class="holder">
+                            <div class="img" style="margin-bottom: 16px">
+                                <a href="#">
+                                    <img src="./markup/img/metalloprokat/building-materials.png" alt="image description" width="167" height="110"/>
+                                </a>
+                            </div>
+                            <a class="link" href="#">Стройматериалы</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="category-reviews-wrapper clearfix">
+                <ul class="category-reviews-list float-left">
+                    <li class="item float-left">
+                        <div class="user-reviews">
+                            <div class="review">
+                                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                                <p class="text">Денег столько, что фантазия иссякла!</p>
+                            </div>
+                            <div class="user-info-block">
+                                <div class="user-photo">
+                                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                                </div>
+                                <div class="user-info">
+                                    <p class="text">Михаил Лесной</p>
+                                    <a class="link" href="#">Авангард Престиж</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="item float-left">
+                        <div class="user-reviews">
+                            <div class="review">
+                                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                                <p class="text">Денег столько, что фантазия иссякла!</p>
+                            </div>
+                            <div class="user-info-block">
+                                <div class="user-photo">
+                                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                                </div>
+                                <div class="user-info">
+                                    <p class="text">Михаил Лесной</p>
+                                    <a class="link" href="#">Авангард Престиж</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="item float-left">
+                        <div class="user-reviews">
+                            <div class="review">
+                                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                                <p class="text">Денег столько, что фантазия иссякла!</p>
+                            </div>
+                            <div class="user-info-block">
+                                <div class="user-photo">
+                                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                                </div>
+                                <div class="user-info">
+                                    <p class="text">Михаил Лесной</p>
+                                    <a class="link" href="#">Авангард Престиж</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="item float-left">
+                        <div class="user-reviews">
+                            <div class="review">
+                                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                                <p class="text">Денег столько, что фантазия иссякла!</p>
+                            </div>
+                            <div class="user-info-block">
+                                <div class="user-photo">
+                                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                                </div>
+                                <div class="user-info">
+                                    <p class="text">Михаил Лесной</p>
+                                    <a class="link" href="#">Авангард Престиж</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="item float-left">
+                        <div class="user-reviews">
+                            <div class="review">
+                                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                                <p class="text">Денег столько, что фантазия иссякла!</p>
+                            </div>
+                            <div class="user-info-block">
+                                <div class="user-photo">
+                                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                                </div>
+                                <div class="user-info">
+                                    <p class="text">Михаил Лесной</p>
+                                    <a class="link" href="#">Авангард Престиж</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <div class="intro">
+            <p class="site-name">Металлопрокат.ру</p>
+            <p class="site-slogan">
+                объединяет поставщика и потребителя металлопродукции.
+            </p>
+            <p class="text">Вы можете найти партнера двумя способами — <a href="#">разместив информацию</a>
+                о своих товарах или потребности, либо самостоятельно при помощи <a href="#">поисковой строки</a> и <a href="#">рубрикатора</a>.</p>
+        </div>
+        <div class="main-register btn-wrapper">
+            <a class="main-register-button button green-bg ie-radius" href="#">Зарегистрироваться и добавить компанию</a>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                <img src="./markup/pic/head-side-banner.png" alt="image description">
+            </div>
+            <div class="right-announcement-wrapper">
+                <img src="/markup/pic/head-side-banner.png" alt="image description">
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        <img src="./markup/pic/head-center-banner640.png" alt="image description">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}

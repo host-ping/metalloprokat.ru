@@ -1,0 +1,23 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Contract' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+
+        {{ block('tabs') }}
+
+        <div class="content-wrapper">
+            <div class="contract ie-radius">
+                <div class="js-scrollable">
+                    <div class="content">
+                        {{ agreementHtml|raw }}
+                    </div>
+                </div>
+            </div>
+            <a class="load-contract" href="{{ path('MetalPrivateOfficeBundle:Agreement:downloadPdf') }}">
+                <strong>Скачать договор в формате pdf</strong>
+            </a>
+        </div>
+    </div>
+{% endblock content %}

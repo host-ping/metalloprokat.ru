@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        * {
+            font-family: "DejaVu Sans", sans-serif;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table width="720" style="border:#000000 1px solid;" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="180" valign="top" height="250" align="center"
+                style="border-bottom:#000000 1px solid; border-right:#000000 1px solid;">&nbsp;<strong>Платеж</strong>
+            </td>
+            <td valign="top" style="border-bottom:#000000 1px solid; border-right:#000000 1px solid; padding: 5px;">
+                <strong>Получатель:</strong> ООО"МПС-Сервис"<br />
+                <strong>КПП:</strong> 770601001&nbsp;&nbsp;
+                <strong>ИНН:</strong> 7706437148&nbsp;&nbsp;&nbsp;
+                <strong>Код ОКАТО:</strong>__________<br />
+
+                <strong>P/сч.:</strong> 40702810120100003073&nbsp;&nbsp;&nbsp;
+                <strong>в:</strong> ТКБ БАНК ПАО г.МОСКВА<br />
+
+                <strong>БИК:</strong> 044525388&nbsp;&nbsp;
+                <strong>К/сч.:</strong> 30101810800000000388<br />
+
+                <strong>Код бюджетной классификации (КБК):</strong> _________________&nbsp;<br />
+
+                <strong>Платеж:</strong>
+                {% if payment.packageOrder %}
+                    {{ payment.packageOrder.packageName }}, {{ payment.packageOrder.packagePeriodName }}, {{ payment.company.title }} ({{ payment.company.id }})
+                {% else %}
+                    Оплата счета №{{ payment.orderNO }}, {{ payment.company.title }} ({{ payment.company.id }})
+                {% endif %}
+                <br /><br />
+
+                <strong>Плательщик:</strong> ________________________________________________________________<br />
+                <strong>Адрес плательщика:</strong> _______________________________________________________&nbsp;<br />
+
+                <strong>ИНН плательщика:</strong> ______________&nbsp;&nbsp;
+                <strong>№ л/сч. плательщика:</strong> _______________<br />
+
+                <strong>Сумма:</strong> {{ payment.pSum }} руб.&nbsp;00 коп.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                <strong>Сумма оплаты услуг банка:</strong> ______ руб. __ коп.<br /><br />
+                Подпись:________________________&nbsp;&nbsp;Дата: &quot;___&quot;&nbsp;_________&nbsp;&nbsp;{{ 'now'|date('Y') }} г.
+            </td>
+        </tr>
+
+        <tr>
+            <td width="180" valign="top" height="250" align="center"
+                style="border-bottom:#000000 1px solid; border-right:#000000 1px solid;">
+                &nbsp;<strong>Квитанция</strong>
+            </td>
+            <td valign="top" style="border-bottom:#000000 1px solid; border-right:#000000 1px solid; padding: 5px;">
+                <strong>Получатель:</strong> ООО"МПС-Сервис"<br />
+                <strong>КПП:</strong> 770601001&nbsp;&nbsp;
+                <strong>ИНН:</strong> 7706437148&nbsp;&nbsp;&nbsp;
+                <strong>Код ОКАТО:</strong>__________<br />
+
+                <strong>P/сч.:</strong> 40702810120100003073&nbsp;&nbsp;&nbsp;
+                <strong>в:</strong> ТКБ БАНК ПАО г.МОСКВА<br />
+
+                <strong>БИК:</strong> 044525388&nbsp;&nbsp;
+                <strong>К/сч.:</strong> 30101810800000000388<br />
+
+                <strong>Код бюджетной классификации (КБК):</strong> _________________&nbsp;<br />
+
+                <strong>Платеж:</strong>
+                {% if payment.packageOrder %}
+                    {{ payment.packageOrder.packageName }}, {{ payment.packageOrder.packagePeriodName }}, {{ payment.company.title }} ({{ payment.company.id }})
+                {% else %}
+                    Оплата счета №{{ payment.orderNO }}, {{ payment.company.title }} ({{ payment.company.id }})
+                {% endif %}
+                <br /><br />
+
+                <strong>Плательщик:</strong> ________________________________________________________________<br />
+                <strong>Адрес плательщика:</strong> _______________________________________________________&nbsp;<br />
+
+                <strong>ИНН плательщика:</strong> ______________&nbsp;&nbsp;
+                <strong>№ л/сч. плательщика:</strong> _______________<br />
+
+                <strong>Сумма:</strong> {{ payment.pSum }} руб.&nbsp;00 коп.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                <strong>Сумма оплаты услуг банка:</strong> ______ руб. __ коп.<br /><br />
+                Подпись:________________________&nbsp;&nbsp;Дата: &quot;___&quot;&nbsp;_________&nbsp;&nbsp;{{ 'now'|date('Y') }} г.
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{% extends '::dummy.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block form_widget %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% set cls = attr.class|default('') ~ ' error' %}
+            {% set attr = attr|merge({'class' : cls}) %}
+        {% endif %}
+
+        <div class="{{ attr.container_class|default('') }}">
+            {{ block('form_widget_simple') }}
+            {% if required %}
+                <span class="required"></span>
+            {% endif %}
+
+            {{ form_errors(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_widget %}
+
+{% block email_widget %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% set cls = attr.class|default('') ~ ' error' %}
+            {% set attr = attr|merge({'class' : cls}) %}
+        {% endif %}
+        {% set type = type|default('email') %}
+
+        <div class="{{ attr.container_class|default('') }}">
+            {{ block('form_widget_simple') }}
+
+            {% if required %}
+                <span class="required"></span>
+            {% endif %}
+
+            {{ form_errors(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock email_widget %}
+
+{% block collection_widget %}
+    {# override, set empty #}
+{% endblock collection_widget %}
+
+{% block choice_widget_collapsed -%}
+    {% if errors|length > 0 %}
+        {% set cls = attr.class|default('') ~ ' error' %}
+        {% set attr = attr|merge({'class' : cls}) %}
+    {% endif %}
+    {% if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {% if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
+        {%- endif %}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {% if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif %}
+        {%- endif -%}
+        {% set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+
+{%- endblock choice_widget_collapsed %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul class="popup-error">
+                {% for error in errors %}
+                    <li>{{
+                        error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                        }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block _demand_info_widget %}
+    <div class="comment">
+        {{ block('textarea_widget') }}
+        {#<textarea name="comments" id="comments" placeholder="Комментарии, условия поставки"></textarea>#}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        #demand_demandItems_control_group {
+            display: none;
+        }
+    </style>
+
+    <div id="order" class="form-wrapper line g-cleared">
+        <div class="line bottom">
+            <div class="wrap form-wrap">
+                <span class="add-toggle"></span>
+                {% block form_title  %}
+                    <h2>Добавление заявки</h2>
+                {% endblock %}
+                <ul id="messages" class="form-message">
+                    {% for message in app.session.flashbag.get('success') %}
+                        <li class="message complete-message">
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+
+                    {% for message in app.session.flashbag.get('error') %}
+                        <li class="message error-message">
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% set city = app.request.attributes.get('city') %}
+                {{ form_start(form, { 'attr': {'class' : 'form order-form', 'novalidate' : 'novalidate'}, 'action' : path('SprosProjectBundle:Default:form', {'subdomain' : city ? city.slug : 'www', '_returnTo' : _returnTo})}) }}
+                <fieldset>
+
+                    <script id="new-product-row" type="text/html">
+                        <div class="product-string g-cleared">
+                            {{ form_widget(form.demandItems.vars.prototype.title, {'attr' : {'container_class' : 'product holder', 'class' : 'form-text', 'placeholder' : 'Товар'}, 'required': false }) }}
+                            {{ form_widget(form.demandItems.vars.prototype.category, {'attr' : {'container_class' : 'g-hidden', 'class' : 'category-id'}, 'required': false }) }}
+                            {{ form_widget(form.demandItems.vars.prototype.size, {'attr' : {'container_class' : 'size holder', 'class' : 'form-text', 'placeholder' : 'Размер'}, 'required': false }) }}
+                            {{ form_widget(form.demandItems.vars.prototype.volume, {'attr' : {'container_class' : 'volume holder', 'class' : 'form-text', 'placeholder' : 'Объем закупки'}, 'required': false }) }}
+
+                            <div class="select holder">
+                                {{ form_widget(form.demandItems.vars.prototype.volumeTypeId, {'attr' : {'container_class' : '', 'placeholder' : 'Объем'} }) }}
+                            </div>
+
+                            <div class="more-btn holder">
+                                <a href="#" class="js-add-new-product"><span>+ </span>Еще товар</a>
+                            </div>
+                        </div>
+                    </script>
+
+                    <script type="text/html" id="demand-form-new-file-template">
+                        <div class="group clearfix">
+                            <label class="file-upload">
+                                {{ form_widget(form.demandFiles.vars.prototype.uploadedFile, {'attr' : {'placeholder' : 'Загрузить из файла...', 'class': 'js-file'} }) }}
+                            </label>
+                        </div>
+                    </script>
+
+                    <div id="products-list-container">
+                        {% for demandItem in form.demandItems %}
+                            <div class="product-string g-cleared">
+                                {% set fieldRequired = loop.first %}
+                                {{ form_widget(demandItem.title, {'attr' : {'container_class' : 'product holder', 'class' : 'form-text', 'placeholder' : 'Товар'}, 'required': fieldRequired }) }}
+                                {{ form_widget(demandItem.category, {'attr' : {'container_class' : 'g-hidden', 'class' : 'category-id'}, 'required': fieldRequired }) }}
+                                {{ form_widget(demandItem.size, {'attr' : {'container_class' : 'size holder', 'class' : 'form-text', 'placeholder' : 'Размер'}, 'required': fieldRequired }) }}
+                                {{ form_widget(demandItem.volume, {'attr' : {'container_class' : 'volume holder', 'class' : 'form-text', 'placeholder' : 'Объем закупки'}, 'required': fieldRequired }) }}
+
+                                <div class="select holder">
+                                    {{ form_widget(demandItem.volumeTypeId, {'attr' : {'container_class' : '', 'placeholder' : 'Объем'} }) }}
+                                </div>
+
+                                {% if loop.last %}
+                                    <div class="more-btn holder">
+                                        <a href="#" class="js-add-new-product"><span>+ </span>Еще товар</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            {% do form.demandItems.setRendered() %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="file">
+                        <div id="demand-form-files-container">
+                            {% for demandFile in form.demandFiles %}
+                                <div class="group clearfix" >
+                                    {{ form_widget(demandFile.uploadedFile, {'attr' : {'class': 'js-file'} }) }}
+                                </div>
+                            {% else %}
+                                {% do form.demandFiles.setRendered() %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form.info, {'attr' : { 'placeholder' : 'Комментарии, условия поставки'}} ) }}
+
+                    <div class="information">
+                        {# TODO: нужно прописать классы для имени, компании, электронной почты в css #}
+
+                        <style type="text/css">
+                            .company {
+                                width: 281px;
+                            }
+                            .name {
+                                width: 253px;
+                            }
+                            .email {
+                                width: 232px;
+                            }
+                            .phone {
+                                width: 533px;
+                            }
+                        </style>
+
+
+                        {{ form_widget(form.cityTitle, {'attr' : {'container_class' : 'city holder form-text', 'placeholder' : 'Город'} }) }}
+
+                        {{ form_widget(form.phone, {'attr' : {'container_class' : 'holder', 'class' : 'phone form-text', 'placeholder' : 'Телефоны'} }) }}
+
+                        {{ form_widget(form.companyTitle, {'attr' : {'container_class' : 'holder', 'class' : 'company form-text', 'placeholder' : 'Компания'} }) }}
+                        {{ form_widget(form.person, {'attr' : {'container_class' : 'holder', 'class' : 'name form-text', 'placeholder' : 'Имя'} }) }}
+                        {{ form_widget(form.email, {'attr' : {'container_class' : 'holder', 'class' : 'email form-text', 'placeholder' : 'Электронная почта'} }) }}
+
+                        {{ form_widget(form.category, {'attr' : {'container_class' : 'g-hidden'} }) }}
+                        {{ form_widget(form.city, {'attr' : {'container_class' : 'g-hidden'} }) }}
+
+                    </div>
+
+                    <div class="button-ection ">
+                        {% block submit_value_title %}
+                            <input class="submit-button button js-clickable" type="submit" value="Отправить заявку"/>
+                        {% endblock %}
+
+                        {% block phone ''%}
+                    </div>
+                </fieldset>
+                {{ form_end(form) }}
+
+                <div class="required-context">
+                    <span class="required"></span>
+                    <span class="text">— поле, обязательное для заполнения</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            initializeCategoriesAutocomplete.categoriesSuggestUrl = '{{ path('MetalCategoriesBundle:Suggest:getCategories', {'allow_products': true}) }}';
+            initializeCategoriesAutocomplete();
+
+            initializeCitiesAutocomplete.citiesSuggestUrl = '{{ path('MetalTerritorialBundle:Suggest:getAllCities') }}';
+            initializeCitiesAutocomplete();
+        });
+    </script>
+{% endblock content %}
+

@@ -1,0 +1,9 @@
+{
+    "name": "undefined/metalloprokat-markup-oz",
+    "require": {
+        "twig/twig": "1.*",
+        "symfony/finder": "2.3.*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

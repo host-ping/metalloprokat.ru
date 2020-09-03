@@ -1,0 +1,56 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% for complaint in complaints %}
+    <li class="item clearfix">
+        <div class="complaints-type float-left">
+            <p class="text">{{ complaint.complaintType.title }}</p>
+        </div>
+        <div class="complaints-product float-left">
+            {% if complaint.objectKind == 'product' %}
+                <p class="product-name">про товар
+                    <a class="link" href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id': complaint.product.id, 'subdomain': complaint.product.branchOffice.city.getSlugWithFallback()}) }}">
+                        {{ complaint.product.title -}}
+                    </a>
+                    {%- if complaint.body %}:{% endif %}
+                </p>
+            {% endif %}
+            {% if complaint.objectKind == 'company' %}
+                <p class="product-name">про компанию
+                    <a class="link" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : complaint.company.domain, '_secure' : complaint.company.packageChecker.isHttpsAvailable() }) }}">
+                        {{ complaint.company.title -}}
+                    </a>
+                    {%- if complaint.body %}:{% endif %}
+                </p>
+            {% endif %}
+            <p class="couse">{{ complaint.body }}</p>
+            <p class="date">{{ formattingHelper.formatDate(complaint.createdAt) }}</p>
+        </div>
+        <div class="status float-left">
+            {% if not complaint.processedAt %}
+                <span class="processed-btn button clickable blue-bg js-process-btn ie-radius" data-url="{{ path('MetalPrivateOfficeBundle:Complaint:processed', {'id': complaint.id}) }}">Обработана</span>
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            {% endif %}
+            <p class="text {% if not complaint.processedAt %} g-hidden {% endif %}">
+                <strong>Обработана</strong>
+                <span class="js-processed-date">{{ formattingHelper.formatDateTime(complaint.processedAt) }}</span>
+            </p>
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="complaints-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+                href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#complaints-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

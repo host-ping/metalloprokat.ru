@@ -1,0 +1,13 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% block title 'Контакты / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ include('@MetalProject/partials/yandex_maps_initialization.html.twig') }}
+{% endblock javascripts %}
+
+{% block content %}
+    {{ content|raw }}
+{% endblock content %}

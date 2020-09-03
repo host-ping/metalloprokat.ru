@@ -1,0 +1,83 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set companyHelper = brouzie_helper('MetalCompaniesBundle') %}
+{% set categoryHelper = brouzie_helper('MetalCategoriesBundle') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{# @var \Metal\TerritorialBundle\Entity\TerritoryInterface currentTerritory #}
+{% set currentTerritory = brouzie_helper('MetalProjectBundle').getCurrentTerritory %}
+
+{% if isFallback is not defined %}
+    {% set isFallback = false %}
+{% endif %}
+
+{% set categorySlug = '' %}
+{% set productTitle = '' %}
+{% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+
+{% if category %}
+    {% set productTitle = category.title %}
+    {% set categorySlug = category.slugCombined %}
+    {% if attributesCollection|length %}
+        {% set productTitle = productTitle ~ ' ' ~ attributesCollection.toString(' ', ' ') %}
+        {% set categorySlug = category.getUrl(attributesCollection.getUrl()) %}
+    {% endif %}
+{% endif %}
+
+{% set currentCity = app.request.attributes.get('city') %}
+
+{% set routeParams = {
+    'price_from' : app.request.query.get('price_from'),
+    'price_to' : app.request.query.get('price_to'),
+    'q': app.request.query.get('q')
+} %}
+
+{% if isFallback %}
+    <li class="special-title item">
+        <p class="text">Компании из других регионов, торгующие похожими товарами</p>
+    </li>
+{% endif %}
+
+{% for company in pagerfanta %}
+    {% set companyCity = currentCity ?: company.city %}
+    {% set product = company.getAttribute('product') %}
+    {% set companyProducts = company.getAttribute('company_products') %}
+    {% set productsCount = company.getAttribute('products_count_by_company') %}
+    {% set subdomain = company.city.getSlugWithFallback() %}
+
+    {% set minisiteRouteParams = {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()} %}
+    {% if currentCity %}
+        {% set minisiteRouteParams = minisiteRouteParams|merge({'city' : currentCity.id }) %}
+        {% set subdomain = currentCity.getSlugWithFallback() %}
+    {% endif %}
+
+    {% include 'MetalProductsBundle:partial:product_company_article.html.twig' with {
+        'company' : company,
+        'imageHelper' : imageHelper,
+        'productHelper' : productHelper,
+        'formatHelper' : formatHelper,
+        'companyHelper' : companyHelper,
+        'productTitle' : productTitle,
+        'companyCity' : companyCity,
+        'currentTerritory' : currentTerritory,
+        'category' : category,
+        'product' : product,
+        'companyProducts' : companyProducts,
+        'productsCount' : productsCount,
+        'productViewUrl' : productHelper.generateProductsUrl(company, categorySlug, routeParams),
+        'companyViewUrl' : urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', minisiteRouteParams),
+        'currentCity' : currentCity,
+        'subdomain' : subdomain
+    } only %}
+
+    {% include '@MetalProducts/Products/partial/banner_inclusion.html.twig' with {
+        'index' : loop.index,
+        'category' : category,
+        'source_type_slug' : 'companies-list',
+    } only %}
+{% endfor %}
+
+{% if not isFallback %}
+    {{ pagerfanta(pagerfanta, 'pagination_twig') }}
+{% endif %}

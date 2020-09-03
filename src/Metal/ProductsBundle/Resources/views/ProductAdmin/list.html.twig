@@ -1,0 +1,73 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div><span style="background:#009900; width:10px; height:10px; display:inline-block"></span> - Товар
+                проверен (промодерирован)
+            </div>
+            <div><span style="background:#ff0000; width:10px; height:10px; display:inline-block"></span> - Товар удален
+            </div>
+            <div><span style="background:#404040; width:10px; height:10px; display:inline-block"></span> - Товар не
+                проверен (не промодерирован)
+            </div>
+            <div><span style="background:#15b4ad; width:10px; height:10px; display:inline-block"></span> - Товар ожидает
+                обработки
+            </div>
+            <div><span style="background:#276db4; width:10px; height:10px; display:inline-block"></span> - Товар
+                обрабатывается
+            </div>
+            <div><span style="background:#b48306; width:10px; height:10px; display:inline-block"></span> - Товар не
+                будет выводиться на портале
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+
+            $('body').delegate('.js-inline-submit', 'submit', function (e) {
+                e.preventDefault();
+
+                var $buttons = $(e.currentTarget).find(':submit').prop('disabled', true);
+                var url = $(e.currentTarget).attr('action');
+                var productParameters = $(e.currentTarget).serializeArray();
+
+                $.post(url, productParameters
+                        , function () {
+                            $buttons.prop('disabled', false)
+                        });
+            });
+
+            $('#{{ admin.uniqid }}_all_elements').prop('checked', true);
+        })
+    </script>
+{% endblock %}
+
+
+{% block actions %}
+    {{ parent() }}
+
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('import', {'redirect_to': app.request.requestUri}) }}">
+            <i class="fa fa-upload"></i>
+            Импортировать
+        </a>
+    </li>
+
+    {% if admin.parent %}
+        <li>
+            <a class="sonata-action-element"
+               href="{{ admin.generateUrl('delete_all', {'redirect_to': app.request.requestUri}) }}">
+                <i class="fa fa-trash-o"></i>
+                Удалить все товары данной компании
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}

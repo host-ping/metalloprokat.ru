@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.price.name %}
+        <a href="{{ admin.generateUrl('download_file', {'id': object.id}) }}">{{ object.price.originalName }}</a>
+    {% endif %}
+{% endblock %}

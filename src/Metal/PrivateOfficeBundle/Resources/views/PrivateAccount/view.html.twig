@@ -1,0 +1,173 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Account.js'
+    combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title 'Я / Управление информацией / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right"
+         ng-controller="Metal.Core as coreController" >
+        {{ block('tabs') }}
+        <div class="management-content-wrapper clearfix">
+            <form class="form float-left js-ajax-form-submit"
+                  action="{{ path('MetalPrivateOfficeBundle:Account:save') }}"
+                  method="post"
+                  novalidate="novalidate">
+                <div class="clearfix">
+                    <fieldset class="left-group float-left">
+                        <div class="group clearfix">
+                            <div class="field-wrap float-left">
+                                {{ form_widget(form.firstName, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Ваше имя' }} ) }}
+                            </div>
+
+                            <div class="field-wrap float-left">
+                                {{ form_widget(form.secondName, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Ваша фамилия' }} ) }}
+                            </div>
+                        </div>
+
+                        {#
+                        <div class="group clearfix">
+                            <div class="field-wrap float-left">
+                                <script async src="https://telegram.org/js/telegram-widget.js?4"
+                                        data-telegram-login="MetalloprokatRuBot"
+                                        data-size="medium"
+                                        data-auth-url="{{ url('MetalPrivateOfficeBundle:Account:connectTelegram') }}"
+                                        data-request-access="write"></script>
+                            </div>
+
+                            <div class="field-wrap float-left">
+                                {% if userTelegram %}
+                                    {{ userTelegram.getDisplayName() }}
+                                {% endif %}
+                            </div>
+                        </div>
+#}
+
+                        {% if form.job is defined %}
+                            <div class="field-wrap">
+                                {{ form_widget(form.job, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Должность' }}) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="field-wrap">
+                            {{ form_widget(form.email, {'attr' : {'class' : 'mail form-email ie-radius with-change-link', 'placeholder' : 'Электронная почта' }}) }}
+                            <span class="change link clickable js-popup-opener" data-popup="#change-email">Изменить</span>
+                        </div>
+
+                        <div class="field-wrap">
+                            {{ form_widget(form.password, {'attr' : {'class' : 'password form-text ie-radius with-change-link', 'placeholder' : 'Пароль' }}) }}
+                            <span class="change link clickable js-popup-opener" data-popup="#change-password">Изменить</span>
+                        </div>
+
+                        <div class="group clearfix">
+                            {% if form.phone is defined %}
+                                <div class="field-wrap float-left">
+                                    {{ form_widget(form.phone, {'attr' : {'class' : 'phone form-text ie-radius', 'placeholder' : 'Телефон'}}) }}
+                                </div>
+                            {% endif %}
+                            {% if form.additionalCode is defined %}
+                                <div class="field-wrap float-left">
+                                    {{ form_widget(form.additionalCode, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Добавочный'}}) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="group clearfix">
+                            <div class="field-wrap float-left">
+                                {{ form_widget(form.icq, {'attr' : {'class' : 'icq form-text ie-radius', 'placeholder' : 'ICQ'}}) }}
+                            </div>
+
+                            <div class="field-wrap float-left">
+                                {{ form_widget(form.skype, {'attr' : {'class' : 'skype form-text ie-radius', 'placeholder' : 'Skype'}}) }}
+                            </div>
+                        </div>
+                        <div class="check-item clearfix">
+                            <div class="employee-rating float-right">
+                                {{ form_widget(form.displayPosition, {'type' : 'text', 'attr': {'class' : 'form-text', 'placeholder' : 'Порядок вывода'}}) }}
+                                <span class="icon-help js-helper-opener"
+                                      data-text="Отображает порядок вывода сотрудников в контактах минисайта"
+                                        ></span>
+                            </div>
+                            {{ form_widget(form.displayInContacts, {'attr' : {'class' : 'js-styled-checkbox bg-grey'}}) }}
+                            <label for="{{ form.displayInContacts.vars.id }}">Отображать на минсайте</label>
+                        </div>
+                    </fieldset>
+                    {{ form_rest(form) }}
+                </div>
+
+                <div class="submit-wrapper">
+                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                </div>
+            </form>
+
+            {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+            {% set avatar = null %}
+            {% set avatarUrl = imageHelper.getAvatarUrl(user, 'sq168') %}
+            {% if avatarUrl %}
+            {% set avatar = {
+                'url': avatarUrl
+            } %}
+        {% endif %}
+
+            <form class="load-company-logo form float-right"
+                  action="{{ path('MetalPrivateOfficeBundle:Account:saveUserPhoto') }}"
+                  ng-controller="Metal.Account as accountController"
+                  data-file-upload="options"
+                  ng-init='accountController.setOptions({{ {'deleteAvatarUrl': path('MetalPrivateOfficeBundle:PrivateAccount:deleteAvatar')}|json_encode|raw }})'
+                  enctype="multipart/form-data"
+                  method="post"
+                  novalidate="novalidate">
+
+                <fieldset class="right-group float-right"
+                          ng-init='avatar = {{ avatar|json_encode|raw }}'>
+                    <div class="photo-wrapper">
+                        <span class="pattern-big">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                 ng-if="avatar"
+                                 ng-src="<%= avatar.url %>"
+                                 />
+                        </span>
+                        <div class="loading-mask" ng-show="loadingLogo">
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="photo-btns-wrapper clearfix">
+                            <div class="add-photo-wrapper float-left">
+                                <label class="file-upload clickable with-icon" for="{{ formUserPhoto.uploadedPhoto.vars.id }}" ng-if="avatar">
+                                    <span class="add-photo-link ico-upload"></span>
+                                </label>
+                                <label class="file-upload clickable" for="{{ formUserPhoto.uploadedPhoto.vars.id }}" ng-if="!avatar">
+                                    <span class="load-btn button blue-bg ie-radius">Загрузить фотографию</span>
+                                </label>
+                                {{ form_widget(formUserPhoto.uploadedPhoto) }}
+
+                            </div>
+                            <span class="del-btn float-left ico-delete-btn"
+                              ng-if="avatar"
+                              ng-click="coreController.confirm('Вы действительно хотите удалить фотографию?', accountController.deleteAvatar)"
+                                ></span>
+                        </div>
+
+
+                    </div>
+                </fieldset>
+
+                {{ form_rest(formUserPhoto) }}
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:ChangePassword') }}
+{% endblock %}

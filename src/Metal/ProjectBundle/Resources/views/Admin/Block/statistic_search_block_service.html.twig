@@ -1,0 +1,35 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Статистика поиска
+                </h3>
+            </div>
+            <div class="box-body">
+
+                {% set associatedRow = {'day': 'День', 'week': 'Неделя', 'month': 'Месяц', 'year': 'Год'} %}
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Период</th>
+                        <th>Поиск по выпадающему списку</th>
+                        <th>Поиск по нажатию кнопки</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, stat in stats %}
+                        <tr>
+                            <td>{{ associatedRow[key] }}</td>
+                            <td class="text-right">{{ stat.suggest_search|number_format_decimal }}</td>
+                            <td class="text-right">{{ stat.button_search|number_format_decimal }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

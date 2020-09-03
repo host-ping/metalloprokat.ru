@@ -1,0 +1,70 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Мисс Металлургия 2013{% endblock %}
+
+{% block body_text -%}
+{% set unsubscribeCode = brouzie_helper('MetalNewsletterBundle').generateCode(userEmail, newsletterType) %}
+{% set unsubscribeUrl = 'http://social.metalloprokat.ru'~path('MetalNewsletterBundle:Subscription:unsubscribe', {'email' : userEmail, 'type' : newsletterType, 'code' : unsubscribeCode}) -%}
+
+    Друзья!
+
+Конкурс "Мисс Металлургия 2013" продолжается. Началось SMS-голосование!
+Объявлены 10 участниц, прошедших во второй тур. На этой неделе выбираем тройку участниц, которые наберут максимальное количество голосов.
+Присоединяйтесь к голосованию!
+http://2013.missmetal.ru
+
+Если вы не ждали этого письма, отпишитесь от рассылки, перейдя по ссылке {{ unsubscribeUrl|raw }} .
+{% endblock %}
+
+{% block text_part_header %}
+    Друзья!
+{% endblock %}
+
+{% block html_header %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#171F26">
+        <tr>
+            <td valign="middle" style="padding: 23px; padding-right: 0; font-family: Arial; color: #FFFFFF; font-size: 24px; font-weight: bold; line-height: 24px;">
+                <span style="color: #FFFFFF; text-decoration: none;">
+                    <img src="{{ email_images_base_url~'/logo-metalloprokat.gif' }}" alt="Металлопрокат.ру" title="Металлопрокат.ру" border="0" width="201" height="30" style="vertical-align: top;" />
+                </span>
+            </td>
+            <td valign="middle" align="right" style="padding: 23px; padding-left: 0; font-family: Arial; color: #A6A39D; font-size: 13px; line-height: 19px;">
+                {% set datePeriod -%}29 октября 2013{%- endset %}
+                {% if datePeriod %}{{ datePeriod }}  &bull;  {% endif %}<span style="color: #2972A6; text-decoration: none;">www.metalloprokat.ru</span>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        Конкурс "Мисс Металлургия 2013" продолжается. Началось SMS-голосование!
+    </p>
+    <p style="font-size: 12px;">
+        Объявлены 10 участниц, прошедших во второй тур. На этой неделе выбираем тройку участниц, которые наберут максимальное количество голосов.
+    </p>
+    <p style="font-size: 12px;">
+        Присоединяйтесь к голосованию!
+    </p>
+    <p style="text-align: center">
+        <a style="
+        font-size: 9px;
+        height: 25px;
+        line-height: 26px;
+        font-weight:bold;
+        width: 186px;
+        background: none repeat scroll 0 0 #E8427C;
+        color: #FFFFFF;
+        display: inline-block;
+        text-decoration: none;
+        border-radius: 3px 3px 3px 3px;
+        font-family: 'kelson_sans_rubold', 'arial,helvetica', 'sans-serif';
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;" href="http://2013.missmetal.ru">Смотреть участниц</a>
+    </p>
+{% endblock %}
+
+{% block date_period '29 октября 2013' %}
+
+{% block user_agreement '' %}

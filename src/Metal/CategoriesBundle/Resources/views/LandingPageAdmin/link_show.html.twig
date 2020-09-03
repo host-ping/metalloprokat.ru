@@ -1,0 +1,25 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set categoryHelper = brouzie_helper('MetalCategoriesBundle') %}
+    <ul>
+        {% if object.resultsCount %}
+            {% set subdomain = 'www' %}
+            {% if object.city %}
+                {% set subdomain = object.city.getSlug() %}
+                {% set baseHost = object.city.country.baseHost %}
+            {% elseif object.region %}
+                {% set subdomain = object.region.getSlug() %}
+                {% set baseHost = object.region.country.baseHost %}
+            {% elseif object.country %}
+                {% set baseHost = object.country.baseHost %}
+            {% endif %}
+            {% if baseHost is defined %}
+                <li><a href="{{ path('MetalCategoriesBundle:LandingPage:landing', {'base_host' : baseHost, 'subdomain' : subdomain, 'slug': object.slug}) }}" target="_blank">Просмотреть</a></li>
+            {% endif %}
+        {% endif %}
+        {% if not object.isModeSelectedTerritory() %}
+            <li><a href="{{ admin.generateObjectUrl('show_results_count', object) }}" target="_blank">Просмотреть результаты</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

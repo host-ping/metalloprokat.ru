@@ -1,0 +1,261 @@
+{% set popupId = 'request-demand' %}
+{% if _options.private_demand %}
+    {% set popupId = 'request-private-demand' %}
+{% endif %}
+{% if _options.payment_company %}
+    {% set popupId = 'request-private-payment-demand' %}
+{% endif %}
+
+<div id="{{ popupId }}"
+     class="demand-request-block large-popup popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+
+<script type="text/html" id="demand-form-new-item-template">
+    <div class="group clearfix">
+        <div class="product-name-wrapper field-wrap float-left">
+            {{ form_widget(form.demandItems.vars.prototype.title, {'attr' : {
+                'class' : 'product-name form-text ie-radius',
+                'placeholder' : 'Продукт',
+                'data-bind-value': 'product-text'
+            } }) }}
+            {{ form_widget(form.demandItems.vars.prototype.category, {'attr' : {'class' : 'g-hidden' } }) }}
+        </div>
+
+        {% if form.demandItems.vars.prototype.size is defined %}
+            <div class="product-size-wrapper field-wrap float-left">
+                {{ form_widget(form.demandItems.vars.prototype.size, {'attr' : {'class' : 'volume form-text ie-radius', 'placeholder' : tokens.product_volume_title|capitalize } }) }}
+            </div>
+        {% endif %}
+        <div class="product-volume-wrapper field-wrap float-left">
+            {{ form_widget(form.demandItems.vars.prototype.volume, {'attr' : {'class' : 'volume form-text ie-radius', 'placeholder' : 'Объем закупки' } }) }}
+        </div>
+
+        <div class="product-hundredweight-wrapper field-wrap float-left">
+            {{ form_widget(form.demandItems.vars.prototype.volumeTypeId, {'attr' : {'class': 'hundredweight form-select', 'data-bind-value' : 'volume-type'} }) }}
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="demand-form-new-file-template">
+    <div class="group clearfix">
+        <label class="file-upload">
+            <span class="load-file-btn ico-upload">Загрузить из файла...</span>
+            {{ form_widget(form.demandFiles.vars.prototype.uploadedFile, {'attr' : {'placeholder' : 'Загрузить из файла...', 'class': 'js-file'} }) }}
+        </label>
+    </div>
+</script>
+
+<script type="text/html" id="{{ popupId }}-template">
+    {% set cityFieldHtml %}
+        {% if form.city is defined %}
+            <div class="city-wrapper field-wrap float-left">
+                {{ form_widget(form.cityTitle, {'attr' : {
+                    'class' : 'report-form_city form-text ie-radius',
+                    'placeholder' : 'Город',
+                    'typeahead' : '',
+                    'typeahead-loading' : 'typeaheadLoading',
+                    'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                    'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                    'typeahead-model' : "city"
+                } }) }}
+                <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoading">
+                    <div class="spinner"></div>
+                </div>
+                {{ form_widget(form.city, {'attr' : {
+                    'class' : 'g-hidden',
+                    'ng-model' : "city.id",
+                    'initial-value' : ''} }) }}
+            </div>
+        {% endif %}
+    {% endset %}
+
+    <div class="popup-content">
+        <div class="title-popup" data-bind-text="demand-text"></div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              class="request-form popup-form js-ajax-form-submit"
+              data-bind-attr="action:request-demand-url"
+              {% if _options.need_reload %}
+                  data-success="close-popup-and-show-message"
+              {% else %}
+                  data-success="close-popup"
+              {% endif %}
+              method="post"
+              novalidate="novalidate"
+              enctype="multipart/form-data"
+        >
+            <fieldset>
+                <div class="request-product-group">
+                    <div id="demand-form-items-container">
+                        {% for demandItem in form.demandItems %}
+                            <div class="group clearfix">
+                                <div class="product-name-wrapper field-wrap float-left">
+                                    {{ form_widget(demandItem.title, {'attr' : {
+                                        'class' : 'product-name form-text ie-radius',
+                                        'placeholder' : 'Продукт',
+                                        'data-bind-value': 'product-text'
+                                    } }) }}
+                                    {{ form_widget(demandItem.category, {'attr' : {'class' : 'g-hidden' } }) }}
+                                </div>
+
+                                {% if demandItem.size is defined %}
+                                    <div class="product-size-wrapper field-wrap float-left">
+                                        {{ form_widget(demandItem.size, {'attr' : {'class' : 'volume form-text ie-radius', 'placeholder' : tokens.product_volume_title|capitalize } }) }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="product-volume-wrapper field-wrap float-left">
+                                    {{ form_widget(demandItem.volume, {'attr' : {'class' : 'volume form-text ie-radius', 'placeholder' : 'Объем закупки' } }) }}
+                                </div>
+
+                                <div class="product-hundredweight-wrapper field-wrap float-left">
+                                    {{ form_widget(demandItem.volumeTypeId, {'attr' : {'class': 'hundredweight form-select', 'data-bind-value' : 'volume-type'} }) }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="group btns-wrapper clearfix">
+                        <div class="file-wrapper float-left">
+                            <div id="demand-form-files-container">
+                                {% for demandFile in form.demandFiles %}
+                                        <label class="file-upload">
+                                            <span class="load-file-btn ico-upload">Загрузить из файла...</span>
+                                            {{ form_widget(demandFile.uploadedFile, {'attr' : {'placeholder' : 'Загрузить из файла...', 'class': 'js-file'} }) }}
+                                        </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="add-string-wrapper float-right">
+                            <span class="add-string-link icon-add-btn clickable js-demand-form-add-new-item">ещё строка</span>
+                        </div>
+                    </div>
+                    <div class="textarea-wrapper field-wrap">
+                        {{ form_widget(form.info, {'attr' : {'placeholder' : 'Комментарии', 'class': 'form-textarea ie-radius' } }) }}
+                    </div>
+
+                    {% if form.vars.is_authenticated %}
+                        <div class="group clearfix">
+                            <div class="user-name-wrapper field-wrap float-left">
+                                {{ form_widget(form.person, {'attr' : {'class' : 'request-form_user-name form-text ie-radius', 'placeholder' : 'Имя', 'value' : app.user.getFullName } }) }}
+                            </div>
+                            <div class="city-wrapper field-wrap float-left">
+                                {{ form_widget(form.email, {'attr' : {'class' : 'request-form_email form-email ie-radius', 'placeholder' : 'Электронная почта', 'value' : app.user.email } }) }}
+                            </div>
+                        </div>
+                        <div class="group clearfix">
+                            {% if form.companyTitle is defined %}
+                                <div class="phone-wrapper field-wrap float-left">
+                                    {{ form_widget(form.companyTitle, {'attr' : {'class' : 'form-text ie-radius' , 'placeholder' : 'Компания' , 'value' : app.user.companyTitle }}) }}
+                                </div>
+                            {% else %}
+                                <div class="field-wrap float-left">
+                                    {{ form_widget(form.phone, {'attr' : {'class' : 'phone request-form_phone form-text ie-radius', 'placeholder' : 'Телефоны' } }) }}
+                                </div>
+                            {% endif %}
+                            {{ cityFieldHtml }}
+                        </div>
+                    {% else %}
+                        <div class="group clearfix">
+                            <div class="user-name-wrapper field-wrap float-left">
+                                {{ form_widget(form.person, {'attr' : {'class' : 'request-form_user-name form-text ie-radius', 'placeholder' : 'Имя' } }) }}
+                            </div>
+                            <div class="phone-wrapper field-wrap float-left">
+                                {{ form_widget(form.companyTitle, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Компания' } }) }}
+                            </div>
+                        </div>
+
+                        <div class="group clearfix">
+                            <div class="type-wrapper field-wrap float-left">
+                                {{ form_widget(form.email, {'attr' : {'class' : 'request-form_email form-email ie-radius', 'placeholder' : 'Электронная почта' } }) }}
+                            </div>
+
+                            {{ cityFieldHtml }}
+                        </div>
+                    {% endif %}
+
+                    {% if not form.phone.isRendered %}
+                        <div class="phone-wrapper field-wrap">
+                            {{ form_widget(form.phone, {'attr' : {'class' : 'phone request-form_phone form-text ie-radius', 'placeholder' : 'Телефоны' } }) }}
+                        </div>
+                    {% endif %}
+
+                    {% if _options.private_demand %}
+                        <div class="favorite-wrapper field-wrap">
+                            <input id="add-company-to-favorite" name="company_add_in_favorite" type="checkbox"
+                                   class="favorite js-styled-checkbox bg-white" value="1" checked="checked" />
+                            <label for="add-company-to-favorite">Добавить компанию в <span
+                                    class="request-form_favorite-ico icon-favorite-active"></span>Избранное</label>
+                        </div>
+
+                        <div class="inform-wrapper {% if _options.payment_company %}g-hidden{% endif %}">
+                            <input id="create-public-demand" name="create_public_demand" type="checkbox"
+                                   class="inform js-styled-checkbox bg-white" value="1" checked="checked" />
+                            <label for="create-public-demand">Сообщить другим поставщикам</label>
+                            <span class="icon-help js-helper-opener"
+                                  data-text="Мы сообщим о вашей потребности поставщикам и вы получите гораздо больше предложений, чтобы выбрать оптимальное."></span>
+                        </div>
+                    {% endif %}
+
+                    <div class="submit-wrapper">
+                        <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit"
+                               value="Отправить" />
+                    </div>
+                    <div style="color:red; font-weight: bolder">
+                        ВНИМАНИЕ! Перед оплатой счетов проверьте список поставщиков ООО Металлопрокат.ру
+                    </div>
+                </div>
+            </fieldset>
+
+            {% if form.category is defined %}
+                {{ form_widget(form.category, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'product-category-id' } }) }}
+            {% endif %}
+
+            {% if form.company is defined %}
+                {{ form_widget(form.company, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'company-id'} }) }}
+            {% endif %}
+
+            {% if form.product is defined %}
+                {{ form_widget(form.product, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'product-id'} }) }}
+            {% endif %}
+
+            {% if form.productCity is defined %}
+                {{ form_widget(form.productCity, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'product-city-id'} }) }}
+            {% endif %}
+
+            {{ form_widget(form.adminSourceTypeId, {'attr' : {'class' : 'g-hidden', 'data-bind-value': 'source-type-id'} }) }}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#{{ popupId }}').bind('popup.open', function (e) {
+            includeAjax(e.$popup);
+            $('.product-name-wrapper :input').focus();
+        });
+
+        $('#{{ popupId }}').delegate('.js-demand-form-add-new-item', 'click', function (e) {
+            var productRowHtml = $('#demand-form-new-item-template').html();
+            var $container = $('#demand-form-items-container');
+
+            productRowHtml = productRowHtml.replace(/__name__/g, $container.find('.product-name-wrapper').length);
+            $container.append(productRowHtml);
+            initializeForms($container);
+
+            $container.find('.product-name-wrapper:last :input').focus();
+        });
+
+        $('#{{ popupId }}').delegate('.js-file', 'change', function (e) {
+            var productRowHtml = $('#demand-form-new-file-template').html();
+            var $container = $('#demand-form-files-container');
+
+            productRowHtml = productRowHtml.replace(/__name__/g, $container.find('.js-file').length);
+            $container.append(productRowHtml);
+            initializeForms($container);
+        });
+    });
+</script>

@@ -1,0 +1,54 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    validation:
+        cache: %validator_cache_driver%
+    router:
+        strict_requirements: null
+    session:
+        # disabled because we are using internal redis keys invalidation
+        gc_probability: 0
+        handler_id: snc_redis.session.handler
+
+doctrine:
+    orm:
+        metadata_cache_driver: %metadata_cache_driver%
+        query_cache_driver: %query_cache_driver%
+        result_cache_driver: %result_cache_driver%
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+#        buffered:
+#            type:    buffer
+#            handler: swift
+#        swift:
+#            type:       swift_mailer
+#            from_email: info@metalloprokat.ru
+#            to_email:   koc-dp@yandex.ru
+#            subject:    An Error Occurred!
+#            level:      debug
+
+metal_project:
+    routing_parser_cache_provider: metal_project.routing.routing_parser.cache.apcu
+    cache_app_service: metal_project.cache.adapter.redis
+
+snc_redis:
+    session:
+        client: session
+        ttl: 3600
+        locking: false
+
+accelerator_cache:
+    host: http://%base_host%
+    web_dir: %web_dir%

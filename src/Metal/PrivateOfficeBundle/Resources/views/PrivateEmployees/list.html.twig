@@ -1,0 +1,111 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Сотрудники / Управление информацией / '~titleSuffix %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set currentUserId = app.user.id %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            {{ block('tabs') }}
+            <div class="management-content-wrapper">
+                <div class="clearfix">
+                    <div class="left-group float-left">
+                        <ul class="staff-list">
+                            {% for employee in employees %}
+                                <li class="employee item clearfix">
+                                    {% if is_granted('ROLE_MAIN_USER') %}
+
+                                        <span class="close-item icon-pencil js-edit-employee clickable"
+                                              data-load-url="{{ path('MetalPrivateOfficeBundle:Employees:load', {'id' : employee.id}) }}"
+                                              title="Редактировать сотрудника"></span>
+
+                                        <span style="{% if loop.first %}top: 30px;{% else %}top: 45px;{% endif %}" class="close-item icon-popup-close clickable js-del-item"
+                                              data-url="{{ path('MetalPrivateOfficeBundle:Employees:delete', {'id' : employee.id}) }}"
+                                              data-kind="employee" title="Удалить сотрудника"></span>
+
+                                        {% if not employee.approvedAt %}
+                                            {#FIXME: Выделить класс и перенести туда эти отступы из style #}
+                                            <span style="{% if loop.first %}top: 55px;{% else %}top: 70px;{% endif %}" class="close-item icon-check-big clickable js-approved-employee"
+                                                  data-url="{{ path('MetalPrivateOfficeBundle:Employees:approved', {'id' : employee.id}) }}"
+                                                  data-kind="employee" title="Подтвердить сотрудника"></span>
+                                        {% endif %}
+
+                                        <div class="loading-mask g-hidden">
+                                            <div class="spinner"></div>
+                                        </div>
+
+                                        <div class="items overflow g-hidden"></div>
+                                    {% endif %}
+                                    <div class="employee-info float-left">
+                                        <div class="employee-name">
+                                            {{ employee.firstName }} {{ employee.secondName }}
+                                        </div>
+                                        <div class="position">{{ employee.job }}</div>
+                                        <div class="info-holder">
+                                            {% if employee.phones %}
+                                                <div class="item-wrapper clearfix">
+                                                    <div class="l-elem float-left">Телефон:</div>
+                                                    <div class="r-elem float-left">{#<span class="c-code">+7</span>#} {{ employee.phones }}</div>
+                                                </div>
+                                            {% endif %}
+                                            {% if employee.skype %}
+                                                <div class="item-wrapper clearfix">
+                                                    <div class="l-elem float-left">Skype:</div>
+                                                    <div class="r-elem float-left">{{ employee.skype }}</div>
+                                                </div>
+                                            {% endif %}
+                                            {% if employee.email %}
+                                                <div class="item-wrapper clearfix">
+                                                    <div class="l-elem float-left">E-mail:</div>
+                                                    <div class="r-elem float-left">
+                                                        <!--email_off-->
+                                                            <a href="mailto:{{ employee.email }}" class="link"> {{ employee.email }}</a>
+                                                        <!--/email_off-->
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="right float-right">
+                                        <div class="pic float-right">
+                                        <span class="img-link pattern-small">
+                                            {% set avatarUrl = imageHelper.getAvatarUrl(employee, 'sq84') %}
+                                            {% if avatarUrl %}
+                                                <img src="{{ avatarUrl }}" alt="{{ employee.firstName }}" title="{{ employee.firstName }}"/>
+                                            {% endif %}
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="items overflow g-hidden"></div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="right-group float-right">
+                        <div class="help-block icon-help">
+                            <p class="text">Список зарегистрированных сотрудников компании на портале.</p>
+                        </div>
+                        {% if is_granted('ROLE_MAIN_USER') %}
+                            <div class="float-left">
+                                <button class="button extend-btn blue-bg" popup-opener="#registration-employees-popup">
+                                    Добавить
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    {% if is_granted('ROLE_MAIN_USER') %}
+        <div id="load-employee-popup-container"></div>
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:RegistrationEmployee') }}
+    {% endif %}
+{% endblock %}

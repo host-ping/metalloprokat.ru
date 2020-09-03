@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_flat_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for user in object.getAttribute('users') %}
+            <li>
+                {{ user.fullName }} {% if user.email %} {{ user.email }}{% endif %} {{ user.id }}
+
+                <a href="{{ path('admin_metal_users_user_edit', {'id': user.id}) }}">редактировать</a>
+                {% if is_granted('ROLE_ALLOWED_TO_SWITCH') -%}
+                    , <a href="{{ path('MetalPrivateOfficeBundle:Default:index', {'_switch_user': user.email}) }}" target="_blank">войти под</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

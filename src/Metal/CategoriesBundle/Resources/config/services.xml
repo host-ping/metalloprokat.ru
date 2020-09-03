@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.categories.admin.category" class="Metal\CategoriesBundle\Admin\CategoryAdmin">
+            <argument>metal.categories.admin.category</argument>
+            <argument>Metal\CategoriesBundle\Entity\Category</argument>
+            <argument>MetalCategoriesBundle:CategoryAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="slugify" />
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Категории товаров" />
+        </service>
+
+        <service id="metal.categories.admin.category_city_metadata" class="Metal\CategoriesBundle\Admin\CategoryCityMetadataAdmin">
+            <argument>metal.categories.admin.category_city_metadata</argument>
+            <argument>Metal\CategoriesBundle\Entity\CategoryCityMetadata</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="categories" show_in_dashboard="false" label="Метадата категорий в городах" />
+        </service>
+
+        <service id="metal.categories.admin.menu_item" class="Metal\CategoriesBundle\Admin\MenuItemAdmin">
+            <argument>metal.categories.admin.menu_item</argument>
+            <argument>Metal\CategoriesBundle\Entity\MenuItem</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Элементы меню" />
+        </service>
+
+        <service id="metal.categories.admin.parameter_option" class="Metal\CategoriesBundle\Admin\ParameterOptionAdmin">
+            <argument>metal.categories.admin.parameter_option</argument>
+            <argument>Metal\CategoriesBundle\Entity\ParameterOption</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Атрибуты товаров (старые)" />
+        </service>
+
+        <service id="metal.categories.admin.category_test" class="Metal\CategoriesBundle\Admin\CategoryTestItemAdmin">
+            <argument>metal.categories.admin.category_test</argument>
+            <argument>Metal\CategoriesBundle\Entity\CategoryTestItem</argument>
+            <argument>MetalCategoriesBundle:CategoryTestItemAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="categories" label="Проверка автоопределения категорий и параметров" />
+        </service>
+
+        <service id="metal.categories.admin.landing_page" class="Metal\CategoriesBundle\Admin\LandingPageAdmin">
+            <argument>metal.categories.admin.landing_page</argument>
+            <argument>Metal\CategoriesBundle\Entity\LandingPage</argument>
+            <argument>MetalCategoriesBundle:LandingPageAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="slugify" />
+            <tag name="sonata.admin" manager_type="orm" group="seo" label="Целевые страницы (Поисковый лендинг)" />
+        </service>
+
+        <service id="metal.categories.categories_indexer" class="Metal\CategoriesBundle\Indexer\CategoryIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="categories" />
+        </service>
+
+        <service id="metal.categories.product_attributes_indexer" class="Metal\CategoriesBundle\Indexer\ProductAttributesIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="product_attributes" />
+        </service>
+
+        <service id="metal.categories.category_matcher.product" class="Metal\CategoriesBundle\Service\ProductCategoryDetector">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.categories.category_matcher.stroy" class="Metal\CategoriesBundle\Service\StroyCategoryDetector">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.categories.landing_page_sitemap_listener" class="Metal\CategoriesBundle\EventListener\LandingPageSitemapListener">
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <argument>%project.family%</argument>
+            <argument type="service" id="service_container" />
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+            <tag name="presta.sitemap.listener" />
+        </service>
+
+        <service id="metal.categories.category_matcher.metalloprokat" class="Metal\CategoriesBundle\Service\MetalloprokatCategoryDetector">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="brouzie.helper_factory" />
+        </service>
+    </services>
+</container>

@@ -1,0 +1,16 @@
+{% if reviews and reviews|length > 2 %}
+    <div class="category-reviews-wrapper clearfix">
+        <ul class="category-reviews-list float-left">
+            {% for review in reviews|slice(0, 5) %}
+                <li class="item float-left">
+                    {{ include('@MetalCorpsite/partial/client_review.html.twig', {
+                        'review': review,
+                    }, false) }}
+                </li>
+            {% endfor %}
+        </ul>
+        {% for review in reviews|slice(0, 5) %}
+            {{ brouzie_render_widget('MetalProjectBundle:ShowText', {'popup_name' : 'client-review'~review.id, 'popup_text' : review.comment}) }}
+        {% endfor %}
+    </div>
+{% endif %}

@@ -1,0 +1,34 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Подтверждение регистрации{% endblock %}
+
+{% block body_text -%}
+Здравствуйте{% if user.firstName %}, {{ user.firstName }}{% endif %}.
+Вы зарегистрировались на сайте {{ user.country.domainTitle }}.
+
+{% if user.newPassword %}Запомните Ваш пароль: {{ user.newPassword }}{% endif %}
+
+{% if user.company and user.company.companyLog.createdBy.id != user.id %}
+При регистрации Вы выбрали зарегистрированную компанию {{ user.company.title}} ({{ user.company.city.title }}). Главный пользователь этой компании {{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }}) должен подтвердить, что Вы являетесь сотрудником, чтобы Вы могли работать на сайте от лица компании.
+{% endif %}
+
+Для завершения регистрации, пожалуйста, перейдите по ссылке
+{{ url('MetalUsersBundle:Registration:confirmation', {'code' : user.registrationCode, 'id' : user.id })|raw }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте{% if user.firstName %}, {{ user.firstName }}{% endif %}.<br/>
+        Вы зарегистрировались на сайте {{ user.country.domainTitle }}.<br/>
+        <br/>
+        {% if user.newPassword %}
+            Запомните Ваш пароль: {{ user.newPassword }}<br/>
+        {% endif %}
+        {% if user.company and user.company.companyLog.createdBy.id != user.id %}
+            При регистрации Вы выбрали зарегистрированную компанию <b>{{ user.company.title}}{% if user.company.city %} ({{ user.company.city.title }}){% endif %}</b>. Главный пользователь этой компании <b>{{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }})</b> должен подтвердить, что Вы являетесь сотрудником, чтобы Вы могли работать на сайте от лица компании.<br/><br/>
+        {% endif %}
+        Для завершения регистрации, пожалуйста, перейдите по <a href="{{ url('MetalUsersBundle:Registration:confirmation', {'code' : user.registrationCode, 'id' : user.id }) }}">ссылке</a>.
+    </p>
+{% endblock %}

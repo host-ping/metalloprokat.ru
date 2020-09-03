@@ -1,0 +1,90 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% block title 'Работа с потребностями — категории / Статистика / '~titleSuffix %}
+
+{% block grouping_modes '' %}
+
+{% set chartsRules =
+    [
+        {
+            fields: ['demandsViewsCount'],
+            commonTitle: 'Просмотры заявок',
+            titles: ['Просмотры заявок']
+        },
+        {
+            fields: ['demandsToFavoriteCount'],
+            commonTitle: 'Добавлены в избранное',
+            titles: ['Добавлены в избранное']
+        },
+        {
+            fields: ['demandsAnswersCount'],
+            commonTitle: 'Ответы',
+            titles: ['Ответы']
+        }
+    ]
+%}
+
+{% set chartLabelField = 'categoryTitle' %}
+
+{% block viewing_modes %}
+    {% set viewingModes = {
+        'all' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demand', 'title' : 'Все'},
+        'regions' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demandRegion', 'title' : 'По городам'},
+        'category' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demandCategory', 'title' : 'По категориям'}
+    } %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content_inner %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="demand-tab">
+        {{ block('statistic_pie_chart') }}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+
+        {% set columns = {
+            'category' : {'query': null, 'cls': 'date col', 'title': 'Категория'},
+            'demandsViewsCount': {'query': 'demandsViewsCount', 'cls': 'view-demands col', 'title': 'Просмотры заявок'},
+            'demandsToFavoriteCount': {'query': 'demandsToFavoriteCount', 'cls': 'add-favorites col', 'title': 'Добавлены в избранное'},
+            'demandsAnswersCount': {'query': 'demandsAnswersCount', 'cls': 'answers col', 'title': 'Ответы'},
+        } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table js-stats-table-body">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                    'demandsViewsCount',
+                    'demandsToFavoriteCount',
+                    'demandsAnswersCount'
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="view-demands col">{{ summarizedValues.demandsViewsCount|number_format_decimal }}</td>
+                    <td class="add-favorites col">{{ summarizedValues.demandsToFavoriteCount|number_format_decimal }}</td>
+                    <td class="answers col">{{ summarizedValues.demandsAnswersCount|number_format_decimal }}</td>
+                </tr>
+
+                {% for statsItem in statsResultViewModel.stats %}
+                    <tr class="row">
+                        <td class="date col">{{ statsItem.categoryTitle }}</td>
+                        <td class="view-demands col">
+                            <span class="{% if statsItem.demandsViewsCount == 0 %}null {% endif %}">{{ statsItem.demandsViewsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="add-favorites col">
+                            <span class="{% if statsItem.demandsToFavoriteCount == 0 %}null {% endif %}">{{ statsItem.demandsToFavoriteCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="answers col">
+                            <span class="{% if statsItem.demandsAnswersCount == 0 %}null {% endif %}">{{ statsItem.demandsAnswersCount|number_format_decimal }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content_inner %}

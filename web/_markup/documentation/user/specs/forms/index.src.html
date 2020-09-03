@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="css/standart.css" type="text/css" />
+<script src="js/main-documentation.js"></script>
+
+<h1>Элементы форм</h1>
+
+<section class="source_section">
+    <h2>Текстовое поле</h2>
+    <div class="source_example">
+        <input type="text" class="search-field form-text ie-radius" placeholder="Категория"/>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Выпадающий список</h2>
+    <div class="source_example">
+        <select name="reason" id="reason" class="form-select">
+            <option class="disabled" value="-1">Выберите причину</option>
+            <option value="0">Неправильная цена</option>
+            <option value="1">Не отвечают по телефону</option>
+            <option value="2">Нет такой фирмы</option>
+            <option value="3">Не умеют общаться</option>
+        </select>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Многострочное текстовое поле</h2>
+    <div class="source_example">
+        <textarea class="form-textarea ie-radius" placeholder="Комментарии"></textarea>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Тэги</h2>
+    <div class="source_example tags">
+        <div class="product-name-wrapper field-wrap">
+            <div class="tag-wrapper is-bordered ie-radius">
+                <p class="product-name"><strong>Арматура</strong></p>
+                <span class="accepted-filter ie-radius float-left">
+                    Арматура
+                    <span class="icon-filter-del clickable"></span>
+                </span>
+                <span class="accepted-filter ie-radius float-left">
+                    Арматура композитная
+                    <span class="icon-filter-del clickable"></span>
+                </span>
+                <span class="accepted-filter ie-radius float-left">
+                    Арматура
+                    <span class="icon-filter-del clickable"></span>
+                </span>
+                <input id="tags" class="tag-input" type="text" placeholder="Add tag"/>
+            </div>
+
+            <ul class="tt-dropdown-menu tag-dropdownt list is-bordered">
+                <li class="tt-suggestion item clickable"><strong>Арм</strong>атура</li>
+                <li class="tt-suggestion item clickable"><strong>Арм</strong>атура</li>
+                <li class="tt-suggestion item clickable"><strong>Арм</strong>атура</li>
+                <li class="tt-suggestion item clickable"><strong>Арм</strong>атура</li>
+                <li class="tt-suggestion item clickable"><strong>Арм</strong>атура</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Чекбоксы</h2>
+    <div class="source_example">
+        <div>
+            <input id="check-1" type="checkbox" class="js-styled-checkbox bg-white"/>
+            <label for="check-1">Обычный чекбокс</label>
+        </div>
+        <div>
+            <input id="check-2" type="checkbox" class="js-styled-checkbox bg-grey"/>
+            <label for="check-2">Серый чекбокс</label>
+        </div>
+        <div>
+            <input id="check-3" type="checkbox" checked class="js-styled-checkbox bg-grey"/>
+            <label for="check-3">Активный чекбокс</label>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Радио кнопки</h2>
+    <div class="source_example">
+        <div>
+            <input id="radio-1" name="promotion" type="radio" class="radio bg-grey80"/>
+            <label for="radio-1">Серый радио</label>
+        </div>
+
+        <div>
+            <input id="radio-2" name="promotion" checked type="radio" class="radio bg-grey80"/>
+            <label for="radio-2">Активный радио</label>
+        </div>
+    </div>
+</section>
+
+<div class="source_info">
+    <h3>Что можно переделать!</h3>
+    <ol>
+        <li><strike>Сделать чтобы ширину инпутов,селекта, текстареи определял родительский блок</strike></li>
+    </ol>
+</div>

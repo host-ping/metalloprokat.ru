@@ -1,0 +1,46 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set defaultOptions = {
+    'reviews_from_mini_site': false
+} %}
+{% set options = defaultOptions|merge(options|default({})) %}
+{% set currentCompany = app.request.attributes.get('company') %}
+{% set isCompanyModerator = is_granted('COMPANY_MODERATOR', currentCompany) %}
+
+{% for review in pagerfanta %}
+    <li class="{% if review.isCommentPositive %}icon-positive{% else %}icon-negative{% endif %} item" id="review-{{ review.id }}">
+        <div class="heading">
+            <span class="user">{{ review.user ? review.user.firstName : review.name }}</span>,
+            <span class="updated-date" title="{{ formatHelper.formatDate(review.createdAt) }}">{{ formatHelper.getTimeLocalized(review.createdAt) }} назад</span>
+            {% if review.comment %}<p class="text">{{ review.comment }}</p>{% endif %}
+        </div>
+        {% if review.answer %}
+            <div class="review-wrapper">
+                <p class="gray60-color">{% if isCompanyModerator %}Ваш ответ{% else %}Ответ{% endif %}:</p>
+
+                <p>
+                    <strong>{{ review.answer.comment }}</strong>
+                </p>
+            </div>
+        {% endif %}
+    </li>
+{% endfor %}
+
+
+{% set route = app.request.attributes.get('_route') %}
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="reviews-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+                href="{{ path(route, routeParameters|merge({'page' : pagerfanta.getNextPage()})) }}"
+               data-load-more-replace="#reviews-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

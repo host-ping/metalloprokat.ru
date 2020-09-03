@@ -1,0 +1,13 @@
+{% if announcement and not announcement.isFlash() %}
+    {% set imgUrl = asset(announcement.webPath, version=announcement.version) %}
+
+    <a href="{{ url('MetalAnnouncementsBundle:Default:away', {
+        'id' : announcement.id,
+        'source_type_id' : constant('Metal\\ProjectBundle\\Entity\\ValueObject\\SourceTypeProvider::EMAIL_DEMANDS_TYPE_ID')}) }}"
+       target="_blank" rel="noopener noreferrer">
+        <img src="{{ brouzie_helper('MetalProjectBundle:Url').convertSchemaRelativeToAbsoluteUrl(imgUrl) }}"
+             width="{{ announcement.zone.width }}" height="{{ announcement.zone.height }}" />
+    </a>
+
+    {{ brouzie_helper('MetalAnnouncementsBundle').addAnnounceId(announcement.id) }}
+{% endif %}

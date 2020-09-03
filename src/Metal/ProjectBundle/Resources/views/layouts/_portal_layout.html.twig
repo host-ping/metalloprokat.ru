@@ -1,0 +1,646 @@
+{% extends 'MetalProjectBundle:layouts:_base_layout.html.twig' %}
+
+{% set currentCountry = brouzie_helper('MetalProjectBundle').getCurrentCountry() %}
+{% set currentRegion = brouzie_helper('MetalProjectBundle').getCurrentRegion() %}
+{% set currentCity = brouzie_helper('MetalProjectBundle').getCurrentCity() %}
+{% set currentCategory = brouzie_helper('MetalProjectBundle').getCurrentCategory() %}
+{% set currentTerritory = brouzie_helper('MetalProjectBundle').getCurrentTerritory %}
+{% set currentProduct = brouzie_helper('MetalProjectBundle').getCurrentProduct %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+{# @var \Metal\ProjectBundle\Helper\DefaultHelper projectHelper #}
+{% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+
+{% block head_prepend %}
+    {{ brouzie_render_widget('MetalProjectBundle:SiteConfirm') }}
+
+    {% if currentCity %}
+        {{ brouzie_render_widget('MetalProjectBundle:OneSignal', {
+            'currentCity' : currentCity,
+            'category' : currentCategory,
+            'product' : currentProduct ? currentProduct : null
+        }) }}
+    {% else %}
+        {% if project.family == 'metalloprokat' and currentTerritory.slug=='www' and currentCountry.id==165 %}
+            <link rel="manifest" href="/manifest.json" />
+            <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+            <script> var OneSignal = window.OneSignal || []; OneSignal.push(function() {
+                    OneSignal.init({ appId: "e5097cad-f1c2-4f61-b897-9cf2d27b7a14",
+                    });
+                    OneSignal.sendTags({
+                        userId: '{{ app.user ? app.user.id : '' }}',
+                        category : '{{ currentCategory ? currentCategory.id : '' }}',
+                        parentCategory : '{{ currentCategory ? ( currentCategory.parent ? currentCategory.parent.id : '') : ''}}'
+                    });
+                });
+            </script>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/metalproject/css/style-portal.css') }}" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalTerritorialBundle/Resources/public/js/controllers/CitiesWidgetPopover.js'
+        combine = true
+    %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        processAnnouncements.loadAnnouncementsUrl = {{ path('MetalAnnouncementsBundle:Announcement:getAnnouncements')|json_encode|raw }};
+    </script>
+
+    <!--[if lte IE 8]>
+        <link href="{{ asset('bundles/metalproject/js/respond-proxy.html') }}" id="respond-proxy" rel="respond-proxy"/>
+        <link href="{{ app.request.getUriForPath('/bundles/metalproject/js/respond.proxy.gif') }}" id="respond-redirect" rel="respond-redirect" />
+        {% javascripts
+        '@MetalProjectBundle/Resources/public/js/respond.js'
+        '@MetalProjectBundle/Resources/public/js/respond.proxy.js'
+        combine = true
+        %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+        {% endjavascripts %}
+    <![endif]-->
+{% endblock %}
+
+{% block container_arrtibutes %}
+    class="container portal js-announcement js-layout-announcement"
+    data-new-window="true"
+    data-announcement-options=
+        {% block background_announcement %}
+            {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame',
+                {'source_type_slug' : 'other', 'zone_slug' : 'background', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+        {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div {{ block('container_arrtibutes') }}>
+        {% if projectHelper.isNewYearEve() %}
+            {# FIXME: удалить это помле исправления верстки #}
+            <style>
+                #header {
+                    background-image: url({{ asset('bundles/metalproject/img/metalloprokat/back_bg6.jpg') }}) !important;
+                    background-size: cover !important;
+                    padding: 0 !important;
+                    height: 38px;
+                }
+            </style>
+        {% endif %}
+        <div class="inside-container">
+            <div id="header" class="clearfix">
+                <div class="wrap">
+
+                    {% block header %}
+                        {% set subdomain = currentTerritory.slug %}
+                        <div class="left float-left">
+                            <div class="logo float-left">
+                                {% block logo %}
+                                    {% if seoHelper.isCurrentPageIsHomePage() %}
+                                        <span>
+                                            <img src="{{ asset(projectHelper.getLogo()) }}" alt="{{ currentCountry.domainTitle }}" />
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': subdomain}) }}">
+                                            <img src="{{ asset(projectHelper.getLogo()) }}" alt="{{ currentCountry.domainTitle }}" />
+                                        </a>
+                                    {% endif %}
+                                {% endblock logo %}
+
+                                {% if seoHelper.isSuspiciousReferer() %}
+                                    <div class="pixxel">
+                                        <img src="{{ app.request.uriForPath('/pixxxel.gif?url=')~(app.request.uri|url_encode) }}" alt="" />
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="logo-text float-left">
+                                <p>
+                                    {% if seoHelper.isCurrentPageIsHomePage() %}
+                                        <span class="header-logo-text">{{ currentCountry.domainTitle }}</span>
+                                    {% else %}
+                                        <a class="header-logo-text"
+                                           href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': subdomain}) }}">{{ currentCountry.domainTitle }}</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            {% if project.portal_enabled %}
+                                <div class="location float-right" ng-controller="Metal.CitiesWidgetPopoverOpener as citiesWidgetPopoverOpenerController">
+                                    <span class="current-location js-popover-opener icon-check clickable"
+                                          data-popover=".countries" data-different-position="true"
+                                          data-index="1001">{{ currentCountry.title }}</span>
+                                    <span class="current-location js-popover-opener icon-check clickable"
+                                          data-popover="#header-cities"
+                                          ng-click='citiesWidgetPopoverOpenerController.loadPopover("header-cities")'
+                                          data-different-position="true" data-index="1001">
+                                        {%- if currentCity -%}
+                                            {{ currentCity.title }}
+                                        {%- elseif currentRegion -%}
+                                            {{ currentRegion.title }}
+                                        {%- else -%}
+                                            Все города
+                                        {%- endif -%}
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if project.family == 'metalloprokat' and currentCountry.callbackPhone %}
+                            <div class="header-info-block white95-color float-left">
+                                <p class="title">Отдел продаж</p>
+                                <p class="phone">{{ currentCountry.callbackPhone }}</p>
+                            </div>
+                        {% endif %}
+                        {% block login %}
+                            {{ brouzie_render_widget('MetalUsersBundle:UserDropdownMenu', {'place' : '1'}) }}
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block head_banner %}
+                <div class="head-announcements-wrapper">
+                    <div class="head-announcements clearfix">
+                        <div class="left-announcement-wrapper">
+                            {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                        </div>
+                        <div class="right-announcement-wrapper">
+                            {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                        </div>
+                        <div class="wrap ">
+                            <div class="center-announcement table-container">
+                                <div class="head-banner table-cell">
+                                    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endblock head_banner %}
+
+            {% block menu %}
+                {{ knp_menu_render(project.menu_name, {'template' : 'MetalProjectBundle:Menu:base_top_menu.html.twig'}) }}
+            {% endblock %}
+
+            {% block search_form %}
+                {% set searchRoute = searchRoute|default('MetalProductsBundle:Products:search') %}
+                {% set searchSuggestRoute = searchSuggestRoute|default('MetalProductsBundle:Suggest:searchSuggest') %}
+                {% set searchPlaceholder = searchPlaceholder|default('Товар или компания') %}
+                {% set searchClass = searchClass|default('') %}
+
+                {% set productHelper = brouzie_helper('MetalProductsBundle') %}
+
+                {% set initializeTerritory = {'title': 'Все города', 'kind': 'country', 'id' : null, 'url' : path(searchRoute, {'subdomain': 'www'})} %}
+                {% if currentTerritory.getKind() != 'country' %}
+                    {% set initializeTerritory = {'title': currentTerritory.getTitle(), 'kind': currentTerritory.getKind(), 'id' : currentTerritory.getId(), 'url' : url(searchRoute, {'subdomain': currentTerritory.getSlug()})} %}
+                {% endif %}
+
+                <div class="search-block clearfix" ng-controller="Metal.Search as searchController"
+                     ng-init='searchController.initialize({{ initializeTerritory|json_encode|raw }})'>
+                    <form action="<%= searchUrl %>" class="search-form">
+                        <fieldset id="search-fixed" class="main-block js-fixed {{ searchClass }}">
+                            <div class="wrap clearfix ">
+                                <div class="search-field-wrap float-left">
+                                    <span class="icon-search-big"></span>
+                                    <input name="query" type="text"
+                                         placeholder="{{ searchPlaceholder|escape('html_attr') }}"
+                                         value="{{ app.request.query.get('q')|escape('html_attr') }}"
+                                         typeahead=""
+                                         typeahead-remote-url="{{ path(searchSuggestRoute, {'query': '__QUERY__', 'subdomain': app.request.attributes.get('subdomain') ?: 'www'}) }}"
+                                         typeahead-remote-url-callback="searchController.buildUrl(url, query)"
+                                         typeahead-loading="typeaheadSearchLoading"
+                                         typeahead-model="q"
+                                         class="search-input" />
+                                </div>
+
+                                    <div class="search-submit-wrapper float-right" ng-controller="Metal.CitiesWidgetPopoverOpener as citiesWidgetPopoverOpenerController">
+                                        <div class="loading-mask" ng-show="typeaheadSearchLoading" style="background: #fff;">
+                                            <div class="spinner"></div>
+                                        </div>
+                                        {% if project.portal_enabled %}
+                                            <span class="change-location icon-check js-popover-opener float-left clickable"
+                                                  data-popover="#search-cities"
+                                                  ng-click='citiesWidgetPopoverOpenerController.loadPopover("search-cities")'
+                                                  data-different-position="true"
+                                                  data-offset-left="3"
+                                                  data-offset-top="-1"
+                                                  >
+                                                 <%= searchTerritory.title %>
+                                            </span>
+                                        {% endif %}
+
+                                        <button type="submit" class="button search-submit blue-bg float-left ie-radius">
+                                            <span class="search-text">Найти</span>
+                                            <span class="search-text-mob">
+                                                <span class="icon-search-big"></span>
+                                            </span>
+                                        </button>
+                                    </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="more">
+                            <div class="wrap clearfix">
+                                {% block find_provider %}
+                                    {% set displayFindProviderBlock = displayFindProviderBlock is defined ? displayFindProviderBlock : false %}
+
+                                    {% if displayFindProviderBlock %}
+                                        {% set targetObjectForFindProviderDefault = 'other' %}
+                                        {% set objectIdForFindProviderDefault = null %}
+                                        {% if currentCategory %}
+                                            {% set targetObjectForFindProviderDefault = 'category' %}
+                                            {% set objectIdForFindProviderDefault = currentCategory.id %}
+                                        {% endif %}
+                                        {% set targetObjectForFindProvider = targetObjectForFindProvider|default(targetObjectForFindProviderDefault) %}
+                                        {% set objectIdForFindProvider = objectIdForFindProvider|default(objectIdForFindProviderDefault) %}
+
+                                        {% set categoryForFindProvider = categoryForFindProvider|default(currentCategory) %}
+                                        {% set fromForFindProvider = fromForFindProvider|default('other') %}
+
+                                        {% set itemTitleForFindProvider = itemTitleForFindProvider|default(null) %}
+                                        {% if not itemTitleForFindProvider and categoryForFindProvider %}
+                                            {% set itemTitleForFindProvider = categoryForFindProvider.title %}
+                                        {% endif %}
+
+                                        {% set callbackAttrs %}
+                                            class="callback link clickable js-popup-opener"
+                                            data-popup="#callback-moderator"
+                                            data-callback-url="{{ path('MetalCallbacksBundle:Callback:savePublic', {
+                                                'target_object': targetObjectForFindProvider,
+                                                'id': objectIdForFindProvider,
+                                                'from': fromForFindProvider,
+                                                'category': categoryForFindProvider ? categoryForFindProvider.id : null
+                                            }) }}"
+                                        {% endset %}
+
+                                        {% set demandAttrs %}
+                                            class="link clickable demand"
+                                            popup-opener="#request-demand"
+                                            data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                                            {% if currentCity %}
+                                                data-city-text="{{ currentCity.title }}"
+                                                data-city-id="{{ currentCity.id }}"
+                                            {% endif %}
+                                            {% if currentRegion %}
+                                                data-city-text="{{ currentRegion.getAdministrativeCenter.title }}"
+                                                data-city-id="{{ currentRegion.getAdministrativeCenter.id }}"
+                                            {% endif %}
+                                            data-product-text="{{ itemTitleForFindProvider }}"
+                                        {% endset %}
+                                        <!--noindex-->
+                                            <div class="info {% if categoryForFindProvider %} float-right {% else %} centered {% endif %}">
+                                                <p>
+                                                    {% if categoryForFindProvider %}
+                                                        {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+                                                        {% if attributesCollection|length %}
+                                                            {% set productFirstAttributeTitle = attributesCollection|first|first.value %}
+                                                        {% endif %}
+
+                                                        <strong>
+                                                            {{ categoryForFindProvider.title }} {{ productFirstAttributeTitle|default('') }}
+                                                        </strong>
+                                                        <span {{ demandAttrs }}>купить
+                                                            {% if currentCity %}
+                                                                в {{ currentCity.titleLocative }}
+                                                            {% endif %}
+                                                        </span>
+                                                        по лучшей цене!
+                                                        {% if currentCountry.callbackPhone and projectHelper.isWorkingTime() %}
+                                                            <span {{ callbackAttrs }}>
+                                                                <strong class="phone-text">
+                                                                    {{ currentCountry.callbackPhone }}
+                                                                </strong>
+                                                            </span>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <span {{ demandAttrs }}>
+                                                            <strong>Отправьте заявку на {{ tokens.product_title.nominative }}</strong>
+                                                        </span>
+                                                        {% if currentCountry.callbackPhone and projectHelper.isWorkingTime() %}
+                                                            или позвоните
+                                                            <span {{ callbackAttrs }}>
+                                                                <strong class="phone-text">
+                                                                    {{ currentCountry.callbackPhone }}
+                                                                </strong>
+                                                            </span>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        <!--/ noindex -->
+                                    {% endif %}
+                                {% endblock find_provider %}
+
+                                {% block search_part %}
+                                    {% set categoryForSearch = categoryForSearch|default(currentCategory) %}
+
+                                    {% if categoryForSearch %}
+                                        <div class="check-holder is-gradiented">
+                                            <input id="context-search" name="category" type="checkbox"
+                                                   class="js-styled-checkbox bg-white"
+                                                   value="{{ categoryForSearch.id }}" {% if app.request.query.get('context') %} checked="checked"{% endif %}/>
+                                            <label for="context-search" title="Искать только в разделе «{{ categoryForSearch.title }}»" >Искать только в
+                                                разделе «{{ categoryForSearch.title }}»</label>
+                                        </div>
+                                    {% endif %}
+                                {% endblock search_part %}
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            {% endblock search_form %}
+
+            <div id="main" class="{% block main_block_additional_class '' %} clearfix">
+                {% if landingTemplate is defined and landingTemplate %}
+                    <div class="land-background" style="background-image: url({{ vich_uploader_asset(landingTemplate, 'uploadedFile')|imagine_filter('landing_template_big') }}); background-size: cover;"></div>
+                {% endif %}
+                {% block side_announcements %}
+                    {% set additionalWrapperClass -%}
+                        {% block additional_announcement_wrapper_class '' %}
+                    {%- endset %}
+                    <div class="left-announcement-wrapper {{ additionalWrapperClass }}">
+                        <div class="js-fixed-side-banner">
+                            {% block side_announcement_left %}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'left-sidebar', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null, 'additional_class' : 'left-announcement'}) }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                    <div class="right-announcement-wrapper {{ additionalWrapperClass }}">
+                        <div class="js-fixed-side-banner">
+                            {% block side_announcements_right %}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'right-sidebar-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'right-sidebar-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null, 'additional_class' : 'right-announcement'}) }}
+                                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'right-sidebar-3', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null, 'additional_class' : 'right-announcement'}) }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                {% endblock side_announcements %}
+                <div class="wrap clearfix">
+                    {% block breadcrumbs %}
+                        {% set categoryForBreadcrumbs = categoryForBreadcrumbs|default(currentCategory) %}
+
+                        {% if categoryForBreadcrumbs %}
+                            <div class="breadcrumbs-wrapper" id="breadcrumbs-wrapper">
+                                <div class="breadcrumbs outline">
+                                    {% block breadceumbs_inside %}
+                                        {% block breadcrumbs_button '' %}
+                                        {% stopwatch 'breadcrumbs-widget' %}
+                                            {% block breadcrumbs_widget '' %}
+                                        {% endstopwatch %}
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+
+                    {% block banner %}
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'other', 'zone_slug' : 'premium', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null, 'additional_class' : 'premium-announcement'}) }}
+                    {% endblock %}
+
+                    {% block callback %}
+                        {% set displayCallbackBlock = displayCallbackBlock is defined ? displayCallbackBlock : false %}
+                        {% set attributes = attributes|default(null)  %}
+
+                        {% if displayCallbackBlock %}
+                            {% set callbackFromProduct = callbackFromProduct|default(false) %}
+                            {% set targetObjectDefault = 'other' %}
+                            {% set targetObject = targetObject|default(targetObjectDefault) %}
+                            {% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+                            {% if currentCategory %}
+                                {% block target_object_for_landing %}
+                                    {% set targetObject = 'category' %}
+                                {% endblock %}
+                                {% set object = currentCategory %}
+                                {% set paramsArray = seoHelper.getParametersTitlesPerGroup() %}
+                                {% if paramsArray %}
+                                    {% set attributes = seoHelper.implodeParametersGroups(paramsArray, ' ', ' ') %}
+                                {% endif %}
+                            {% endif %}
+
+                            {#TODO: вернуть как было после четверга 16.2017#}
+                            {#-------------#}
+                            <style type="text/css">
+                                .centered-all{
+                                    display: table-cell;
+                                    font-size: 24px;
+                                    vertical-align: middle;
+                                    text-align: center;
+                                }
+                                .for-callback-title{
+                                    font-size: 24px;
+                                }
+                            </style>
+                            {% set formattingHelper = brouzie_helper('MetalAnnouncementsBundle') %}
+                            {% set excludedRoutes = ['MetalProjectBundle:Default:index', 'MetalDemandsBundle:Default:index'] %}
+                            {% set currentRoute = app.request.attributes.get('_route') %}
+                            {% set replaceAnnouncement = formattingHelper.shouldReplacePremiumAnnouncement() and currentRoute not in excludedRoutes %}
+                            {#-------------#}
+                            {% set callbackAttrs %}
+                                class="{% if replaceAnnouncement %}for-callback-title{% else %}callback-link{% endif %} link clickable js-popup-opener"
+                                data-popup="#callback-moderator{{ callbackFromProduct ? '-for-product' }}"
+                                {% if callbackFromProduct %}
+                                    data-callback-text="Меня интересует {{ object.category.title }} {{ attributes }} в {{ currentTerritory.titleLocative }}"
+                                {% endif %}
+                                {% if callbackFromProduct and not object.isContractPrice() %}
+                                    data-volume-tipe="{{ object.measureId }}"
+                                {% endif %}
+                                data-callback-url="{{ path('MetalCallbacksBundle:Callback:savePublic', {
+                                    'id' : object.id|default(null),
+                                    'target_object' : targetObject,
+                                    'for_moderator' : true,
+                                    'from': callbackFormFrom,
+                                    'for_product' : callbackFromProduct }) }}"
+                            {% endset %}
+                            {% set demandAttrs %}
+                                <span class="link clickable"
+                                    popup-opener="#request-demand"
+                                    data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                                    {% if object is defined %}
+                                        data-product-text="{% if callbackFromProduct %} {{ object.category.title }} {% else %} {{ object.title }} {% endif %} {{ attributes }}"
+                                    {% endif %}
+                                    {% if callbackFromProduct and not object.isContractPrice() %}
+                                        data-volume-type="{{ object.measureId }}"
+                                    {% endif %}
+                                    {% if currentCity %}
+                                        data-product-city-id="{{ currentCity.id }}"
+                                        data-city-text="{{ currentCity.title }}"
+                                        data-city-id="{{ currentCity.id }}"
+                                    {% endif %}
+                                    {% if currentRegion %}
+                                        data-product-city-id="{{ currentRegion.getAdministrativeCenter.id }}"
+                                        data-city-text="{{ currentRegion.getAdministrativeCenter.title }}"
+                                        data-city-id="{{ currentRegion.getAdministrativeCenter.id }}"
+                                    {% endif %}
+                                >
+                            {% endset %}
+                            {% filter normalize_whitespace %}
+                                <div
+                                    {% if replaceAnnouncement %}
+                                        class="announcement has-announcement title-callback big-size"
+                                        style="width: 100%; height: 90px; background: white none repeat scroll 0 0; display: table;"
+                                    {% else %}
+                                        class="title-callback outline big-size"
+                                    {% endif %}
+                                >
+                                    <div
+                                        {% if replaceAnnouncement %}
+                                            class="centered-all"
+                                        {% endif %}
+                                    >Купить
+                                        {% if callbackFromProduct %}
+                                            {{ object.category.getTitleAccusativeForEmbed() }}
+                                        {% else %}
+                                            {{ object.getTitleAccusativeForEmbed()|default(tokens.product_title.nominative) }}
+                                        {% endif %}
+                                        {{ attributes }}
+                                        {% if project.family == 'product' %}
+                                            оптом
+                                        {% endif %}
+                                        в {{ currentTerritory.getTitleLocative() }}
+                                        по лучшей цене
+                                    </div>
+                                    <div>
+                                        {% if currentCountry.callbackPhone %}
+                                            {% if projectHelper.isWorkingTime() %}
+                                                <strong class="phone-company">{{ currentCountry.callbackPhone }}</strong>
+                                            {% endif %}
+                                            {% if replaceAnnouncement %}
+                                                {{ demandAttrs }}оставить заявку</span>
+                                            {% else %}
+                                                <span {{ callbackAttrs }}>обратный звонок</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfilter %}
+                        {% endif %}
+                    {% endblock %}
+                    <div class="wrapper outline clearfix {% block wrapper_additional_class '' %}">
+                        {% block sidebar '' %}
+                        {% block content %}
+                            {% block tabs '' %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer" >
+        <div class="footer-content wrap">
+            {% block footer %}
+                {{ include('@MetalProject/partials/footer.html.twig') }}
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block additional_popups %}
+        {{ parent() }}
+        {{ brouzie_render_widget('MetalDemandsBundle:DemandAnswerForm') }}
+
+        {% if routeTypeForHeader is not defined %}
+            {% set routeTypeForHeader = 'frontpage' %}
+        {% endif %}
+
+        {% if loadingRoute is not defined %}
+            {% set loadingRoute = 'MetalProductsBundle:Api:territorial' %}
+        {% endif %}
+
+        {% if counterName is not defined %}
+            {% set counterName = project.suppliers_menu_counter_name %}
+        {% endif %}
+
+        {% if filterParameters is not defined %}
+            {% set filterParameters = {} %}
+        {% endif %}
+
+        {{ brouzie_render_widget('MetalTerritorialBundle:Cities', {
+            'id' : 'header-cities',
+            'counter_name' : counterName,
+            'loading_route' : loadingRoute,
+            'route_type' : routeTypeForHeader,
+            'is_header': true,
+            'category' : currentCategory,
+            'category_slug' : app.request.attributes.get('category_slug'),
+            'filter_parameters' : filterParameters
+        }) }}
+
+        {% block search_cities %}
+            {{ brouzie_render_widget('MetalTerritorialBundle:Cities', {
+                'id' : 'search-cities',
+                'counter_name' : project.suppliers_menu_counter_name,
+                'loading_route' : 'MetalProductsBundle:Api:territorial',
+                'route_type' : 'search',
+                'ng_controller': 'Metal.CitiesWidgetSearchPopover'
+            }) }}
+        {% endblock %}
+
+        {% if project.portal_enabled %}
+             {{ brouzie_render_widget('MetalTerritorialBundle:Countries', {'country': currentCountry}) }}
+        {% endif %}
+
+        {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : false}) }}
+        {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': true}) }}
+        {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': false, 'for_product' : true}) }}
+    {% endblock %}
+
+    <script type="text/ng-template" id="cities-widget">
+        <div class="popover-content-wrapper">
+            <div class="loading-mask" ng-if="!regionsLoaded">
+                <div class="spinner"></div>
+            </div>
+            <div class="cities_top">
+                <ul class="dropdown menu-drop">
+                    <li class="drop-item first">
+                        <span class="drop-link current is-gradiented js-popover-self-closer" ng-show="activeTerritory" title="<%= activeTerritory.title %>"><%= activeTerritory.title %></span>
+                        <span class="drop-link current is-gradiented js-popover-self-closer" ng-show="!activeTerritory" title="<%= countryTerritory.title %>"><%= countryTerritory.title %></span>
+                        <a class="drop-link is-gradiented js-popover-self-closer" ng-show="activeTerritory.kind != 'country'" title="Все города"
+                           ng-click="citiesWidgetPopoverController.handleSelection(countryTerritory, 'country')"><%= countryTerritory.title %></a>
+                    </li>
+                    <li class="drop-item" ng-repeat="city in preferredCities">
+                        <a class="drop-link is-gradiented js-popover-self-closer" title="<%= city.title %>"
+                           ng-click="citiesWidgetPopoverController.handleSelection(city, 'city')"
+                                ><%= city.title %></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="cities_bottom">
+                <fieldset class="cities_search">
+                    <div class="search_field-wrapper">
+                        <input class="search_form-text js-search-query ie-radius" ng-model="$parent.territorialTitle" type="text"
+                               placeholder="Город или область" />
+                        <button class="icon-search-small search-button" type="button"></button>
+                    </div>
+                </fieldset>
+                <div class="js-scrollable" js-scrollable>
+                    <ul class="cities_find-list">
+                        <li ng-repeat="region in filteredRegions | filter:{all_cities_without_url: '!'}"
+                            class="drop-item first">
+                            <a class="drop-link is-gradiented js-popover-self-closer" title="<%= region.title %>"  ng-if="region.id != 'other'"
+                               ng-click="citiesWidgetPopoverController.handleSelection(region, 'region')"><%= region.title %></a>
+                            <span class="drop-link current is-gradiented js-popover-self-closer" title="<%= region.title %>"  ng-if="region.id == 'other'"
+                               ><%= region.title %></span>
+                            <ul class="level-inside">
+                                <li ng-repeat="city in region.cities | filter:{url: '!!'}" class="drop-item ">
+                                    <a class="drop-link is-gradiented js-popover-self-closer" title="<%= city.title %>"
+                                       ng-click="citiesWidgetPopoverController.handleSelection(city, 'city')"><%= city.title %></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </script>
+{% endblock %}

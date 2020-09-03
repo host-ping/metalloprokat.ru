@@ -1,0 +1,375 @@
+{% extends '@markup/corporate/_corporate_layout.html.twig' %}
+{% block title 'Corporate site - Services' %}
+{% block header_menu %}
+    {% set activeMenu = 'services' %}
+    {{ parent() }}
+{% endblock header_menu %}
+{% block content %}
+    <div id="content" class="corporate-content service content-wide">
+        <div class="service-wrapper">
+            <div class="table-box-holder">
+                <table class="service">
+                    <thead>
+                        <tr class="row top"> {#fixed#}
+                            <th class="package-name col">
+                                <span>Пакет услуг</span>
+                            </th>
+                            <th class="base-package col">
+                                <span class="star-mini icon-star default"></span> {#FIXED#}
+                                <p>Базовый</p>
+                            </th>
+                            <th class="large-package col">
+                                <span class="star-mini icon-star hovered"></span> {#FIXED#}
+                                <p>Расширенный</p>
+                            </th>
+                            <th class="full-package col">
+                                <span class="star-mini icon-star-colored"></span> {#FIXED#}
+                                <p>Полный</p>
+                            </th>
+                        </tr>
+                        <tr class="row bottom">
+                            <th class="package-name-wrapper col">
+                                <div class="package-name">
+                                    <span class="icon-check black js-popover-opener" data-popover="#package-period">На квартал</span>
+                                    <div id="package-period" class="drop-wrapper package-period opacity-border">
+                                        <ul class="dropdown">
+                                            <li class="drop-item">
+                                                <a class="drop-link current" href="#">На квартал</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">На месяц</a>
+                                            </li>
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="#">На год</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </th>
+                            <th class="base-package col">
+                                <p class="price">Бесплатно</p>
+                            </th>
+                            <th class="large-package col">
+                                <p class="price">17 500 <span class="icon-rouble"></span></p>
+                                <a class="buy-btn button green-bg ie-radius" href="#">Купить</a>
+                            </th>
+                            <th class="full-package col">
+                                <p class="price">20 000 <span class="icon-rouble"></span></p>
+                                <a class="buy-btn button green-bg ie-radius" href="#">Купить</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="title col" colspan="4">
+                            <p class="title-text">Компании</p>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="После регистрации ваша компания бесплатно размещается в каталоге.
+                                                                        Изначально компания в списке отображается без логотипа и выделения цветом.
+                                                                        При подключении расширенного доступа ваш логотип будет размещен в каталоге напротив вашей компании.
+                                                                        А при подключении полного доступа ваша компания в списке в будет заметно выделена цветом.">Размещение в каталоге</p>
+                        </td>
+                        <td class="base-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Сразу после регистрации ваша компания попадает на
+                                                                        первое место в Каталог. Однако, новые зарегистрированные
+                                                                        компании и компании, пользующиеся расширенным и полным доступом,
+                                                                        постепенно смещают ее вниз. Чтобы ваша компания всегда
+                                                                        была в числе первых - вам нужно чаще заходить на портал.
+                                                                        Каждый ваш визит поднимет компанию на первое место.">Поднятие в списке</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Логотип компании, размещенный в списке Каталога,
+                                                                        увеличивает узнаваемость компании, а также возможность
+                                                                        перехода на визитную карточку. Обратите внимание на
+                                                                        отличие между компанией без логотипа в списке и с
+                                                                        логотипом. Очевидно, компания с логотипом выглядит
+                                                                        значительно выгоднее.
+                                                                        Услуга доступна для пользователей с расширенным и полным доступом.">Отображение с логотипом</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="При базовом доступе портала ваша визитная карточка
+                                                                        отображается в контексте оформления портала, со
+                                                                        ссылками на другие разделы и тематические предложения
+                                                                        от других компаний.
+                                                                        Начиная с расширенного доступа вы получаете индивидуальное
+                                                                        оформление и полное отсутствие 'чужой' рекламы.
+                                                                        Это позволяет посетителю сконцентрироваться
+                                                                        исключительно на вашей компании.">Личная визитная карточка</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Вы будете существенно заметнее на фоне компаний с
+                                                                        расширенным доступом к порталу, если ваша компания
+                                                                        будет выделена в списке цветом. В сочетании с
+                                                                        поднятием на первое место это даст значительный эффект.">Выделение в списке</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Обладая полным доступом к порталу, вы сможете
+                                                                        оформить вашу визитную карточку в соответствие с
+                                                                        вашими корпоративными цветами или установив
+                                                                        тематический фон. Таким образом, вы настраиваете
+                                                                        посетителя на нужный лад, делая свою страницу
+                                                                        полностью уникальной.">Индивидуальное оформление визитной карточки</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Вы будете существенно заметнее на фоне компаний с
+                                                                        расширенным доступом к порталу, если ваша компания
+                                                                        будет выделена в списке цветом. В сочетании с
+                                                                        поднятием на первое место это даст значительный эффект.">отображение товаров во всех городах России</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                        <td class="full-package col">
+                            <a class="spec-anchor" href="#spec-anchor">*</a>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Обладая полным доступом к порталу, вы сможете
+                                                                        оформить вашу визитную карточку в соответствие с
+                                                                        вашими корпоративными цветами или установив
+                                                                        тематический фон. Таким образом, вы настраиваете
+                                                                        посетителя на нужный лад, делая свою страницу
+                                                                        полностью уникальной.">отображение товаров во всех городах СНГ</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                        <td class="full-package col">
+                            <a class="spec-anchor"  href="#spec-anchor">*</a>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="title col" colspan="4">
+                            <p class="title-text">Предложения</p>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Для продвижения товаров своей компании первым делом
+                                                                        нужно разместить предложения. Для этого нужно
+                                                                        заполнить простейший шаблон своими товарами и
+                                                                        закачать на сайт. После проверки модератором ваши
+                                                                        товары отобразятся в разделе Предложения.">Размещение в ХОТ</p>
+                        </td>
+                        <td class="base-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="По мере закачки предложений другими компаниями,
+                                                                        ваши предложения спускаются ниже и ниже в списке.
+                                                                        Чтобы предложения снова попали на первое место,
+                                                                        вам нужно всего лишь зайти на сайт и авторизоваться.
+                                                                        Эта услуга доступна только пользователям расширенного
+                                                                        или полного доступа.">Поднятие в списке</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Предложение с фотографией привлекает гораздо больше
+                                                                        внимания. Посетитель быстрее читает графическую
+                                                                        информацию, а потом обращает внимание на текст.
+                                                                        Вы можете загрузить фото сразу для группы товаров,
+                                                                        если вы являетесь пользователем полного или расширенного
+                                                                        доступа.">Отображение с фото</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Если вы являетесь пользователем расширенного или
+                                                                        полного доступа, напротив ваших предложений в списке
+                                                                        отображается контактная информация. Потенциальному
+                                                                        покупателю необязательно делать лишний клик, чтобы
+                                                                        связаться с вами.">Отображение с контактной информацией</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Мы можем помочь вам в преобразовании вашего
+                                                                        прайс-листа в наш формат, для закачки в раздел
+                                                                        Предложения. Эта услуга предоставляется разово
+                                                                        пользователям расширенного доступа и на постоянной
+                                                                        основе пользователям полного доступа.">Разовая обработка прайс-листа</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Дополнительный способ привлечь к себе внимание -
+                                                                        выделить предложение в списке цветом. В сочетании с
+                                                                        фотографией и поднятием на первое место вы получите
+                                                                        максимальный эффект от раздела Предложения.">Выделение в списке</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col"></td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Мы можем помочь вам в преобразовании вашего
+                                                                        прайс-листа в наш формат, для закачки в раздел
+                                                                        Предложения. Эта услуга предоставляется разово
+                                                                        пользователям расширенного доступа и на постоянной
+                                                                        основе пользователям полного доступа.">Постоянная обработка прайс-листа</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col"></td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="title col" colspan="4">
+                            <p class="title-text">Спрос</p>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Вы можете бесплатно просматривать все заявки из
+                                                                        раздела Спрос. Предоставляется вся необходимая
+                                                                        информация о заявке (потребность, объемы, сроки,
+                                                                        регион), чтобы понять - интересна эта заявка или
+                                                                        нет.">Просмотр базовой информации о заявках</p>
+                        </td>
+                        <td class="base-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row even">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Подключив расширенный или полный доступ вам станет
+                                                                        доступна контактная информация более 150 тысяч
+                                                                        заявок из раздела Спрос. Минимально мы публикуем
+                                                                        телефон и контактное лицо. В большинстве случаев
+                                                                        доступно также название компании и адрес электронной
+                                                                        почты.">Доступ к контактной информации</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    <tr class="row odd">
+                        <td class="package-name col">
+                            <p class="name js-helper-opener" data-text="Пользователи полного доступа могут экспортировать
+                                                                        списки заявок в формат Excel, и, таким образом, иметь
+                                                                        возможность работать с заявками вне зависимости от
+                                                                        наличия интернета.">экспорт XLS</p>
+                        </td>
+                        <td class="base-package col"></td>
+                        <td class="large-package col"></td>
+                        <td class="full-package col">
+                            <span class="icon-check-big"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="spec-inform">
+                <span class="spec-anchor">*</span>
+                <a name="spec-anchor"></a>
+                <span>Эти пункты оплачиваются дополнительно и на самом деле не входят в полный пакет.</span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

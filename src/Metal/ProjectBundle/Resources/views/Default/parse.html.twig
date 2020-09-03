@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.min.css" />
+
+        <script src="//yandex.st/jquery/1.7.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.js"></script>
+        <style>
+            table, table td, table th {
+                border: 1px solid #888;
+                border-collapse: collapse;
+                font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+            }
+            textarea{
+                font-size: 14px;
+                line-height: 17px;
+            }
+            td {
+                font-size: 14px;
+                line-height: 16px;
+                padding: 0 3px;
+                vertical-align: top;
+            }
+            .legend {
+                font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+                color: #888;
+            }
+            .result, .input {
+                width: 1000px;
+            }
+            .original .title {
+                color: #888;
+            }
+            .original .attributes {
+                color: #800;
+            }
+            .original .price {
+                color: #008;
+            }
+            .original .size {
+                color: #080;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="post" action="{{ path('MetalProjectBundle:Parse:parse') }}">
+            <label for="category-field">Раздел:</label><br />
+            <select name="category" id="category-field" style="width: 300px;">
+                {% set selectedCategoryId = app.request.request.get('category') %}
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selectedCategoryId == category.id %} selected="selected"{% endif %}>{{ category.title }}</option>
+                {% endfor %}
+            </select>
+            <br /><br />
+
+            <table class="wrapper" style="border: 0;">
+                <tr>
+                    <td style="border: 0;">
+                        <label for="text-field">Строки для парсинга <span class="legend">(статическая часть[tab]часть для парсинга[tab]цена[tab]{{ tokens.product_volume_title }})</span>:</label><br />
+                        <textarea name="text" id="text-field" class="input" rows="25">{{ app.request.request.get('text') }}</textarea>
+                    </td>
+                    <td id="preview" style="border: 0; vertical-align: top;">
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input type="submit" value="Разобрать" />
+            <input type="button" class="js-clear-selection" value="Снять выделение текста" />
+        </form>
+
+        {% if rows is defined %}
+            <h2>Результат разбора</h2>
+            <table class="result">
+                <tr>
+                    <th>#</th>
+                    <th>Наименование</th>
+                    {#<th>Дополнительная информация</th>#}
+                    <th>{{ tokens.product_volume_title|capitalize }}</th>
+                    <th>Цена</th>
+                </tr>
+
+                {% for row in rows %}
+                    <tr>
+                        <td><b>{{ loop.index }}</b></td>
+                        <td colspan="3" class="original">
+                            <span class="title">{{ row.parts.title }}</span>
+                            <span class="attributes">{{ row.parts.attributes }}</span>
+                            <span class="price">{{ row.parts.price }}</span>
+                            <span class="size">{{ row.parts.size }}</span>
+                        </td>
+                    </tr>
+                    {% for attribute in row.normalizedAttributes %}
+                        <tr>
+                            <td>{{ loop.parent.loop.index }}.{{ loop.index }}</td>
+                            <td>{{ row.parts.title }} {{ attribute }}</td>
+                            {#<td></td>#}
+                            <td>{{ row.parts.size }}</td>
+                            <td>{{ row.parts.price }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+
+            </table>
+        {% endif %}
+
+        <script>
+            $(document).ready(function() {
+                $('textarea').bind('keydown', function (e) {
+                    if (e.keyCode == 9) {
+
+                        var val = this.value,
+                            start = this.selectionStart,
+                            end = this.selectionEnd;
+
+                        this.value = val.substring(0, start) + '\t' + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + 1;
+
+                        return false;
+                    }
+                });
+
+                $('.js-clear-selection').bind('click', function() {
+                    if (window.getSelection) {
+                        window.getSelection().removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                });
+
+                $('select').select2({
+                    placeholder: '-----',
+                    showSearchInput: true
+                });
+
+                $('#text-field').bind('keyup', function(e) {
+                    var table = '<table><tr><th>#</th><th>Строка для парсинга</th></tr>';
+
+                    var value = $.trim($(e.target).val());
+                    var rows = value.split(/\r\n|\r|\n/);
+                    for (var i = 0, n = rows.length; i < n; i++) {
+                        var cols = rows[i].split(/\t/);
+
+                        table += '<tr><td>' + (i + 1) + '</td><td colspan="3" class="original">';
+
+                        var cls = ['title', 'attributes', 'price', 'size'];
+                        for (var j = 0, m = cols.length; j < m; j++) {
+                            table += '<span class="'+cls[j]+'">'+cols[j]+'</span> ';
+                        }
+
+                        table += '</td></tr>';
+                    }
+
+                    table += '</table>';
+
+                    $('#preview').html(table);
+                }).trigger('keyup');
+            });
+        </script>
+    </body>
+</html>

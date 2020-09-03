@@ -1,0 +1,59 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Адрес / Мини-сайт / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Address.js'
+    combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right" ng-controller="Metal.Address as addressController">
+        <div class="private-fix-width" ng-init='company = {{ companyArray|json_encode|raw }}'>
+            {{ block('tabs') }}
+            <div class="mini-site-content-wrapper">
+                <p class="text">Текущий адрес вашего сайта <a ng-href="<%= company.url %>"
+                                                              target="_blank" rel="noopener noreferrer"><%= company.domain %></a><br />
+                    Вы можете изменить адрес, однако, для поисковой оптимизации лучше всего, чтобы адрес был постоянным.
+                    Адрес можно менять только один раз.
+                </p>
+                <form id="address_form" class="address-form form"
+                      data-ajax-form="addressEditAjaxFormOptions"
+                      action="{{ path('MetalPrivateOfficeBundle:MiniSite:address') }}"
+                      method="post"
+                      novalidate="novalidate">
+                    <fieldset class="clearfix">
+                        <div class="site-name-wrapper field-wrap float-left">
+                            {{ form_widget(form.slug, {'attr' : {'class' : 'site-name form-text ie-radius js-slug', 'placeholder' : 'Ваше имя', 'ng-model' : 'company.slug', 'ng-disabled' : 'company.isSlugChanged'}} ) }}
+                        </div>
+                        <div class="point float-left">.</div>
+                        <div class="form-select-wrapper field-wrap float-left">
+                            {% if form.domainId is defined %}
+                                {{ form_widget(form.domainId, {'attr' : {'class' : 'form-select ie-radius'}} ) }}
+                            {% else %}
+                                <input type="text" class="form-text ie-radius" value="{{ companyArray.countryBaseHost }}" disabled="disabled"/>
+                            {% endif %}
+                        </div>
+                        <div class="address-msg float-left" ng-if="">
+                            <p class="text positive" ng-show="addressMsg">Адрес используется вами</p>
+                        </div>
+                    </fieldset>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="button green-bg ie-radius" value="использовать" ng-disabled="company.isSlugChanged" />
+                        <div class="loading-mask" ng-show="changingSlug" ng-cloak>
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    <p class="last-update" ng-if="company.isSlugChanged">Адрес изменен <%= company.slugChangedDate %></p>
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

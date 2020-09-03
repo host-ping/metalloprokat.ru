@@ -1,0 +1,4 @@
+parameters:
+    assets_base_urls: [//assets.%base_host_metallspros%]
+    framework_session_cookie_domain: .%base_host_metallspros%
+    hostname_package_routing: metalspros

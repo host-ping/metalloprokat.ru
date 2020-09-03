@@ -1,0 +1,93 @@
+{% set popupId = 'demand-answer' %}
+
+<div id="{{ popupId }}"
+     class="demand-answer-block popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+<script type="text/html" id="{{ popupId }}-template">
+
+    <div class="popup-content">
+        <div class="title-popup">Ответ на потребность <strong class="count red-color">№<span data-bind-text="demand-id"></span></strong></div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              class="popup-form js-ajax-form-submit"
+              data-bind-attr="action:demand-answer-url"
+              data-success="close-popup"
+              method="post"
+              novalidate="novalidate">
+            <fieldset>
+                <div class="group clearfix">
+                    {% if form.company is defined %}
+                        <div class="field-wrap float-left">
+                            {{ form_widget(form.company, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Компания' }} ) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.city  is defined %}
+                        <div class="city-wrapper field-wrap float-left">
+                            {{ form_widget(form.cityTitle, {'attr' : {
+                                'class' : 'answer-form_city form-text ie-radius',
+                                'placeholder' : 'Город',
+                                'typeahead' : '',
+                                'typeahead-loading' : 'typeaheadLoading',
+                                'data-bind-value': 'city-text',
+                                'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getCitiesForCountry'),
+                                'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                'typeahead-model' : "city"
+                            } }
+                            ) }}
+                            <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoading">
+                                <div class="spinner"></div>
+                            </div>
+                            {{ form_widget(form.city, {'attr' : {
+                                'class' : 'g-hidden',
+                                'data-bind-value': 'city-id',
+                                'ng-model' : "city.id",
+                                'initial-value' : ''
+                            } }) }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="group clearfix">
+                    {% if form.name is defined %}
+                        <div class="user-name-wrapper field-wrap float-left">
+                            {{ form_widget(form.name, {'attr' : {'class' : 'answer-form_user-name form-text ie-radius', 'placeholder' : 'Имя' }} ) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.phone is defined %}
+                        <div class="phone-wrapper field-wrap float-left">
+                            {{ form_widget(form.phone, {'attr' : {'class' : 'phone answer-form_phone form-text ie-radius', 'placeholder' : 'Телефон' }} ) }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if form.email is defined %}
+                    <div class="answer_email-wrapper field-wrap">
+                        {{ form_widget(form.email, {'attr' : {'class' : 'answer-form_email form-email ie-radius', 'placeholder' : 'Электронная почта' }} ) }}
+                    </div>
+                {% endif %}
+
+                <div class="textarea-wrapper field-wrap">
+                    {{ form_widget(form.description, {'attr' : {'placeholder' : 'Комментарии', 'class': 'form-textarea ie-radius' }} ) }}
+                </div>
+
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit" value="Отправить"/>
+                </div>
+            </fieldset>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#{{ popupId }}').bind('popup.open', function(e) {
+            includeAjax(e.$popup);
+        });
+
+    });
+</script>

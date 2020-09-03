@@ -1,0 +1,194 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Main' %}
+{% block companyBanner %}
+	<div class="header-bottom head-bg" style="background-image: url(./markup/pic/img.jpg)">
+		<div class="wrap">
+			<div class="header-inner" style="background-image: url(./markup/pic/img.jpg)">
+				<div class="header-photos">
+					<form action="#">
+						<div class="logo-box logo-full">
+							<a href="#" class="logo-link">
+								<img src="./markup/pic/compani-logo.png" alt="image" width="168" height="168"/>
+							</a>
+							<label for="head-logo" class="logo-upload"></label>
+							<input type="file" id="head-logo" />
+							<span class="del-btn ico-delete-btn"></span>
+						</div>
+						<label for="head-photo" class=" btn-change header-upload">Загрузить шапку</label>
+						<input type="file" id="head-photo" />
+					</form>
+				</div>
+				<div class="company-info">
+					<strong class="title">Стальторг</strong>
+					<span class="subtitle">Продажа металлопроката</span>
+					<span class="phone">+7 (495) 904-53-13</span>
+					<span class="address">Люберцы, <a href="#" class="orange">Ялтинская 17</a></span>
+					<a href="#" class="btn-change">изменить</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock companyBanner %}
+{% block content %}
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+
+            <ul class="list">
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/reviews.html.twig') }}" class="link">Отзывы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-page content-holder clearfix">
+            <div class="clearfix">
+                <div class="admin-button-wrapper float-left">
+                    <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+                    <div class="minisite-title is-gradiented" title="Красноярский металлургический комбинат Сибэлектросталь">Красноярский металлургический комбинат Сибэлектросталь</div>
+                </div>
+                <div class="search-wrapper float-right">
+                    <form action="#">
+                        <fieldset>
+                            <input class="search-field form-text ie-radius" type="text" placeholder="Поиск"/>
+                            <button class="icon-search-small search-button" type="submit">
+
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <ul class="deals clearfix">
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#">
+                                <img src="./markup/pic/product-big.jpg" alt="image description"/>
+                            </a>
+                            <div class="info">
+                                <div class="title is-gradiented-bottom">
+                                    <a href="#" class="link">Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#"></a>
+                            <div class="info">
+                                <div class="title is-gradiented-bottom">
+                                    <a href="#" class="link">Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#"></a>
+                            <div class="info">
+                                <div class="title">
+                                    <a href="#" class="link">Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="announcement has-announcement float-left">
+                    <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description">
+                </li>
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#"></a>
+                            <div class="info">
+                                <div class="title is-gradiented-bottom">
+                                    <a href="#" class="link">Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#"></a>
+                            <div class="info">
+                                <div class="title is-gradiented-bottom">
+                                    <a href="#" class="link">Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item float-left">
+                    <div class="hover-block">
+                        <div class="dropdown">
+                            <a class="big-pattern" href="#"></a>
+                            <div class="info">
+                                <div class="title is-gradiented-bottom">
+                                    <a href="#" class="link">Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная Арматура строительная</a>
+                                </div>
+                                <p class="size gray60-color">Размер 30x30</p>
+                                <p class="price-wrapper gray60-color"><strong class="price">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+                            </div>
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </div>
+                    </div>
+
+                </li>
+                <li id="product-load-more" class="see-more-block-wrapper float-left">
+                    <div class="see-more-block">
+                        <a class="see-more button js-load-more ie-radius" href="#">Показать еще...</a>
+
+                        <div class="loading-mask">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <div class="search-info-block mini-site-links clearfix">
+            <a class="link" href="#">Арматура А1</a>
+            <a class="link" href="#">Сетка оцинкованная</a>
+            <a class="link" href="#">Винт с кольцом</a>
+            <a class="link" href="#">Лист стальной, металлический</a>
+            <a class="link" href="#">Труба восстановленная</a>
+            <a class="link" href="#">Балка</a>
+            <a class="link" href="#">Катанка</a>
+            <a class="link" href="#">Швеллер</a>
+            <a class="link" href="#">Труба б/у</a>
+            <a class="link" href="#">Арматура А2</a>
+        </div>
+    </div>
+{% endblock content %}

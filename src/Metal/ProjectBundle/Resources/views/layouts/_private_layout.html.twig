@@ -1,0 +1,232 @@
+{% extends '@MetalProject/layouts/_base_layout.html.twig' %}
+
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@MetalProjectBundle/Resources/public/css/private.css'
+        '@MetalProjectBundle/Resources/public/css/corporate.css'
+        '@MetalProjectBundle/Resources/public/css/mini-site.css'
+        '@MetalProjectBundle/Resources/public/css/ui-tree.css'
+        '@MetalProjectBundle/Resources/public/js-integration/libs/angular-ui-tree-master/dist/angular-ui-tree.css'
+        filter='phpcssembed,?uglifycss'
+        combine=true
+    %}
+        <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+    {% if projectHelper.isNewYearEve() %}
+        {# FIXME: удалить это помле исправления верстки #}
+        <style>
+            #header {
+                background-image: url({{ asset('bundles/metalproject/img/metalloprokat/back_bg6.jpg') }}) !important;
+                background-size: cover !important;
+                padding: 0 !important;
+                height: 38px;
+            }
+        </style>
+    {% endif %}
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var fileuploadAvailable = true;
+    </script>
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalProjectBundle/Resources/public/js/jquery.formstyler.1.4.9-private.js'
+        '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Reviews.js'
+        '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Subscription.js'
+        '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Categories.js'
+    combine = true
+    %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% set titleSuffix = app.request.attributes.get('country').domainTitle~' — Личный кабинет' %}
+
+{% block body_additional_class 'private-room no-scroll' %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+
+{# @var \Metal\ProjectBundle\Helper\DefaultHelper projectHelper #}
+{% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+
+{% block body %}
+    <div class="private-container container">
+        <div id="header" class="clearfix">
+            <div class="wrap">
+                {% block header %}
+                    <div class="private-heading float-left">
+                        <p class="private-title">Личный кабинет{% if app.user.company %} <span
+                                    class="private-numb green-color"><sup>#</sup>{{ app.user.company.id }}</span>{% endif %}
+                        </p>
+                    </div>
+                    <div class="logo-block float-right">
+                        <div class="logo float-left">
+                            {% if app.user.company %}
+                                <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': app.user.company.country.baseHost}) }}">
+                                    <img src="{{ asset(projectHelper.getLogo()) }}"
+                                         alt="{{ app.user.company.country.domainTitle }}"/>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': app.user.city.country.baseHost}) }}">
+                                    <img src="{{ asset(projectHelper.getLogo()) }}"
+                                         alt="{{ app.user.city.country.domainTitle }}"/>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="logo-text float-left">
+                            <p>
+                                {% if app.user.company  %}
+                                    <a class="header-logo-text" href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': app.user.company.country.baseHost}) }}">{{ app.user.company.country.domainTitle }}</a>
+                                {% else %}
+                                    <a class="header-logo-text" href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': app.user.city.country.baseHost}) }}">{{ app.user.city.country.domainTitle }}</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        {% block user_alert %}
+            {% if is_granted('ROLE_SUPPLIER') and is_granted('ROLE_APPROVED_USER') %}
+                {{ brouzie_render_widget('MetalPrivateOfficeBundle:ShowEndCompanyPackage', {'company' : app.user.company}) }}
+                {{ brouzie_render_widget('MetalPrivateOfficeBundle:MaxProductsCountLoad', {'company' : app.user.company}) }}
+            {% endif %}
+        {% endblock user_alert %}
+
+        <div id="main" class="no-padding">
+            <div class="wrap clearfix">
+                <div class="wrapper outline clearfix">
+                    {% block content %}
+                    {% block tabs %}
+                        <div class="result-tabs-wrapper clearfix">
+                            {{ knp_menu_render('private_menu', {'template' : 'MetalPrivateOfficeBundle:Menu:base_tabs_menu.html.twig'}) }}
+                            {% block after_tabs '' %}
+                        </div>
+                    {% endblock %}
+
+                    {% block filters '' %}
+                    {% endblock %}
+
+                    {% block sidebar %}
+                        <div id="sidebar" class="private-room side-left outline-left float-left">
+                            <div class="private-menu-wrapper js-scrollable js-calc-height-private-menu">
+                                {% block menu %}
+                                    <ul class="private-info list">
+                                        <li class="main-info item">
+                                            <div class="info-wrapper">
+                                                {% if app.user.company %}
+                                                    <div class="row-block clearfix">
+                                                        {{ companyMacroses.rating(app.user.company) }}
+                                                        {% if app.user.company.minisiteEnabled %}
+                                                            <a class="title is-gradiented" target="_blank"
+                                                               href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : app.user.company.domain, '_secure' : app.user.company.packageChecker.isHttpsAvailable()}) }}">{{ app.user.company.title }}</a>
+                                                        {% else %}
+                                                            <span class="title is-gradiented">{{ app.user.company.title }}</span>
+                                                        {% endif %}
+                                                    </div>
+
+                                                {% endif %}
+                                            </div>
+                                            <p class="user">{{ app.user.fullName }}</p>
+                                            {% if is_granted('ROLE_SUPPLIER') and is_granted('ROLE_APPROVED_USER') %}
+                                                {{ brouzie_render_widget('MetalPrivateOfficeBundle:ShowEndCompanyPackage', {
+                                                    'company' : app.user.company,
+                                                    '_template' : '@MetalPrivateOffice/widgets/ShowEndCompanyPackageOnMenuWidget.html.twig',
+                                                    'always_show' : true
+                                                }) }}
+                                            {% endif %}
+                                        </li>
+                                        {{ knp_menu_render('private_menu', {'template' : 'MetalPrivateOfficeBundle:Menu:base_sidebar_menu.html.twig'}) }}
+                                    </ul>
+                                {% endblock %}
+                                {% if app.user.company and app.user.company.manager %}
+                                    <div class="information">
+                                        <div class="questions">
+                                            <p class="text gray60-color">Вопросы?</p>
+                                            <p class="text">
+                                                {% if app.user.company.manager.phone %}
+                                                    <span class="phone-text">{{ app.user.company.manager.phone }}</span> или
+                                                {% elseif app.request.attributes.get('country').supportPhone %}
+                                                    <span class="phone-text">{{ app.request.attributes.get('country').supportPhone }}</span> или
+                                                {% endif %}
+                                                <span class="email-link clickable link js-popup-opener" data-popup="#add-support-request">пишите</span>
+                                            </p>
+                                        </div>
+
+                                        <div class="manager">
+                                            {% if imageHelper.getAvatarUrl(app.user.company.manager, '56x96') %}
+                                                <div class="manager-img float-left">
+                                                    {% set userPhotoUrl = imageHelper.getAvatarUrl(app.user.company.manager, '56x96') %}
+                                                    <img src="{{ userPhotoUrl }}"
+                                                         alt="{{ app.user.company.manager.fullName }}"
+                                                         title="{{ app.user.company.manager.fullName }}"
+                                                            />
+                                                </div>
+                                            {% endif %}
+                                            <div class="manager-info float-left">
+                                                <div class="manager-name">
+                                                    <p class="name">{{ app.user.company.manager.fullName }}</p>
+                                                    <p class="text gray60-color">вам поможет</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="information">
+                                        <div class="questions">
+                                            <p class="text gray60-color">Вопросы?</p>
+                                            <p class="text">
+                                                {% if app.request.attributes.get('country').supportPhone %}
+                                                    <span class="phone-text">{{ app.request.attributes.get('country').supportPhone }}</span> или
+                                                {% endif %}
+                                                <span class="email-link clickable link js-popup-opener" data-popup="#add-support-request">пишите</span></p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {{ include('@MetalProject/partials/counters.html.twig', {'display_mailru_logo' : false, 'webvisor' : false}) }}
+                            </div>
+                        </div>
+                    {% endblock sidebar %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer '' %}
+
+    {% block additional_popups %}
+        {{ parent() }}
+
+        {# Список контроллеров в которых нужно рендерить имейл виджеты #}
+        {% set requireEmailValidaton = [
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateProductsController::listAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateCitiesController::viewAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateCompanyCreationController::createCompanyAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateCompanyController::editAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateAccountController::viewAccountAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateMiniSiteController::addressAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateMiniSiteController::colorsAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateMiniSiteController::viewHeaderAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateMiniSiteController::analyticsAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateArchiveController::demandsAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateArchiveController::callbacksAction',
+            'Metal\\PrivateOfficeBundle\\Controller\\PrivateEmployeesController::listAction',
+            ]
+        %}
+
+        {% if app.request.attributes.get('_controller') in requireEmailValidaton %}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ConfirmedEmail') }}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ChangeEmailForm') }}
+        {% endif %}
+
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:AddTopicForm') }}
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:SelectCompanyCity') }}
+        {{ brouzie_render_widget('MetalCorpsiteBundle:OrderPackage', {'route': path('MetalPrivateOfficeBundle:Default:orderPackage')}) }}
+    {% endblock %}
+{% endblock body %}

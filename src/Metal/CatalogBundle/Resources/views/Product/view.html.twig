@@ -1,0 +1,191 @@
+{% extends 'MetalCompaniesBundle:Default:base_layout_company.html.twig' %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalCatalogBundle:Seo').getAdditionalMetaTagForProductPage()|raw }}
+{% endblock %}
+
+{% block title brouzie_helper('MetalCatalogBundle:Seo').getMetaTitleForProductPage(product) %}
+
+{% block meta_description brouzie_helper('MetalCatalogBundle:Seo').getMetaDescriptionForProductPage(product) %}
+
+{% block canonical_url %}
+    {{ brouzie_helper('MetalCatalogBundle:Seo').getCanonicalUrl() }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% set categoryForBreadcrumbs = product.category %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block breadcrumbs_widget %}
+    {% set breadcrumbsAppendItems = brouzie_helper('MetalCatalogBundle:Breadcrumbs').getBreadcrumbsForProduct(product) %}
+    {% set breadcrumbsRoute = 'MetalCatalogBundle:Products:list_category_subdomain' %}
+    {% set counterName = 'catalog_products_count' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block callback '' %}
+
+{% block content %}
+    {% set companiesSideWidget = brouzie_widget('MetalCatalogBundle:CompaniesSide', {'product' : product, 'city' : currentCity}) %}
+    {% set hasCompaniesToDisplay = companiesSideWidget.hasCompaniesToDisplay() %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="product-inside js-calc-height">
+                <div class="product-info-wrapper clearfix">
+                    <div class="product-img is-bordered float-left">
+                        <span class="img-link {% if not product.photo.name %}pattern-big{% endif %}">
+                            {% if product.photo.name %}
+                                <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq136_non_optim') }}"
+                                     alt="{{ product.title }}"
+                                     title="{{ product.title }}"
+                                     class="clickable js-popup-opener" data-popup="#product-photo"
+                                        />
+                            {% endif %}
+
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product_main-title">{{ product.title }} от {{ product.brand.value }}</h1>
+                        <div class="information">
+                            <div class="gray60-color">
+                                <p>{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                            </div>
+                            <div class="brand-info">
+                                Бренд: <a href="{{ path('MetalCatalogBundle:Brand:view', {'slug' : product.brand.slug}) }}" class="link">{{ product.brand.value }}</a>
+                            </div>
+                            <div class="manufacturer-info">
+                                Производитель: <a href="{{ path('MetalCatalogBundle:Manufacturer:view', {'slug' : product.manufacturer.slug}) }}" class="link">{{ product.manufacturer.value }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if product.description %}
+                    <div class="product-description">
+                        <div><strong>Описание</strong></div>
+                        <p class="text">{{ product.description|nl2br }}</p>
+                    </div>
+                {% endif %}
+                <div class="reviews-links">
+                    <div class="add-review-btn-wrapper product-description">
+                        <button class="add-review button green-bg js-popup-opener"
+                                data-popup="#add-review"
+                                data-review-url="{{ path('MetalCatalogBundle:Product:review', {'id' : product.id}) }}"
+                                >Добавить отзыв
+                        </button>
+                    </div>
+                    {#{% if reviewsCount %}#}
+                    {#<a target="_blank" class="all-reviews link"#}
+                    {#href="{{ path('MetalMiniSiteBundle:MiniSite:reviews', {'domain' : company.domain}) }}">Все отзывы</a>#}
+                    {#{% endif %}#}
+                </div>
+
+                {{ brouzie_render_widget('MetalCatalogBundle:CatalogProductTabs', {
+                    'product' : product,
+                    'page' : app.request.query.get('page', 1),
+                    'active_tab' : 'products-brand-tab',
+                    'city' : app.request.attributes.get('city'),
+                    'region' : app.request.attributes.get('region'),
+                    'country' : app.request.attributes.get('country')
+                }) }}
+
+            </div>
+        </div>
+
+        <div class="product-right right white95-bg table-cell static">
+            <div class="js-company-info-fixed">
+                <div class="info-wrapper white-bg">
+                    {% if hasCompaniesToDisplay %}
+                        {{ brouzie_render_widget(companiesSideWidget) }}
+                    {% endif %}
+
+                    <div class="add-companies-wrapper">
+                        <p class="title">
+                            <strong>Торгуете продукцией {{ product.brand.value }}?</strong>
+                        </p>
+                        <a data-href="{{ brouzie_helper('MetalProjectBundle:Url').getRegisterAndAddProductsUrl()}}" class="button green-bg ie-radius centered">Добавить компанию и товары</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ brouzie_render_widget('MetalCatalogBundle:ProductReviewForm', {'product' : product}) }}
+
+    {% if product.photo.name %}
+        <div id="product-photo" class="photo popup-block opacity-border large">
+            <div class="img-content">
+                <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq600_non_optim') }}" alt="{{ product.title }}" title="{{ product.title }}">
+            </div>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock additional_popups %}
+
+{% block search_form %}
+    {% set searchRoute = searchRoute|default('MetalCatalogBundle:Search:search') %}
+    {% set searchPlaceholder = searchPlaceholder|default('Введите строку поиска') %}
+
+    <div class="search-block clearfix">
+        <form action="{{ path(searchRoute) }}" class="search-form">
+            <fieldset id="search-fixed" class="main-block js-fixed">
+                <div class="wrap clearfix input-block">
+                    <div class="search-field-wrap float-left">
+                        <span class="icon-search-big"></span>
+                        <input name="q" type="text"
+                               placeholder="{{ searchPlaceholder|escape('html_attr') }}"
+                               value="{{ app.request.query.get('q')|escape('html_attr') }}"
+                               class="search-input" />
+                    </div>
+                    <div class="search-submit-wrapper float-right">
+                        <input type="submit" value="Найти" class="button search-submit blue-bg float-left ie-radius" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock search_form %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'premium', 'category_id' : product.category ? product.category.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'left-sidebar', 'category_id' : product.category ? product.category.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'background', 'category_id' : product.category ? product.category.id : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'right-sidebar-1', 'category_id' : product.category ? product.category.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'right-sidebar-2', 'category_id' : product.category ? product.category.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-product', 'zone_slug' : 'right-sidebar-3', 'category_id' : product.category ? product.category.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

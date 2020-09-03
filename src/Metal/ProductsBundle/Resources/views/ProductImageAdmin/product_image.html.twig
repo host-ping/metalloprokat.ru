@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% block field %}
+    {% if object.photo.name %}
+        {% set imageUrl = imageHelper.getPhotoUrlForProductPhoto(object, 'sq250') %}
+        {% set imageUrl600 = imageHelper.getPhotoUrlForProductPhoto(object, 'sq600') %}
+        <img style="max-width: 250px; max-height: 250px" src="{{ imageUrl }}" rel="popover" data-img="{{ imageUrl600 }}" />
+        <p><a href="{{ admin.generateUrl('download_file', {'id': object.id}) }}">Скачать оригинал</a></p>
+    {% endif %}
+
+{% endblock %}

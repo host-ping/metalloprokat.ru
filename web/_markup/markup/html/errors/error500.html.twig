@@ -1,0 +1,147 @@
+{% extends 'markup/html/_base_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="./markup/css/style-error.css" type="text/css" media="all"/>
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="container">
+        <div class="inside-container">
+            <div id="header" class="clearfix">
+                <div class="wrap">
+                    {% block header %}
+                        <div class="left float-left">
+                            <div class="logo float-left">
+                                <a href="/">
+                                    <img src="./markup/img/logo.png" width="36" height="27" alt="металлопрокат.ру"/>
+                                </a>
+                            </div>
+                            <div class="logo-text float-left">
+                                <p>
+                                    <a class="header-logo-text" href="#">металлопрокат.ру</a>
+                                </p>
+                            </div>
+                            <div class="location float-right">
+                                <span class="js-popover-opener icon-check current-location" data-popover="#cities" data-index="1001"
+                                      data-different-position="true">Россия</span>
+                                <span class="js-popover-opener icon-check current-location" data-popover="#cities" data-index="1001"
+                                      data-different-position="true">Екатеринбург</span>
+                            </div>
+                        </div>
+                        {% block login %}
+                            <div class="user-block float-right">
+                                <a class="login js-popup-opener icon-exit" data-popup="#login" href="#">Вход в кабинет</a>
+                                <a class="register-link js-popup-opener" data-popup="#register-company" href="#">Регистрация</a>
+                            </div>
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block menu %}
+                <div class="main-menu-wrapper">
+                <div class="wrap clearfix">
+                <input type="checkbox" id="open-menu" class="open-check">
+                <div class="hold-toogle">
+                    <label for="open-menu" class="toogle-menu">
+                        <span class="t"></span>
+                        <span class="c"></span>
+                        <span class="b"></span>
+                    </label>
+                </div>
+                        <div class="menu-holder">
+                        <label for="open-menu" class="close-menu">Меню</label>
+                        <ul id="menu" class="main-menu clearfix">
+                            <li>
+                                <a href="#" class="supplier link icon-suppliers-color">Поставщики</a>
+                            </li>
+                            <li>
+                                <span class="consumer link icon-consumers-color">Потребители</span>
+                            </li>
+                            <li>
+                                <a class="favorites link icon-favorite-active" href="#">Избранное <sup>24</sup></a>
+                            </li>
+                            <li class="menu-login">
+                                <a class="login link js-popup-opener icon-exit" data-popup="#login" href="#">
+                                    Вход в кабинет
+                                </a>
+                            </li>
+                            <li class="menu-register">
+                                <a class="register-link link js-popup-opener" data-popup="#register-company" href="#">Регистрация</a>
+                            </li>
+                        </ul>
+                        </div>
+                    <label for="open-menu" class="overlay"></label>
+                    <div class="nav-overlay">&nbsp;</div>
+                </div>
+            </div>
+            {% endblock %}
+
+            <div id="main" class="clearfix">
+                <div class="wrap clearfix">
+                    <div class="wrapper outline clearfix">
+                        {% block content %}
+                            <div id="content" class="error-page content-wide content-scrollable">
+                                <h1 class="title">Ошибка 500</h1>
+                                <p>В процессе исполнения сервером запроса произошла ошибка.
+                                    <br/>Если проблема сохраняется, оставьте ваш отзыв, указав номер <br/> ошибки и запрос, который ее вызвал</p>
+                                <a class="button white95-bg ie-radius js-popup-opener" data-popup="#add-review" href="/">Оставить отзыв</a>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer %}
+                <div class="footer-links-wrapper clearfix">
+                    <div class="footer-links">
+                        <div class="footer-title">Компания</div>
+                        <ul class="footer-links-list first">
+                            <li class="item"><a href="#">О сервисе</a></li>
+                            <li class="item"><a href="#">Реклама и услуги</a></li>
+                            <li class="item"><a href="#">Клиенты</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Контактная информация</a></li>
+                            <li class="item"><p class="support">Техническая поддержка: <span class="support-phone">(495) 984-06-52</span>
+                                </p></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-title">Информация на сайте</div>
+                        <ul class="footer-links-list">
+                            <li class="item"><a href="#">Компании</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Товары</a></li>
+                            <li class="item"><a href="#">Потребности</a></li>
+                            <li class="item"><a href="#">Последние обновления</a></li>
+                            <li class="item"><a href="#" class="green-color">Добавить компанию и товары</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="footer-links-list clearfix">
+                    <li class="item">
+                        <p class="copy">Металлопрокат.ру © 2000-2013</p>
+                    </li>
+                    <li class="item">
+                        <a class="agreement" href="#" target="_blank">Пользовательское соглашение</a>
+                    </li>
+                </ul>
+                <div class="counters-block clearfix">
+                    <a href="#" class="rspm-member float-left">Действительный член РСПМ</a>
+
+                    <div class="counter-container float-right">
+                        <img src="./markup/pic/counter1.png" width="80" height="31" alt="image description"/>
+                        <img src="./markup/pic/counter2.png" width="88" height="31" alt="image description"/>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+    {% include '@markup/_popups.html.twig' %}
+{% endblock %}
+

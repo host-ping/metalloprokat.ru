@@ -1,0 +1,18 @@
+{# route, checkAccess, demand with attached demand files #}
+
+{% set route = route|default('MetalDemandsBundle:DemandFile:downloadFile') %}
+{% set checkAccess = checkAccess is defined ? checkAccess : true %}
+{# TODO: в архиве при просмотре своей публичной заявки не будет видно файлов #}
+{% if demand.getAttribute('demandFiles') and (not demand.isPublic or demand.displayFileOnSite) %}
+    {% if checkAccess and not is_granted('ROLE_USER') %}
+        <span class="link clickable js-popup-opener download-demand-file icon-clip" data-popup="#login">Скачать прикрепленный файл</span>
+    {% elseif checkAccess and not is_granted('ROLE_ALLOWED_VIEW_DEMAND_CONTACTS') %}
+        <span class="link clickable js-popup-opener download-demand-file icon-clip" data-popup="#complete-package">Скачать прикрепленный файл</span>
+    {% else %}
+        {% for demandFile in demand.getAttribute('demandFiles') %}
+            <span class="download-demand-file icon-clip"></span>
+            <a class="link" href="{{ path(route, {'id': demandFile.id}) }}">Скачать прикрепленный
+                файл{% if demand.getAttribute('demandFiles')|length > 1 %} ({{ loop.index }}){% endif %}</a><br />
+        {% endfor %}
+    {% endif %}
+{% endif %}

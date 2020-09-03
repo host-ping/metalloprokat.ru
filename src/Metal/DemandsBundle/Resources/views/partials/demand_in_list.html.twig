@@ -1,0 +1,161 @@
+{#
+    партиал вывода конкретной заявки в списке
+
+    ожидает:
+        demand: Demand с зааттаченными атрибутами demandItems, isInFavorite, demandFiles
+#}
+{% set demandItemsPerDemand = 2 %}
+
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% set defaultOptions = {
+    'demand_item_additional_class': ''
+} %}
+{% set options = defaultOptions|merge(options|default({})) %}
+
+{% set demandUrlOnCurrentSubdomain = brouzie_helper('MetalDemandsBundle').generateDemandUrlOnCurrentSubdomain(demand) %}
+{% set demandUrl = brouzie_helper('MetalDemandsBundle').generateDemandUrl(demand) %}
+
+{% set target = false %}
+{% if demand.country %}
+    {% if demand.country.baseHost != app.request.attributes.get('country').baseHost %}
+        {% set target = true %}
+    {% endif %}
+{% endif %}
+
+<div class="demand_item {{ options.demand_item_additional_class }}">
+    <div class="demand_holder clearfix">
+        <div class="demand-data float-left">
+            <div class="demand-title">
+                <a data-href="{{ demandUrl }}"{% if target %} target="_blank"{% endif %} rel="nofollow">
+                    <strong class="demand-count">№{{ demand.id }}</strong>
+                    {{ demand.city.title }}
+                </a>
+                <span class="demand-date">{{ projectHelper.formatDate(demand.displayTime) }}</span>
+                <div class="demand-region gray60-color">{{ demand.city.region.title }}</div>
+            </div>
+            <table class="demand_product-list demand-table">
+                {% set demandItems = demand.getAttribute('demandItems') %}
+                {% for demandItem in demandItems %}
+                    <tr class="row {% if loop.index > demandItemsPerDemand %}g-hidden{% endif %}" {% if loop.index > demandItemsPerDemand %} data-expandable-section="demand-items-{{ demand.id }}"{% endif %}>
+                        <td class="item col">
+                            <p class="product-item">{{ loop.index }}</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title" title="{{ demandItem.title }}">{{ demandItem.title }}{% if demandItem.size %} {{ tokens.product_volume_title }} {{ demandItem.size }}{% endif %}</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">
+                                {% if demandItem.volume %}
+                                    {{ demandItem.volume|number_format_decimal }}
+                                    {% if demandItem.volumeTypeId %}
+                                        {{ demandItem.volumeType.tokenTransChoice|transchoice(demandItem.volume) }}
+                                    {% endif %}
+                                {% else %}
+                                    объем договорной
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {{ include('@MetalDemands/partials/demand_files.html.twig', {
+                'demand': demand,
+            }, false) }}
+
+            {% if demandItems|length > demandItemsPerDemand %}
+                <span class="demand_link link clickable js-expandable" data-expandable="demand-items-{{ demand.id }}">Всего {{ demandItems|length }}
+                    {{ 'demands_by_count'|transchoice(demandItems|length, {}, 'MetalDemandsBundle') }}</span>
+            {% endif %}
+        </div>
+        <div class="demand-info float-right">
+            <div class="holder clearfix">
+                <span class="answered icon-back float-left">{{ demand.answersCount }}</span>
+                <span class="viewed icon-views float-left">{{ demand.viewsCount }}</span>
+            </div>
+            <div class="text">
+                <p class="{% if demand.isFromTrader %}trader{% elseif demand.isFromBuyer %}buyer{% endif %}">{{ demand.consumerType.title|capitalize }}</p>
+                <p class="localization gray60-color">{{ demand.demandPeriodicity.title|capitalize }} потребность</p>
+            </div>
+        </div>
+    </div>
+    <ul class="links clearfix">
+        <li class="links_report item float-left clearfix">
+            <span class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+               data-tooltip-title="Пожаловаться" data-popup="#complaint-demand"
+               data-object-id="{{ demand.id }}"
+               data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : demand.id, 'kind' : 'demand'}) }}">
+                <span class="icon-complaint"></span>
+            </span>
+        </li>
+        <li class="item width-181 default-width float-left clearfix {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %}"
+            {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+            <span
+               class="button favorites is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if demand.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+               data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : demand.id, 'object' : 'demand'}) }}">
+                <span class="text">В Избранное</span>
+                <span class="icon-favorite float-right"></span>
+            </span>
+
+            <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not demand.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                 data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : demand.id, 'object' : 'demand'}) }}">
+                <span class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                    <span class="text">В Избранном</span>
+                    <span class="icon-favorite-active float-right"></span>
+                </span>
+
+                <span class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                    <span class="text">Удалить</span>
+                    <span class="icon-favorite-del float-right"></span>
+                </span>
+            </div>
+        </li>
+        <li class="links_contacts width-181 item default-width float-left clearfix">
+            <span class="button contacts clickable is-bordered js-popover-opener js-calc-contacts js-view-contacts ie-radius"
+               data-view-url="{{ path('MetalDemandsBundle:Demand:show', { 'id' : demand.id}) }}"
+               data-popover="#contact-{{ demand.id }}"
+                  data-contact-content="#contact-content-{{ demand.id }}"
+                  data-index="3">
+                <span class="text">Контакты</span>
+                <span class="icon-points float-right"></span>
+            </span>
+
+            <div id="contact-{{ demand.id }}" class="drop-wrapper contact is-bordered ie-radius">
+                <span id="contact-content-{{ demand.id }}"></span>
+                <a class="button is-bordered ie-radius" href="{{ demandUrlOnCurrentSubdomain }}"{% if target %} target="_blank"{% endif %}>Перейти на страницу потребности</a>
+
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </li>
+        <li class="links_answer item default-width float-left clearfix">
+            {% if is_granted('ROLE_ALLOWED_VIEW_DEMAND_CONTACTS') %}
+                <div class="button answer clickable is-bordered green-bg js-popup-opener ie-radius"
+                    {% if not demand.email %}
+                        data-popup="#demand-without-email"
+                    {% else %}
+                        data-popup="#demand-answer"
+                        data-demand-id="{{ demand.id }}"
+                        data-demand-answer-url="{{ path('MetalDemandsBundle:Demand:answer', {'id' : demand.id}) }}"
+                    {% endif %}
+                    >
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </div>
+            {% elseif is_granted('ROLE_USER') %}
+                <div class="button answer clickable is-bordered green-bg ie-radius js-popup-opener" data-popup="#complete-package">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </div>
+            {% else %}
+                <div class="button answer clickable is-bordered green-bg ie-radius js-popup-opener" data-popup="#login">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </div>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+

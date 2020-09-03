@@ -1,0 +1,145 @@
+{% extends '@markup/private/management/_managemet_layout.html.twig' %}
+{% block title 'Компания' %}
+    {% block content %}
+        <div id="content" class="private-room-content content-right outline-right float-right">
+            <div class="private-scrollable content-scrollable js-scrollable">
+                <div class="private-fix-width">
+                    {% block tabs %}
+                        {% set activeTab = 'company' %}
+                        {{ parent() }}
+                    {% endblock %}
+                    <div class="management-content-wrapper clearfix">
+                        <div class="company-form-wrapper float-left">
+                            <form class="register-form form" action="#">
+                                <fieldset class="left-group">
+                                    <div class="group clearfix">
+                                        <div class="left user-company-wrapper field-wrap float-left">
+                                            <input class="register-company form-text ie-radius" type="text" placeholder="Компания"/>
+                                        </div>
+                                        <div class="company-type-wrapper field-wrap float-left">
+                                            <select name="company-type" id="company-type" class="form-select hight">
+                                                <option value="-1"> </option>
+                                                <option value="1">ЗАО</option>
+                                                <option value="2">OАО</option>
+                                                <option value="3">OOО</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap">
+                                        <input type="text" class="form-text ie-radius with-change-link" placeholder="http://staltorg.metalloprokat.ru"/>
+                                        <a class="change" href="#">Изменить</a>
+                                    </div>
+                                    <div class="group clearfix">
+                                        <div class="field-wrap float-left">
+                                            <input type="text" class="form-text ie-radius" placeholder="Город"/>
+                                        </div>
+                                        <div class="field-wrap float-left">
+                                            <input type="text" class="form-text ie-radius" placeholder="Улица"/>
+                                        </div>
+                                    </div>
+                                    <div class="group clearfix">
+                                        <div class="field-wrap float-left">
+                                            <input type="text" class="phone form-text ie-radius" placeholder="Телефон"/>
+                                        </div>
+                                        <div class="field-wrap float-left">
+                                            <input type="text" class="form-text ie-radius" placeholder="Добавочный"/>
+                                        </div>
+                                        <div class="add-string field-wrap float-right">
+                                            <a class="add-string-link icon-add-btn float-right" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap">
+                                        <input type="text" class="form-text ie-radius" placeholder="http://staltorg.ru"/>
+                                    </div>
+                                    <div class="add-string field-wrap float-left">
+                                        <span class="add-string-link icon-add-btn float-right clickable"></span>
+                                        <span class="del-btn float-left ico-delete-btn"></span>
+                                    </div>
+                                    <div class="textarea-wrapper field-wrap">
+                                        <textarea class="form-textarea ie-radius" name="comment" placeholder="Комментарий"></textarea>
+                                        <div class="check-block">
+                                            <ul class="type-list">
+                                                <li>
+                                                    <input id="type-1" class="js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                                                    <label for="type-1">Производство</label>
+                                                </li>
+                                                <li>
+                                                    <input id="type-2" class="js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                                                    <label for="type-2">Резка</label>
+                                                </li>
+                                                <li>
+                                                    <input id="type-3" class="js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                                                    <label for="type-3">Гибка</label>
+                                                </li>
+                                                <li>
+                                                    <input id="type-4" class="js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                                                    <label for="type-4">Доставка</label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap helper-center-position">
+                                        <input type="text" class="form-text ie-radius with-change-link" placeholder="Продукт"/>
+                                        <a class="change" href="#">Добавить</a>
+                                        <div class="no-more">
+                                            <span>не более 20</span>
+                                <span class="icon-help clickable js-helper-opener" data-text="Ваша компания будет
+                                 отображаться в списке по запросам указанных категорий продукции."></span>
+                                        </div>
+                                        <div class="filtered-block">
+                                            <ul class="list">
+                                                <li class="item ie-radius">
+                                                    <span class="product-text">Арматура</span>
+                                                    <span class="icon-filter-del clickable"></span>
+                                                </li>
+                                                <li class="item ie-radius">
+                                                    <span class="product-text">Балка</span>
+                                                    <span class="icon-filter-del clickable"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap">
+                                        <input type="text" class="form-text ie-radius with-change-link" placeholder="Регионы доставки"/>
+                                        <span class="change disabled">Добавить</span>
+                                        <div class="no-more">не более 10</div>
+                                        <div class="filtered-block">
+                                            <ul class="list">
+                                                <li class="item ie-radius">
+                                                    Москва
+                                                    <span class="icon-filter-del clickable"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="submit-wrapper">
+                                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                                </div>
+                                <p class="last-update">Последнее обновление 20 марта 2013</p>
+                            </form>
+                        </div>
+                        <div class="float-right">
+                            <form class="load-company-logo form" action="#">
+                                <fieldset class="right-group">
+                                    <div class="photo-wrapper">
+                                        <label class="file-upload">
+                                            <a class="pattern-big" href="#"></a>
+                                            <span class="load-btn button blue-bg ie-radius">Загрузить логотип</span>
+                                            <input type="file"/>
+                                        </label>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <p class="promo-link link clickable js-popup-opener" data-popup="#promo">Ввести промокод</p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endblock content %}

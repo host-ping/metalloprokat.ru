@@ -1,0 +1,41 @@
+{% extends 'SprosProjectBundle:Default:index.html.twig' %}
+
+{% block title 'Отправить заявку' %}
+
+{% block meta_description 'Отправить заявку' %}
+
+{% block header_hover_text '' %}
+
+{% block header_content %}
+    <div class="back">
+        <a href="{{ (app.request.query.get('_returnTo', '/')) }}"><span>Вернуться на главную страницу</span></a>
+    </div>
+{% endblock header_content %}
+
+{% block content %}
+    {% include 'SprosProjectBundle:Default:form8-800_embedded.html.twig' %}
+
+    {% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+    {% block phone_form %}
+        <div class="intro ">
+            <div class="wrap ">
+                <div class="phones">
+                    {% if projectHelper.isWorkingTime() %}
+                        <p>8-800-555-56-65</p>
+                        <span>звонок бесплатный</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block popovers '' %}
+
+{% block footer_content '' %}
+
+{% block footer_additional_class 'inside' %}
+
+{% block content_class 'inside' %}
+
+

@@ -1,0 +1,34 @@
+MetalDemandsBundle:Demand:view:
+    path:      /demands/{category_slug}/demand_{id}.html
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category')"
+    # next line commented because www. should matches and redirects
+    #condition: "request.attributes.has('city') and request.attributes.has('category')"
+    defaults:  { _controller: MetalDemandsBundle:Demand:view, base_host: %base_host%}
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        id: \d+
+        base_host: .+
+
+MetalDemandsBundle:Demand:viewOutside:
+    path:      /demands/demand_{id}.html
+    host:      "%base_host_metalloprokat%"
+    defaults:  { _controller: MetalDemandsBundle:Demand:viewOutside}
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:Demands:list_category:
+    path:      /demands/{category_slug}/
+    host:      %host_prefix%%base_host%
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: MetalDemandsBundle:Demands:list}
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+
+MetalDemandsBundle:Demands:list_subdomain_category:
+    path:      /demands/{category_slug}/
+    host:      "{subdomain}.%base_host%"
+    condition: "(request.attributes.has('city') or request.attributes.has('region')) and request.attributes.has('category')"
+    defaults:  { _controller: MetalDemandsBundle:Demands:list}
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%

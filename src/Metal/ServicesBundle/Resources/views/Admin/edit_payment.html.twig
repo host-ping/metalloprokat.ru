@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block notice %}
+    {{ parent() }}
+    
+    {% if not object.getCompany() %}
+        <div class="alert alert-info alert-dismissable">
+            <span>Данный счет был создан на основании заказа на пакет</span>
+            <a target="_blank"
+               href="{{ path('admin_metal_services_packageorder_edit', { 'id': object.getPackageOrder().getId() }) }}">{{ object.getPackageOrder().getPackage().getTitle() }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock notice %}
+

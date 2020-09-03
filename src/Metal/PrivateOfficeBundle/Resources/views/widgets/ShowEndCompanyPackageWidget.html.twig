@@ -1,0 +1,57 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% if days is not null %}
+    <div class="user-alert clearfix">
+        <div class="wrap clearfix">
+            <div class="account-info float-right">
+                <a class="choose-account link" href="{{ path('MetalCorpsiteBundle:Default:services') }}">
+                    <strong>выбрать другой пакет</strong>
+                </a>
+                или
+                {# TODO: подсчитывать период на основании текущего пакета #}
+                {% if companyPackage %}
+                    <span class="extend-btn button green-bg"
+                          popup-opener="#order-service"
+                          data-package-id="{{ companyPackage.packageId }}"
+                          data-period-id="1"
+                          data-city-text="{{ app.user.company.city.title }}"
+                          data-city-id="{{ app.user.company.city.id }}"
+                          data-company-id="{{ app.user.company.id }}"
+                          data-company-title="{{ app.user.company.title }}"
+                          data-user-name="{{ app.user.fullName }}"
+                          data-user-phone="{{ app.user.phone }}"
+                          data-user-email="{{ app.user.email }}"
+                    >{% if company.promocode %}Приобрести{% else %}Продлить{% endif %}
+                </span>
+                {% else %}
+                    <span class="extend-btn button green-bg js-popup-opener"
+                          data-popup="#add-support-request"
+                          data-support-text="Хочу продлить доступ к заявкам"
+                    >Продлить</span>
+                {% endif %}
+            </div>
+            
+            <div class="info">
+                <p class="text">
+                    {% if companyPackage %}
+                        {% if days == 0 %}
+                            Пакет услуг {{ textHelper.lcFirst(companyPackage.title) }}
+                            <strong class="days"> прекращен сегодня</strong>
+                        {% else %}
+                            До завершения действия {{ textHelper.lcFirst(companyPackage.titleGenitive) }} пакета услуг {{ 'left'|transchoice(days, [], 'MetalPrivateOfficeBundle') }}
+                            <strong class="days">{{ 'time.days_ago'|transchoice(days, [], 'MetalProjectBundle') }}</strong>
+                        {% endif %}
+                    {% else %}
+                        {% if days == 0 %}
+                            Доступ к заявкам (раздел спрос)
+                            <strong class="days"> прекращен сегодня</strong>
+                        {% else %}
+                            До завершения доступа к заявкам (раздел спрос) осталось <strong
+                                class="days">{{ 'time.days_ago'|transchoice(days, [], 'MetalProjectBundle') }}</strong>
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}

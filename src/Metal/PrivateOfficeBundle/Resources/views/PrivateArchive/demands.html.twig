@@ -1,0 +1,41 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Заявки / Мои заявки / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div id="msg" class="g-hidden">
+            <div class="alert-success outline-right">
+                <div class="alert">
+                    Спасибо! Ваша заявка будет добавлена на сайт после премодерации
+                </div>
+            </div>
+        </div>
+        {{ block('tabs') }}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="send-order-wrapper">
+                    <span class="add-button icon-add-btn clickable demand"
+                          popup-opener="#request-demand"
+                          data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                            >Добавить заявку</span>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="private-view-category view-category demands">
+            <div class="content-scrollable js-scrollable">
+                <ul class="demands list private-fix-width">
+                    {{ include ('@MetalPrivateOffice/partials/archive_demands_list.html.twig', {
+                        'pagerfanta' : pagerfanta
+                    }, false) }}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:SendEmailForm') }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : false, 'need_reload' : true}) }}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Подтверждение заявки{% endblock %}
+
+{% block body_text %}
+Здравствуйте, {{ user.firstName }}.
+
+{{ include('MetalDemandsBundle:emails/partial:demands_in_list.txt.twig', {
+    'demand': demand,
+    'demand_items_limit': null,
+    'to_company': false,
+    'view_user_name': true
+}, false) }}
+{% if demand.info %}
+    {{ demand.info }}
+    
+{% endif %}
+Вы добавили заявку в неавторизованном состоянии. Для того, чтобы подтвердить заявку, пожалуйста, перейдите по ссылке {{ url('MetalDemandsBundle:Demand:confirmDemandFromPossibleUser', {'code' : demand.confirmationCode, 'id' : demand.id })|raw }}
+
+{{ block('text_footer') }}
+{% endblock %}
+
+{% block text_part_body %}
+    {{ include('MetalDemandsBundle:emails/partial:demands_in_list.html.twig', {
+        'demand': demand,
+        'demand_items_limit': null,
+        'to_company': false,
+        'view_user_name': true,
+    }, false) }}
+
+    <br />
+    Вы добавили заявку в неавторизованном состоянии. Для того, чтобы подтвердить заявку, пожалуйста, перейдите по
+    <a href="{{ url('MetalDemandsBundle:Demand:confirmDemandFromPossibleUser', {'code' : demand.confirmationCode, 'id' : demand.id }) }}">ссылке</a>.
+{% endblock %}

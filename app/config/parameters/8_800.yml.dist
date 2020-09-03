@@ -1,0 +1,4 @@
+parameters:
+    assets_base_urls: [//assets.%base_host_8_800%]
+    framework_session_cookie_domain:   .%base_host_8_800%
+    hostname_package_routing: 8_800

@@ -1,0 +1,8 @@
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% if days is not null and companyPackage is not null %}
+    <div class="package-info">
+        <p>Вы используете <strong>{{ textHelper.lcFirst(companyPackage.title) }} пакет</strong> услуг</p>
+        <p>Действие услуги до <strong class="red-color">{{ formatHelper.formatDate(companyPackage.endAt) }}</strong></p>
+    </div>
+{% endif %}

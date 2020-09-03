@@ -1,0 +1,115 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+{% set contentSeoHelper = brouzie_helper('MetalContentBundle:Seo') %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+
+{% block title %}
+    {{ topic.pageTitle ?: topic.title }}
+{% endblock %}
+
+{% block meta_description %}
+    {{ topic.shortDescription }}
+{% endblock %}
+
+{% block canonical_url %}
+    {{ brouzie_helper('MetalContentBundle:Seo').getCanonicalUrlForContentEntryView() }}
+{% endblock %}
+
+{% set tags = topic.getAttribute('content_tags') %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbsAppendItems = brouzie_helper('MetalContentBundle:Breadcrumbs').getBreadcrumbsForContentEntry(topic) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block inside_left %}
+    <div class="inside-page js-calc-height">
+        <div class="product-info-wrapper clearfix">
+            <div class="product-img is-bordered float-left">
+                <span class="img-link {% if not topic.image.name %}pattern-big{% endif %}">
+                    {% if topic.image.name %}
+                        <img src="{{ vich_uploader_asset(topic, 'uploadedImage')|imagine_filter('topics_sq136_non_optim') }}"
+                             alt="{{ topic.title }}"
+                             title="{{ topic.title }}"
+                        />
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="product-info">
+                <div class="creation-info gray60-color">
+                    <span class="date icon-clock">{{ formatHelper.formatDate(topic.createdAt) }}</span>,
+                    {% if topic.user %}
+                        <span class="user-name link clickable js-popup-opener"
+                              data-popup="#user-info"
+                              data-ajax-content="{{ path('MetalContentBundle:UserContentCategory:loadInfo', {'id' : topic.user.id}) }}"
+                        >
+                            {{ topic.user.fullName }}
+                        </span>
+                    {% else %}
+                        <span class="user-name link">
+                            {{ topic.name }}
+                        </span>
+                    {% endif %}
+                </div>
+                <h1 class="product_main-title">
+                    {{- topic.title -}}
+                </h1>
+                <div class="categories gray60-color">
+                    {% set category = topic.category %}
+                    {% set categorySecondary = topic.categorySecondary %}
+                    <span>Раздел: </span>
+                    {%- if category.parent -%}
+                        <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : category.parent.slugCombined}) }}">{{- category.parent.title -}}</a> /
+                    {%- endif %}
+                    <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : category.slugCombined}) }}">{{- category.title -}}</a>.
+                    <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : category.parent ? category.parent.slugCombined : category.slugCombined, 'subject' : topic.subjectTypeId}) }}">{{ topic.subjectType.title }}</a>.<br />
+                    {%- if categorySecondary and category.id != categorySecondary.id -%}
+                        {% if categorySecondary.parent -%}
+                            <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : categorySecondary.parent.slugCombined}) }}">{{ categorySecondary.parent.title -}}</a> /
+                        {%- endif %}
+                        <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : categorySecondary.slugCombined}) }}">{{- categorySecondary.title -}}</a>.
+                        <a href="{{ path('MetalContentBundle:Topics:list', {'category_slug' : categorySecondary.parent ? categorySecondary.parent.slugCombined : categorySecondary.slugCombined, 'subject' : topic.subjectTypeId}) }}">{{ topic.subjectType.title }}</a>.
+                    {%- endif -%}
+                </div>
+                {% if tags %}
+                    <div class="tags icon-clip gray60-color">
+                        <span>Метки: </span>
+                        {% for tag in tags %}
+                            <a href="{{ path('MetalContentBundle:Tag:view', {'id' : tag.id}) }}">{{ tag.title }}</a>{% if loop.last %}.{% else %},{% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="information">
+                    <p class="text">{{ textHelper.formatDescription(topic.description)|raw }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="reviews-links">
+            <div class="add-review-btn-wrapper clearfix">
+                <button class="add-review button green-bg float-left js-popup-opener js-triggered"
+                    {% if app.user %}
+                        data-popup="#add-comment"
+                        data-comment-url="{{ path('MetalContentBundle:Comment:add', {'id' : topic.contentEntryId}) }}"
+                    {% else %}
+                        data-popup="#stroy-login"
+                    {% endif %}
+                >Добавить комментарий</button>
+
+                <div class="share-links float-left">
+                    <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div>
+                </div>
+            </div>
+        </div>
+        {{ brouzie_render_widget('MetalContentBundle:ContentTabs', {
+            'content_entry' : topic
+        }) }}
+    </div>
+{% endblock inside_left %}
+
+{% block inside_right  %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'tags': tags, 'entry_type' : 'ENTRY_TYPE_QUESTION'}) }}
+{% endblock inside_right %}

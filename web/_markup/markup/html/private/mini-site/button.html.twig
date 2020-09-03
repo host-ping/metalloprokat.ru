@@ -1,0 +1,33 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Button' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-fix-width">
+            {% block tabs %}
+                {% set activeTab = 'button' %}
+                {{ parent() }}
+            {% endblock tabs %}
+            <div class="mini-site-content-wrapper">
+                <p class="text">Вы можете разместить кнопку со ссылкой на свой мини-сайт на официальном сайте компании.</p>
+                <form class="share-form form" action="#">
+                    <fieldset>
+                        <div class="field-group clearfix">
+                            <div class="left field-wrap float-left">
+                                <textarea class="form-textarea" disabled="disabled" cols="50" rows="5"><a href="http://staltorg.metalloprokat.ru"><img src="./markup/img/logo.png" alt="ООО Стальторг"/></a></textarea>
+                            </div>
+                            <div class="submit-wrapper float-left">
+                                <div class="logo-picture">
+                                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Скопировать код"/>
+                                    <p class="text centered">Результат на сайте</p>
+                                    <img src="./markup/img/logo.png" alt="image description"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}
+Отсоединение от компании
+{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ user.firstName }}!
+
+При регистрации Вы выбрали зарегистрированную компанию {{ company.title }} ({{ company.city.title }}). {% if isAdminpanel %}Администратор {{ app.user.fullName }} ({{ app.user.email }}){% else %}Главный пользователь этой компании {{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }}){% endif %} посчитал, что Вы не являетесь сотрудником. Теперь Вы не можете приступить к работе на сайте от лица компании.
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ user.firstName }}!<br/>
+        <br/>
+        При регистрации Вы выбрали зарегистрированную компанию <b>{{ company.title}} ({{ company.city.title }})</b>. {% if isAdminpanel %}Администратор <b>{{ app.user.fullName }} ({{ app.user.email }})</b>{% else %}Главный пользователь этой компании <b>{{ user.company.companyLog.createdBy.fullName }} ({{ user.company.companyLog.createdBy.email }})</b>{% endif %} посчитал, что Вы не являетесь сотрудником. Теперь Вы не можете приступить к работе на сайте от лица компании.<br/>
+    </p>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% set company = _options.company %}
+
+<ul class="product-categories-list">
+    {% if hotOfferProductsCount is not null %}
+        <li class="level-1 item js-expandable-menu-item">
+            {% if app.request.attributes.get('_route') == 'MetalMiniSiteBundle:MiniSite:hotOfferProducts' %}
+                <span class="item-link active clearfix">
+                    {% if hotOfferProductsCount %}
+                        <span class="count float-right">{{ hotOfferProductsCount|number_format_decimal }}</span>
+                    {% endif %}
+                    <span class="elem is-gradiented red-color" title="Горячие предложения">Горячие предложения</span>
+                </span>
+            {% else %}
+                <a class="item-link clearfix" href="{{ path('MetalMiniSiteBundle:MiniSite:hotOfferProducts') }}">
+                    {% if hotOfferProductsCount %}
+                        <span class="count float-right">{{ hotOfferProductsCount|number_format_decimal }}</span>
+                    {% endif %}
+                    <span class="elem is-gradiented red-color" title="Горячие предложения">Горячие предложения</span>
+                </a>
+            {% endif %}
+        </li>
+    {% endif %}
+
+    {% for category in companyCategories %}
+        {% set isActive = false %}
+
+        {% if _options.category %}
+            {% if _options.category == category or _options.category.isChildOf(category) %}
+                {% set isActive = true %}
+            {% endif %}
+            {# Открытие первого елемента меню #}
+       {# {% elseif loop.first %}
+            {% set isActive = true %}#}
+        {% endif %}
+
+        <li class="level-1 item  js-expandable-menu-item {% if isActive %}expanded{% else %}collapsed{% endif %}"
+            data-expandable-menu-children=".list">
+            <a href="#" class="  check-link {% if not isActive %}collapsed{% endif %}
+                {% if category.getAttribute('children') %}js-expandable-menu-expander{% endif %}
+                "><span class="icon-check black"></span></a>
+            {#активная верхнея категория#}
+            {% if _options.category == category %}
+                <span class="item-link active clearfix ">
+                    <span class="count float-right">{{ category.getAttribute('company_counter')|number_format_decimal }}</span>
+                    <span class="elem is-gradiented" title="{{ category.title }}">{{ category.title }}</span>
+                </span>
+            {#активный ребенок#}
+            {% elseif _options.category and _options.category.isChildOf(category) %}
+                <a class="item-link clearfix "
+                   href="{{ path(route, {'domain' : company.domain, 'category_slug' : category.slugCombined}) }}">
+                    <span class="count float-right">{{ category.getAttribute('company_counter')|number_format_decimal }}</span>
+                    <span class="elem is-gradiented" title="{{ category.title }}">{{ category.title }}</span>
+                </a>
+            {#при загрузке главной - активная первая категория#}
+            {% elseif not _options.category and loop.first %}
+                <a class="item-link clearfix "
+                   href="{{ path(route, {'domain' : company.domain, 'category_slug' : category.slugCombined}) }}">
+                    <span class="count float-right">{{ category.getAttribute('company_counter')|number_format_decimal }}</span>
+                    <span class="elem is-gradiented" title="{{ category.title }}">{{ category.title }}</span>
+                </a>
+            {% else %}
+                <a class="item-link clearfix "
+                   href="{{ path(route, {'domain' : company.domain, 'category_slug' : category.slugCombined}) }}">
+                    <span class="count float-right">{{ category.getAttribute('company_counter')|number_format_decimal }}</span>
+                    <span class="elem is-gradiented" title="{{ category.title }}">{{ category.title }}</span>
+                </a>
+            {% endif %}
+            {% if category.getAttribute('children') %}
+                <ul class="list {% if not isActive %}g-hidden{% endif %}">
+                    {% for childCategory in category.getAttribute('children') %}
+                        {% set isActiveChild = false %}
+                        {% if _options.category == childCategory %}
+                            {% set isActiveChild = true %}
+                        {% endif %}
+                        <li class="level-inside item">
+                            {% if isActiveChild %}
+                                <span class="link active clearfix">
+                                    <span class="count float-right">{{ childCategory.getAttribute('company_counter')|number_format_decimal }}</span>
+                                    <span class="elem is-gradiented" title="{{ childCategory.title }}">{{ childCategory.title }}</span>
+                                </span>
+                            {% else %}
+                                <a class="link clearfix" href="{{ path(route, {'domain' : company.domain, 'category_slug' : childCategory.slugCombined}) }}">
+                                    <span class="count float-right">{{ childCategory.getAttribute('company_counter')|number_format_decimal }}</span>
+                                    <span class="elem is-gradiented" title="{{ childCategory.title }}">{{ childCategory.title }}</span>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

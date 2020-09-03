@@ -1,0 +1,55 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Статистика регистраций
+                </h3>
+            </div>
+            <div class="box-body">
+
+                {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+                <table class="table table-bordered table-hover table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Зарегистрировано пользователей/подтверждено</th>
+                        <th>Зарегистрировано компаний</th>
+                        <th>Зарегистрировано компаний c YandexDirect</th>
+                        <th>Выставлено счетов</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for el in data %}
+                        {% set isWeekend = formattingHelper.isWeekend(el.date) %}
+                        <tr {% if isWeekend %}class="red-color"{% endif %}>
+                            <td>
+                                {{ formattingHelper.formatStatsDate(el.date, 'day')|raw }}
+                            </td>
+                            <td class="text-right">
+                                {{ el.users_total_count|default(0)|number_format_decimal }}
+                                / {{ el.users_confirmed_count|default(0)|number_format_decimal }}
+                            </td>
+                            <td class="text-right">
+                                {{ el.companies_total_count|default(0)|number_format_decimal }}
+                            </td>
+                            <td class="text-right">
+                                {{ el.companies_ya_direct_total_count|default(0)|number_format_decimal }}
+                            </td>
+                            <td class="text-right">
+                                {{ el.countPayments|default(0)|number_format_decimal }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

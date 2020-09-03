@@ -1,0 +1,919 @@
+{% extends 'markup/html/portal/_portal_layout.html.twig' %}
+
+{% block title 'Companies list' %}
+{#{% block side_announcements %}#}
+	{#<div class="left-announcement-wrapper">#}
+		{#<div>#}
+			{#<div class="left-announcement announcement has-announcement">#}
+				{#<img src="./markup/pic/left-banner-150.jpg" alt="image description"/>#}
+			{#</div>#}
+		{#</div>#}
+	{#</div>#}
+	{#<div class="right-announcement-wrapper">#}
+		{#<div>#}
+			{#<div class="right-announcement announcement has-announcement top-announcement">#}
+				{#<img src="./markup/pic/right-top-banner-150.jpg" alt="image description"/>#}
+			{#</div>#}
+			{#<div class="right-announcement announcement has-announcement">#}
+				{#<img src="./markup/pic/right-banner-150.jpg" alt="image description"/>#}
+			{#</div>#}
+			{#<div class="right-announcement announcement has-announcement">#}
+				{#<img src="./markup/pic/right-banner-150.jpg" alt="image description"/>#}
+			{#</div>#}
+		{#</div>#}
+	{#</div>#}
+
+{#{% endblock side_announcements %}#}
+{#{% block banner '' %}#}
+
+{% block content %}
+    <div id="content" class="content-right outline-right float-right">
+    <div class="main-title ">
+        <h1>Компании, торгующие арматурой
+            <span class="accepted-filter ie-radius">A500C <span class="icon-filter-del clickable"></span></span>
+            <span class="accepted-filter ie-radius">строительная <span class="icon-filter-del clickable"></span></span>
+            <a
+                    href="#" class="region-link js-popover-opener icon-check" data-popover="#cities"
+                    data-different-position="true">в Москве и Области</a>
+
+        </h1>
+    </div>
+    {% block tabs %}
+        {% set defaultActiveTab = 'companies' %}
+        <div class="result-tabs-wrapper outline-right clearfix">
+            <div id="tabs" class="tabs float-left">
+                <ul class="clearfix">
+                    <li class="{% if (activeTab|default(defaultActiveTab) == 'products') %} active ie-radius {% endif %}">
+                        <a class="link" href="{{ path('portal/suppliers/products.html.twig') }}">Товары</a>
+                        <span class="count">2,832</span>
+                    </li>
+                    <li class="{% if (activeTab|default(defaultActiveTab) == 'companies') %} active ie-radius {% endif %}">
+                        <a class="link" href="{{ path('portal/suppliers/companies.html.twig') }}">Компании</a>
+                        <span class="count">37</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="sort-view float-right clearfix">
+                <div class="order-block float-left">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#order">По
+                        рейтингу</a>
+
+                    <div id="order" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По рейтингу</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По цене</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По к-ву отзывов</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="view-block float-right">
+                    <ul class="view-list">
+                        <li class="list first js-tooltip-opener active ie-radius" data-tooltip-title="Список">
+                            <span class="item icon-view-list"></span>
+                        </li>
+                        <li class="list pallete js-tooltip-opener disabled ie-radius" data-tooltip-title="Галерея">
+                            <span class="item icon-view-grid"></span>
+                        </li>
+                        <li class="list on-map js-tooltip-opener enable last ie-radius" data-tooltip-title="Карта"
+                            data-tooltip-class="right">
+                            <a class="item icon-baloon" href="#"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <div id="company" class="view-category companies">
+    <ul class="company list clearfix">
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#">
+                            <img src="./markup/pic/product-logo-tmp.jpg" width="64" height="64"
+                                 alt="image description"/>
+                        </a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="status float-left green-bg ie-radius">online</div>
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star-colored"></span>
+                                    <span class="star-mini icon-star-colored"></span>
+                                    <span class="star-mini icon-star-colored"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Стальторг</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment float-right"></span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order float-left">
+            <div class="holder clearfix">
+                <div class="product-info float-left">
+                    <div class="title"><a href="#" class="small-link">Арматура строительная</a></div>
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="count red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                    <div class="information">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                        <span class="dot">.</span>
+                        <a href="#" class="all-prod">Всего 286 товаров</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#">
+                            <img src="./markup/pic/product-logo-small-tmp.jpg" width="40" height="40"
+                                 alt="image description"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a class="send-order_send-button button send-button red-bg ie-radius" href="#">Отправить заявку</a>
+        </div>
+    </li>
+    <li class="announcement has-announcement">
+        <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description"/>
+    </li>
+    <li class="special-title">
+        <p class="text">Компании, доставляющие товары в Москву</p>
+    </li>
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star hovered"></span>
+                                    <span class="star-mini icon-star hovered"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Шестигранник калиброванный
+                                    калиброванный калиброванный</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment active float-right"></span>
+                            <span class="count red-color float-right">12</span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order float-left">
+            <div class="holder clearfix">
+                <div class="product-info float-left">
+                    <div class="title"><a href="#" class="small-link">Арматура строительная</a></div>
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="count red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                    <div class="information">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                        <span class="dot">.</span>
+                        <a href="#" class="all-prod">Всего 286 товаров</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+            </div>
+            <a class="send-order_send-button button send-button gray60-bg ie-radius" href="#">Отправить заявку</a>
+        </div>
+    </li>
+
+    <li class="special-title empty-text">
+        <p class="text"></p>
+    </li>
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star hovered"></span>
+                                    <span class="star-mini icon-star hovered"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Шестигранник калиброванный
+                                    калиброванный калиброванный</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment active float-right"></span>
+                            <span class="count red-color float-right">12</span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order float-left">
+            <div class="holder clearfix">
+                <div class="product-info float-left">
+                    <div class="title"><a href="#" class="small-link">Арматура строительная</a></div>
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="count red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                    <div class="information">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                        <span class="dot">.</span>
+                        <a href="#" class="all-prod">Всего 286 товаров</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+            </div>
+            <a class="send-order_send-button button send-button gray60-bg ie-radius" href="#">Отправить заявку</a>
+        </div>
+    </li>
+
+    <li class="special-title">
+        <p class="text">Компании, доставляющие товары в Москву</p>
+    </li>
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star hovered"></span>
+                                    <span class="star-mini icon-star hovered"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Шестигранник калиброванный
+                                    калиброванный калиброванный</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment active float-right"></span>
+                            <span class="count red-color float-right">12</span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order float-left">
+            <div class="holder clearfix">
+                <div class="product-info float-left">
+                    <div class="title"><a href="#" class="small-link">Арматура строительная</a></div>
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="count red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                    <div class="information">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                        <span class="dot">.</span>
+                        <a href="#" class="all-prod">Всего 286 товаров</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+            </div>
+            <a class="send-order_send-button button send-button gray60-bg ie-radius" href="#">Отправить заявку</a>
+        </div>
+    </li>
+
+    <li class="announcement has-announcement">
+        <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description"/>
+    </li>
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star hovered"></span>
+                                    <span class="star-mini icon-star hovered"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Шестигранник калиброванный
+                                    калиброванный калиброванный</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment active float-right"></span>
+                            <span class="count red-color float-right">12</span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites is-bordered ie-radius">
+                            <span class="text">В Избранное</span>
+                            <span class="icon-favorite float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order float-left">
+            <div class="holder clearfix">
+                <div class="product-info float-left">
+                    <div class="title"><a href="#" class="small-link">Арматура строительная</a></div>
+                    <p class="size gray60-color">Размер 30x30</p>
+
+                    <p class="price gray60-color">от <strong class="count red-color">25 000 <span class="icon-rouble"></span> </strong>за тонну</p>
+
+                    <div class="information">
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                        <span class="dot">.</span>
+                        <a href="#" class="all-prod">Всего 286 товаров</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+            </div>
+            <a class="send-order_send-button button send-button gray60-bg ie-radius" href="#">Отправить заявку</a>
+        </div>
+    </li>
+    <li class="announcement">
+    </li>
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link pattern-small" href="#">
+                            <img src="./markup/pic/product-logo-tmp.jpg" width="64" height="64"
+                                 alt="image description"/>
+                        </a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="star-panel float-right">
+                                <div class="rating float-right">
+                                    <span class="star-mini icon-star default"></span>
+                                    <span class="star-mini icon-star default"></span>
+                                    <span class="star-mini icon-star default"></span>
+                                </div>
+                            </div>
+                            <div class="title"><a href="#" class="is-gradiented-bottom">Стальторг</a></div>
+                        </div>
+                        <p class="localization gray60-color">филиал в Люберцах</p>
+                        <a class="site" href="#">staltorg.ru</a>
+
+                        <div class="contacts">
+                            <span class="phone-text">+7 (495) 784</span>
+                            ( <a class="see" href="#">показать</a> )
+                            <a class="callback js-popup-opener" href="#" data-popup="#callback">обратный звонок</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="links clearfix">
+                    <li class="links_report item float-left clearfix">
+                        <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                           data-tooltip-title="Пожаловаться" data-popup="#report">
+                            <span class="icon-complaint"></span>
+                        </a>
+                    </li>
+                    <li class="links_comment item medium float-left clearfix">
+                        <a href="#" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment active float-right"></span>
+                            <span class="count red-color float-right">12</span>
+                        </a>
+                    </li>
+                    <li class="item medium float-left clearfix">
+                        <a href="#" class="button favorites active-link is-bordered ie-radius js-togglable-block">
+                            <span class="text">В Избранном</span>
+                            <span class="icon-favorite-active float-right"></span>
+                        </a>
+                        <a href="#" class="button favorites delete blue-bg g-hidden ie-radius js-togglable-block">
+                            <span class="text">Удалить</span>
+                            <span class="icon-favorite-del float-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="send-order no-result float-left">
+            <div class="holder clearfix">
+                <p class="empty">Компания еще не загрузила товары</p>
+            </div>
+            <a class="send-order_send-button button send-button blue-bg ie-radius" href="#">Запросить цены</a>
+        </div>
+    </li>
+    <li class="see-more-block-wrapper">
+        <div class="see-more-block">
+            <a class="see-more button ie-radius" href="#">показать еще...</a>
+        </div>
+    </li>
+    </ul>
+    </div>
+        {{ block('search_more') }}
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <div id="sidebar" class="side-left outline-left float-right static">
+    <div class="sidebar-content js-fixed-filters">
+    <div class="side-inside">
+        <div class="dropdown-categories drop-wrapper drop-right opacity-border" id="dropdown-categories-1">
+            <div class="js-scrollable">
+                <ul class="dropdown">
+                    <li class="drop-item first">
+                        <span class="drop-link">Арматура</span>
+                        <ul class="level-inside">
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура металлическая A1</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A2</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <span class="drop-link black15-color" href="#">Арматура A3</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Арматура A3</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="dropdown-categories drop-wrapper drop-right opacity-border" id="dropdown-categories-2">
+            <ul class="dropdown">
+                <li class="drop-item first">
+                    <a href="#" class="drop-link">Балка металлическая A1</a>
+                    <ul class="level-inside">
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Балка A1</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Балка A2</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Балка A3</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Балка A3</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Балка A3</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="dropdown-categories drop-wrapper drop-right opacity-border" id="dropdown-categories-7">
+            <ul class="dropdown">
+                <li class="drop-item first">
+                    <span class="drop-link">Швеллер</span>
+                    <ul class="level-inside">
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Швеллер A1</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Швеллер A2</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Швеллер A3</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Швеллер A3</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">Швеллер A3</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="side-wrap js-scrollable-filters js-scrollable">
+    <div class="filters">
+    <form action="#">
+    <div class="local filter">
+        <div class="title"><a href="#" class="js-popover-opener icon-check black" data-popover="#cities"
+                              data-different-position="true">Москва и Область</a></div>
+        <div class="category-title title is-gradiented">Листовой и плоский прокат</div>
+        <ul class="product">
+            <li class="item js-dropdown-opener"
+                data-display-dropdown="#dropdown-categories-1">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">51</span>
+                    <span class="elem is-gradiented">Арматура</span>
+                </a>
+            </li>
+            <li class="item js-dropdown-opener"
+                data-display-dropdown="#dropdown-categories-2">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">60</span>
+                    <span class="elem is-gradiented">Балка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">777</span>
+                    <span class="elem is-gradiented">Заглушка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">777</span>
+                    <span class="elem is-gradiented">Заглушка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">777</span>
+                    <span class="elem is-gradiented">Заглушка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">777</span>
+                    <span class="elem is-gradiented">Заглушка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">777</span>
+                    <span class="elem is-gradiented">Заглушка</span>
+                </a>
+            </li>
+            <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories"
+                data-display-dropdown="#dropdown-categories-7">
+                <a class="clearfix" href="#">
+                    <span class="count float-right">40</span>
+                    <span class="elem is-gradiented">Швеллер</span>
+                </a>
+            </li>
+        </ul>
+        <a class="link js-expandable js-categories-expand" href="#" data-expandable="categories">Показать все</a>
+        <a class="link js-expandable js-categories-expand g-hidden" href="#" data-expandable="categories">Скрыть</a>
+    </div>
+    <div class="size filter">
+        <div class="title">Размер в 2 колонки</div>
+        <ul class="size-list list two-column clearfix">
+            <li class="filter-item float-left">
+                <input id="size-10" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"
+                       disabled="disabled"/>
+                <label for="size-10"><a href="#" class="link">10</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-12" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-12"><a href="#" class="link">12</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-14" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-14"><a href="#" class="link">14</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-16" type="checkbox" class="  js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-16">16</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-20" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-20">20</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-24" type="checkbox" checked="checked"
+                       class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-24">24</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-36" type="checkbox" checked="checked"
+                       class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-36">36</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-48" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-48">48</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-54" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-54">54</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-55" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-55">55</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-56" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-56">56</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-57" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-57">57</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-58" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-58">58</label>
+            </li>
+        </ul>
+        <a class="link js-expandable js-categories-expand" href="#" data-expandable="size">Показать все</a>
+        <a class="link js-expandable js-categories-expand g-hidden" href="#" data-expandable="size">Скрыть</a>
+    </div>
+    <div class="size filter">
+        <div class="title">Размер</div>
+        <ul class="size-list list three-column clearfix">
+            <li class="filter-item float-left">
+                <input id="size-10" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-10"><a href="#" class="link">10</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-12" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-12"><a href="#" class="link">12</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-14" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-14"><a href="#" class="link">14</a></label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-16" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-16">16</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-20" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-20">20</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-24" type="checkbox" checked="checked"
+                       class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-24">24</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-36" type="checkbox" checked="checked"
+                       class=" js-styled-checkbox js-show-button-on-change bg-grey" disabled="disabled"/>
+                <label for="size-36">36</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-48" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-48">48</label>
+            </li>
+            <li class="filter-item float-left">
+                <input id="size-54" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-54">54</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-55" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-55">55</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-56" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-56">56</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-57" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-57">57</label>
+            </li>
+            <li class="filter-item g-hidden float-left" data-expandable-section="size">
+                <input id="size-58" type="checkbox" class=" js-styled-checkbox js-show-button-on-change bg-grey"/>
+                <label for="size-58">58</label>
+            </li>
+        </ul>
+        <a class="link js-expandable js-categories-expand" href="#" data-expandable="size">Показать все</a>
+        <a class="link js-expandable js-categories-expand g-hidden" href="#" data-expandable="size">Скрыть</a>
+    </div>
+    <div class="price filter">
+        <div class="amount-title clearfix">
+            <div class="title float-left">Цена</div>
+            <span id="amount" class="price-text float-right"></span>
+            <input class="min-price js-show-button-on-change" type="hidden" name="min-price"/>
+            <input class="max-price js-show-button-on-change" type="hidden" name="max-price"/>
+        </div>
+        <div id="slider-range"></div>
+        <div class="price-length clearfix">
+            <span class="price-label float-left">10000</span>
+            <span class="price-label float-right">300000</span>
+        </div>
+    </div>
+    <div class="type filter">
+        <ul class="type-list list">
+            <li class="filter-item">
+                <input id="type-1" class=" js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                <label for="type-1">Производство</label>
+            </li>
+            <li class="filter-item">
+                <input id="type-2" class=" js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                <label for="type-2">Резка</label>
+            </li>
+            <li class="filter-item">
+                <input id="type-3" class=" js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                <label for="type-3">Гибка</label>
+            </li>
+            <li class="filter-item">
+                <input id="type-4" class=" js-styled-checkbox js-show-button-on-change bg-grey" type="checkbox"/>
+                <label for="type-4">Доставка</label>
+            </li>
+        </ul>
+    </div>
+    <div class="toggle-filter filter">
+        <div class="sell-type-list toggle-block js-toggle-block ie-radius">
+            <label class="item-link wholesale float-left  ie-radius">
+                <input type="radio" name="selling_type" value="wholesale"
+                       class="not-styling js-show-button-on-change js-toggle-button"/> Опт
+            </label>
+
+            <label class="item-link retail active float-left ie-radius">
+                <input type="radio" name="selling_type" checked="checked" value="retail"
+                       class="not-styling js-show-button-on-change js-toggle-button"/> Розница
+            </label>
+
+            <label class="item-link all float-left ie-radius">
+                <input type="radio" name="selling_type" value="all"
+                       class="not-styling js-show-button-on-change js-toggle-button"/> Все
+            </label>
+        </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    <div class="submit-wrapper js-show-all g-hidden">
+        <a class="button show-btn link blue-bg clearfix disabled ie-radius">
+            <span class="text float-left">показать</span>
+            <span class="count float-right">58</span>
+        </a>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+

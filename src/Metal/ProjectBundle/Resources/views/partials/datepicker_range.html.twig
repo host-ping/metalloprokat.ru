@@ -1,0 +1,64 @@
+{# expected:
+    dateFrom: \DateTime|null,
+    dateTo: \DateTime|null ,
+#}
+
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+<div class="period-from float-left">
+    <p class="text">
+        c <span class="icon-calendar js-popover-opener clickable" data-popover="#datepicker-period-from"></span>
+        <input type="text" id="date_from" class="date js-popover-opener"
+                {% if dateFrom %} value="{{ formattingHelper.formatDate(dateFrom) }}"{% endif %}
+               data-popover="#datepicker-period-from" />
+    </p>
+
+    {% set datepickerConfig = {
+    'selectedDate': dateFrom ? dateFrom|date('Y-m-d') : '',
+        'relatedDatepicker': '#datepicker-period-to',
+        'relatedDatepickerMode': 'finish',
+        'targets': [
+            {
+                "format": "DD.MM.YYYY",
+                "target": "url",
+                "query": "date_from"
+            },
+            {
+                "format": "D MMM YYYY",
+                "target": "#date_from"
+            }
+        ]
+    } %}
+    <div id="datepicker-period-from"
+         class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+         data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+</div>
+
+<div class="period-for float-left">
+    <p class="text">
+        по <span class="icon-calendar js-popover-opener clickable" data-popover="#datepicker-period-to"></span>
+        <input type="text" id="date_to" class="date js-popover-opener"
+                {% if dateTo %} value="{{ formattingHelper.formatDate(dateTo) }}"{% endif %}
+               data-popover="#datepicker-period-to" />
+    </p>
+
+    {% set datepickerConfig = {
+        'selectedDate': dateTo ? dateTo|date('Y-m-d') : '',
+        'relatedDatepicker': '#datepicker-period-from',
+        'relatedDatepickerMode': 'start',
+        'targets': [
+            {
+                "format": "DD.MM.YYYY",
+                "target": "url",
+                "query": "date_to"
+            },
+            {
+                "format": "D MMM YYYY",
+                "target": "#date_to"
+            }
+        ]
+    } %}
+    <div id="datepicker-period-to"
+         class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+         data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+</div>

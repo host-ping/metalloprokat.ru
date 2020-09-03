@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="{% if object.isDeleted() %}color: #ff0000;{% elseif object.isModerated() %}color: #009900;{% endif %}">
+        <p>{{ object.getFixedUserTitle }}</p>
+        {% if object.companyTitle %}
+            <p>({{ object.companyTitle }})</p>
+        {% endif %}
+    </div>
+{% endblock %}

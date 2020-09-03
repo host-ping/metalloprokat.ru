@@ -1,0 +1,169 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Documents' %}
+{% block companyBanner %}
+	<div class="header-bottom head-bg" style="background-image: url(./markup/pic/img.jpg)">
+		<div class="wrap">
+			<div class="header-inner" style="background-image: url(./markup/pic/img.jpg)">
+				<div class="header-photos">
+					<form action="#">
+						<div class="logo-box logo-full">
+							<a href="#" class="logo-link">
+								<img src="./markup/pic/compani-logo.png" alt="image" width="168" height="168"/>
+							</a>
+							<label for="head-logo" class="logo-upload"></label>
+							<input type="file" id="head-logo" />
+							<span class="del-btn ico-delete-btn"></span>
+						</div>
+						<label for="head-photo" class=" btn-change header-upload">Загрузить шапку</label>
+						<input type="file" id="head-photo" />
+					</form>
+				</div>
+				<div class="company-info">
+					<strong class="title">Стальторг</strong>
+					<span class="subtitle">Продажа металлопроката</span>
+					<span class="phone">+7 (495) 904-53-13</span>
+					<span class="address">Люберцы, <a href="#" class="orange">Ялтинская 17</a></span>
+					<a href="#" class="btn-change">изменить</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock companyBanner %}
+{% block content %}
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+
+            <ul class="list">
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/reviews.html.twig') }}" class="link">Отзывы</a>
+                </li>
+                <li class="item active">
+                    <span class="link">Документы</span>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+                </li>
+            </ul>
+        </div>
+        <div class="documents">
+            <div class="document-list-title clearfix">
+                    <a class="admin-button button gray60-bg ie-radius float-right" href="#">изменить</a>
+                    <h1 class="minisite-title">Документы</h1>
+            </div>
+            <ul class="similar-list">
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-pdf.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-excel.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-word.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-pdf.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="float-right">
+                        <div class="img img-holder">
+                            <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="28"/>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right width-182">
+                        <span class="primary button send-button ie-radius">Скачать</span>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Документ 1</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">20 Мб</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

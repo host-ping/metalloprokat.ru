@@ -1,0 +1,297 @@
+{% extends 'markup/html/portal/suppliers/companies.html.twig' %}
+
+{% block title 'Products list' %}
+{% block content %}
+    <div id="content" class="content-right outline-right float-right">
+        <div class="main-title ">
+            <h1>Продукты</h1>
+        </div>
+        {% block tabs %}
+            {% set activeTab = 'client-products' %}
+            {{ parent() }}
+        {% endblock %}
+        <div id="product" class="view-category products catalog">
+            <ul class="product list">
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="announcement has-announcement">
+                    <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description"/>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="announcement has-announcement">
+                    <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description"/>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="view-product item">
+                    <div class="all-product-holder clearfix">
+                        <div class="product-logo is-bordered float-left">
+                            <a class="img-link" href="#">
+                                <img src="./markup/pic/lday-prod.jpg" alt="image description"/>
+                            </a>
+                            <div class="product-label label bottom">
+                                <a class="label-link" title="еще 4 продукта" href="#">
+                                    еще 4</a>
+                            </div>
+                        </div>
+                        <div class="holder float-left">
+                            <div class="container top-block clearfix">
+                                <div class="product-info float-left">
+                                    <div class="title">
+                                        <a href="#" class="is-gradiented-bottom" itemprop="name">Молоко "Летний день" 3,5% 1л.</a>
+                                    </div>
+                                    <p class="size gray60-color">Основные характеристики продукта</p>
+                                </div>
+                                <div class="company-info float-right">
+                                    <div class="holder float-left">
+                                        <div class="title">
+                                            <a href="#" class="small-link is-gradiented-bottom">Летний день</a>
+                                        </div>
+                                        <p class="localization gray60-color">Москва, Владимир, Казань</p>
+                                        <a class="site is-gradiented-bottom" href="{{ path('portal/suppliers/product-catalog/manufacture-page.html.twig') }}">Данон</a>
+                                    </div>
+                                    <div class="company-logo float-right">
+                                        <a class="img-link" href="#">
+                                            <img src="./markup/pic/l-day.jpg" width="64" height="64"
+                                                 alt="image description"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        {{ block('search_more') }}
+    </div>
+{% endblock %}

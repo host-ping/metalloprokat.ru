@@ -1,0 +1,276 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_host_backup: 127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+
+    database_archive_driver: pdo_mysql
+    database_archive_host: 127.0.0.1
+    database_archive_port: ~
+    database_archive_name: statistic_dev
+    database_archive_user: dev
+    database_archive_password: ~
+
+    sphinx_dsn: mysql:host=127.0.0.1;port=9306;charset=utf8
+    elasticsearch_dsn: http://metalloprokat-elasticsearch:9200/
+    enqueue_dsn: amqp+ext://metalloprokat-rabbitmq:5672/
+    redis_dsn_cache: 'redis://1@127.0.0.1/2'
+    redis_dsn_session: 'redis://1@127.0.0.1/3'
+
+    akismet.api_key: 1d4c52191874
+    # akismet.api_key_comment: 3474b95598e3  для стройки
+    # Metalloprokat Brouzie Account ID: 100049885 r.martuk@katushkin.ru
+
+    notifications.telegram_chat_id: ~
+    notifications.telegram_bot_api_token: ~
+
+    validator_cache_driver: null
+    metadata_cache_driver: array
+    query_cache_driver: array
+    result_cache_driver: array
+
+    mailer_transport:  mail
+    mailer_host:       null
+    mailer_user:       null
+    mailer_password:   null
+
+    mailer_from:
+        info@metalloprokat.ru: Металлопрокат.ру
+    mailer_from_account:
+        info@metalloprokat.ru: Металлопрокат.ру
+    mailer_from_metallspros:
+        info@metalspros.ru: Металлспрос.ру
+
+    php_interpreter: php
+    ornicar_apc_host: http://%base_host%/new/web
+    ornicar_apc_web_dir: %kernel.root_dir%/../web
+    web_dir: %kernel.root_dir%/../web
+    spros_yandex_metrika_id: null
+    prokat_yandex_metrika_id: null
+    google_analytics_id: null
+    google_tag_manager_id: null
+    prokat_mailru_counter_id: null
+    livetex_id: null
+    # metalloprokat livetex_color: '242, 57, 51'
+    # product livetex_color: '57, 156, 227'
+    livetex_color: '0, 0, 0'
+
+    robokassa_login: ololo
+    robokassa_password: 112233
+    robokassa_password_result: 223344
+
+    locale:            ru
+    secret:            ololo-trololo
+    base_host:         metalloprokat.ru
+    allow_foreign_countries: false
+    host_prefix:       "www."
+    base_host_corp_site: corp.metalloprokat.ru
+    #TODO: неплохо бы это перенести в listeners/stroy.yml
+    base_host_metalloprokat: www.metalloprokat.ru
+    host_prefix_metallspros: "www."
+    base_host_metallspros:   metalspros.ru
+    base_host_8_800: "8-800-555-56-65.ru"
+    host_prefix_8_800: "www."
+    hostname_package_routing: metalloprokat
+    domain_country_id: 165
+    additional_minisite_hostnames:
+        165:
+            1: metalloprokat.dev
+            2: metaltop.dev
+            3: me1.dev
+    authentication_server_url: http://www.metalloprokat.ru/
+
+    hostnames_configuration:
+        %base_host%:
+            base_host: %base_host%
+            use_www: true
+            category_slug_field: null
+            category_enabled_field: null
+            city_query_parameter: null
+            country_redirect: true
+            allow_foreign_countries: '%allow_foreign_countries%'
+        %base_host_metallspros%:
+            base_host: %base_host_metallspros%
+            use_www: true
+            category_slug_field: slug
+            category_enabled_field: isEnabledMetalspros
+            city_query_parameter: null
+            country_redirect: false
+        %base_host_8_800%:
+            base_host: %base_host_8_800%
+            use_www: true
+            category_slug_field: slug
+            category_enabled_field: isEnabledMetalspros
+            city_query_parameter: subdomain
+            country_redirect: false
+        me1.dev:
+            base_host: me1.dev
+            use_www: false
+            category_slug_field: null
+            category_enabled_field: null
+            country_redirect: true
+        metaltop.dev:
+            base_host: metaltop.dev
+            use_www: false
+            category_slug_field: null
+            category_enabled_field: null
+            country_redirect: true
+    unsubscribe_secret: aspov
+
+    product_old_images_dir: '%kernel.root_dir%/../images/userim'
+    upload_dir: %kernel.root_dir%/../upload
+    admin_emails_for_feedback: []
+    admin_emails_for_creation_demand_package: []
+    imagine_driver: gd
+    additional_menu_items:
+        analytics:
+            title: 'Аналитика'
+            url: 'http://www.metalindex.ru?_al={auto_login_token}'
+            target: '_blank'
+        advertisments:
+            title: 'Объявления'
+            url: 'http://www.metal-trade.ru?_al={auto_login_token}'
+            target: '_blank'
+    project.title: Металлопрокат.ру
+    project.logos:
+        default: bundles/metalproject/img/metalloprokat/logo.png
+        newyear: bundles/metalproject/img/metalloprokat/logo_newyear.png
+    project.favicon: bundles/metalproject/img/metalloprokat/favicon.ico
+    project.email_logo_path: /upload/mail-assets/metalloprokat
+    project.copyright_title: Металлопрокат.ру
+    project.copyright_year: 2000
+    project.family: metalloprokat
+    project.share_logo: /upload/metal-logo.png
+    project.rspm_title: '<a class="rspm-member" data-href="http://www.rspmp.ru/ru/members/certification/?company_id=762">Действительный член РСПМ</a>'
+    project.email_rspm_template_name: metalloprokat
+    # project.announcement_schema_images: [/announcement-schema/product-1.png, /announcement-schema/product-2.png] для продукта
+    # project.announcement_schema_images: [/announcement-schema/stroy.png] для строй
+    project.announcement_schema_images: [/announcement-schema/metalloprokat-1.png, /announcement-schema/metalloprokat-2.png]
+    project.require_user_phone: true
+    # Для stroy.ru - project.require_user_phone: false
+    # Для product.ru - project.require_user_phone: true
+    # Для metalloprokat.ru - project.require_user_phone: true
+
+
+    # для строй
+    # project.suppliers_menu_counter_name: products_count
+    # project.suppliers_route_subdomain: 'MetalProductsBundle:Products:list_category_subdomain'
+    # project.suppliers_route: 'MetalProductsBundle:Products:list_category'
+
+    project.suppliers_menu_counter_name: 'products_count'
+    project.suppliers_route_subdomain: 'MetalProductsBundle:Products:list_category_subdomain'
+    # project.suppliers_route_subdomain: 'MetalCatalogBundle:Products:list_category_subdomain' для строй
+    project.suppliers_route: 'MetalProductsBundle:Products:list_category'
+    # project.suppliers_route: 'MetalProductsBundle:Products:companies_list_category' для продукта
+    project.search_suggest_route: 'MetalProductsBundle:Products:list_category_subdomain'
+    # project.search_suggest_route: 'MetalProductsBundle:Products:companies_list_category_subdomain'  для продукта
+    project.category_matcher_service_id: 'metal.categories.category_matcher.metalloprokat'
+    project.catalog_enabled: false
+    project.content_enabled: false
+    project.promocode_enabled: false
+    project.portal_enabled: true
+    project.per_page_for_product_page: 20
+    # project.per_page_for_product_page: 10 для продукта
+    project.frontpage_controller: FrameworkBundle:Template:template
+    # project.frontpage_controller: MetalContentBundle:Topics:list для стройки
+    project.menu_name: main_menu
+    project.corp_menu_name: corp_main_menu
+    project.empty_tabs_enabled: true
+    # project.empty_tabs_enabled: false  для стройки
+    # project.menu_name: main_menu_stroy для стройки
+    # project.corp_menu_name: corp_main_menu_stroy для стройки
+
+    # Для stroy.ru - project.registration_email_template: '@@MetalUsers/emails/user_registration.html.twig'
+    # Для product.ru - project.registration_email_template: '@@MetalUsers/emails/product/user_registration.html.twig'
+    # Для metalloprokat.ru - project.registration_email_template: '@@MetalUsers/emails/metalloprokat/user_registration.html.twig'
+    project.registration_email_template: '@@MetalUsers/emails/user_registration.html.twig'
+
+    # Для stroy.ru - project.widgets_other_cities_enabled: true
+    # Для product.ru - project.widgets_other_cities_enabled: true
+    # Для metalloprokat.ru - pproject.widgets_other_cities_enabled: false
+    # Страны таким же образом отображаем
+    project.widgets_other_cities_enabled: false
+    project.widgets_other_countries_enabled: false
+    project.ajax_pagination_enabled: true
+    # Для metalloprokat.ru - true, для остальных - false
+    project.telegram_notifications_enabled: false
+
+    company_crm_url: http://crm.metalloprokat.ru/main/id=%d
+
+    tokens.product_title.nominative: металл
+    tokens.product_title.instrumental: металлом
+    tokens.product_title.genitive: металла
+
+    tokens.supplier_of: металлопродукции
+
+    tokens.product_volume_title: размер
+    #product: tokens.product_volume_title: объем
+    tokens.supplier: металлоторговец
+    tokens.suppliers: металлоторговцы
+    tokens.catalog: металлоторгующих компаний
+    tokens.companies_type: металлургических компаний
+    tokens.market_title: металлопроката # заявки на покупку по рынку металлопроката за последние
+    tokens.companies: металлоторговые предприятия, производители, поставщики
+    tokens.catalog_companies: каталог металлургических предприятий
+    tokens.companies_info: адреса, контакты и прайс-листы компаний-металлоторговцев, производителей металлопроката
+    tokens.registration_supplier_profile: 'Я поставщик металлопродукции'
+    tokens.registration_consumer_profile: 'Я потребитель металлопродукции'
+    #product.ru:
+    #tokens.registration_supplier_profile: 'Я поставщик продуктов питания'
+    #tokens.registration_consumer_profile: 'Я потребитель продуктов питания'
+    #stroy:
+    #tokens.registration_supplier_profile: 'Я поставляю товары/услуги'
+    #tokens.registration_consumer_profile: 'Я хочу заказать товар/услугу'
+    tokens.buy_from: купить
+    #product: tokens.buy_from: купить оптом
+    tokens.in_catalog: 'в каталоге'
+    #product: tokens.in_catalog: ''
+    tokens.meta_product_descr_sale: ''
+    #product: tokens.meta_product_descr_sale: '. Продажа'
+    tokens.meta_product_descr_wholesale: ''
+    #product: tokens.meta_product_descr_wholesale: ' оптом'
+
+    project.domains_regex:
+        '.*\.?metalloprokat\.dev': '.metalloprokat.dev'
+        '.*\.?metaltop\.dev':      '.metaltop.dev'
+        '.*\.?me1\.dev':           '.me1.dev'
+    listeners_declaration_file: listeners/metalloprokat.xml
+    products_import_blank_file: blank_xls.xls
+    #product: products_import_blank_file: blank_product.xls
+    #stroy: products_import_blank_file: blank_stroy.xls
+
+    # create yandex app https://oauth.yandex.ru/ with callback url: http://www.metalloprokat.ru/_admin/metal/project/site/take-token-yandex
+    # create google app https://code.google.com/apis/console/?pli=1 with callback url: http://www.metalloprokat.ru/_admin/metal/project/site/take-token-google
+    webmaster_clients:
+        product:
+            google: 80328166487.apps.googleusercontent.com
+            google_secret: QhchuO2P-P9EbVX0xXvqp4LP
+            yandex: 07a3f900eb724287bc05877ae03c71a5
+        metalspros:
+            google: 80328166487.apps.googleusercontent.com
+            google_secret: QhchuO2P-P9EbVX0xXvqp4LP
+            yandex: 07a3f900eb724287bc05877ae03c71a5
+        metalloprokat:
+             google: 80328166487.apps.googleusercontent.com
+             google_secret: QhchuO2P-P9EbVX0xXvqp4LP
+             yandex: 07a3f900eb724287bc05877ae03c71a5
+
+    minisite_reserved_slugs: []
+    #minisite_reserved_slugs: [netcat, profile, apartment, cottage, build, users, market, tags, service, about] для строй.ру
+
+    recaptcha.enabled: false
+    recaptcha.public_key: '6LfrxQoTAAAAAHcGgTMYHSpqcdkQr63gk1hiBwPn'
+    recaptcha.private_key: '6LfrxQoTAAAAACrQVmYsPa9IPRoKV2TUeBgG7KEo'
+    # сгенерированные данные с сайта cloudflare
+    cloudflare.api_key: ''
+    cloudflare.auth_email: ''
+    request_logging_enabled: false
+
+    mailer_from_news: %mailer_from%
+
+    base_host_invite_project: www.stroy.ru
+    base_host_verify_invite: www.metalloprokat.ru
+    images_host: %host_prefix%%base_host%

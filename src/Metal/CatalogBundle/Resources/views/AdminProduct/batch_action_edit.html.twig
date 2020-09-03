@@ -1,0 +1,152 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block notice %}
+    {{ parent() }}
+{% endblock %}
+
+{% block form %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-enable]').bind('change', function (e) {
+                var $checkbox = $(e.target);
+                var $relatedEl = $('#products-edit [name="' + $checkbox.data('enable') + '"]');
+                if ($relatedEl.is('select')) {
+                    $relatedEl.select2('enable', $checkbox.prop('checked'));
+                } else {
+                    $relatedEl.prop('disabled', !$checkbox.prop('checked'));
+                }
+            }).trigger('change');
+        });
+
+        function cityAdminController($scope) {
+            $scope.citiesIdsAsString = '';
+            $scope.citiesIds = [];
+
+            $scope.$watch('city', function (city) {
+                if (city) {
+                    $scope.citiesIds.push(city.id);
+                    $scope.citiesIdsAsString = $scope.citiesIds.join(',');
+                }
+            });
+        }
+    </script>
+
+    <div class="box box-primary">
+
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Пакетное редактирование продуктов
+            </h3>
+        </div>
+
+        <div class="box-body">
+            <form class="form-horizontal"
+                  id="products-edit"
+                  action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}"
+                  ng-controller="cityAdminController"
+                  method="post"
+                  {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %} >
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.productCitiesEditable, {'attr': {
+                                'data-enable': form.productCitiesTitle.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.productCitiesTitle, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.productCitiesTitle, {
+                                'attr' : {
+                                    'class' : 'form-control',
+                                    'typeahead' : '',
+                                    'typeahead-loading' : 'typeaheadLoading',
+                                    'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                                    'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                    'typeahead-model' : 'city'
+                                }
+                            }) }}
+                            {{ form_errors(form.productCitiesTitle) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.productCities, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.productCities, {'attr': {
+                                'class': 'form-control',
+                                'ng-model': 'citiesIdsAsString',
+                            } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        <div>
+                            {{ form_widget(form.categoryEditable, {'attr': {
+                                'data-enable': form.categoryTitle.vars['full_name']
+                            } }) }}
+                        </div>
+                        {{ form_label(form.categoryTitle, null, {'label_attr' : {'class' : 'control-label'}}) }}
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.categoryTitle, {
+                                'attr' : {
+                                    'class': 'form-control',
+                                    'typeahead': '',
+                                    'typeahead-prefetch-url': path('MetalCategoriesBundle:Suggest:getCategories'),
+                                    'typeahead-model': 'category',
+                                    'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.category, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.category, {'attr': {
+                                'class': 'form-control g-hidden',
+                                'ng-model': 'category.id',
+                                'initial-value': ''
+                            } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                {% for key, value in app.request.request.all() if key != 'metal_productadmin' %}
+                    {% if value is iterable %}
+                        {% for valueItem in value %}
+                            <input type="hidden" name="{{ key }}[]" value="{{ valueItem }}"/>
+                        {% endfor %}
+                    {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                    {% endif %}
+                {% endfor %}
+
+                <input type="hidden" name="submitted" value="yes"/>
+
+                {{ form_rest(form) }}
+
+                {% block formactions %}
+                    <button type="submit"
+                            class="btn btn-danger">Сохранить
+                    </button>
+
+                    {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
+                        {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+
+                        <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">
+                            <i class="glyphicon glyphicon-th-list"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
+                        </a>
+                    {% endif %}
+                {% endblock formactions %}
+            </form>
+        </div>
+    </div>
+{% endblock form %}

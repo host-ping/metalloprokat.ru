@@ -1,0 +1,77 @@
+{% set subdomain = app.request.attributes.get('city') ? app.request.attributes.get('city').getSlugWithFallback() : 'www' %}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+{% for product in pagerfanta %}
+    {% set productViewUrl = path('MetalCatalogBundle:Product:view', {'id' : product.id, 'category_slug': product.category.slugCombined, 'subdomain': subdomain}) %}
+    {% set brand = product.attribute('product_brand') %}
+    {% set manufacturer = product.attribute('product_manufacturer') %}
+
+    {% set brandViewUrl = path('MetalCatalogBundle:Brand:view', {'slug' : brand.slug}) %}
+    {% set brandHrefAttr = seoHelper.isUrlWasDisplayed(brandViewUrl) ? 'data-href' : 'href' %}
+    {% do seoHelper.setUrlWasDisplayed(brandViewUrl) %}
+
+    {% set manufacturerViewUrl = path('MetalCatalogBundle:Manufacturer:view', {'slug' : manufacturer.slug}) %}
+    {% set manufacturerHrefAttr = seoHelper.isUrlWasDisplayed(manufacturerViewUrl) ? 'data-href' : 'href'  %}
+    {% do seoHelper.setUrlWasDisplayed(manufacturerViewUrl) %}
+
+    <li class="view-product item">
+        <div class="all-product-holder clearfix">
+            <div class="product-logo is-bordered float-left">
+                <a class="img-link {% if not product.photo.name %}pattern-small{% endif %}" data-href="{{ productViewUrl }}">
+                    {% if product.photo.name %}
+                        <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq64_non_optim') }}"
+                             alt="{{ product.title }}"
+                             title="{{ product.title }}" />
+                    {% endif %}
+                </a>
+                {% set otherProductsCount = product.getAttribute('products_count') - 1 %}
+                {% if otherProductsCount > 0 %}
+                    <div class="product-label label bottom">
+                        <a class="label-link" title="еще {{ otherProductsCount|number_format_decimal }} {{ 'продукт|продукта|продуктов'|transchoice(otherProductsCount) }}" {{ brandHrefAttr }}="{{ brandViewUrl }}">
+                        еще {{ otherProductsCount|number_format_decimal }}</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="holder float-left">
+                <div class="container top-block clearfix">
+                    <div class="product-info float-left">
+                        <div class="title">
+                            <a href="{{ productViewUrl }}" title="{{ product.title }}" class="is-gradiented-bottom">{{ product.title }}</a>
+                        </div>
+                        <p class="size gray60-color">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                    </div>
+                    <div class="company-info float-right">
+                        <div class="holder float-left">
+                            <div class="title">
+                                <a {{ brandHrefAttr }}="{{ brandViewUrl }}"
+                                   class="small-link is-gradiented-bottom" title="{{ brand.title }}">{{ brand.title }}</a>
+                            </div>
+                            {#<p class="localization gray60-color">Москва, Владимир, Казань</p>#}
+                            <a class="site is-gradiented-bottom"
+                               {{ manufacturerHrefAttr }}="{{ manufacturerViewUrl }}"
+                               title="{{ manufacturer.title }}">{{ manufacturer.title }}</a>
+                        </div>
+                        <div class="company-logo float-right">
+                            <a class="img-link {% if not brand.logo.name %}pattern-small{% endif %}"
+                               data-href="{{ brandViewUrl }}">
+                                {% if brand.logo.name %}
+                                    <img src="{{ vich_uploader_asset(brand, 'uploadedLogo')|imagine_filter('catalog_logo_sq40') }}"
+                                         alt="{{ brand.title }}"
+                                         title="{{ brand.title }}" />
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+
+    {% include '@MetalProducts/Products/partial/banner_inclusion.html.twig' with {
+        'index' : loop.index,
+        'category' : product.category,
+        'source_type_slug' : 'catalog-products'
+    } only %}
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}

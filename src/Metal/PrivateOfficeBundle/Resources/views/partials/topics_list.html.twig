@@ -1,0 +1,38 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% for topicItem in pagerfanta %}
+    <tr class="row {% if topicItem.unreadAnswersCount > 0 or topicItem.viewedAt is null %}active{% endif %}">
+        <td class="theme col">
+            <a class="link" href="{{ path("MetalPrivateOfficeBundle:Support:view", {'id': topicItem.id}) }}">{{ topicItem.title }}</a>
+        </td>
+        <td class="creation-date col">
+            <span>{{ formattingHelper.formatDate(topicItem.createdAt) }}</span>
+        </td>
+        <td class="comment-count col">
+            {% if topicItem.unreadAnswersCount > 0 %}
+                <span class="ie-radius">
+                    +{{ topicItem.unreadAnswersCount }}
+                 </span>
+            {% else %}
+                {{ topicItem.answersCount }}
+            {% endif %}
+        </td>
+        <td class="last-comment col">
+            <span>{{ formattingHelper.formatDate(topicItem.lastAnswerAt) }}</span>
+        </td>
+    </tr>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <tr class="see-more-block-wrapper" id="topics-load-more">
+        <td colspan="4" class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+               href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#topics-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </td>
+    </tr>
+{% endif %}

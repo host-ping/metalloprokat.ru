@@ -1,0 +1,202 @@
+{% extends '@markup/private/archive/_archive_layout.html.twig' %}
+
+{% block content %}
+<div id="content" class="private-room-content content-right outline-right float-right">
+    <div class="alert-success outline-right">
+        <div class="alert">
+            Спасибо! Ваша заявка будет добавлена на сайт после премодерации
+        </div>
+    </div>
+    {% block tabs %}
+        {% set activeTab = 'demands' %}
+        {{ parent() }}
+    {% endblock %}
+    {% block filters %}
+        <div class="filters-block outline-right clearfix">
+            <div class="send-order-wrapper">
+                    <span class="add-button icon-add-btn clickable demand"
+                            >Добавить заявку</span>
+            </div>
+        </div>
+    {% endblock %}
+    <div class="private-view-category view-category demands">
+        <div class="content-scrollable js-scrollable">
+            <ul class="demands list private-fix-width">
+                <li class="demand_item">
+                    <div class="demand_holder clearfix">
+                        <div class="demand-data float-left">
+                            <div class="demand-title">
+                                <strong class="demand-count red-color">№39526</strong>
+                                Брянск
+                                <div class="demand-region gray60-color">
+                                    <strong>Брянская обл.</strong>
+                                </div>
+                                для ООО "ТЭК ПРОМГРУПП" <span class="demand-date">от 28 апр 2013</span>
+                                <span class="process icon-clock clickable js-helper-opener" data-text="Не промодерирована" data-absolute-parent=".list"></span>
+                            </div>
+                            <table class="demand_product-list demand-table">
+                                <tr class="row first">
+                                    <td class="item col">
+                                        <p class="product-item">1</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="item col">
+                                        <p class="product-item">2</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="item col">
+                                        <p class="product-item">3</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <a class="demand_link" href="#">Всего 8 позиций</a>
+
+                        </div>
+                        <div class="demand-info float-right">
+                            <p class="user text">Постоянная потребность <br />
+                                Одинцово</p>
+                            <p class="attached-product icon-clip text">прикреплена к товару<a href="#"> Арматура 12 А3 </a>найдена в Москве</p>
+                            <p class="viewed icon-views text">Просмотрена</p>
+                        </div>
+                    </div>
+                    <ul class="links clearfix">
+                        <li class="links_read-answers item default-width float-left clearfix">
+                            <a class="button is-bordered ie-radius" href="#">
+                                <span class="text">Читать ответы</span>
+                                <strong class="count gray80-color">1</strong>
+                                <span class="read-answers icon-back float-right"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="demand_item">
+                    <div class="demand_holder clearfix">
+                        <div class="demand-data float-left">
+                            <div class="demand-title">
+                                <strong class="demand-count red-color">№39526</strong>
+                                Брянск
+                                <div class="demand-region gray60-color">
+                                    <strong>Брянская обл.</strong>
+                                </div>
+                                для ООО "ТЭК ПРОМГРУПП" <span class="demand-date">от 28 апр 2013</span>
+                                <span class="process icon-clock clickable js-helper-opener" data-text="Не промодерирована" data-absolute-parent=".list"></span>
+                            </div>
+                            <table class="demand_product-list demand-table">
+                                <tr class="row">
+                                    <td class="item col">
+                                        <p class="product-item">1</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="download-demand-file icon-clip">
+                                <a class="link" href="#">Скачать прикрепленный файл</a>
+                            </div>
+                            <a class="demand_link" href="#">Всего 8 позиций</a>
+                        </div>
+                        <div class="demand-info float-right">
+                            <p class="user text">Разовая потребность <br /> Екатеринбург</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="demand_item">
+                    <div class="demand_holder clearfix">
+                        <div class="demand-data float-left">
+                            <div class="demand-title">
+                                <strong class="demand-count red-color">№39526</strong>
+                                Брянск
+                                <div class="demand-region gray60-color">
+                                    <strong>Брянская обл.</strong>
+                                </div>
+                                для ООО "ТЭК ПРОМГРУПП" <span class="demand-date">от 28 апр 2013</span>
+                                <span class="process icon-clock clickable js-helper-opener" data-text="Не промодерирована" data-absolute-parent=".list"></span>
+                            </div>
+                            <table class="demand_product-list demand-table">
+                                <tr class="row first">
+                                    <td class="item col">
+                                        <p class="product-item">1</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="item col">
+                                        <p class="product-item">2</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="item col">
+                                        <p class="product-item">3</p>
+                                    </td>
+                                    <td class="title col">
+                                        <p class="product-title">Арматура А3</p>
+                                    </td>
+                                    <td class="count col">
+                                        <p class="product-count">50 тонн</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <a class="demand_link" href="#">Всего 8 позиций</a>
+                        </div>
+                        <div class="demand-info float-right">
+                            <p class="user text">
+                                Разовая потребность
+                                 <br /> Одинцово</p>
+                        </div>
+                    </div>
+                    <ul class="links clearfix">
+                        <li class="links_read-answers item default-width float-left clearfix">
+                            <a class="button is-bordered ie-radius" href="#">
+                                <span class="text">Читать ответы</span>
+                                <strong class="count gray80-color">3</strong>
+                                <span class="read-answers icon-back float-right"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

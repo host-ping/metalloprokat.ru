@@ -1,0 +1,25 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalContentBundle:Seo').getAdditionalMetaTagsForContentTagView()|raw }}
+{% endblock %}
+
+{% block title %}
+    {{ tag.title }}
+{% endblock %}
+
+{% block inside_left %}
+    <h1 class="title">{{- tag.title -}}</h1>
+    <div class="view-category products js-calc-height">
+        <ul class="product list">
+            {{ include ('@MetalContent/partial/list_content_entries.html.twig', {
+                'pagerfanta' : pagerfanta,
+                'showEntityType': showEntityType
+            }, false) }}
+        </ul>
+    </div>
+{% endblock inside_left %}
+
+{% block inside_right %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'entry_type' : 'ENTRY_TYPE_TOPIC'}) }}
+{% endblock inside_right %}

@@ -1,0 +1,672 @@
+{% extends 'markup/html/portal/suppliers/companies.html.twig' %}
+
+{% block title 'Demands list' %}
+
+{% block breadcrumbs_button %}
+    <div class="add demand is-gradiented float-right js-collapsable-breadcrumbs-reserve">
+        <a class="add-button demand icon-add-btn" href="#">Добавить потребность</a>
+    </div>
+{% endblock breadcrumbs_button %}
+
+{% block content %}
+    <div id="content" class="content-right outline-right float-right">
+    <div class="main-title d-title">
+        <h1>
+            <span>Потребности в арматуре</span>
+            <a href="#" class="js-popover-opener" data-popover="#cities" data-different-position="true">в Москве и
+                Области</a>
+        </h1>
+    </div>
+    {% block tabs %}
+        <div class="result-tabs-wrapper demand-tabs outline-right clearfix">
+            <ul class="sort-period list float-left">
+                <li class="item float-left">
+                    <a class="period-link icon-check black link js-popover-opener" data-popover="#period" href="#">За
+                        неделю <span class="num">20</span></a>
+
+                    <div id="period" class="drop-wrapper period-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За день <span class="num">10</span></a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За неделю <span class="num">20</span></a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За месяц <span class="num">30</span></a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link js-popover-opener" href="#" data-popover="#datepicker-period-from">За
+                                    период <span class="num">45</span></a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За все время <span class="num">200</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item float-left">
+                    <div class="period-from float-left">
+                        <p class="text">
+                            c <span class="icon-calendar js-popover-opener clickable"
+                                    data-popover="#datepicker-period-from"></span>
+                            <input type="text" id="date_from" class="date js-popover-opener" value="20 янв 2014"
+                                   data-popover="#datepicker-period-from"/>
+                        </p>
+
+                        {% set datepickerConfig = {
+                        'selectedDate': '2014-01-20',
+                        'targets': [
+                        {
+                        "format": "DD.MM.YYYY",
+                        "target": "url",
+                        "query": "date_from"
+                        },
+                        {
+                        "format": "D MMM YYYY",
+                        "target": "#date_from"
+                        }
+                        ]
+                        } %}
+                        <div id="datepicker-period-from"
+                             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+                             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+                    </div>
+                    <div class="period-for float-left">
+                        <p class="text">
+                            по <span class="icon-calendar js-popover-opener clickable"
+                                     data-popover="#datepicker-period-to"></span>
+                            <input type="text" id="date_to" class="date js-popover-opener" value="26 янв 2014"
+                                   data-popover="#datepicker-period-to"/>
+                        </p>
+
+                        {% set datepickerConfig = {
+                        'selectedDate': '2014-01-26',
+                        'targets': [
+                        {
+                        "format": "DD.MM.YYYY",
+                        "target": "url",
+                        "query": "date_to"
+                        },
+                        {
+                        "format": "D MMM YYYY",
+                        "target": "#date_to"
+                        }
+                        ]
+                        } %}
+                        <div id="datepicker-period-to"
+                             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+                             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+                    </div>
+                </li>
+            </ul>
+            <div class="sort-view float-right clearfix">
+                <div class="export-block float-left">
+                    <a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт</a>
+
+                    <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+                        <div class="dropdown">
+                            <div class="export-links block clearfix">
+                                <p class="title export link">Экспорт</p>
+                                <a class="button small-btn blue-bg float-left ie-radius" href="#">XLS</a>
+                                <a class="button small-btn blue-bg float-left ie-radius" href="#">CSV</a>
+                            </div>
+                            <div class="feed-links block clearfix">
+                                <p class="title">Подписка</p>
+                                <a class="button small-btn blue-bg float-left ie-radius" href="#">rss</a>
+                                <a class="button small-btn blue-bg float-left js-popup-opener ie-radius" href="#"
+                                   data-popup="#subscribe">e-mail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-block float-left">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#order">По
+                        дате</a>
+
+                    <div id="order" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По дате</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По цене</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">По к-ву отзывов</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <div id="demand" class="view-category demands">
+    <ul class="demands list">
+    <li class="demand_item">
+        <div class="demand_holder clearfix">
+            <div class="demand-data float-left">
+                <div class="demand-title">
+                    <a href="#">
+                        <strong class="demand-count">№39526</strong>
+                        Москва
+                    </a>
+                    <span class="demand-date">от 28 апр 2013</span>
+                    <div class="demand-region gray60-color">
+                        <strong>Московская обл.</strong>
+                    </div>
+                </div>
+                <table class="demand_product-list demand-table">
+                    <tr class="row first">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                </table>
+                <a class="demand_link" href="#">Всего 8 позиций</a>
+            </div>
+            <div class="demand-info float-right">
+                <div class="holder clearfix">
+                    <span class="answered icon-back float-left">4</span>
+                    <spam class="viewed icon-views float-left">506</spam>
+                </div>
+                <p class="text">
+                    <span class="trader">Металлоторговец</span>
+                    <span class="localization gray60-color">из Одинцово</span>
+                </p>
+            </div>
+        </div>
+        <ul class="links clearfix">
+            <li class="links_report item float-left clearfix">
+                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                   data-tooltip-title="Пожаловаться" data-popup="#report">
+                    <span class="icon-complaint"></span>
+                </a>
+            </li>
+            <li class="item width-181 default-width float-left clearfix">
+                <a href="#" class="button favorites is-bordered ie-radius">
+                    <span class="text">В Избранное</span>
+                    <span class="icon-favorite float-right"></span>
+                </a>
+            </li>
+            <li class="links_contacts width-181 item default-width float-left clearfix">
+                <a class="button js-view-contacts contacts is-bordered js-popover-opener ie-radius" href="#"
+                   data-popover="#contact" data-index="3">
+                    <span class="text">Контакты</span>
+                    <span class="icon-points float-right"></span>
+                </a>
+
+                <div id="contact" class="drop-wrapper contact is-bordered ie-radius">
+                    <div class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                    <p class="text">Для просмотра контактной информации о потребителе необходимо зарегистрироваться и
+                        авторизоваться.</p>
+                    <a class="button is-bordered ie-radius" href="#">Перейти на страницу потребности</a>
+                </div>
+            </li>
+            <li class="links_answer width-181 item default-width float-left clearfix">
+                <a class="button answer is-bordered green-bg js-popup-opener ie-radius" href="#"
+                   data-popup="#demand-answer" data-demand-id="1">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="demand_item">
+        <div class="demand_holder clearfix">
+            <div class="demand-data float-left">
+                <div class="demand-title">
+                    <a href="#">
+                        <strong class="demand-count">№39526</strong>
+                        Москва
+                    </a>
+                    <span class="demand-date">от 28 апр 2013</span>
+                    <div class="demand-region gray60-color">
+                        <strong>Московская обл.</strong>
+                    </div>
+                </div>
+                <table class="demand_product-list demand-table">
+                    <tr class="row">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                </table>
+                <a class="demand_link" href="#">Всего 8 позиций</a>
+            </div>
+            <div class="demand-info float-right">
+                <div class="holder clearfix">
+                    <span class="answered icon-back float-left">4</span>
+                    <spam class="viewed icon-views float-left">506</spam>
+                </div>
+                <p class="text">
+                    <span class="localization gray60-color">Люберцы</span>
+                </p>
+            </div>
+        </div>
+        <ul class="links clearfix">
+            <li class="links_report item float-left clearfix">
+                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                   data-tooltip-title="Пожаловаться" data-popup="#report">
+                    <span class="icon-complaint"></span>
+                </a>
+            </li>
+            <li class="item width-181 default-width float-left clearfix">
+                <a href="#" class="button favorites is-bordered ie-radius">
+                    <span class="text">В Избранное</span>
+                    <span class="icon-favorite float-right"></span>
+                </a>
+            </li>
+            <li class="links_contacts width-181 item default-width float-left clearfix">
+                <a class="button contacts js-view-contacts is-bordered js-popover-opener ie-radius" href="#"
+                   data-popover="#contact-2" data-index="3">
+                    <span class="text">Контакты</span>
+                    <span class="icon-points float-right"></span>
+                </a>
+
+                <div id="contact-2" class="drop-wrapper contact is-bordered ie-radius">
+                    <div class="user-info-block">
+                        <p class="user">Василий Ложкин</p>
+
+                        <p class="user-contact">
+                            <span class="phone-text">+7 (495) 772-65-83,</span> <a href="#">vasiliy@lozhkin.com</a>
+                        </p>
+                    </div>
+                    <a class="button is-bordered ie-radius" href="#">Перейти на страницу потребности</a>
+                </div>
+            </li>
+            <li class="links_answer item default-width float-left clearfix">
+                <a class="button answer is-bordered green-bg js-popup-opener ie-radius" href="#"
+                   data-popup="#demand-answer" data-demand-id="2">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </a>
+            </li>
+        </ul>
+        {#<div class="items overflow"></div>#}
+    </li>
+    <li class="demand_item">
+        <div class="demand_holder clearfix">
+            <div class="demand-data float-left">
+                <div class="demand-title">
+                    <a href="#">
+                        <strong class="demand-count">№39526</strong>
+                        Москва
+                    </a>
+                    <span class="demand-date">от 28 апр 2013</span>
+                    <div class="demand-region gray60-color">
+                        <strong>Московская обл.</strong>
+                    </div>
+                </div>
+                <table class="demand_product-list demand-table">
+                    <tr class="row first">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Прокат угловой равнополочный Ст.3 ГО</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="item col">
+                            <p class="product-item">1</p>
+                        </td>
+                        <td class="title col">
+                            <p class="product-title">Арматура А3</p>
+                        </td>
+                        <td class="count col">
+                            <p class="product-count">50 тонн</p>
+                        </td>
+                    </tr>
+                </table>
+                <a class="demand_link" href="#">Всего 8 позиций</a>
+            </div>
+            <div class="demand-info float-right">
+                <div class="holder clearfix">
+                    <spam class="viewed icon-views float-left">506</spam>
+                </div>
+                <p class="text">
+                    <span class="buyer">Конечный потребитель</span>
+                    <span class="localization gray60-color">из Одинцово</span>
+                </p>
+            </div>
+        </div>
+        <ul class="links clearfix">
+            <li class="links_report item float-left clearfix">
+                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                   data-tooltip-title="Пожаловаться" data-popup="#report">
+                    <span class="icon-complaint"></span>
+                </a>
+            </li>
+            <li class="item width-181 default-width float-left clearfix">
+                <a href="#" class="button favorites is-bordered ie-radius">
+                    <span class="text">В Избранное</span>
+                    <span class="icon-favorite float-right"></span>
+                </a>
+            </li>
+            <li class="links_contacts width-181 item default-width float-left clearfix">
+                <a class="button contacts js-view-contacts is-bordered js-popover-opener ie-radius" href="#"
+                   data-popover="#contact-3" data-index="3">
+                    <span class="text">Контакты</span>
+                    <span class="icon-points float-right"></span>
+                </a>
+
+                <div id="contact-3" class="drop-wrapper contact is-bordered ie-radius">
+                    <p class="text">Для просмотра контактной информации о потребителе необходимо зарегистрироваться и
+                        авторизоваться.</p>
+                    <a class="button is-bordered ie-radius" href="#">Перейти на страницу потребности</a>
+                </div>
+            </li>
+            <li class="links_answer item default-width float-left clearfix">
+                <a class="button answer is-bordered green-bg js-popup-opener ie-radius" href="#"
+                   data-popup="#demand-answer" data-demand-id="3">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="see-more-block-wrapper">
+        <div class="see-more-block">
+            <a class="see-more button ie-radius" href="#">показать еще...</a>
+            <div class="loading-mask">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+    </ul>
+
+    </div>
+        {% block search_more %}
+            <div class="search-info-block outline-right clearfix">
+                <div class="block-title">Нужны потребители?</div>
+                <div class="search-info-list">
+                    <ul class="items">
+                        <li class="item icon-lamp">
+                            <a href="#">Загрузите</a> ваши товары на сайт.
+                        </li>
+                        <li class="item icon-lamp"><a href="#">Подпишитесь</a> на эту страницу, мы пришлем вам письмо, как только здесь
+                            появятся потребности.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock search_more %}
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <div id="sidebar" class="side-left outline-left float-left" style="position: static;">
+    <div class="sidebar-content js-fixed-filters">
+    <div style="position: relative;">
+        <div class="drop-wrapper drop-right opacity-border" id="dropdown-categories-1">
+            <div class="js-scrollable">
+                <div class="dropdown">
+                    <ul>
+                        <li class="drop-item first">
+                            <span class="drop-link">Арматура</span>
+                            <ul class="level-inside">
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A1 Ара A1 Аратура A1</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A2</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Арматура A3</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="drop-wrapper drop-right opacity-border" id="dropdown-categories-2">
+            <div class="js-scrollable">
+                <div class="dropdown">
+                    <ul>
+                        <li class="drop-item first">
+                            <a href="#" class="drop-link">Балка</a>
+                            <ul class="level-inside">
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Балка A1</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Балка A2</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Балка A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Балка A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Балка A3</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="drop-wrapper drop-right opacity-border" id="dropdown-categories-7">
+            <div class="js-scrollable">
+                <div class="dropdown">
+                    <ul>
+                        <li class="drop-item first">
+                            <span class="drop-link">Швеллер</span>
+                            <ul class="level-inside">
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Швеллер A1</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Швеллер A2</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Швеллер A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Швеллер A3</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Швеллер A3</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="side-wrap js-scrollable-filters js-scrollable">
+        <div class="filters">
+            <form action="#">
+                <div class="local filter">
+                    <div class="title"><a href="#" class="js-popover-opener" data-popover="#cities"
+                                          data-different-position="true">Москва и Область</a></div>
+                    <ul class="product">
+                        <li class="item js-dropdown-opener"
+                            data-display-dropdown="#dropdown-categories-1">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">51</span>
+                                <span class="elem is-gradiented">Арматура</span>
+                            </a>
+                        </li>
+                        <li class="item js-dropdown-opener"
+                            data-display-dropdown="#dropdown-categories-2">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">60</span>
+                                <span class="elem is-gradiented">Балка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">777</span>
+                                <span class="elem is-gradiented">Заглушка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">777</span>
+                                <span class="elem is-gradiented">Заглушка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">777</span>
+                                <span class="elem is-gradiented">Заглушка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">777</span>
+                                <span class="elem is-gradiented">Заглушка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">777</span>
+                                <span class="elem is-gradiented">Заглушка</span>
+                            </a>
+                        </li>
+                        <li class="item g-hidden js-dropdown-opener" data-expandable-section="categories"
+                            data-display-dropdown="#dropdown-categories-7">
+                            <a class="clearfix" href="#">
+                                <span class="count float-right">40</span>
+                                <span class="elem is-gradiented">Швеллер</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="link js-expandable js-categories-expand" data-expandable="categories" href="#">Показать
+                        все</a>
+                    <a class="link js-expandable g-hidden js-categories-expand" data-expandable="categories" href="#">Скрыть</a>
+                </div>
+                <div class="demand type filter">
+                    <ul class="type-list">
+                        <li>
+                            <input id="demand-type-1" name="demand-type" class="radio js-show-button-on-change bg-grey"
+                                   type="radio" disabled="disabled"/>
+                            <label for="demand-type-1">Разовые</label>
+                        </li>
+                        <li>
+                            <input id="demand-type-2" name="demand-type" class="radio js-show-button-on-change bg-grey"
+                                   type="radio" checked="checked" disabled="disabled"/>
+                            <label for="demand-type-2">Постоянные</label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="consumer type filter">
+                    <ul class="type-list">
+                        <li>
+                            <input id="consumer-type-1" name="consumer-type"
+                                   class="radio js-show-button-on-change bg-grey" type="radio"/>
+                            <label for="consumer-type-1">Торговцы</label>
+                        </li>
+                        <li>
+                            <input id="consumer-type-2" name="consumer-type"
+                                   class="radio js-show-button-on-change bg-grey" type="radio"/>
+                            <label for="consumer-type-2">Конечные потребители</label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="toggle-filter filter">
+                    <div class="sell-type-list toggle-block js-toggle-block ie-radius">
+                        <label class="item-link wholesale float-left  ie-radius">
+                            <input type="radio" name="selling_type" value="wholesale"
+                                   class="not-styling js-show-button-on-change js-toggle-button"/> Опт
+                        </label>
+
+                        <label class="item-link retail active float-left ie-radius">
+                            <input type="radio" name="selling_type" checked="checked" value="retail"
+                                   class="not-styling js-show-button-on-change js-toggle-button"/> Розница
+                        </label>
+
+                        <label class="item-link all float-left ie-radius">
+                            <input type="radio" name="selling_type" value="all"
+                                   class="not-styling js-show-button-on-change js-toggle-button"/> Все
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="submit-wrapper js-show-all g-hidden">
+        <a class="button show-btn link blue-bg clearfix" href="#">
+            <span class="text float-left">показать</span>
+            <span class="count float-right">583</span>
+        </a>
+    </div>
+    </div>
+    </div>
+{% endblock %}

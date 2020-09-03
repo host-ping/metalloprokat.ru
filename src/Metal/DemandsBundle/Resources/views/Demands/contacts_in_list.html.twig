@@ -1,0 +1,23 @@
+{% set isAllowedViewContacts = is_granted('VIEW_DEMAND_CONTACTS', demand) %}
+
+{% if isAllowedViewContacts %}
+    <div class="user-info-block">
+        <p class="user">{{ demand.getFixedCompanyTitle() }}</p>
+        <p class="user">{{ demand.getFixedUserTitle() }}</p>
+        <p class="user-contact">
+            {% if demand.phone %}<span class="phone-text">{{ demand.phone }}{% if demand.getFixedEmail() %},{% endif %}</span>{% endif %}
+            {% if demand.getFixedEmail() %}
+                <!--email_off--><a href="mailto:{{ demand.getFixedEmail() }}">{{ demand.getFixedEmail() }}</a><!--/email_off-->
+            {% endif %}
+        </p>
+    </div>
+{% elseif is_granted('ROLE_USER') %}
+    <p class="text">Расширенный и полный пакеты дают возможность просматривать контакты потребителей и многое другое. <a href="{{ path('MetalCorpsiteBundle:Default:services') }}">Получить</a></p>
+{% else %}
+    <!--noindex-->
+    <p class="text">Для просмотра контактной информации о потребителе необходимо
+        <a href="{{ brouzie_helper('MetalProjectBundle:Url').getRegistrationUrl(path('MetalDemandsBundle:Demand:view', {'subdomain' : 'www', 'id':demand.id, 'category_slug':demand.category.slugCombined})) }}">зарегистрироваться</a> или
+        <span class="link clickable js-popup-opener" data-popup="#login">авторизоваться</span>.
+    </p>
+    <!--/ noindex -->
+{% endif %}

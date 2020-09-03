@@ -1,0 +1,33 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Оплата пакета услуг{% if isDuplicate is defined %} (копия){% endif %}{% endblock %}
+
+{% block body_text -%}
+Добрый день!
+{% if payment.company %}
+Компания {{ payment.company.title }} оплатила пакет услуг {{ payment.servName() }}.
+{% else %}
+Пользователь {{ user.id }} оплатил пакет услуг {{ payment.servName() }}.
+{% endif %}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Оплата пакета услуг
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        Добрый день!
+        {% if payment.company %}
+            Компания {{ payment.company.title }} оплатила пакет услуг
+        {% else %}
+            Пользователь {{ user.id }} оплатил пакет услуг
+        {% endif %}
+        {{ payment.servName() }}.
+    </p>
+{% endblock %}
+

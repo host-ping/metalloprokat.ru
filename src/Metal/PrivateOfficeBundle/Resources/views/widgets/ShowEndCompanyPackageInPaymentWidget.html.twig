@@ -1,0 +1,36 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% if days is not null and companyPackage is not null %}
+    <div class="extend-package-info clearfix">
+        <div class="package-name float-left">
+            <div class="name">
+                <a class="package-link" target="_blank" href="{{ path('MetalCorpsiteBundle:Default:services')}}">{{ companyPackage.title }} пакет</a>
+            </div>
+            <p class="package-valid">
+                Действие услуги до {{ formatHelper.formatDate(companyPackage.endAt) }} / <a href="{{path('MetalCorpsiteBundle:Default:services')}}">выбрать другой пакет</a>
+            </p>
+        </div>
+        {% set byText = company.promocode ? 'Купить' : 'Продлить' %}
+        <div class="order-package float-right">
+            {% if days == 0 %}
+                <strong class="left-period">истекает сегодня</strong>
+            {% else %}
+                <strong class="left-period">Осталось {{ 'time.days_ago'|transchoice(days, [], 'MetalProjectBundle') }}</strong>
+            {% endif %}
+
+            <a class="extend-btn button green-bg js-popup-opener"
+                  data-popup="#order-service"
+                  data-package-id="{{ companyPackage.packageId }}"
+                  data-period-id="1"
+                  data-city-text="{{ app.user.company.city.title }}"
+                  data-city-id="{{ app.user.company.city.id }}"
+                  data-company-id="{{ app.user.company.id }}"
+                  data-company-title="{{ app.user.company.title }}"
+                  data-user-name="{{ app.user.fullName }}"
+                  data-user-phone="{{ app.user.phone }}"
+                  data-user-email="{{ app.user.email}}"
+                    >{{ byText }}
+                </a>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,58 @@
+{% extends 'MetalProductsBundle::search_result_layout.html.twig' %}
+
+{% block title %}
+    {{ brouzie_helper('MetalProjectBundle:LandingSeo').getMetaTitleForLandingPages() }}
+{% endblock %}
+
+{% block meta_description %}
+    Популярные запросы
+{% endblock %}
+
+{% block tabs '' %}
+
+{% block main_title_for_portal_page %}
+    {% set landingPage = app.request.attributes.get('landingPage') %}
+    <h1 ng-include="'alternative-header'">Популярные запросы</h1>
+
+    <script type="text/ng-template" id="alternative-header">
+        Популярные запросы
+        <span class="region-link link icon-check clickable js-popover-opener" data-popover="#cities-tabs"
+              ng-click='citiesWidgetPopoverOpenerController.loadPopover("cities-tabs")'
+              data-different-position="true">в {{ currentTerritory.getTitleLocative() }}</span>
+    </script>
+{% endblock %}
+
+{% block search_results %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="company-inside js-calc-height">
+            <div class="tabs-content">
+                <ul class="product similar-list">
+                    {% if pagerfanta.count %}
+                        {{ include('@MetalCategories/partial/landings_in_list.html.twig', {
+                            'pagerfanta' : pagerfanta,
+                        }, false) }}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock search_results %}
+
+{% block seo_linking_top '' %}
+
+{% block seo_linking_bottom '' %}
+
+{% block cities_tabs %}
+
+    {% set citiesWidgetOptions = {
+        'counter_name' : _counterName,
+        'route_type' : 'serch_landing',
+        'loading_route' : 'MetalProductsBundle:Api:territorial',
+    } %}
+
+    {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions) }}
+
+    {{ brouzie_render_widget('MetalTerritorialBundle:Cities', citiesWidgetOptions|merge(
+    {'id' : 'cities-tabs'}))
+    }}
+{% endblock %}

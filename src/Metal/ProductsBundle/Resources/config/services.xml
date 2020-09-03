@@ -1,0 +1,174 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal_products.data_fetcher_factory"
+                 class="Metal\ProductsBundle\DataFetching\ProductDataFetcherFactory">
+            <argument id="service_container" type="service" />
+        </service>
+
+        <service id="metal.products.concrete_data_fetcher"
+                 class="Metal\ProductsBundle\DataFetching\Sphinxy\ProductsDataFetcher"
+                 public="false">
+            <argument type="service" id="sphinxy.default_connection" />
+        </service>
+
+        <service id="metal.products.data_fetcher" class="Metal\ProjectBundle\DataFetching\Sphinxy\SphinxyDataFetcher">
+            <argument type="service" id="sphinxy.default_connection" />
+            <argument type="service" id="metal.products.concrete_data_fetcher" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="metal.products.concrete_products_entity_loader"
+                 class="Metal\ProductsBundle\DataFetching\EntityLoader\ProductsEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="snc_redis.session_client" />
+            <argument type="service" id="service_container" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="metal.products.products_entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.products.concrete_products_entity_loader" />
+        </service>
+
+        <service id="metal.products.concrete_companies_entity_loader"
+                 class="Metal\ProductsBundle\DataFetching\EntityLoader\CompaniesEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="snc_redis.session_client" />
+            <argument type="service" id="service_container" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="metal.products.companies_entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.products.concrete_companies_entity_loader" />
+        </service>
+
+
+        <service id="metal_products.data_fetching_elastica.products_data_fetcher"
+                 class="Metal\ProductsBundle\DataFetching\Elastica\ProductsDataFetcher" public="false" />
+
+        <service id="metal_products.data_fetcher_elastica"
+                 class="Metal\ProjectBundle\DataFetching\Elastica\ElasticaDataFetcher">
+            <argument type="service" id="fos_elastica.index.products" />
+            <argument type="service" id="metal_products.data_fetching_elastica.products_data_fetcher" />
+            <argument type="collection">
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\AttributesAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\AttributesIdsAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\CategoriesAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\CitiesAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\CountAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\CountriesAggregator" />
+                </argument>
+                <argument type="service">
+                    <service class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\PriceRangeAggregator" />
+                </argument>
+                <argument type="service">
+                    <service
+                            class="Metal\ProductsBundle\DataFetching\Elastica\Aggregator\ProductsPerCompanyAggregator" />
+                </argument>
+            </argument>
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="metal.products.product_import_service" class="Metal\ProductsBundle\Service\ProductImportService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="phpexcel" />
+            <argument type="service" id="sonata.notification.backend" />
+            <argument type="service" id="validator" />
+            <argument>%upload_dir%</argument>
+        </service>
+
+        <service id="metal.products.product_export_service" class="Metal\ProductsBundle\Service\ProductExportService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="phpexcel" />
+            <argument type="service" id="router" />
+            <argument type="service" id="service_container" />
+            <argument>%upload_dir%</argument>
+        </service>
+
+        <service id="metal.products.product_actualization_service"
+                 class="Metal\ProductsBundle\Service\ProductsActualizationService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal_products.indexer.products" />
+        </service>
+
+        <service id="metal.products.products_indexer" class="Metal\ProductsBundle\Indexer\ProductsIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="products" />
+        </service>
+
+        <service id="metal.products.admin.product" class="Metal\ProductsBundle\Admin\ProductAdmin">
+            <argument>metal.products.admin.product</argument>
+            <argument>Metal\ProductsBundle\Entity\Product</argument>
+            <argument>MetalProductsBundle:ProductAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sonata.notification.backend" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="metal_products.indexer.products" />
+            <argument type="service" id="metal.categories.category_matcher" />
+            <argument type="service" id="metal.products.product_actualization_service" />
+            <tag name="sonata.admin" manager_type="orm" persist_filters="true" group="products" label="Товары" />
+        </service>
+
+        <service id="metal.product.admin.block.products_processing_queue"
+                 class="Metal\ProductsBundle\Admin\Block\ProductsProcessingQueueBlockService">
+            <argument>metal.product.admin.block.products_processing_queue</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <service id="metal.products.admin.product_image" class="Metal\ProductsBundle\Admin\ProductImageAdmin">
+            <argument>metal.products.admin.product_image</argument>
+            <argument>Metal\ProductsBundle\Entity\ProductImage</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="products" label="Фото товаров" />
+        </service>
+
+        <service id="metal.products.consumer.products_import_consumer"
+                 class="Metal\ProductsBundle\Consumer\ProductsImportConsumer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal_products.indexer.products" />
+            <tag name="sonata.notification.consumer" type="products_import" />
+        </service>
+
+        <service id="metal.products.consumer.admin_products_consumer"
+                 class="Metal\ProductsBundle\Consumer\AdminProductsConsumer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="metal_products.indexer.products" />
+            <argument type="service" id="cache.app" />
+            <tag name="sonata.notification.consumer" type="admin_products" />
+        </service>
+
+        <service id="metal.products.paramconverter.product"
+                 class="Metal\ProductsBundle\ParamConverter\ProductsParamConverter">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="request.param_converter" priority="-2" converter="products_converter" />
+        </service>
+    </services>
+</container>

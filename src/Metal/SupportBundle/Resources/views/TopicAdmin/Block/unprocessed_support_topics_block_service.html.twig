@@ -1,0 +1,70 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        <style>
+            .topic-for-current-moderator td {
+                background-color: #dbdbdb !important;
+            }
+        </style>
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_support_topic_list') }}">Необработанные обращения в службу
+                        поддержки</a>
+                </h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered table-striped sonata-ba-list" xmlns="http://www.w3.org/1999/html">
+                    <caption></caption>
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата</th>
+                        <th>Отправлена</th>
+                        <th>Заголовок</th>
+                        <th>Автор/Компания</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for unprocessedTopic in unprocessedTopics %}
+                        <tr {% if unprocessedTopic.author and unprocessedTopic.author.id == app.user.id %}class="topic-for-current-moderator"{% endif %}>
+                            <td>
+                                <a href="{{ path('admin_metal_support_topic_show', {'id': unprocessedTopic.id}) }}">{{ unprocessedTopic.id }}</a>
+                            </td>
+                            <td>
+                                {{ formatHelper.formatStatsDate(unprocessedTopic.createdAt, 'day')|raw }}
+                            </td>
+                            <td>
+                                {{ unprocessedTopic.getSentFromAliases()[unprocessedTopic.sentFrom] }}
+                            </td>
+                            <td>
+                                {% if unprocessedTopic.title %}
+                                    {{ unprocessedTopic.title }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedTopic.author %}
+                                    {{ unprocessedTopic.author.fullName }}
+                                {% elseif unprocessedTopic.userName %}
+                                    {{ unprocessedTopic.userName }}
+                                {% endif %}
+                                <br>
+                                {% if unprocessedTopic.email %}
+                                    Емейл - {{ unprocessedTopic.email }}
+                                {% endif %}
+
+                                {{ include('MetalCompaniesBundle:AdminCompany:companyInfo.html.twig', {'object' : unprocessedTopic}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

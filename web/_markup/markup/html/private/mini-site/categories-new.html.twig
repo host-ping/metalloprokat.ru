@@ -1,0 +1,81 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Categories' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="./markup/css/ui-tree-white-theme.css" type="text/css"/>
+
+{% endblock %}
+
+{% block content %}
+    <div ng-app="metalApp">
+        <div ng-controller="Metal.Categories as categoriesController">
+
+            <div id="content" class="private-room-content content-right outline-right float-right">
+                {% block tabs %}
+                    {% set activeTab = 'categories' %}
+                    {{ parent() }}
+                {% endblock tabs %}
+
+                {% block filters %}
+                    <div class="filters-block mini-site-categories outline-right clearfix">
+                        <button type="button" class="add button blue-bg float-left ie-radius"
+                                ng-click="categoriesController.newItem()">Добавить
+                        </button>
+                        <button type="button" class="delete button red-bg float-left ie-radius"
+                                ng-click="categoriesController.saveItems(categories)"
+                        >Сохранить
+                        </button>
+
+                    </div>
+                {% endblock %}
+
+                <div class="private-scrollable content-scrollable js-scrollable">
+                    <div class="mini-site-content-wrapper mini-site-categories-wrapper">
+                        <script type="text/ng-template" id="nodes_renderer.html">
+                            <div class="tree-node tree-node-content">
+                                <span class="icon-check-collapse black clickable"></span>
+                                <span class="icon-check black clickable"></span>
+                                <span ui-tree-handle class="tree-handle icon-view-list"></span>
+                                <input type="text" name="custom_title" class="form-text ie-radius" placeholder="category item" ng-model="category.title" ng-minlength="3" />
+                                <div class="btns-wrapper float-right">
+                                    <span class="add-button icon-add-btn clickable demand"
+                                          data-nodrag ng-click="categoriesController.newSubItem(this)"></span>
+                                    <span class="icon-delete-btn clickable"
+                                          data-nodrag ng-click="categoriesController.remove(this)"></span>
+                                </div>
+
+                            </div>
+                            <ol ui-tree-nodes="" ng-model="category.nodes">
+                                <li ng-repeat="category in category.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+                                </li>
+                            </ol>
+                        </script>
+
+                        <div ui-tree ng-if="categories.length">
+                            <ol ui-tree-nodes="" ng-model="categories" id="tree-root">
+                                <li ng-repeat="category in categories" ui-tree-node ng-include="'nodes_renderer.html'">
+                                </li>
+                            </ol>
+                        </div>
+                        <div ng-if="!categories.length" class="empty-result">
+                            {#<li class="demand-item ">#}
+                            {#<div class="empty-result">#}
+                            <p class="message">Вы можете создать произвольные категории на Вашем минисайте! Обратитесь к менеджеру за дополнительной информацией
+                            </p>
+                            {#</div>#}
+                            {#</li>#}
+                        </div>
+                        <div ng-show="formSubmitting">
+                            <div class="overflow">
+                            </div>
+                            <div class="loading-mask big">
+                                <div class="spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

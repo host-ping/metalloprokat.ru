@@ -1,0 +1,30 @@
+{% set subdomain = 'www' %}
+{% if app.request.attributes.get('city') %}
+    {% set subdomain = app.request.attributes.get('city').slug %}
+{% endif %}
+{% for landingPage in pagerfanta %}
+    <li class="item clearfix">
+        <a class="link"
+           data-href="{{ path('MetalCategoriesBundle:LandingPage:landing', {'slug' : landingPage.slug, 'subdomain' : subdomain }) }}">
+            <div class="text-layout">
+                {{ landingPage.title }}
+            </div>
+        </a>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper float-left" id="instagram-photo-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+               data-href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#instagram-photo-load-more"
+            >показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}
+

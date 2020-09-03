@@ -1,0 +1,106 @@
+{% extends '@markup/private/consumers/_private_consumers.html.twig' %}
+{% block title 'Private complaints' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'complaints' %}
+            {{ parent() }}
+        {% endblock %}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <a class="filter-type icon-check black link js-popover-opener" data-popover="#favorite-type" href="#">Непросмотренные</a>
+                    <div id="favorite-type" class="drop-wrapper favorite-type_links opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <a class="drop-link current" href="#">Непросмотренные</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Просмотенные</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="float-left">
+                    <input id="untreated" type="checkbox" class="untreated js-styled-checkbox bg-grey"/>
+                    <label for="untreated">Необработанные</label>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="content-scrollable js-scrollable">
+            <ul class="complaints-list private-fix-width">
+                <li class="item clearfix">
+                    <div class="complaints-type float-left">
+                        <p class="text">Неправильная цена</p>
+                    </div>
+                    <div class="complaints-product float-left">
+                        <p class="product-name">про товар <a class="link" href="#">Арматура А3 12</a>:</p>
+                        <p class="couse">Товар решительно неправильный</p>
+                        <p class="date">12 мар 2013</p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="processed-btn button blue-bg ie-radius" href="#">Обработано</a>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="complaints-type float-left">
+                        <p class="text">Неправильная цена</p>
+                    </div>
+                    <div class="complaints-product float-left">
+                        <p class="product-name">про товар <a class="link" href="#">Арматура А3 12</a>:</p>
+                        <p class="couse">Товар решительно неправильный</p>
+                        <p class="date">12 мар 2013</p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="processed-btn button blue-bg ie-radius" href="#">Обработано</a>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="complaints-type float-left">
+                        <p class="text">Неправильная цена</p>
+                    </div>
+                    <div class="complaints-product float-left">
+                        <p class="product-name">про товар <a class="link" href="#">Арматура А3 12</a>:</p>
+                        <p class="couse">Товар решительно неправильный</p>
+                        <p class="date">12 мар 2013</p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="processed-btn button blue-bg ie-radius" href="#">Обработано</a>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="complaints-type float-left">
+                        <p class="text">Неправильная цена</p>
+                    </div>
+                    <div class="complaints-product float-left">
+                        <p class="product-name">про товар <a class="link" href="#">Арматура А3 12</a>:</p>
+                        <p class="couse">Товар решительно неправильный</p>
+                        <p class="date">12 мар 2013</p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="processed-btn button blue-bg ie-radius" href="#">Обработано</a>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="complaints-type float-left">
+                        <p class="text">Неправильная цена</p>
+                    </div>
+                    <div class="complaints-product float-left">
+                        <p class="product-name">про товар <a class="link" href="#">Арматура А3 12</a>:</p>
+                        <p class="couse">Товар решительно неправильный</p>
+                        <p class="date">12 мар 2013</p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="processed-btn button blue-bg ie-radius" href="#">Обработано</a>
+                    </div>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal.private_office.menu_builder"
+                 class="Metal\PrivateOfficeBundle\Menu\PrivateOfficeMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="brouzie.helper_factory" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%additional_menu_items%</argument>
+        </service>
+
+        <service id="metal.private_office.menu" class="Knp\Menu\MenuItem">
+            <factory service="metal.private_office.menu_builder" method="getMenu" />
+            <tag name="knp_menu.menu" alias="private_menu" />
+        </service>
+
+        <service id="metal.private_office.payment_view_voter" class="Metal\PrivateOfficeBundle\Acl\Voter\PaymentViewVoter">
+            <argument type="service" id="security.access.decision_manager" />
+            <tag name="security.voter" />
+        </service>
+
+        <service id="metal.private_office.support_topic_voter" class="Metal\PrivateOfficeBundle\Acl\Voter\SupportTopicVoter">
+            <argument type="service" id="security.access.decision_manager" />
+            <tag name="security.voter" />
+        </service>
+
+        <service id="metal.private_office.connect_products_with_photo_voter" class="Metal\PrivateOfficeBundle\Acl\Voter\ConnectProductsWithPhotoVoter">
+            <argument type="service" id="security.access.decision_manager" />
+            <tag name="security.voter" />
+        </service>
+    </services>
+
+</container>

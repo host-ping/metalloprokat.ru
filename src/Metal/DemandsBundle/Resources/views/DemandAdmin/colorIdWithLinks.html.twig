@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="{% if object.isDeleted() %}color: #ff0000;{% elseif object.isModerated() %}color: #009900;{% endif %}">
+        {% if object.isPublic %}
+            <a href="{{ path('admin_metal_demands_abstractdemand_edit', {'id' : object.id}) }}">{{ object.id }}</a>
+        {% else %}
+            <a href="{{ path('admin_metal_demands_abstractdemand_show', {'id' : object.id}) }}">{{ object.id }}</a>
+        {% endif %}
+    </div>
+    <span data-scroll-el="{{ object.id }}"></span>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% set currentCompany = app.request.attributes.get('company') %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% if includeBanners is not defined %}
+    {% set includeBanners = true %}
+{% endif %}
+{% for product in pagerfanta %}
+    {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq188', 'minisite') %}
+    <li class="item float-left" itemscope itemtype="http://schema.org/Offer">
+        <div class="hover-block">
+            <div class="dropdown">
+                <a class="big-pattern" href="{{ path('MetalMiniSiteBundle:MiniSite:product_view', {'domain' : currentCompany.domain, 'id' : product.id}) }}">
+                    {% if imageUrl %}
+                        <img src="{{ imageUrl }}" alt="{{ product.title }}" title="{{ product.title }}" itemprop="image" itemtype="http://schema.org/Thing"/>
+                    {% endif %}
+                </a>
+                <div class="info">
+                    <div class="title">
+                        <a href="{{ path('MetalMiniSiteBundle:MiniSite:product_view', {'domain' : currentCompany.domain, 'id' : product.id}) }}" class="link is-gradiented-bottom" title="{{ product.title }}" itemprop="review"><span itemprop="name" itemtype="http://schema.org/Thing">{{ product.title }}</span></a>
+                    </div>
+                    {% if product.size %}
+                        <p class="size gray60-color" ng-bind="'{{ tokens.product_volume_title|capitalize }} {{ product.getCutSize() }}'">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                    {% endif %}
+                    <p class="price-wrapper gray60-color">
+                        {% if product.isContractPrice() %}
+                            <span class="gray60-color" itemprop="price">цена договорная</span>
+                        {% else %}
+                        {% if product.isPriceFrom %}от {% endif %}
+                        <strong class="price">
+                            <span itemprop="price" content="{{ product.price }}">{{ product.price|number_format_decimal }}</span>
+                            <span class="{{ product.currency.symbolClass }}"></span>
+                            <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                            <span class="g-hidden" itemprop="priceCurrency">{{ product.currency.tokenEn }}</span>
+                        </strong>
+                        {% if product.measureId %}
+                            <span>за {{ product.measure.tokenPrice }}</span>
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                </div>
+                <span class="primary button clickable send-button ie-radius"
+                      popup-opener="#request-private-demand"
+                      data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                      data-demand-text="Заявка для компании {{ product.company.title }}"
+                      data-product-text="{{ product.title }}"
+                      data-company-id="{{ product.company.id }}"
+                      data-product-id="{{ product.id }}"
+                      data-product-category-id="{{ product.category.id }}"
+                        {% if not product.isContractPrice() %}
+                            data-volume-type="{{ product.measureId }}"
+                        {% endif %}
+                        >Отправить заявку
+                </span>
+            </div>
+        </div>
+    </li>
+    {% if includeBanners %}
+        {{ include('@MetalProducts/Products/partial/banner_inclusion_pallete.html.twig', {
+            'index' : loop.index,
+            'category' : product.category,
+            'source_type_slug' : 'mini-site',
+            'additional_class' : 'float-left',
+            'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+        }, false) }}
+    {% endif %}
+{% endfor%}
+
+{% if pagerfanta.hasNextPage() %}
+    <li id="product-load-more" class="see-more-block-wrapper float-left">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+               data-href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#product-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}
+
+{{ pagerfanta(pagerfanta, 'twig') }}

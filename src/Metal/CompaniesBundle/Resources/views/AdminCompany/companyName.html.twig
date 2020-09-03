@@ -1,0 +1,5 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_flat_field.html.twig' %}
+
+{% block field %}
+    {{ object.title }}{% if object.companyType %}, {{ object.companyType.title }}{% endif %}
+{% endblock %}

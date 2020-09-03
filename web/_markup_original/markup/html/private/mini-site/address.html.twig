@@ -1,0 +1,44 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Address' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-fix-width">
+            {% block tabs %}
+                {% set activeTab = 'address' %}
+                {{ parent() }}
+            {% endblock tabs %}
+            <div class="mini-site-content-wrapper">
+                <p class="text">Текущий адрес вашего сайта <a href="#">http://staltorg.metalloprokat.ru</a> <br>
+                    Вы можете изменить адрес, однако, для поисковой оптимизации лучше всего, чтобы адрес был постоянным</p>
+
+                <form class="address-form form" action="#">
+                    <fieldset class="clearfix">
+                        <div class="site-name-wrapper field-wrap float-left">
+                            <input type="text" class="site-name form-text ie-radius" placeholder="staltorg"/>
+                        </div>
+                        <div class="point float-left">.</div>
+                        <div class="form-select-wrapper field-wrap float-left">
+                            <select class="form-select">
+                                <option value="0">metalloprokat.ru</option>
+                                <option value="1">metalloprokat.com</option>
+                            </select>
+                        </div>
+                        <div class="address-msg float-left">
+                            <p class="text positive">Адрес используется вами</p>
+                            <p class="text negative">Адрес используется вами</p>
+                            <p class="text free">Адрес используется вами</p>
+                        </div>
+                    </fieldset>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="button green-bg ie-radius" value="использовать"/>
+                    </div>
+                    <p class="text">Если вы указываете в качестве адреса свой собственный домен, то вам необходимо
+                        сделать следующую запись на сервере, чтобы сайт заработал:</p>
+                    <p class="text"><strong>some dns records</strong></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

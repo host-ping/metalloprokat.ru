@@ -1,0 +1,106 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/metalproject/js/ace/ace.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
+{% block form %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var extendedPatternEditor = $('textarea[id*="_extendedPatternEditor"]');
+        var extendedPattern = $('textarea[id*="_categoryExtended__extendedPattern"]');
+        var editor = ace.edit(extendedPatternEditor.attr("id"));
+        editor.getSession().setMode("ace/mode/javascript");
+
+        editor.setValue(extendedPattern.val());
+        $('pre[class=" ace_editor ace-tm"]').height(500);
+
+        $('button[type="submit"]').bind( "click", function( e ) {
+            extendedPattern.val(editor.getValue());
+        });
+
+        $( "#test-pattern" ).bind( "click", function( e ) {
+            var pattern = $('textarea[id*="_categoryExtended__pattern"]').val();
+            var testPattern = $('textarea[id*="_categoryExtended__testPattern"]');
+            var testText = testPattern.val();
+            var badPatterns = $('#bad-patterns');
+            if (!pattern) {
+                alert('Пустой шаблон.');
+                return;
+            }
+
+            if (!testText) {
+                alert('Пустое тестовое поле.');
+                return;
+            }
+
+            var patterns = pattern.split("\n");
+            var testTexts = testText.split("\n");
+
+            var isError = false;
+            badPatterns.html('');
+            for (var i = 0; i < testTexts.length; i++ ) {
+                for (var j = 0; j < patterns.length; j++) {
+                    var regex = new RegExp (patterns[j], 'ig');
+                    var match = testTexts[i].match(regex);
+
+                    if (!match) {
+                        badPatterns.append(
+                                "<li>"+'Text: '+testTexts[i]+"<br>"+'Pattern: '+patterns[j]+"</li>"
+                        );
+                        isError = true;
+                    }
+                }
+            }
+
+            if (isError) {
+                testPattern.css({'color':'red'});
+            } else {
+                testPattern.css({'color':'green'});
+            }
+        } );
+
+        $( "#test-pattern-extended" ).bind( "click", function( e ) {
+            var extendedPattern = $('textarea[id*="_categoryExtended__extendedPattern"]').val();
+            var testPattern = $('textarea[id*="_categoryExtended__testPattern"]');
+            var testText = testPattern.val();
+            var badPatterns = $('#bad-patterns-extended');
+
+            if (!extendedPattern) {
+                alert('Пустой шаблон.');
+                return;
+            }
+
+            if (!testText) {
+                alert('Пустое тестовое поле.');
+                return;
+            }
+
+            $.post("{{ admin.generateUrl('test_extended_pattern') }}",
+                    {
+                        patternString: extendedPattern,
+                        subjectsString: testText
+                    },
+                    onAjaxSuccess
+            );
+
+            function onAjaxSuccess(data)
+            {
+                badPatterns.html('');
+                if (data.length) {
+                    testPattern.css({'color':'red'});
+                    $.each(data, function(key, value) {
+                        badPatterns.append(
+                                "<li>"+'Text: '+value+"</li>"
+                        );
+                    });
+                } else {
+                    testPattern.css({'color':'green'});
+                }
+            }
+
+        });
+    </script>
+{% endblock %}

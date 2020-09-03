@@ -1,0 +1,159 @@
+{% extends '@MetalProject/layouts/_portal_layout.html.twig' %}
+
+{% set currentCountry = app.request.attributes.get('country') %}
+{% set currentCategory = app.request.attributes.get('category') %}
+{% set country = app.request.attributes.get('country') %}
+{% set subdomain = 'www' %}
+
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% block wizzard_additional_class 'wizzard' %}
+
+{% block menu '' %}
+{% block search_form '' %}
+{% block banner '' %}
+{% block side_announcements '' %}
+{% block head_banner '' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Company.js'
+    combine = true
+    %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block container_arrtibutes %}
+    class="container wizzard"
+{% endblock %}
+{% block header %}
+    <div class="left float-left">
+        <div class="logo float-left">
+            {{ block('logo') }}
+        </div>
+        <div class="logo-text float-left">
+            <p>
+                <a class="header-logo-text"
+                   href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': subdomain}) }}">{{ currentCountry.domainTitle }}</a>
+            </p>
+        </div>
+    </div>
+    {% block login %}
+        <div class="user-block float-right">
+            <span class="login clickable icon-exit no-margin float-right js-popup-opener"
+                  data-popup="#login">Вход в кабинет</span>
+        </div>
+    {% endblock %}
+{% endblock header %}
+
+{% block content %}
+    <div id="content" class="register content-wide clearfix js-calc-height">
+        {% block left_steps %}
+            <div class="steps-block float-left">
+                {% if not category %}
+                    <div class="block-title">Получайте клиентов</div>
+                    <ul class="steps list">
+                        <li class="step item first">
+                            <div class="step-count is-bordered ie-radius">1</div>
+                            <p class="text">Создайте сайт компании</p>
+                        </li>
+                        <li class="step item">
+                            <div class="step-count is-bordered ie-radius">2</div>
+                            <p class="text">Добавьте товары</p>
+                        </li>
+                        <li class="step item">
+                            <div class="step-count is-bordered ie-radius">3</div>
+                            <p class="text">Получайте заявки потребителей</p>
+                        </li>
+                    </ul>
+
+                    <p class="slogan">Быстро и бесплатно!</p>
+
+                    <div class="questions">
+                        <p class="text">Вопросы?</p>
+
+                        <p class="text">
+                            {% if currentCountry.supportPhone %}
+                                <span class="phone-text">{{ currentCountry.supportPhone }}</span> или
+                            {% endif %}
+                            <span class="js-popup-opener email-link link clickable" data-popup="#topic-popup">пишите</span>
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endblock left_steps %}
+
+        <div class="wizzard-block float-left">
+            {% if category %}
+                {% set firstStepCompleteClass = '' %}
+                {% set secondStepCompleteClass = '' %}
+                {% if 'MetalUsersBundle:WizzardRegistration:registerSecondStep' == currentRoute %}
+                    {% set firstStepCompleteClass = 'completed' %}
+                {% elseif 'MetalUsersBundle:WizzardRegistration:registerThirdStep' == currentRoute %}
+                    {% set firstStepCompleteClass = 'completed' %}
+                    {% set secondStepCompleteClass = 'completed' %}
+                {% endif %}
+
+                <ul class="steps-list clearfix">
+                    <li class="step item float-left {{ firstStepCompleteClass }} {% if 'MetalUsersBundle:Registration:registerFirstStep' == currentRoute %}active{% endif %}">
+                        <div class="step-count is-bordered ie-radius">1</div>
+                    </li>
+                    <li class="step item float-left {{ secondStepCompleteClass }}
+                            {% if 'MetalUsersBundle:WizzardRegistration:registerSecondStep' == currentRoute %}active{% endif %}">
+                        <div class="step-count is-bordered ie-radius">2</div>
+                    </li>
+                    <li class="step item float-left {% if 'MetalUsersBundle:WizzardRegistration:registerThirdStep' == currentRoute %}active{% endif %}">
+                        <div class="step-count is-bordered ie-radius">3</div>
+                    </li>
+                </ul>
+            {% endif %}
+            {% block wizzard_content '' %}
+        </div>
+        {% if randomReview is defined and randomReview %}
+            {{ include('@MetalCorpsite/partial/client_review.html.twig', {
+                'review': randomReview,
+                'fromRegistrationPage': true,
+            }, false) }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <ul class="footer-links-list first">
+        {% if country.supportPhone %}
+            <li class="item">
+                <p class="support">Техническая поддержка: <span
+                            class="support-phone">{{ country.supportPhone }}</span></p>
+            </li>
+        {% endif %}
+    </ul>
+    <ul class="footer-links-list">
+        <li class="item">
+            <p class="copy">{{ project.copyright_title }} © {{ project.copyright_year }} - {{ 'now'|date('Y') }}</p>
+        </li>
+        <li class="item">
+            <a class="agreement" href="{{ path('MetalCorpsiteBundle:Default:licenseAgreement') }}"
+               target="_blank">Пользовательское соглашение</a>
+        </li>
+    </ul>
+    <div class="counters-block clearfix">
+        {{ project.rspm_title|raw }}
+        <div class="counter-container float-right">
+            {{ include('@MetalProject/partials/counters.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block additional_popups %}
+
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalSupportBundle:TopicCorpSite') }}
+    {% if randomReview is defined and randomReview %}
+        {{ brouzie_render_widget('MetalProjectBundle:ShowText', {'popup_name' : 'client-review'~randomReview.id, 'popup_text' : randomReview.comment}) }}
+    {% endif %}
+{% endblock %}
+

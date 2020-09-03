@@ -1,0 +1,10 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% block title 'Пользовательское соглашение / '~titleSuffix %}
+
+{% block content %}
+    <div style="margin-top: 15px">
+        <h1>{{- agreement.title -}}</h1>
+        {{ agreementHtml|raw }}
+    </div>
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set showType = false %}
+{% if showEntityType is defined %}
+    {% set showType = true %}
+{% endif %}
+{% for contentEntry in pagerfanta %}
+    {% if contentEntry.kind == 'topic' %}
+        {{ include('@MetalContent/Topics/topic_in_list.html.twig', {
+            'topic': contentEntry,
+            'formatHelper' : formatHelper,
+            'showType' : showType
+        }, false) }}
+    {% elseif contentEntry.kind == 'question' %}
+        {{ include('@MetalContent/Questions/question_in_list.html.twig', {
+            'question': contentEntry,
+            'formatHelper' : formatHelper,
+            'showType' : showType
+        } , false) }}
+    {% endif %}
+    {% else %}
+    <li class="empty-item gray60-color">
+        <div class="table-container no-favorites js-calc-height">
+            <div class="table-cell">
+                По заданным критериям материалы не найдены
+            </div>
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="tags-load-more">
+        <div class="see-more-block">
+            <a class="see-more button ie-radius js-load-more"
+               href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#tags-load-more"
+            >Показать еще...</a>
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

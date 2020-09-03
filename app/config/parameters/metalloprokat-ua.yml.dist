@@ -1,0 +1,6 @@
+parameters:
+    base_host: metalloprokat-ua.dev
+    domain_country_id: 209
+    minisite_hostnames_pattern: 'metalloprokat-ua\.dev'
+    project.domains_regex:
+        '.*\.?metalloprokat-ua\.dev': '.metalloprokat-ua.dev'

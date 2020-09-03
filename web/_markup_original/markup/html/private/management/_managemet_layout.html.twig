@@ -1,0 +1,46 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'products' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'products') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/products.html.twig') }}">Товары</a>
+                    <span class="counts ">2,587</span>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'company') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/company.html.twig') }}">Компания</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'company2') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/company-creation.html.twig') }}">Регистрация</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'filials') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/filials.html.twig') }}">Филиалы</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'employee') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/employees.html.twig') }}">Сотрудники</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'me') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/management/me.html.twig') }}">Я</a>
+                </li>
+            </ul>
+        </div>
+        <div class="export-products-block float-right">
+            <span class="export link clickable js-popover-opener" data-popover="#export-feed">Экспорт</span>
+            <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+                <div class="dropdown">
+                    <div class="export-links block clearfix">
+                        <span class="title export link">Экспорт</span>
+                        <a class="button small-btn blue-bg float-left ie-radius" href="#">XLS</a>
+                        <a class="button small-btn blue-bg float-left ie-radius" href="#">YML</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    {% set activeMenu = 'management' %}
+    {{ parent() }}
+{% endblock sidebar %}

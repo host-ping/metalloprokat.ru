@@ -1,0 +1,130 @@
+<div class="breadcrumbs_item-list js-collapsable-breadcrumbs"
+    data-collapsable-breadcrumbs-reserve=".js-collapsable-breadcrumbs-reserve">
+    <div class="breadcrumbs_item home first" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a class="breadcrumbs_link icon-home"
+           href="{{ path(_options['homepage_route'], _options['homepage_route_params']) }}" itemprop="url"><span itemprop="title" style="display: none;">Главная</span></a>
+    </div>
+    <div class="wrap-openbox">
+        <input type="checkbox" id="breadcrumbs-openclose" class="input-openclose">
+        <label for="breadcrumbs-openclose">&nbsp;</label>
+        <div class="box-open">
+    {%- for menuItem in branch -%}
+        {% set hrefAttr = 'href' %}
+        {% if _options['route'] == 'MetalContentBundle:Questions:list' %}
+            {% set hrefAttr = 'data-href' %}
+        {% endif %}
+            <div class="breadcrumbs_item {% if loop.last %} last {% endif %}"
+                itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+
+                {% if menuItem.isLabel() or loop.last %}
+                    <span class="breadcrumbs_link {% if not loop.last %} js-collapsable-item {% endif %} {% if menuItem.loadedSiblings %}icon-check black js-popover-opener{% else %}disabled{% endif %}"
+                          data-collapsable-breadcrumb-priority="{{ loop.index }}"
+                            {% if menuItem.loadedSiblings %}
+                                data-popover="#category-breadcrumb-siblings-{{ menuItem.id }}"
+                                data-different-position="true"
+                            {% else %}
+                                title="{{ menuItem.title|capitalize }}"
+                            {% endif %}
+                          itemprop="title">{{ menuItem.title|capitalize }}</span>
+                {% else %}
+                <a {{ hrefAttr }}="{{ path(_options['route'], _options['route_params']|merge({'category_slug': menuItem.slugCombined})) }}"
+                   itemprop="url"
+                   class="breadcrumbs_link {% if not loop.last %} js-collapsable-item {% endif %} {% if menuItem.loadedSiblings %}icon-check js-popover-opener{% endif %} black"
+                   data-collapsable-breadcrumb-priority="{{ loop.index }}"
+                        {% if menuItem.loadedSiblings %}
+                    data-popover="#category-breadcrumb-siblings-{{ menuItem.id }}"
+                    data-different-position="true"
+                        {% endif %}><span itemprop="title">{{ menuItem.title|capitalize }}</span></a>
+            {% endif %}
+
+            {% if menuItem.loadedSiblings %}
+                {# выпадающий вниз список #}
+                <div id="category-breadcrumb-siblings-{{ menuItem.id }}"
+                     class="drop-wrapper product-list opacity-border {% if loop.first %} has-child{% endif %} js-movable-element"
+                     data-move-to="#breadcrumbs-wrapper"
+                        >
+                    {# выпадающий вправо список #}
+                    <div class="categories-drops">
+                        {% for menuItemSibling in menuItem.loadedSiblings if menuItemSibling.loadedChildren %}
+                            <div id="category-breadcrumb-children-{{ menuItemSibling.id }}" class="drop-wrapper opacity-border">
+                                <div class="js-scrollable">
+                                    <ul class="dropdown menu-drop">
+                                        {% for childItem in menuItemSibling.loadedChildren %}
+                                            <li class="drop-item">
+                                                {% if childItem.isLabel %}
+                                                    <span class="drop-link black15-color">{{ childItem.title|capitalize }}</span>
+                                                {% else %}
+                                                    {% set encodedContent %}
+                                                        <a class="drop-link"
+                                                        {{ hrefAttr }} ="{{ path(_options['route'], _options['route_params']|merge({'category_slug': childItem.slugCombined})) }}">{{ childItem.title|capitalize }}</a>
+                                                    {% endset %}
+                                                    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}" />
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="js-scrollable">
+                        <ul class="dropdown menu-drop">
+                            <li class="drop-item">
+                                {% if loop.last or menuItem.isLabel() %}
+                                    <span class="drop-link current"
+                                          title="{{ menuItem.title|capitalize }}">{{ menuItem.title|capitalize }}</span>
+                                {% else %}
+                                    {% set encodedContent %}
+                                        <a data-href="{{ path(_options['route'], _options['route_params']|merge({'category_slug': menuItem.slugCombined})) }}" class="drop-link current"
+                                           title="{{ menuItem.title|capitalize }}">{{ menuItem.title|capitalize }}</a>
+                                    {% endset %}
+                                    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}" />
+                                {% endif %}
+                            </li>
+
+                            {% for menuItemSibling in menuItem.loadedSiblings %}
+                                {% if menuItemSibling.isLabel() %}
+                                    <li class="drop-item {% if menuItemSibling.loadedChildren %}js-dropdown-opener{% endif %}"
+                                        {% if menuItemSibling.loadedChildren %}
+                                            data-display-dropdown="#category-breadcrumb-children-{{ menuItemSibling.id }}"
+                                        {% endif %}
+                                        >
+                                        <span class="drop-link black15-color {% if menuItemSibling.loadedChildren %}clickable{% endif %}">
+                                            {{ menuItemSibling.title|capitalize }}
+                                        </span>
+                                    </li>
+                                {% else %}
+                                    <li class="drop-item">
+                                        {% set encodedContent %}
+                                            <a class="drop-link"
+                                            {{ hrefAttr }} ="{{ path(_options['route'], _options['route_params']|merge({'category_slug': menuItemSibling.slugCombined})) }}">{{ menuItemSibling.title|capitalize }}</a>
+                                        {% endset %}
+                                        <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}" />
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if 0 and loop.first %}
+                                {% set subdomain = 'www' %}
+                                {% if _options['city'] is defined and _options['city'] %}
+                                    {% set subdomain = _options['city'].getSlugWithFallback %}
+                                {% endif %}
+                                <li class="drop-item">
+                                    <a class="drop-link" href="{{ path('MetalCategoriesBundle:LandingPages:search', {'subdomain' : subdomain}) }}">
+                                        Популярные запросы
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if not loop.first %}
+                        <div class="opacity"></div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            </div>
+    {%- endfor -%}
+        </div>
+    </div>
+</div>

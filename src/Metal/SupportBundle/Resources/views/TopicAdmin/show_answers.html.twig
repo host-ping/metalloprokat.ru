@@ -1,0 +1,95 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block show %}
+    {{ parent() }}
+    {% set supportHelper = brouzie_helper('MetalSupportBundle') %}
+    {% set answers = supportHelper.getAnswersForTopic(object) %}
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Ответы
+            </h3>
+        </div>
+        <div class="box-body">
+
+            <div class="sonata-ba-view">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr class="sonata-ba-view-container">
+                        <th style="width: 300px;">Комментарий</th>
+                        <th style="width: 300px;">Автор</th>
+                        <th style="width: 50px;">Прочитан</th>
+                        <th>Дата</th>
+                        <th>Действия</th>
+                    </tr>
+                    {% for answer in answers %}
+                        <tr class="sonata-ba-view-container">
+                            <td> {{ answer.message|nl2br }} </td>
+                            {% if answer.author %}
+                                <td> {{ answer.author.getFullName }}
+                                    <strong>
+                                        (<a target="_blank"
+                                            href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': answer.author.id} } }) }}">{{ answer.author.id }}</a>)
+                                    </strong>
+                                </td>
+                            {% endif %}
+                            {% if answer.viewedAt %}
+                                <td><span class="label label-success">да</span></td>
+                            {% else %}
+                                <td><span class="label label-danger">нет</span></td>
+                            {% endif %}
+                            <td> {{ answer.createdAt.date|format_datetime }} </td>
+                            <td>
+                                {% if answer.author.id == app.user.id and object.sentFrom == constant("Metal\\SupportBundle\\Entity\\Topic::SOURCE_PRIVATE_OFFICE") %}
+                                    <a href="{{ path('admin_metal_support_answer_edit', {'id' : answer.id}) }}">Редактировать</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <form action=""
+                  class="form-horizontal"
+                  method="POST"
+                  {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+                <fieldset>
+                    {% if form.vars.errors|length > 0 %}
+                        <div class="sonata-ba-form-error">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="control-group">
+                        <label class="control-label">Ответ</label>
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                            {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+
+                            {% if form.message.vars.errors|length > 0 %}
+                                <div class="sonata-ba-field-error-messages">
+                                    {{ form_errors(form.message) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="well well-small form-actions">
+                    {% if not object.isResolved %}
+                        <input type="submit" name="add_answer" class="btn btn-primary" value="Добавить ответ"/>
+                        <input type="submit" name="add_answer_and_resolve" class="btn btn-success"
+                               value="Добавить ответ и пометить как решенная"/>
+                        <input type="submit" name="resolve" class="btn btn-success" value="Решена"/>
+                    {% else %}
+                        <input type="submit" name="reopen" class="btn btn-danger" value="Переоткрыть"/>
+                    {% endif %}
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

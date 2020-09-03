@@ -1,0 +1,21 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_flat_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        <li><a href="{{ path('admin_metal_companies_company_topic_list', {'id': object.id}) }}">Обращения к модератору</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_topic_create', {'id': object.id}) }}">Создать обращение к сотруднику компании</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_announcement_list', {'id': object.id}) }}">Баннеры</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_minisitecover_list', {'id': object.id}) }}">Шапки</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_product_list', {'id': object.id}) }}">Товары</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_packageorder_list', {'id': object.id}) }}">Заказанные услуги</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_productimage_list', {'id': object.id}) }}">Фото товаров</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_user_list', {'id': object.id}) }}">Связанные пользователи</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_toggle_status', {'id': object.id}) }}">{% if object.isDeleted %}Включить{% else %}Отключить{% endif %} компанию</a></li>
+        <li><a href="{{ admin.generateObjectUrl('view_demand_history', object) }}">История просмотров заявок</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_change_main_city', {'id': object.id}) }}">Изменить главный город компании</a></li>
+        <li><a href="{{ path('admin_metal_companies_company_invalidate_cache', {'id': object.id}) }}">Сбросить кеш для компании</a></li>
+        {% if object.inCrm %}
+            <li><a href="{{ company_crm_url|format(object.id) }}">Компания в CRM</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

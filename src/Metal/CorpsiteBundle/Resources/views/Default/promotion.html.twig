@@ -1,0 +1,17 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% block title 'Промо-акции / '~titleSuffix %}
+
+{% block content %}
+    <h1 class="title">Промо-акции</h1>
+    <ul>
+        {% for promotion in promotions %}
+            <li style="border-bottom: 1px solid #e2e2e2;">
+                <div id="default-styles">
+                    <h2>{{ promotion.title }}</h2>
+                    {{ promotion.description|nl2br|raw }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

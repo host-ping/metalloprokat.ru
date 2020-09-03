@@ -1,0 +1,33 @@
+{% if productsCount %}
+    <div class="user-alert clearfix">
+        <div class="wrap clearfix">
+            <div class="account-info float-right">
+                {% if _options['check_custom_category'] %}
+                    <a class="extend-btn button green-bg"
+                       href="{{ path('MetalPrivateOfficeBundle:PrivateCustomCategories:products', {'uncategorized': 1}) }}">Исправить</a>
+                {% else %}
+                    <a class="extend-btn button green-bg"
+                       href="{{ path('MetalPrivateOfficeBundle:Products:list', {'q': defaultCategory.title}) }}">Исправить</a>
+                {% endif %}
+            </div>
+
+            <div class="info">
+                {% if _options['check_custom_category'] %}
+                    <p class="text">
+                        <strong class="days">{{ productsCount|number_format_decimal }}</strong>
+                        {{ 'locate_products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }}
+                        без категории. Измените {{ 'его|их|их'|transchoice(productsCount, [], 'MetalProductsBundle') }} категорию, чтобы товары
+                        отобразились на мини-сайте.
+                    </p>
+                {% else %}
+                    <p class="text">
+                        <strong class="days">{{ productsCount|number_format_decimal }}</strong>
+                        {{ 'locate_products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }}
+                        в категории "{{ defaultCategory.title|capitalize }}". Измените {{ 'его|их|их'|transchoice(productsCount, [], 'MetalProductsBundle') }} категорию, чтобы получить больше
+                        клиентов.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

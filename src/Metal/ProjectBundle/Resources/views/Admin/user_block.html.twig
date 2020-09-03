@@ -1,0 +1,16 @@
+{% block user_block %}
+    <li>
+        <strong>{{ app.user.getFullName() }}</strong>
+    </li>
+    <li>
+        <a class="link" target="_blank" href="{{ path('MetalProjectBundle:Default:index') }}">Портал</a>
+    </li>
+    <li>
+        <a class="link" target="_blank" href="{{ path('MetalPrivateOfficeBundle:Account:view') }}">Я</a>
+    </li>
+    <li>
+        {% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+        <a class="drop-link" href="{{ urlHelper.getLogoutUrl() }}">Выход</a>
+    </li>
+{% endblock %}

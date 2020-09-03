@@ -1,0 +1,57 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_callbacks_callback_list') }}">Необработанные звонки для менеджеров</a>
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата</th>
+                        <th>Страница</th>
+                        <th>Категория</th>
+                        <th>Город</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for unprocessedCallback in unprocessedCallbacks %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('admin_metal_callbacks_callback_edit', {'id': unprocessedCallback.id}) }}">{{ unprocessedCallback.id }}</a>
+                            </td>
+                            <td>
+                                {{ formatHelper.formatStatsDate(unprocessedCallback.createdAt, 'day')|raw }}
+                            </td>
+                            <td>
+                                {% if unprocessedCallback.callFromType %}
+                                    {{ unprocessedCallback.callFromType.title|lower }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedCallback.category %}
+                                    {{ unprocessedCallback.category.title }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedCallback.city %}
+                                    {{ unprocessedCallback.city.title }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

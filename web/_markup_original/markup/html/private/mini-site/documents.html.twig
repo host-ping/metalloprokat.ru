@@ -1,0 +1,195 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'Документы' %}
+    {% block content %}
+        <div id="content" class="private-room-content content-right outline-right float-right">
+            {% block tabs %}
+                {% set activeTab = 'documents' %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block filters %}
+                <div class="filters-block outline-right clearfix">
+                    <form class="add-document form" action="#">
+                        <fieldset>
+                            <div class="field-wrap float-left submit-wrapper">
+                                <label class="file-upload">
+                                    <span class="file-btn button white-bg gray60-color is-bordered ie-radius">Выбрать из файла...</span>
+                                    <input type="file"/>
+                                </label>
+                                <div class="loading-mask">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            {% endblock %}
+            <div class="content-scrollable js-scrollable">
+                <ul class="documents-list private-fix-width">
+                    <li class="item clearfix">
+                        <div class="fix-holder">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-pdf.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <p class="edited ie-radius">Документ 1</p>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <span class="delete-btn button red-bg ie-radius">Удалить</span>
+                            </div>
+                        </div>
+                        <div class="change-holder g-hidden">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-pdf.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <input class="form-text ie-radius" placeholder="Документ 1" type="text"/>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="fix-holder">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-word.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <p class="edited ie-radius">Документ 1</p>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <span class="delete-btn button red-bg ie-radius">Удалить</span>
+                            </div>
+                        </div>
+                        <div class="change-holder g-hidden">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-word.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <input class="form-text ie-radius" placeholder="Документ 1" type="text"/>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="fix-holder">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-excel.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <p class="edited ie-radius">Документ 1</p>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <span class="delete-btn button red-bg ie-radius">Удалить</span>
+                            </div>
+                        </div>
+                        <div class="change-holder g-hidden">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-excel.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <input class="form-text ie-radius" placeholder="Документ 1" type="text"/>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="fix-holder">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <p class="edited ie-radius">Документ 1</p>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <span class="delete-btn button red-bg ie-radius">Удалить</span>
+                            </div>
+                        </div>
+                        <div class="change-holder g-hidden">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <input class="form-text ie-radius" placeholder="Документ 1" type="text"/>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="fix-holder g-hidden">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <p class="edited ie-radius">Документ 1</p>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <span class="delete-btn button red-bg ie-radius">Удалить</span>
+                            </div>
+                        </div>
+                        <div class="change-holder">
+                            <div class="doc-photo float-left">
+                                <img src="./markup/thumbnails/thumbnail-jpeg.png" alt="image description" width="35"/>
+                            </div>
+                            <div class="title-text float-left">
+                                <input class="form-text ie-radius" placeholder="Документ 1" type="text"/>
+                            </div>
+                            <div class="size-text float-left">
+                                20 мб
+                            </div>
+                            <div class="status float-left submit-wrapper">
+                                <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                                <div class="loading-mask ">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="see-more-block-wrapper">
+                        <div class="see-more-block">
+                            <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="items overflow"></div>
+                <div class="loading-mask big">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}

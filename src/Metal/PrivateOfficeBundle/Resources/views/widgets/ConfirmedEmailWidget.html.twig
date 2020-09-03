@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        Brouzie.Popups.openPopup($('#confirmation-email'));
+    });
+</script>
+
+<div id="confirmation-email" class="confirmation-email popup-block opacity-border large" data-popup-non-closable="true">
+    <div class="popup-content">
+        <div class="title-popup">Подтвердите почту</div>
+
+        <form id="confirmation-email-form" class="popup-form js-ajax-form-submit"
+              action="{{ path('MetalUsersBundle:RecoveryPassword:resendConfirmationMail') }}"
+              method="post"
+              novalidate="novalidate">
+            <fieldset>
+                <p class="text">Мы отправили вам письмо со ссылкой для подтверждения вашей электронной почты <b>{{ app.user.email }}</b>.
+                    Перед тем как работать с информацией, пожалуйста, проверьте почту и откройте эту ссылку.</p>
+
+                <div class="submit-wrapper more-btns clearfix">
+                    <button class="send-button button blue-bg float-left ie-radius" type="submit">Отправить еще раз</button>
+                    <button class="send-button button blue-bg float-left js-popup-opener ie-radius" data-popup="#change-email">Изменить электронный адрес</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

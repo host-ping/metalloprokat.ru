@@ -1,0 +1,18 @@
+_sonata_admin_common:
+    resource: @SonataAdminBundle/Resources/config/routing/sonata_admin.xml
+
+sonata_admin_all_statistic_view:
+    path:  /all-project-statistic/
+    defaults: { _controller: MetalStatisticBundle:AllStatisticAdmin:view }
+
+sonata_admin_sphinx_log_statistic_view:
+    path:  /all-sphinx-log-statistic/
+    defaults: { _controller: MetalProjectBundle:SphinxSearchLogAdmin:view }
+
+sonata_admin_stats_bots_statistic_view:
+    path:  /all-stats-bot-statistic/
+    defaults: { _controller: MetalProjectBundle:StatsBotStatisticAdmin:view }
+
+sonata_admin_stats_bots_statistic_view_detail:
+    path:  /all-stats-bot-statistic-detail/
+    defaults: { _controller: MetalProjectBundle:StatsBotStatisticAdmin:viewDetail }

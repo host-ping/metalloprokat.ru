@@ -1,0 +1,474 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Mini site - Product list' %}
+{% block content %}
+
+    <div id="content" class="content table-cell">
+    <div class="company-menu clearfix">
+        <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+        <ul class="list">
+            <li class="item">
+                <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+            </li>
+            <li class="item">
+                <a href="{{ path('mini-site/reviews.html.twig') }}" class="link">Отзывы</a>
+            </li>
+            <li class="item">
+                <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+            </li>
+            <li class="item">
+                <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+            </li>
+        </ul>
+    </div>
+        {% block filters %}
+            <div class="filters-block clearfix">
+                <div class="search-wrapper float-left">
+                    <form action="#">
+                        <fieldset>
+                            <input class="search-field form-text ie-radius" type="text" placeholder="Поиск"/>
+                            <button class="icon-search-small search-button" type="submit">
+
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="product-parameters table-container float-left">
+                    <div class="table-cell">
+                        <div class="product-link">
+                            <span class="link js-popover-opener clickable clearfix" data-popover="#parameter1">
+                                <span class="name float-left">Тип</span>
+                                <span class="icon-check black float-left"></span>
+                            </span>
+                            <span class="is-gradiented"></span>
+
+                            <div id="parameter1" class="drop-wrapper popover-block views-list opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item first">
+                                        <span class="drop-link current">Параметр 1</span>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 2</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 3</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-cell">
+                        <div class="product-link">
+                            <span class="link js-popover-opener clickable clearfix" data-popover="#parameter2">
+                                <span class="name float-left">Марка</span>
+                                <span class="icon-check black float-left"></span>
+                            </span>
+                            <span class="is-gradiented"></span>
+
+                            <div id="parameter2" class="drop-wrapper popover-block views-list opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item first">
+                                        <span class="drop-link current">Параметр 1</span>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 2</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 3</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-cell">
+                        <div class="product-link">
+                            <span class="link js-popover-opener clickable clearfix" data-popover="#parameter3">
+                                <span class="name float-left">ГОСТ</span>
+                                <span class="icon-check black float-left"></span>
+                            </span>
+                            <span class="is-gradiented"></span>
+
+                            <div id="parameter3" class="drop-wrapper popover-block views-list opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item first">
+                                        <span class="drop-link current">Параметр 1</span>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 2</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 3</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-cell">
+                        <div class="product-link">
+                            <span class="link js-popover-opener clickable clearfix" data-popover="#parameter4">
+                                <span class="name float-left">Вид</span>
+                                <span class="icon-check black float-left"></span>
+                            </span>
+                            <span class="is-gradiented"></span>
+
+                            <div id="parameter4" class="drop-wrapper popover-block views-list opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item first">
+                                        <span class="drop-link current">Параметр 1</span>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 2</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 3</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-cell">
+                        <div class="product-link">
+                            <span class="link js-popover-opener clickable clearfix" data-popover="#parameter5">
+                                <span class="name float-left">Размер</span>
+                                <span class="icon-check black float-left"></span>
+                            </span>
+                            <span class="is-gradiented"></span>
+
+                            <div id="parameter5" class="drop-wrapper popover-block views-list opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item first">
+                                        <span class="drop-link current">Параметр 1</span>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 2</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 3</a>
+                                    </li>
+                                    <li class="drop-item">
+                                        <a href="#" class="drop-link">Параметр 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sort-view float-right">
+                    <div class="location block float-left">
+                        <span class=" link js-popover-opener icon-check black clickable" data-popover="#city" data-index="1001">Москва</span>
+                        <div id="city" class="drop-wrapper popover-block city-list opacity-border">
+                            <ul class="dropdown">
+                                <li class="drop-item first">
+                                    <span class="drop-link current is-gradiented">Москва</span>
+                                </li>
+                                <li class="drop-item">
+                                    <a href="#" class="drop-link is-gradiented">Днепропетровск</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a href="#" class="drop-link is-gradiented">Санкт-Петербург</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a href="#" class="drop-link is-gradiented">Ростов-на-Дону</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {#<div class="export-block float-left">#}
+                        {#<a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт и подписка</a>#}
+                        {#<div id="export-feed" class="drop-wrapper export-feed_links opacity-border">#}
+                            {#<div class="dropdown">#}
+                                {#<div class="export-links block clearfix">#}
+                                    {#<p class="title">Экспорт</p>#}
+                                    {#<a class="primary button small-btn float-left ie-radius" href="#">XLS</a>#}
+                                    {#<a class="primary button small-btn float-left ie-radius" href="#">CSV</a>#}
+                                {#</div>#}
+                                {#<div class="feed-links block clearfix">#}
+                                    {#<p class="title">Подписка</p>#}
+                                    {#<a class="primary button small-btn float-left ie-radius" href="#">rss</a>#}
+                                    {#<a class="primary button small-btn float-left js-popup-opener ie-radius" href="#" data-popup="#subscribe">e-mail</a>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#</div>#}
+                    <div class="order-block block float-left">
+                        <a class="order-link link icon-check black link js-popover-opener" href="#" data-popover="#order">По рейтингу</a>
+                        <div id="order" class="drop-wrapper order-list opacity-border">
+                            <ul class="dropdown">
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">По рейтингу</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">По цене</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">По к-ву отзывов</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        <h1 class="minisite-title product-list-title">Арматура</h1>
+        <ul class="product similar-list">
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6 Арматура стеклопластиковая АСП-6 Арматура стеклопластиковая АСП-6 Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item announcement clearfix">
+                {#<img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description">#}
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item announcement has-announcement clearfix">
+                <img src="./markup/pic/inside-banner.jpg" width="735" height="90" alt="image description">
+            </li>
+            <li class="item clearfix">
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" href="#"></a>
+                    </div>
+                </div>
+                <div class="links-wrapper float-right">
+                    <ul class="links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report light is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item float-left">
+                            <a href="#" class="button favorites small light is-bordered ie-radius">
+                                <span class="icon-favorite"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left">
+                    <p class="title is-gradiented">
+                        <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                    </p>
+                    <div class="info">
+                        <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                    </div>
+                </div>
+            </li>
+            <li class="see-more-block-wrapper">
+                <div class="see-more-block">
+                    <a class="see-more button js-load-more ie-radius"
+                       href="#">Показать еще...</a>
+                    <div class="loading-mask g-hidden">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+{% endblock content %}

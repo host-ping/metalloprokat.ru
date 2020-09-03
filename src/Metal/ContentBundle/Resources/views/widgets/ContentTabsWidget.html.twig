@@ -1,0 +1,52 @@
+{% set availableTabs = _options['available_tabs'] %}
+{% set activeTab = _options['active_tab'] %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set entryType = _options['content_entry'].kind %}
+
+<div id="tabs" class="result-tabs-wrapper tabs demand_tabs catalog-tabs clearfix">
+    <ul class="tabs-list clearfix">
+        {% if 'comments-tab' in availableTabs and comments %}
+            <li class="item js-tabs {% if activeTab == 'comments-tab' %}active{% endif %} ie-radius clearfix" data-tab="#comments-tab">
+                <a name="comments-tab"></a>
+                <span class="count float-right">{{ comments|length|number_format_decimal }}</span>
+                {% if entryType == 'question' %}
+                    <span class="link" title="Вопросы">Ответы</span>
+                {% elseif entryType == 'topic' %}
+                    <span class="link" title="Комментарии">Комментарии</span>
+                {% endif %}
+            </li>
+        {% endif %}
+
+        {% if 'similar-topics-tab' in availableTabs and similarEntries %}
+            <li class="item js-tabs {% if activeTab == 'similar-topics-tab' %}active{% endif %} ie-radius clearfix" data-tab="#similar-topics-tab">
+                <span class="count float-right">{{ similarEntries|length|number_format_decimal }}</span>
+                {% if entryType == 'question' %}
+                    <span class="link" title="Похожие вопросы">Похожие вопросы</span>
+                {% elseif entryType == 'topic' %}
+                    <span class="link" title="Похожие статьи">Похожие публикации</span>
+                {% endif %}
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="tabs-content">
+    {% if 'comments-tab' in availableTabs and comments %}
+        <div id="comments-tab" class="similar-list reviews-block {% if 'comments-tab' != activeTab %}g-hidden{% endif %}">
+            <ul class="reviews list comments-list">
+                {{ include ('@MetalContent/partial/list_comments.html.twig', {
+                    'comments' : comments,
+                }, false) }}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if 'similar-topics-tab' in availableTabs %}
+        <div id="similar-topics-tab" class="similar-list reviews-list {% if 'similar-topics-tab' != activeTab %}g-hidden{% endif %}">
+            <ul class="reviews list">
+                {{ include('MetalContentBundle:partial:more_entries.html.twig', {
+                    'similarEntries' : similarEntries
+                }, false) }}
+            </ul>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,93 @@
+{% set subdomain = app.request.attributes.get('city') ? app.request.attributes.get('city').getSlugWithFallback : 'www' %}
+{% for brand in pagerfanta %}
+    {% set products = brand.getAttribute('brand_products') %}
+    {% set productsPerBrandCount = 4 %}
+    <li class="company-item clearfix">
+        <div class="view-company float-left">
+            <div class="holder">
+                <div class="top-block clearfix">
+                    <div class="company-logo float-left">
+                        <a class="img-link {% if not brand.logo.name %}pattern-small{% endif %}"
+                           data-href="{{ path('MetalCatalogBundle:Brand:view', {'slug' : brand.slug}) }}">
+                            {% if brand.logo.name %}
+                                <img src="{{ vich_uploader_asset(brand, 'uploadedLogo')|imagine_filter('catalog_logo_sq64') }}"
+                                     alt="{{ brand.title }}"
+                                     title="{{ brand.title }}" />
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="company-info float-left">
+                        <div class="prod-title clearfix">
+                            <div class="title">
+                                <a href="{{ path('MetalCatalogBundle:Brand:view', {'slug' : brand.slug}) }}"
+                                   class="is-gradiented-bottom" title="{{ brand.title }}">{{ brand.title }}</a>
+                            </div>
+                        </div>
+                        <p class="localization gray60-color is-gradiented-bottom"
+                           title="{{ brand.cutDescription }}">{{ brand.cutDescription }}</p>
+                        <!--noindex-->
+                        <a data-href="{{ path('MetalProjectBundle:Redirect:redirect', {'url' : brand.site}) }}"
+                           target="_blank"
+                           rel="noopener noreferrer">{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(brand.site) }}</a>
+                        <!--/ noindex -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="send-order {% if not products %}no-result{% endif %} float-left">
+            <div class="holder clearfix">
+                <div class="tooltip-holder clearfix">
+                    {% if products %}
+                        {% for product in products|slice(0, productsPerBrandCount) %}
+                            <div id="inform-tooltip-{{ product.id }}"
+                                 class="product-informer tooltip grey with-bullet g-hidden">
+                                <p class="t is-gradiented">{{ product.title }}</p>
+
+                                <p class="i">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="img-wrapper clearfix">
+                            {% for product in products|slice(0, productsPerBrandCount) %}
+                                <div class="img is-bordered float-left">
+                                    <div class="img-holder">
+                                        <a class="img-link {% if not product.photo.name %}pattern-small{% endif %} js-tooltip-opener"
+                                           data-href="{{ path('MetalCatalogBundle:Product:view', {'id' : product.id, 'category_slug': product.category.slugCombined, 'subdomain': subdomain}) }}"
+                                           title="{{ product.title }}" data-tooltip="#inform-tooltip-{{ product.id }}">
+                                            {% if product.photo.name %}
+                                                <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq40_non_optim') }}"
+                                                     alt="{{ product.title }}"
+                                                     title="{{ product.title }}" />
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% if products|length > productsPerBrandCount %}
+                                <div class="img is-bordered float-left">
+                                    <div class="img-holder">
+                                        <a class="img-link clickable"
+                                           href="{{ path('MetalCatalogBundle:Brand:view', {'slug' : brand.slug}) }}">
+                                            <span class="icon-points"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {#<a href="#" class="link">еще 12 продуктов</a>#}
+                    {% else %}
+                        <p class="empty text-centered">Нет продуктов</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+
+    {% include '@MetalProducts/Products/partial/banner_inclusion.html.twig' with {
+    'index' : loop.index,
+    'category' : null,
+    'source_type_slug' : 'catalog-brands'
+    } only %}
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}

@@ -1,0 +1,98 @@
+/*Scroll Bar
+*******************************************************/
+/* TODO: move default styles from overrided */
+.scroll-wrapper {
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: relative;
+}
+
+.scroll-wrapper > .scroll-content {
+    border: none !important;
+    box-sizing: content-box !important;
+    height: auto;
+    left: 0;
+    margin: 0;
+    max-height: none !important;
+    max-width: none !important;
+    overflow: scroll; /* changed! */
+    padding: 0;
+    position: relative !important;
+    top: 0;
+    width: auto !important;
+}
+
+.scroll-wrapper > .scroll-content::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+
+.scroll-element .scroll-bar,
+.scroll-element .scroll-arrow {
+    cursor: pointer;
+}
+
+.scroll-element,
+.scroll-element div
+{
+    border: none;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    z-index: 20;
+}
+
+.scroll-element div {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.scroll-element.scroll-y {
+    height: 100%;
+    min-height: 100%;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+    width: 8px;
+    padding: 0 2px;
+}
+.register-company-form .scroll-element.scroll-y{right: 7px;}
+.scroll-element.scroll-y .scroll-bar {
+    left: 3px;
+    width: 8px;
+    background: #a6a6a6;
+    top: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70); /* IE 5.5+*/
+    -moz-opacity: 0.7; /* Mozilla 1.6 и ниже */
+    -khtml-opacity: 0.7; /* Konqueror 3.1, Safari 1.1 */
+    opacity: 0.7; /* CSS3 - Mozilla 1.7b +, Firefox 0.9 +, Safari 1.2+, Opera 9+ */
+
+}
+.scroll-wrapper > .js-scrollable.scroll-content {
+    overflow-x: hidden;
+    margin-bottom: 0 !important;
+}
+.thin-scroll .scroll-element.scroll-y .scroll-bar,
+.products-content-wrapper .scroll-element.scroll-y .scroll-bar,
+.favorite-product-block .scroll-element.scroll-y .scroll-bar,
+.drop-wrapper .scroll-element.scroll-y .scroll-bar{
+    width: 4px;
+}
+.content-scrollable .scroll-element.scroll-y,
+.private-room-content .scroll-element.scroll-y,
+.statistic-content .scroll-element.scroll-y{
+    right: 5px;
+}
+.private-container .drop-wrapper .scroll-element.scroll-y,
+.product-management .scroll-element.scroll-y{
+    right: 0;
+}

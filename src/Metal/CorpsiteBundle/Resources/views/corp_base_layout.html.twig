@@ -1,0 +1,90 @@
+{% extends '@MetalProject/layouts/_base_layout.html.twig' %}
+
+{% set currentCountry = app.request.attributes.get('country') %}
+{% set titleSuffix = currentCountry.domainTitle %}
+
+{# @var \Metal\ProjectBundle\Helper\DefaultHelper projectHelper #}
+{% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+
+{% block title titleSuffix %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets
+        '@MetalProjectBundle/Resources/public/css/corporate.css'
+        '@MetalProjectBundle/Resources/public/css/style-corporate.css'
+        filter=''
+        combine=false
+    %}
+        <link rel="stylesheet" href="{{ asset(asset_url) }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock stylesheets %}
+
+{% block body_additional_class 'corporate' %}
+
+{% block body %}
+    <div class="container">
+        <div class="inside-container">
+            <div id="header" class="corporate-header clearfix">
+                <div class="wrap clearfix">
+                    {% block header %}
+                        <div class="left float-left">
+                            <div class="logo float-left">
+                                {% if currentCountry %}
+                                    <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': currentCountry.baseHost}) }}">
+                                        <img src="{{ asset(projectHelper.getLogo()) }}"
+                                             alt="{{ currentCountry.domainTitle }}" title="{ currentCountry.domainTitle }}" />
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www'}) }}">
+                                        <img src="{{ asset(projectHelper.getLogo()) }}"
+                                             alt="{{ project.title }}" title="{{ project.title }}" />
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="logo-text float-left">
+                                <p>
+                                    {% if currentCountry %}
+                                        <a class="header-logo-text" href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www', 'base_host': currentCountry.baseHost}) }}">{{ currentCountry.domainTitle }}</a>
+                                    {% else %}
+                                        <a class="header-logo-text" href="{{ path('MetalProjectBundle:Default:index_subdomain', {'subdomain': 'www'}) }}">{{ project.title }}</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        {% block header_menu %}
+                            {{ knp_menu_render(project.corp_menu_name, {'template' : 'MetalCorpsiteBundle:Menu:base_corp_top_menu.html.twig'}) }}
+                        {% endblock header_menu %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div id="main" class="clearfix">
+                <div class="wrap clearfix">
+                    <div class="wrapper outline clearfix">
+                        <div id="content" class="corporate-content service content-wide clearfix">
+                            {% block content '' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer %}
+                {% include '@MetalProject/partials/footer.html.twig' with {'options': {'corpFooter': true}} %}
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block additional_popups %}
+        {{ parent() }}
+
+        {{ brouzie_render_widget('MetalCorpsiteBundle:OrderPackage', {'route':path('MetalCorpsiteBundle:Default:orderPackage')}) }}
+        {{ brouzie_render_widget('MetalSupportBundle:TopicCorpSite') }}
+    {% endblock %}
+{% endblock %}

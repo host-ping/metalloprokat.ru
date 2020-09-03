@@ -1,0 +1,46 @@
+{% extends '@markup/private/management/_managemet_layout.html.twig' %}
+{% block title 'Компания' %}
+    {% block content %}
+        <div id="content" class="private-room-content content-right outline-right float-right">
+            <div class="private-scrollable content-scrollable js-scrollable">
+                <div class="private-fix-width">
+                    {% block tabs %}
+                        {% set activeTab = 'company2' %}
+                        {{ parent() }}
+                    {% endblock %}
+                    <div class="management-content-wrapper clearfix">
+                        <form class="register-form form float-left" action="#">
+                            <fieldset class="left-group">
+                                <div class="group clearfix">
+                                    <div class="user-company-wrapper field-wrap float-left">
+                                        <input class="register-company form-text ie-radius" type="text" placeholder="Компания"/>
+                                    </div>
+                                    <div class="company-type-wrapper field-wrap float-left">
+                                        <select name="company-type" id="company-type" class="form-select hight">
+                                            <option value="-1"> </option>
+                                            <option value="1">ЗАО</option>
+                                            <option value="2">OАО</option>
+                                            <option value="3">OOО</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="group clearfix">
+                                    <div class="field-wrap float-left">
+                                        <input type="text" class="form-text ie-radius" placeholder="Город"/>
+                                    </div>
+                                    <div class="field-wrap float-left">
+                                        <input type="text" class="phone form-text ie-radius" placeholder="Телефон"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="submit-wrapper">
+                                <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endblock content %}

@@ -1,0 +1,199 @@
+{% set popupId = 'order-service' %}
+
+<div id="{{ popupId }}"
+     class="{{ popupId }}-form popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Заказ услуги</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form" class="{{ popupId }} popup-form js-ajax-form-submit"
+              action="{{ _options.route }}"
+              method="post"
+              data-success="redirect"
+              novalidate="novalidate">
+            <fieldset>
+                <div class="group clearfix field-package-name">
+                    <div class="select-wrapper field-wrap float-left">
+                        {{ form_widget(form.package, {'attr' : {'class': 'package-name form-select ie-radius', 'data-bind-value': 'package-id'} }) }}
+                    </div>
+                    <div class="select-wrapper field-wrap field-period float-left">
+                        {{ form_widget(form.packagePeriod, {'attr' : {'class' : 'period form-select ie-radius', 'data-bind-value' : 'period-id' }}) }}
+                    </div>
+                </div>
+                <div class="group clearfix">
+                    <div class="start-date-wrapper field-wrap period-from float-left">
+                        {% set datepickerConfig = {
+                        'selectedDate':  form.startAt.vars.data|date('Y-m-d'),
+                        'relatedDatepicker': '#datepicker-period-to',
+                        'relatedDatepickerMode': 'finish',
+                        'targets': [
+                        {
+                        "format": "D MMMM YYYY",
+                        "target": "#"~form.startAt.vars.id
+                        }
+                        ]} %}
+                        <p class="text">
+                            {{ form_widget(form.startAt, {'attr' : {'class' : 'date js-popover-opener date-from form-text ie-radius',  'placeholder' : 'Дата', 'date' : form.startAt.vars.data|date('Y-m-d'), 'data-popover' : "#datepicker-period-from" }}) }}
+                            <span class="icon-calendar js-popover-opener clickable"
+                                  data-popover="#datepicker-period-from"></span>
+                        </p>
+
+                        <div id="datepicker-period-from"
+                             class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+                             data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+                    </div>
+
+                    <div class="end-date-wrapper field-wrap float-left">
+                        {{ form_widget(form.finishAt, {'attr' : {'class' : 'date-to'}}) }}
+
+                    </div>
+                </div>
+                <div class="textarea-wrapper field-wrap">
+                    {{ form_widget(form.comment, {'attr' : {'class' : 'form-textarea ie-radius', 'placeholder' : 'Комментарии'} }) }}
+                </div>
+                <div class="group clearfix">
+                    <div class="field-wrap float-left">
+                        {{ form_widget(form.company, {'attr' : {'data-bind-value' : 'company-id'} }) }}
+                        {{ form_widget(form.companyTitle, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Компания', 'data-bind-value' : 'company-title'} }) }}
+                    </div>
+                    {% if form.city is defined %}
+                        <div class="city-wrapper field-wrap float-left">
+                            {{ form_widget(form.cityTitle, {'attr' : {
+                                'class' : 'form-text ie-radius',
+                                'placeholder' : 'Город',
+                                'typeahead' : '',
+                                'typeahead-loading' : 'typeaheadLoading',
+                                'data-bind-value': 'city-text',
+                                'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getCities'),
+                                'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                'typeahead-model' : "city"
+                            } }) }}
+                            <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoading">
+                                <div class="spinner"></div>
+                            </div>
+                            {{ form_widget(form.city, {'attr' : {
+                                'class' : 'g-hidden',
+                                'data-bind-value': 'city-id',
+                                'ng-model' : "city.id",
+                                'initial-value' : ''
+                            } }) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="group clearfix">
+                    <div class="user-name-wrapper field-wrap float-left">
+                        {{ form_widget(form.fullName, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Имя', 'data-bind-value' : 'user-name'} }) }}
+                    </div>
+
+                    <div class="phone-wrapper field-wrap float-left">
+                        {{ form_widget(form.phone, {'attr' : {'class' : 'form-text ie-radius phone', 'placeholder' : 'Телефон', 'data-bind-value' : 'user-phone'} }) }}
+                    </div>
+                </div>
+                <div class="email-wrapper field-wrap">
+                    {{ form_widget(form.email, {'attr' : {'class' : 'form-email ie-radius', 'placeholder' : 'Электронная почта', 'data-bind-value' : 'user-email'} }) }}
+                </div>
+
+                <div class="total-sum-wrapper">
+                    <span class="gray60-color">к оплате</span>
+                    <span class="js-sum"></span>
+                </div>
+
+                <div class="submit-wrapper clearfix">
+                    <!--<input class="pay-later-btn button gray60-bg float-left ie-radius" type="submit" value="Оплатить позже"/>-->
+                    <input class="pay-btn button green-bg ie-radius" type="submit" value="Заказать" />
+                </div>
+            </fieldset>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+    Date.prototype.addMonths = function (m) {
+        var d = new Date(this);
+        var years = Math.floor(m / 12);
+        var months = m - (years * 12);
+        if (years) {
+            d.setFullYear(d.getFullYear() + years);
+        }
+        if (months) {
+            d.setMonth(d.getMonth() + months);
+        }
+
+        return d;
+    };
+
+    $(document).ready(function () {
+        $('#{{ popupId }}').bind('popup.open', function (e) {
+            var opener = e.$opener;
+            var dataPackages = {{ packages|json_encode|raw }};
+
+            var cost = dataPackages[opener.data('package-id')][opener.data('period-id')];
+            $('.js-sum').html(cost + ' <span class="icon-rouble"></span>');
+
+            $('#datepicker-period-from').bind('datepicker.selectDate', function() {
+                setFinishDate(opener.data('period-id'));
+            });
+
+            var $select = $("#order_package_package").selectize({
+            });
+            var selectizePackage = $select[0].selectize;
+            selectizePackage.setValue(opener.data('package-id'));
+
+
+            var $select = $("#order_package_packagePeriod").selectize({
+            });
+            var selectizePeriod = $select[0].selectize;
+            selectizePeriod.setValue(opener.data('period-id'));
+            selectizePeriod.on('change', function() {
+                setFinishDate(selectizePeriod.getValue());
+                var test = selectizePackage.getValue();
+                var cost = dataPackages[selectizePackage.getValue()][selectizePeriod.getValue()];
+                $('.js-sum').html(cost + ' <span class="icon-rouble"></span>');
+            });
+            selectizePackage.on('change', function() {
+                var test = selectizePackage.getValue();
+                var cost = dataPackages[selectizePackage.getValue()][selectizePeriod.getValue()];
+                $('.js-sum').html(cost + ' <span class="icon-rouble"></span>');
+            });
+
+            setFinishDate(opener.data('period-id'));
+
+            function setFinishDate(periodId) {
+                var monthes = {
+                    0: 'января',
+                    1: 'февраля',
+                    2: 'марта',
+                    3: 'апреля',
+                    4: 'мая',
+                    5: 'июня',
+                    6: 'июля',
+                    7: 'августа',
+                    8: 'сентября',
+                    9: 'октября',
+                    10: 'ноября',
+                    11: 'декабря'
+                };
+
+                var date = $('#datepicker-period-from').data('datepicker.selectedDate');
+                var newDate = new Date(date);
+
+                var periodToMonths = {
+                    1: 3,
+                    2: 6,
+                    3: 12
+                };
+                newDate = newDate.addMonths(periodToMonths[periodId]);
+
+                $('.date-to').val(newDate.getDate() + ' ' + monthes[newDate.getMonth()] + ' ' + newDate.getFullYear());
+            }
+
+            includeAjax(e.$popup);
+        });
+
+    });
+</script>

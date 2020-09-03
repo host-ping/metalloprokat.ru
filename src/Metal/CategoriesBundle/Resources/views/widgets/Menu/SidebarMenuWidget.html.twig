@@ -1,0 +1,64 @@
+{% set category = _options['category'] %}
+{% set city = _options['city'] %}
+{% set menuItemsCountToShow = category and category.allowProducts ? 3 : 9999999 %}
+
+{% if category and rootMenuItems %}
+    <div class="category-title title is-gradiented" title="{{ category.title }}">{{ category.title -}}
+        {% if _options['items_count'] %}
+            <sup>{{ _options['items_count']|number_format_decimal }}</sup>
+        {% endif %}
+    </div>
+{% endif %}
+
+<ul class="product product-categories-list">
+    {% for rootMenuItem in rootMenuItems %}
+        {% set menuItemHidden = loop.index > menuItemsCountToShow %}
+        <li class="level-1 item js-expandable-menu-item collapsed {% if menuItemHidden %}g-hidden{% endif %}" data-expandable-menu-children=".list"
+            {% if menuItemHidden %}data-expandable-section="categories"{% endif %}>
+
+            {% set rootMenuItemHasChildren = rootMenuItem.loadedChildren|length > 0 %}
+
+            {% if rootMenuItem.isLabel() %}
+                <span class="clearfix {% if rootMenuItemHasChildren %}js-expandable-menu-expander elem{% endif %} clickable">
+                    <span class="elem is-gradiented" title="{{ rootMenuItem.title }}">
+                        {{ rootMenuItem.title }}
+                        {% if rootMenuItemHasChildren %} <i class="icon-check black"></i>{% endif %}
+                    </span>
+                </span>
+            {% else %}
+                <a class="clearfix"
+                   href="{{ path(_options['route'], _options['route_params']|merge({'category_slug': rootMenuItem.slugCombined})) }}">
+                    <span class="count float-right">{{ rootMenuItem.getAttribute(_options['counter_name'])|number_format_decimal }}</span>
+                    <span class="elem is-gradiented" title="{{ rootMenuItem.title }}">
+                        {{ rootMenuItem.title }}
+                        {% if rootMenuItemHasChildren %} <i class="icon-check black {% if rootMenuItemHasChildren %}js-expandable-menu-expander elem{% endif %}"></i>{% endif %}
+                    </span>
+                </a>
+            {% endif %}
+
+            {% if rootMenuItemHasChildren %}
+                <ul class="list level-inside g-hidden">
+                    {% for menuItem in rootMenuItem.loadedChildren %}
+                        {% if menuItem.isLabel() %}
+                            <li class="drop-item first">
+                                <span class="drop-link is-gradiented black15-color">
+                                    {{ menuItem.title }}
+                                </span>
+                            </li>
+                        {% else %}
+                            <li class="drop-item">
+                                <a class="drop-link is-gradiented"
+                                   href="{{ path(_options['route'], _options['route_params']|merge({'category_slug': menuItem.slugCombined})) }}">{{ menuItem.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+{% if rootMenuItems|length > menuItemsCountToShow %}
+    <span class="link clickable js-expandable js-categories-expand" data-expandable="categories">Показать все</span>
+    <span class="link clickable js-expandable js-categories-expand g-hidden" data-expandable="categories">Скрыть</span>
+{% endif %}

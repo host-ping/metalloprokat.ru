@@ -1,0 +1,19 @@
+{% set currentTerritory = _options['territory'] %}
+
+{% if productsCount %}
+    <p class="site-info float-left">
+        <a href="{{ path('MetalProductsBundle:Products:products_list', {'subdomain': currentTerritory.slug}) }}"><strong>{{ productsCount|number_format_decimal }}</strong> {{ 'similar_products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }}
+        </a>
+        от
+        <a href="{{ path('MetalProductsBundle:Products:companies_list', {'subdomain': currentTerritory.slug}) }}"><strong>{{ companiesCount|number_format_decimal }}</strong> {{ 'from_companies_by_count_main'|transchoice(companiesCount, [], 'MetalCompaniesBundle') }}
+        </a>
+        в {{ currentTerritory.titleLocative }}
+    </p>
+    {{ block('breadcrumbs_button') }}
+{% else %}
+    <div class="add">
+        <a class="add-button product icon-add-btn"
+           data-href="{{ brouzie_helper('MetalProjectBundle:Url').getRegisterAndAddProductsUrl() }}"
+           href="{{ path('MetalUsersBundle:Registration:register') }}" rel="nofollow">Добавить товары</a>
+    </div>
+{% endif %}

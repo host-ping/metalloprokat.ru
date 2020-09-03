@@ -1,0 +1,130 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set currentCity = app.request.attributes.get('city') %}
+{% if route is not defined %}
+    {% set route = 'MetalProductsBundle:Product:view_subdomain' %}
+{% endif %}
+
+{% for product in pagerfanta %}
+
+    {% if currentCity %}
+        {% set subdomain = currentCity.getSlugWithFallback() %}
+    {% else %}
+        {% set subdomain = product.branchOffice.city.getSlugWithFallback() %}
+    {% endif %}
+
+    {% set viewUrl = path(route, {'id': product.id, 'subdomain': subdomain}) %}
+
+    <li class="item outline clearfix">
+        <div class="img is-bordered float-right">
+            <div class="img-holder">
+                <a class="img-link pattern-small" data-href="{{ viewUrl }}">
+                    {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq28', 'portal') %}
+                    {% if imageUrl %}
+                       <img src="{{ imageUrl }}" alt="{{ product.title }}" title="{{ product.title }}"/>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+
+        <div class="links-wrapper float-right">
+            <ul class="links clearfix">
+
+                <li class="links_report item float-left clearfix">
+                    <span
+                       class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                       data-tooltip-title="Пожаловаться"
+                       data-popup="#complaint-product"
+                       data-object-id="{{ product.id }}"
+                       data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : product.id, 'kind' : 'product'}) }}">
+                        <span class="icon-complaint"></span>
+                    </span>
+                </li>
+
+                <li class="item float-left {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %}"
+                    {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+                    <span
+                            class="button favorites small is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if product.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                            data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : product.id, 'object' : 'product'}) }}">
+                        <span class="text"></span>
+                        <span class="icon-favorite"></span>
+                    </span>
+
+                    <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not product.getAttribute('isInFavorite') %}g-hidden{% endif %}"
+                         data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : product.id, 'object' : 'product'}) }}">
+                            <span class="button favorites active-link small ie-radius is-bordered js-togglable-block">
+                                <span class="text"></span>
+                                <span class="icon-favorite-active"></span>
+                            </span>
+
+                            <span class="button favorites small delete blue-bg g-hidden ie-radius js-togglable-block">
+                                <span class="icon-favorite-del"></span>
+                            </span>
+                    </div>
+                </li>
+
+                <li class="links_answer item width-182 float-left clearfix">
+
+                    <span class="send-order_send-button button clickable send-button red-bg ie-radius"
+                       popup-opener="#request-private-demand"
+                       data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                       data-demand-text="Заявка для компании {{ product.company.title }}"
+                       data-product-text="{{ product.title }}"
+                            {% if currentCity %}
+                                data-product-city-id="{{ currentCity.id }}"
+                                data-city-text="{{ currentCity.title }}"
+                                data-city-id="{{ currentCity.id }}"
+                            {% endif %}
+                       data-company-id="{{ product.company.id }}"
+                       data-product-id="{{ product.id }}"
+                       data-product-category-id="{{ product.category.id }}"
+                            {% if not product.isContractPrice() %}
+                                data-volume-type="{{ product.measureId }}"
+                            {% endif %}
+                            >Отправить заявку
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="left">
+            <p class="title is-gradiented">
+                <a class="product-link"
+                   href="{{ viewUrl }}" title="{{ product.title }}">{{ product.title }}</a>
+            </p>
+
+            <div class="info">
+                <div class="text clearfix">
+                    {% if product.size %}
+                        <p class="size float-left" title="{{ tokens.product_volume_title|capitalize }} {{ product.size }}">
+                            {{ tokens.product_volume_title|capitalize }} {{ product.size }},
+                        </p>
+                    {% endif %}
+                    <p class="price float-left">
+                        {% if product.isContractPrice() %}
+                            <span class="gray60-color">цена договорная</span>
+                        {% else %}
+                            {% if product.isPriceFrom %}от {% endif %}
+                            <span class="strong red-color
+                            {% if product.getAttribute('normalized_price') %}other-currency js-helper-opener{% endif %}"
+                                    data-text="примерно <span class='red-color'>
+                            {{ product.getAttribute('normalized_price')|number_format_decimal }}
+                            <span class='{{ currentCity.country.currency.symbolClass }}'></span></span>"
+                                    >
+                                {{ product.price|number_format_decimal }}
+                                <span class="{{ product.currency.symbolClass }}"></span>
+                                <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                            </span>
+                            {% if product.measureId %}за {{ product.measure.tokenPrice }}{% endif %}
+                        {% endif %}
+                        <span class="is-gradiented"></span>
+                    </p>
+                    <span class="is-gradiented"></span>
+                </div>
+            </div>
+        </div>
+
+    </li>
+{% endfor %}
+
+{{ pagerfanta(pagerfanta, 'pagination_twig') }}

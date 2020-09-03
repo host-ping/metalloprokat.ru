@@ -1,0 +1,7 @@
+MetalComplaintsBundle:Complaint:complaint:
+    path:   /spros/complaint/{id}/{kind}
+    methods:  [POST]
+    defaults:  { _controller: MetalComplaintsBundle:Complaint:saveComplaint}
+    requirements:
+        id: \d+
+        kind: demand|product|company

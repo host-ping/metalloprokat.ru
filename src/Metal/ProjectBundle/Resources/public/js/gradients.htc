@@ -1,0 +1,27 @@
+<PUBLIC:COMPONENT>
+    <!--<public:attach event="oncontentready" onevent="oncontentready()" />-->
+
+    <script type="text/javascript">
+        var el = element;
+
+        function oncontentready()
+        {
+//            var gradient = document.createElement('span');
+//            gradient.setAttribute('class', 'ie-gradient-bottom');
+//            el.appendChild(gradient);
+
+            var cls = 'ie-gradient';
+            if (el.className.indexOf('is-gradiented-bottom') > -1) {
+                cls = 'ie-gradient-bottom';
+            }
+
+            var gradient = document.createElement('span');
+            gradient.setAttribute('class', cls);
+            el.insertBefore(gradient, el.firstChild)
+        }
+
+        oncontentready();
+    </script>
+
+    <script type="text/vbscript"></script>
+</PUBLIC:COMPONENT>

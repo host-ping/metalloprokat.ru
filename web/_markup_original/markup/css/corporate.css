@@ -1,0 +1,498 @@
+body.corporate{
+    background: #fff;
+}
+.corporate .wrap{
+    width: 980px;
+}
+#header.corporate-header{
+    background: #f1f1f1;
+    padding-top: 32px;
+    padding-bottom: 38px;
+}
+.corporate .logo-text a{
+    color: #262626;
+}
+.corporate-header .left{
+    margin-right: 97px;
+}
+.corporate-menu .item{
+    margin-right: 6px;
+}
+.corporate-menu .item .link{
+    color: #262626;
+    font-size: 13px;
+    line-height: 24px;
+    font-weight: 600;
+    padding: 5px 8px 5px 10px;
+}
+.corporate-menu .item.active .link{
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+}
+.corporate-header .logo-text{
+    color: #262626;
+    line-height: 24px;
+    margin-right: 0;
+}
+.corporate-content .title{
+    margin-bottom: 25px;
+    line-height: 24px;
+    font-weight: 400;
+}
+.corporate-content .company-img-wrapper{
+    margin: 22px 54px 0 40px;
+    width: 300px;
+}
+.corporate-content .company-img-wrapper img{
+    max-width: 300px;
+    overflow: hidden;
+    max-height: 300px;
+}
+.corporate-content .about-text{
+    width: 504px;
+    padding-top: 15px;
+    margin-right: 60px;
+}
+.corporate-content .about-text .text{
+    font-size: 13px;
+    line-height: 24px;
+    margin-bottom: 25px;
+}
+.corporate-content .media-wrapper,
+.corporate-content .contact-wrapper,
+.corporate-content .clients-wrapper,
+.corporate-content .reviews-wrapper{
+    width: 841px;
+    margin: 20px auto 35px;
+}
+.corporate-content .reviews .review{margin-bottom: 35px;}
+.corporate-content .review-text{
+    background: #ffeeba;
+    min-height: 155px;
+    position: relative;
+    padding: 20px 25px;
+    margin: 0 0 30px;
+}
+.corporate-content .review-text .text{
+    font-size: 24px;
+    line-height: 32px;
+}
+.corporate-content .review-text:after{
+    content: url("../img/bg-review-bullet.png");
+    position: absolute;
+    top: 99%;
+    left: 120px;
+}
+.corporate-content .reviews .user-photo{
+    margin-right: 17px;
+}
+.corporate-content .reviews .user-photo img{
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -o-border-radius: 100%;
+    -ms-border-radius: 100%;
+    border-radius: 100%;
+}
+.corporate-content .reviews .user{
+    margin-top: 15px;
+}
+.corporate-content .reviews .user .text{
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.corporate-content .clients{
+    border-top: 1px solid #e2e2e2;
+    border-left: 1px solid #e2e2e2;
+
+}
+.corporate-content .clients .client{
+    border-right: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+    text-align: center;
+    width: 167px;
+    height: 137px;
+    padding: 30px 0 5px;
+}
+.corporate-content .clients .client-logo{margin-bottom: 18px;}
+.corporate-content .clients .client-logo .img{
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -o-border-radius: 100%;
+    -ms-border-radius: 100%;
+    border-radius: 100%;
+    background: #c6c6c6;
+    width: 72px;
+    height: 72px;
+    display: inline-block;
+    overflow: hidden;
+}
+.corporate-content .clients .client-title{
+    font-size: 13px;
+    line-height: 20px;
+}
+.corporate-content .clients .drop-wrapper{
+    width: 500px;
+    max-width: 500px;
+    left: -100%;
+    top: 100%;
+}
+.corporate-content .clients .drop-wrapper.right-position{
+    right: -190px;
+    left: auto;
+}
+.corporate-content .clients .client:hover .drop-wrapper{
+    display: block;
+}
+.corporate-content .clients .dropdown{
+    padding: 12px 18px 4px 20px;
+}
+.corporate-content .clients .drop-wrapper .reviews-block{
+    padding: 15px 0;
+}
+.corporate-content .clients .drop-wrapper .reviews-block .text{
+    padding-right: 25px;
+    margin-bottom: 10px;
+}
+.corporate-content .clients .drop-wrapper .reviews-block *{
+    text-align: left;
+}
+.corporate-content .clients .drop-wrapper .reviews-block .info{
+    color: #919191;
+}
+.corporate-content .clients .client-info-wrapper{
+    width: 75px;
+    padding-right: 20px;
+    padding-top: 18px;
+}
+.corporate-content .clients .reviews-block .reviews .item{
+    margin-bottom: 7px;
+    padding: 42px 0 0 0;
+}
+.corporate-content .clients .drop-wrapper .scroll-wrapper{
+    max-height: 68px;
+    margin-bottom: 7px;
+}
+.corporate-content .contact-left{
+    width: 522px;
+}
+.corporate-content .big-phone{
+    font-size: 36px;
+    line-height: 58px;
+    margin-bottom: 15px;
+}
+.corporate-content .contact-left .contacts{margin-bottom: 8px;}
+.corporate-content .contact-left .contacts .item{
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 40px 20px 0;
+}
+.corporate-content .contact-left .send-button{
+    width: 182px;
+}
+.corporate-content .announcement-wrapper{
+    margin-left: -15px;
+    position: relative;
+}
+.corporate-content .announcement-wrapper .title{
+    margin-left: 70px;
+}
+.corporate-content .announcement-privileges{
+    width: 590px;
+}
+.corporate-content .announcement-privileges .list .item{
+    list-style: decimal;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.corporate-content .announcement-privileges .list .item .title{
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+.corporate-content .announcement-privileges .list .item .text{
+    font-size: 13px;
+    line-height: 20px;
+    color: #919191;
+}
+.button-block{
+    background: #f1f1f1;
+    padding: 10px 0;
+}
+.button-block .list{
+    width: 480px;
+    margin: 0 auto;
+}
+.button-block .list .buy-btn{margin-bottom: 5px;}
+.button-block .list .item{
+    text-align: center;
+}
+.corporate-content .service-wrapper{
+    margin: 0 -24px;
+}
+.corporate-content .promotion-right{
+    width: 20%;
+    display: inline;
+    font-size: 12px;
+    line-height: 150%;
+    text-align:center;
+}
+.corporate-content .promotion-right .promo-title{
+    font-size: 14px;
+    color: #f00;
+    font-weight: 600;
+    margin-bottom: 15px;
+
+}
+.corporate-content .service-wrapper .service-promo{
+    font-size: 12px;
+    color: #f00;
+    font-weight: 600;
+}
+.spec-inform,
+.corporate-content .service-wrapper .service{
+    width: 100%;
+    margin-bottom: 34px;
+}
+.corporate-content .service-wrapper .service img{display: inline-block;}
+.corporate-content .service-wrapper .service thead .top{
+    border-bottom: 1px dotted #e2e2e2;
+}
+.corporate-content .service-wrapper .service thead .top .col{
+    vertical-align: bottom;
+}
+.corporate-content .service-wrapper .service thead .bottom .col{
+    vertical-align: top;
+    padding-bottom: 10px;
+    padding-top: 8px;
+}
+.corporate-content .service-wrapper .service thead .bottom{
+    background: url("../img/bottom-shodow.png") repeat-x 0 100%;
+}
+.corporate-content .service-wrapper .service .col{
+    text-align: center;
+    vertical-align: middle;
+}
+.corporate-content .service-wrapper .service tbody .col{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.corporate-content .service-wrapper .service .title.row .col{
+    text-align: left;
+}
+.corporate-content .service-wrapper .service .col.title{
+    padding-left: 84px;
+    text-align: left;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.corporate-content .service-wrapper .service .col.title .title-text{
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.corporate-content .row.odd{
+    background: #f1f1f1;
+}
+.corporate-content .row.even{
+    background: #fff;
+}
+.corporate-content .service-wrapper .service .package-name{
+    text-align: left;
+    padding-left: 84px;
+    width: 336px;
+    position: relative;
+}
+.corporate-content .service-wrapper .service .package-name .icon-check{
+    font-size: 16px;
+}
+.package-period{
+    left: 61px;
+    top: -15px;
+}
+.corporate-content .service-wrapper .service .package-name .icon-check{cursor: pointer;}
+.corporate-content thead .col{
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.corporate-content .service-wrapper .service thead .top .package-name{
+    color: #919191;
+    font-weight: 400;
+}
+.corporate-content .service-wrapper .service thead .bottom .price{
+    color: #919191;
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 5px;
+}
+.corporate-content .service-wrapper .service thead .bottom .base-package .price{
+    font-weight: 400;
+    font-size: 13px;
+}
+.corporate-content .service-wrapper .service tbody .package-name{
+    padding-left: 95px;
+}
+.corporate-content .service-wrapper .service .package-name .name{
+    font-size: 13px;
+    line-height: 20px;
+    color: #18a3d1;
+    display: inline;
+    position: relative;
+    border-bottom: dashed 1px #18a3d1;
+    cursor: help;
+}
+.corporate-content .service-wrapper .service .base-package,
+.corporate-content .service-wrapper .service .large-package,
+.corporate-content .service-wrapper .service .full-package{
+    width: 168px;
+}
+.announcement-info-wrapper .announcement-info .buy-btn,
+.corporate-content .service-wrapper .service .buy-btn{
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: inline-block;
+}
+.corporate-content .strike-line {
+    background-color: #f00;
+    display: block;
+    height: 1px;
+    left: 30px;
+    position: relative;
+    top: -10px;
+    width: 61px;
+    z-index: 1;
+
+    transform: rotate(166deg);
+    -ms-transform: rotate(166deg); /* IE 9 */
+    -webkit-transform: rotate(166deg); /* Safari and Chrome */
+}
+.corporate-content .promotionPeriod {
+    width: 80%;
+    float: left;
+}
+.spec-anchor{
+    font-size: 26px;
+    display: block;
+    color: #f16961;
+}
+.spec-inform .spec-anchor{
+    display: inline-block;
+}
+.announcement-info{
+    margin-bottom: 25px;
+}
+.announcement-info-wrapper{
+    width: 750px;
+    margin-left: 10px;
+}
+.announcement-info-wrapper .announcement-info{
+    width: 100%;
+}
+.announcement-info-wrapper .announcement-info .status-text{
+    font-size: 11px;
+    line-height: 14px;
+}
+.announcement-info-wrapper .announcement-info .name{
+    width: 32%;
+    padding: 3px 0 3px 2%;
+}
+.announcement-info-wrapper .announcement-info .size{
+    width: 15%;
+    padding: 3px 2%;
+}
+.announcement-info-wrapper .announcement-info .price{
+    width: 30%;
+    padding: 3px 2%;
+}
+.announcement-info-wrapper .announcement-info .order{
+    width: 11%;
+    padding: 3px 2% 3px 0;
+}
+/*  Default Css styles     */
+#default-styles dir,
+#default-styles hr,
+#default-styles menu,
+#default-styles pre{ display: block }
+#default-styles li{ display: list-item }
+#default-styles head{ display: none }
+#default-styles table{ display: table }
+#default-styles tr{ display: table-row }
+#default-styles thead{ display: table-header-group }
+#default-styles tbody{ display: table-row-group }
+#default-styles tfoot{ display: table-footer-group }
+#default-styles col{ display: table-column }
+#default-styles colgroup{ display: table-column-group }
+#default-styles td,
+#default-styles th{ display: table-cell }
+#default-styles caption{ display: table-caption }
+#default-styles th{ font-weight: 600; text-align: center; }
+#default-styles caption{ text-align: center }
+#default-styles h1{ font-size: 24px; line-height: 28px; margin: .67em 0 }
+#default-styles h2{ font-size: 22px; line-height: 26px; margin: .75em 0 }
+#default-styles h3{ font-size: 20px; line-height: 24px; margin: .83em 0 }
+#default-styles h4,
+#default-styles p,
+#default-styles blockquote,
+#default-styles ul,
+#default-styles fieldset,
+#default-styles form,
+#default-styles ol,
+#default-styles dl,
+#default-styles dir,
+#default-styles menu{ margin: 1.12em 0 }
+#default-styles h4{ font-size: 18px; line-height: 22px; margin: 1.5em 0 }
+#default-styles h5{ font-size: 16px; line-height: 18px; margin: 1.5em 0 }
+#default-styles h6{ font-size: 14px; line-height: 16px; margin: 1.67em 0 }
+#default-styles h1,
+#default-styles h2,
+#default-styles h3,
+#default-styles h4,
+#default-styles h5,
+#default-styles h6{font-weight: 400;}
+#default-styles b,
+#default-styles strong{ font-weight: 600 }
+#default-styles blockquote{ margin-left: 40px; margin-right: 40px }
+#default-styles i,
+#default-styles cite,
+#default-styles em,
+#default-styles var,
+#default-styles address{ font-style: italic }
+#default-styles pre,
+#default-styles tt,
+#default-styles code,
+#default-styles kbd,
+#default-styles samp{ font-family: monospace }
+#default-styles pre{ white-space: pre }
+#default-styles big{ font-size: 1.17em }
+#default-styles small,
+#default-styles sub,
+#default-styles sup{ font-size: .83em }
+#default-styles sub{ vertical-align: sub }
+#default-styles sup{ vertical-align: super }
+#default-styles table{ border-spacing: 2px; }
+#default-styles thead,
+#default-styles tbody,
+#default-styles tfoot{ vertical-align: middle }
+#default-styles td,
+#default-styles th{ vertical-align: inherit }
+#default-styles s,
+#default-styles strike,
+#default-styles del{ text-decoration: line-through }
+#default-styles hr{ border: 1px inset }
+#default-styles ol,
+#default-styles ul,
+#default-styles dir,
+#default-styles menu,
+#default-styles dd{ margin-left: 40px }
+#default-styles ol li{ list-style: decimal }
+#default-styles ol ul,
+#default-styles ul ol,
+#default-styles ul ul,
+#default-styles ol ol{ margin-top: 0; margin-bottom: 0 }
+#default-styles ul li{list-style: disc;}

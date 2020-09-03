@@ -1,0 +1,69 @@
+'MetalContentBundle:Tags:getSuggest':
+    path:     /api/content/tags
+    defaults: { _controller: MetalContentBundle:Tags:getSuggest }
+
+'MetalContentBundle:Instagram:photosList':
+    path:     /ideas/blog/
+    defaults: { _controller: MetalContentBundle:Instagram:photosList }
+
+'MetalContentBundle:Instagram:photoView':
+    path:     /ideas/blog/{id}
+    defaults: { _controller: MetalContentBundle:Instagram:photoView }
+    requirements:
+        id: \d+
+
+'MetalContentBundle:Instagram:addComment':
+    path: /add/instagram-comment/{id}
+    methods: [POST]
+    defaults: { _controller: MetalContentBundle:Instagram:addComment }
+    requirements:
+        id: \d+
+
+'MetalContentBundle:Tags:getSuggestTags':
+    path: /api/content/suggest-tags
+    defaults: { _controller: MetalContentBundle:Tags:getSuggestTags }
+
+'MetalContentBundle:Tags:list':
+    path:    /tags/
+    defaults: { _controller: MetalContentBundle:Tags:list }
+
+'MetalContentBundle:Tag:view':
+    path:   /tags/tag_{id}.html
+    defaults: { _controller: MetalContentBundle:Tag:view }
+    requirements:
+        id: \d+
+
+'MetalContentBundle:Tag:tag_view_redirect':
+    path:     /tags/tags_{id}.html
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: MetalContentBundle:Tag:view
+        permanent: true
+
+'MetalContentBundle:UserContentCategory:loadInfo':
+    path:   /user/{id}
+    defaults: { _controller: MetalContentBundle:UserContentCategory:loadUserInfo }
+    requirements:
+        id: \d+
+
+'MetalContentBundle:Comment:add':
+    path: /add/comment/{id}
+    methods: [POST]
+    defaults: { _controller: MetalContentBundle:Comment:add }
+    requirements:
+        id: \d+
+
+'MetalContentBundle:Questions:listAll':
+    path:     /questions.html
+    defaults: { _controller: MetalContentBundle:Questions:list }
+
+'MetalContentBundle:Search:search':
+    path:      /search-content/
+    defaults:  { _controller: MetalContentBundle:Search:search}
+
+'MetalContentBundle:ContentEntry:add':
+    path: /{entry_type}/add
+    methods: [POST]
+    defaults: { _controller: MetalContentBundle:ContentEntry:add }
+    requirements:
+        entry_type: ENTRY_TYPE_TOPIC|ENTRY_TYPE_QUESTION

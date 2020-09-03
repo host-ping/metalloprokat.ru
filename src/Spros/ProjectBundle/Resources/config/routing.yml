@@ -1,0 +1,90 @@
+MetalUsersBundle:Registration:register:
+    path:   /registration
+    defaults:  { _controller: MetalUsersBundle:Registration:register }
+    host: %host_prefix%%base_host%
+
+SprosProjectBundle:Default:index:
+    path:  /
+    defaults: { _controller: SprosProjectBundle:Default:index }
+    host: %host_prefix_metallspros%%base_host_metallspros%
+
+SprosProjectBundle:Default:form:
+    path:  /form
+    defaults: { _controller: SprosProjectBundle:Default:form }
+    host: "{subdomain}.%base_host_metallspros%"
+
+SprosProjectBundle:Default:parse:
+    path:  /parse
+    defaults: { _controller: SprosProjectBundle:Default:parse }
+    host: %host_prefix_metallspros%%base_host_metallspros%
+
+SprosProjectBundle:Default:oldUrl:
+    path:  /spros/{dummy}
+    host: "{subdomain}.%base_host_metallspros%"
+    defaults: { _controller: SprosProjectBundle:Default:oldUrl }
+    requirements:
+        dummy: .*
+
+SprosProjectBundle:Subscription:subscribe:
+    path:  /metallspros/subscribe
+    # host not needed here!
+    defaults: { _controller: SprosProjectBundle:Subscription:subscribe }
+    methods:  [POST]
+
+SprosProjectBundle:Subscription:unsubscribe:
+    path:  /metallspros/unsubscribe
+    host: %host_prefix_metallspros%%base_host_metallspros%
+    defaults: { _controller: SprosProjectBundle:Subscription:unsubscribe }
+
+SprosProjectBundle:Subscription:confirmation:
+    path:  /metallspros/confirmation
+    host: %host_prefix_metallspros%%base_host_metallspros%
+    defaults: { _controller: SprosProjectBundle:Subscription:confirmation }
+
+# -------------------- sitemap start
+SprosPrestaSitemapBundle:Sitemap:index_subdomain:
+    path:  /sitemap.{_format}
+    defaults: { _controller: SprosProjectBundle:Sitemap:getSitemap }
+    host: "{subdomain}.%base_host_metallspros%"
+    requirements:
+        _format: xml
+
+SprosPrestaSitemapBundle:Sitemap:section_subdomain:
+    path:  /sitemap.{section}.{_format}
+    defaults: { _controller: SprosProjectBundle:Sitemap:getSitemap }
+    host: "{subdomain}.%base_host_metallspros%"
+    requirements:
+        _format: xml|xml\.gz
+# used only for url generation, for matching used routes above
+PrestaSitemapBundle_section:
+    path:  /sitemap.{name}.{_format}
+    defaults: { _controller: PrestaSitemapBundle:Sitemap:section }
+    requirements:
+        _format: xml|xml\.gz
+# -------------------- sitemap end
+
+SprosProjectBundle:Default:generate_robots:
+    path:     /robots.txt
+    host:     "{subdomain}.%base_host_metallspros%"
+    defaults: { _controller: MetalProjectBundle:Robots:generate, section: metalspros }
+
+SprosProjectBundle:Default:index_category:
+    path:      /{category_slug}/
+    host:      %host_prefix_metallspros%%base_host_metallspros%
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: SprosProjectBundle:Default:index }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+
+SprosProjectBundle:Default:index_subdomain:
+    path:     /
+    host:     "{subdomain}.%base_host_metallspros%"
+    defaults: { _controller: SprosProjectBundle:Default:index }
+
+SprosProjectBundle:Default:index_subdomain_category:
+    path:      /{category_slug}/
+    host:      "{subdomain}.%base_host_metallspros%"
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: SprosProjectBundle:Default:index }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%

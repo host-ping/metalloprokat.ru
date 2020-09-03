@@ -1,0 +1,151 @@
+/*
+  Icon Font: fontcustom
+*/
+
+@font-face {
+  font-family: "fontcustom";
+  src: url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.eot");
+  src: url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.eot?#iefix") format("embedded-opentype"),
+       url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.woff") format("woff"),
+       url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.ttf") format("truetype"),
+       url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.svg#fontcustom") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "fontcustom";
+    src: url("./font/fontcustom_0baa7a94bf0b021782dfa19c340573eb.svg#fontcustom") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icon-add-btn:before,
+.icon-back:before,
+.icon-baloon:before,
+.icon-calendar:before,
+.icon-check:before,
+.icon-check-big:before,
+.icon-check-collapse:before,
+.icon-clip:before,
+.icon-clock:before,
+.icon-close:before,
+.icon-comment:before,
+.icon-complaint:before,
+.icon-consumers:before,
+.icon-consumers-color:before,
+.icon-delete-btn:before,
+.icon-error:before,
+.icon-error-color:before,
+.icon-euro:before,
+.icon-exit:before,
+.icon-favorite:before,
+.icon-favorite-active:before,
+.icon-favorite-del:before,
+.icon-filter-del:before,
+.icon-flag:before,
+.icon-help:before,
+.icon-home:before,
+.icon-hrivna:before,
+.icon-idea:before,
+.icon-lamp:before,
+.icon-negative:before,
+.icon-pencil:before,
+.icon-photo:before,
+.icon-points:before,
+.icon-popup-close:before,
+.icon-position:before,
+.icon-position-color:before,
+.icon-positive:before,
+.icon-prod_ico1:before,
+.icon-prod_ico2:before,
+.icon-prod_ico3:before,
+.icon-prod_ico4:before,
+.icon-prod_ico5:before,
+.icon-product-check:before,
+.icon-revert:before,
+.icon-rouble:before,
+.icon-search-big:before,
+.icon-search-small:before,
+.icon-star:before,
+.icon-star-colored:before,
+.icon-suppliers:before,
+.icon-suppliers-color:before,
+.icon-tenge:before,
+.icon-upload:before,
+.icon-view-grid:before,
+.icon-view-list:before,
+.icon-views:before {
+  display: inline-block;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icon-add-btn:before { content: "\f100"; }
+.icon-back:before { content: "\f101"; }
+.icon-baloon:before { content: "\f102"; }
+.icon-calendar:before { content: "\f103"; }
+.icon-check:before { content: "\f104"; }
+.icon-check-big:before { content: "\f105"; }
+.icon-check-collapse:before { content: "\f130"; }
+.icon-clip:before { content: "\f106"; }
+.icon-clock:before { content: "\f107"; }
+.icon-close:before { content: "\f108"; }
+.icon-comment:before { content: "\f109"; }
+.icon-complaint:before { content: "\f10a"; }
+.icon-consumers:before { content: "\f10b"; }
+.icon-consumers-color:before { content: "\f10c"; }
+.icon-delete-btn:before { content: "\f10d"; }
+.icon-error:before { content: "\f10e"; }
+.icon-error-color:before { content: "\f10f"; }
+.icon-euro:before { content: "\20ac"; }
+.icon-exit:before { content: "\f110"; }
+.icon-favorite:before { content: "\f111"; }
+.icon-favorite-active:before { content: "\f112"; }
+.icon-favorite-del:before { content: "\f113"; }
+.icon-filter-del:before { content: "\f114"; }
+.icon-flag:before { content: "\f115"; }
+.icon-help:before { content: "\f116"; }
+.icon-home:before { content: "\f117"; }
+.icon-hrivna:before { content: "\20b4"; }
+.icon-idea:before { content: "\f131"; }
+.icon-lamp:before { content: "\f118"; }
+.icon-negative:before { content: "\f119"; }
+.icon-pencil:before { content: "\f132"; }
+.icon-photo:before { content: "\f11a"; }
+.icon-points:before { content: "\f11b"; }
+.icon-popup-close:before { content: "\f11c"; }
+.icon-position:before { content: "\f11d"; }
+.icon-position-color:before { content: "\f11e"; }
+.icon-positive:before { content: "\f11f"; }
+.icon-prod_ico1:before { content: "\f133"; }
+.icon-prod_ico2:before { content: "\f134"; }
+.icon-prod_ico3:before { content: "\f135"; }
+.icon-prod_ico4:before { content: "\f136"; }
+.icon-prod_ico5:before { content: "\f137"; }
+.icon-product-check:before { content: "\f120"; }
+.icon-revert:before { content: "\f121"; }
+.icon-rouble:before { content: "\20bd"; }
+.icon-search-big:before { content: "\f123"; }
+.icon-search-small:before { content: "\f124"; }
+.icon-star:before { content: "\f125"; }
+.icon-star-colored:before { content: "\f12f"; }
+.icon-suppliers:before { content: "\f127"; }
+.icon-suppliers-color:before { content: "\f128"; }
+.icon-tenge:before { content: "\20b8"; }
+.icon-upload:before { content: "\f129"; }
+.icon-view-grid:before { content: "\f12a"; }
+.icon-view-list:before { content: "\f12b"; }
+.icon-views:before { content: "\f12c"; }

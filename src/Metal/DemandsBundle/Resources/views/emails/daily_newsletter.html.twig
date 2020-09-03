@@ -1,0 +1,109 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block date_period -%}
+    {% if forHours == 24 %}
+        {{- brouzie_helper('MetalProjectBundle:Formatting').formatDate(dateStart, 'full') -}}
+    {% elseif forHours == 1 %}
+        {{- brouzie_helper('MetalProjectBundle:Formatting').formatDate(dateFinish, 'full') -}}
+    {% else %}
+        {{- brouzie_helper('MetalProjectBundle:Formatting').formatDateRange(dateStart, dateFinish, 'full') -}}
+    {% endif %}
+{%- endblock %}
+
+{% block subject %}
+    {% if project.family == 'metalloprokat' %}
+        Заявки на покупку {{ tokens.product_title.genitive }} за {{ block('date_period') }}
+    {% else %}
+        Заявки на покупку {{ tokens.product_title.genitive }} за {{ block('date_period') }}
+    {% endif %}
+{% endblock %}
+
+{% block body_text %}
+Здравствуйте{% if subscriber.getUser() %}, {{ subscriber.getUser().getFirstName() }}{% endif %}.
+
+{% if forHours == 1 %}
+    Посмотрите заявки на покупку по рынку {{ tokens.market_title }} за последний час.
+{% else %}
+    Посмотрите заявки на покупку по рынку {{ tokens.market_title }} за последние {{ forHours }} {{ 'for_hours'|transchoice(forHours, [], 'MetalDemandsBundle') }}.
+{% endif %}
+
+{% set lastCategoryId = null %}
+{% for categoryId, demands in demandCollection %}
+{% for demand in demands %}
+{% if lastCategoryId != categoryId and loop.first %}
+{% set lastCategoryId = categoryId %}
+{{ demand.getCategory().getRootCategory().getTitle() }}
+{% endif %}
+
+{{ include('MetalDemandsBundle:emails/partial:demands_in_list.txt.twig', {
+    'demand': demand,
+    'demand_items_limit': 3,
+    'to_company': false,
+    'view_user_name': false
+}, false) }}
+
+{% endfor %}
+{% endfor %}
+{{ block('text_footer') }}
+{% endblock %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Здравствуйте{% if subscriber.getUser() %}, {{ subscriber.getUser().getFirstName() }}{% endif %}.
+    </p>
+	
+    <p style="font-family: Arial;padding-bottom: 15px;font-size: 16px;color: #171F26;line-height: 26px;">
+        {% if forHours == 1 %}
+            Посмотрите заявки на покупку по рынку {{ tokens.market_title }} за последний час.
+        {% else %}
+            Посмотрите заявки на покупку по рынку {{ tokens.market_title }} за последние {{ forHours }} {{ 'for_hours'|transchoice(forHours, [], 'MetalDemandsBundle') }}.
+        {% endif %}
+		{% block unsubscribe_block_head %}
+			{% if newsletterType is defined %}
+				{% set unsubscribeUrl = brouzie_helper('MetalNewsletterBundle').generateUnsubscribeUrl(recipient, newsletterType) %}
+			{% endif %}
+			{% if unsubscribeUrl|default(null) %}
+				<a href="{{ unsubscribeUrl }}" target="_blank">Отписаться от рассылки</a>.
+			{% endif %}
+		{% endblock unsubscribe_block_head %}
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    {% set lastCategoryId = null %}
+    {% set index = 1 %}
+    {{ brouzie_helper('MetalAnnouncementsBundle').resetAnnouncesIds() }}
+    {% for categoryId, demands in demandCollection %}
+        {% for demand in demands %}
+            {% set showBorder = false %}
+            {% if lastCategoryId != categoryId and loop.first %}
+                {% set lastCategoryId = categoryId %}
+                {% set showBorder = true %}
+                <p style="font-size: 16px; font-weight: bold;">{{ demand.getCategory().getRootCategory().getTitle() }}</p>
+            {% endif %}
+
+            {{ include('MetalDemandsBundle:emails/partial:demands_in_list.html.twig', {
+                'demand': demand,
+                'demand_items_limit': 3,
+                'to_company': false,
+                'view_user_name': false,
+                'show_border': showBorder
+                }, false) }}
+
+            {{ include ('MetalDemandsBundle:Demands/partial:banner_inclusion_email.html.twig', {
+                'index' : index % 5
+            }) }}
+
+            {% set index = index + 1 %}
+
+        {% endfor %}
+    {% endfor %}
+
+    {% set announcementsIds = brouzie_helper('MetalAnnouncementsBundle').getAnnouncesIdsAsString() %}
+    {% if announcementsIds %}
+        <img src="{{- url('MetalAnnouncementsBundle:Announcement:trackEmailAnnouncement', {
+            'subscriber_id': subscriber.id,
+            'announcementsIds': announcementsIds
+        } ) -}}" />
+    {% endif %}
+{% endblock %}

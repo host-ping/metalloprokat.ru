@@ -1,0 +1,89 @@
+{% extends '@markup/private/services/_services_layout.html.twig' %}
+{% block title 'Details' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                {% block tabs %}
+                    {% set activeTab = 'details' %}
+                    {{ parent() }}
+                {% endblock tabs %}
+                {% block package %}
+                    {{ parent() }}
+                {% endblock package %}
+                <div class="content-wrapper">
+                    <div class="company-details-wrapper">
+                        <form class="company-details form" action="#">
+                            <fieldset>
+                                <div class="field-wrap clearfix">
+                                    <input id="show-on-mnisite" type="checkbox" class="js-styled-checkbox bg-grey"/>
+                                    <label for="show-on-mnisite">Отображать на мини сайте</label>
+                                </div>
+                                <div class="field-groups clearfix">
+                                    <div class="left-group field-group float-left">
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Название юр. лица</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Юридический адрес</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Почтовый адрес</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">ИНН</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">КПП</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">ОГРН</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">ФИО директора</label>
+                                        </div>
+                                    </div>
+                                    <div class="right-group field-group float-left">
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Р/С</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Номер корр. счета</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">БИК</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text ie-radius" />
+                                            <label class="input-label">Банк</label>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <label class="load">
+                                                <span class="load-button button blue-bg ie-radius">Загрузить скан ИНН</span>
+                                                <input type="file"/>
+                                            </label>
+                                            <a class="file-name" href="#">Имя файла</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-wrapper">
+                                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

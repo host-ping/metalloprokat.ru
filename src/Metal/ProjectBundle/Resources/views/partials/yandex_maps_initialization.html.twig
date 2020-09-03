@@ -1,0 +1,23 @@
+<script src="//api-maps.yandex.ru/2.1/?lang=ru_RU&amp;mode={{ app.debug and false ? 'debug' : 'release' }}" type="text/javascript"></script>
+{% set mapIcons = {
+    'company': {
+        'icon': asset('bundles/metalproject/img/red-point.png'),
+        'size': [24, 24],
+        'offset': [-12, -12]
+    },
+    'company-products': {
+        'icon': asset('bundles/metalproject/img/red-point.png'),
+        'size': [24, 24],
+        'offset': [-12, -12]
+    },
+    'company-no-products': {
+        'icon': asset('bundles/metalproject/img/blue-point.png'),
+        'size': [16, 16],
+        'offset': [-8, -8]
+    },
+} %}
+<script type="text/javascript" id="map-configuration">
+    MetalMaps.iconsCfgs = {{ mapIcons|json_encode|raw }};
+</script>
+
+{{ source('MetalProductsBundle:Companies:partial/company_baloon.html.twig') }}

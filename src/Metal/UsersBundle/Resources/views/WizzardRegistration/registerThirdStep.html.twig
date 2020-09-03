@@ -1,0 +1,160 @@
+{% extends '@MetalProject/layouts/_wizzard_layout.html.twig' %}
+
+{% block title 'Регистрация / '~currentCountry.domainTitle %}
+
+{% block wizzard_content %}
+    <div class="main-title ">
+        <h1>Способ продвижения</h1>
+    </div>
+
+    <form class="promotions-form">
+        <fieldset>
+            <div class="promotion-item">
+                <div class="options">
+                    <input id="radio-1" value="1" name="promotion" type="radio" class="radio bg-grey80 js-package-type"/>
+                    <label for="radio-1">Не продвигать товары</label>
+
+                    <div class="options-list">
+                        <ul>
+                            <li class="item">размещение в каталоге без фото и логотипа</li>
+                            <li class="item">упрощенный мини-сайт с рекламой</li>
+                            <li class="item">самостоятельное обновление прайс-листа</li>
+                            <li class="item">без доступа к ежедневным заявкам от потребителей</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price">
+                    <span>Бесплатно</span>
+                </div>
+            </div>
+
+            <div class="promotion-item">
+                <div class="options">
+
+                    <input id="radio-2" value="2" name="promotion" type="radio" checked class="radio bg-grey80 js-package-type"/>
+                    <label for="radio-2">Рекомендованное продвижение</label>
+
+                    <div class="options-list">
+                        <ul>
+                            <li class="item">фотографии товаров и логотип</li>
+                            <li class="item">мини-сайт без рекламы</li>
+                            <li class="item">обновление прайс-листа специалистами портала раз в месяц</li>
+                            <li class="item">доступ к ежедневным заявкам от потребителей</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price">
+                    <span>{{ priceToPackage[2]['to_quarter'] // 3 }} <span class="icon-rouble"></span> в месяц</span>
+                </div>
+            </div>
+
+            <div class="promotion-item">
+                <div class="options">
+
+                    <input id="radio-3" value="3" name="promotion" type="radio" class="radio bg-grey80 js-package-type"/>
+                    <label for="radio-3">Максимальное продвижение</label>
+
+                    <div class="options-list">
+                        <ul>
+                            <li class="item">все возможности рекомендованного продвижения</li>
+                            <li class="item">автоматическое перемещение товаров на первую страницу раздела</li>
+                            <li class="item">обновление прайс-листа специалистами портала два раза в месяц</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price">
+                    <span>{{ priceToPackage[3]['to_quarter'] // 3 }} <span class="icon-rouble"></span> в месяц</span>
+                </div>
+            </div>
+            <div class="button-wrapper" id="submit-button">
+                <button class="registration-submit-button button green-bg ie-radius js-popup-opener" data-popup="#promotion-1">Завершить</button>
+                <a href="{{ path('MetalPrivateOfficeBundle:Default:index') }}" class="registration-submit-link g-hidden button green-bg ie-radius">Завершить</a>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    <div id="promotion-1" class="promotion-popup popup-block opacity-border large">
+        <div class="popup-content">
+            <div class="title-popup">Оплата рекомендованного продвижения</div>
+            <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+
+
+            {{ form_start(form, {
+                'action' : path('MetalUsersBundle:WizzardRegistration:registerThirdStep', {'category_id': category.id})
+            }) }}
+
+            {{ form_widget(form.package, {'attr' : {'class' : 'radio bg-grey80 g-hidden registration-package' }}) }}
+            <fieldset>
+                <ul class="list clearfix">
+                    <li class="item float-left">
+                        <div class="item-title">
+                            {{ form_widget(form.termPackage[0], {'attr' : {'class' : 'radio bg-grey80' }}) }}
+                            {{ form_label(form.termPackage[0]) }}
+                        </div>
+                        <p class="price"><span id="to_quarter">0</span> <span class="icon-rouble"></span></p>
+                    </li>
+                    <li class="item float-left">
+                        <div class="item-title">
+                            {{ form_widget(form.termPackage[1], {'attr' : {'class' : 'radio bg-grey80' }}) }}
+                            {{ form_label(form.termPackage[1]) }}
+                        </div>
+                        <p class="price"><span id="to_half_year">0</span> <span class="icon-rouble"></span>
+                            <span class="discount">скидка 15%</span>
+                        </p>
+                    </li>
+                    <li class="item float-left">
+                        <div class="item-title">
+                            {{ form_widget(form.termPackage[2], {'checked':'checked', 'attr' : {'class' : 'radio bg-grey80' }}) }}
+                            {{ form_label(form.termPackage[2]) }}
+                        </div>
+                        <p class="price">
+                            <span id="to_year">0</span> <span class="icon-rouble"></span>
+                            <span class="discount">скидка 25%</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <div class="submit-wrapper">
+                    <input class="send-button button blue-bg ie-radius" type="submit" value="Оплатить"/>
+                </div>
+            </fieldset>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var prices = {{ priceToPackage|json_encode|raw }};
+            var checked = 2;
+            updatePrice(prices[checked], checked);
+            $('.js-package-type').bind('change', function (e) {
+                checked = $(this).val();
+                if (prices[checked]) {
+                    updateSubmit(checked);
+                    updatePrice(prices[checked], checked);
+                }
+            });
+        });
+
+        function updateSubmit(checked) {
+            if (checked > 1) {
+                $('.registration-submit-link').addClass('g-hidden');
+                $('.registration-submit-button').removeClass('g-hidden');
+            } else {
+                $('.registration-submit-link').removeClass('g-hidden');
+                $('.registration-submit-button').addClass('g-hidden');
+            }
+        }
+
+        function updatePrice(prices, checked) {
+            $('.registration-package input[value=' + checked + ']').prop('checked', true);
+            for (var price in prices) {
+                $('#' + price).text(prices[price]);
+            }
+        }
+    </script>
+{% endblock %}

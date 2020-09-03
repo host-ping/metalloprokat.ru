@@ -1,0 +1,31 @@
+metal_demands:
+    resource: "@MetalDemandsBundle/Resources/config/routing_secondary.yml"
+    prefix:   /
+
+metal_companies:
+    resource: "@MetalCompaniesBundle/Resources/config/routing_secondary.yml"
+    prefix:   /
+
+metal_mini_site:
+    resource: "@MetalMiniSiteBundle/Resources/config/routing_secondary.yml"
+    prefix:   /
+
+metal_catalog:
+    resource: "@MetalCatalogBundle/Resources/config/routing_secondary.yml"
+    prefix:   /
+
+metal_content:
+    resource: "@MetalContentBundle/Resources/config/routing_secondary.yml"
+    host:     %host_prefix%%base_host%
+    prefix:   /
+
+metal_products:
+    resource: "@MetalProductsBundle/Resources/config/routing_secondary.yml"
+    prefix:   /
+
+MetalPrivateOfficeBundle:Default:index_domain:
+    path: /
+    methods: [FOR_GENERATING_URL_ONLY]
+    host: "%private_office_subdomain%.{domain}"
+    requirements:
+        domain: %domain_regex%

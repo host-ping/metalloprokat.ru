@@ -1,0 +1,57 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_companies_company_list', {
+                        'filter': {
+                            'documents': {'value': 'y'},
+                            '_sort_by': 'paymentDetails.uploadedAt',
+                            '_sort_order': 'DESC'
+                        }
+                    }) }}">Необработанные документы компаний</a>
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата загрузки</th>
+                        <th>Закрепленный менеджер</th>
+                        <th>Компания</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for unprocessedCompanyDocument in unprocessedCompanyDocuments %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('admin_metal_companies_company_edit', {'id': unprocessedCompanyDocument.company.id}) }}">{{ unprocessedCompanyDocument.company.id }}</a>
+                            </td>
+                            <td>
+                                {{ formatHelper.formatStatsDate(unprocessedCompanyDocument.uploadedAt, 'day')|raw }}
+                            </td>
+                            <td>
+                                {% if unprocessedCompanyDocument.company.manager %}
+                                    {{ unprocessedCompanyDocument.company.manager.fullName }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ include('MetalCompaniesBundle:AdminCompany:companyInfo.html.twig', {'object' : unprocessedCompanyDocument}) }}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

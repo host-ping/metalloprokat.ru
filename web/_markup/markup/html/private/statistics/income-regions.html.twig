@@ -1,0 +1,157 @@
+{% extends '@markup/private/statistics/_statistic_layout.html.twig' %}
+{% block title 'Входящие клиенты - регионы' %}
+{% block content %}
+    <div id="content" class="statistic-content private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'income' %}
+            {{ parent() }}
+        {% endblock tabs %}
+        {% block filters %}
+            {{ parent() }}
+        {% endblock filters %}
+        <div class="income-regions-tab">
+            <div class="income-graph-wrapper">
+                <div id="pie-chart" class="graph-container"></div>
+            </div>
+            <table class="graph-head stat-table">
+                <tr class="row"> {#fixed#}
+                    <td class="city col"><span class="head-title sorted asc">Город</span></td>
+                    <td class="views-products col"><span class="head-title">Просмотры товаров</span></td>
+                    <td class="show-products col"><span class="head-title">Показы товаров</span></td>
+                    <td class="website col"><span class="head-title">Переходы на сайт</span></td>
+                    <td class="phones col"><span class="head-title">Просмотры телефонов</span></td>
+                    <td class="demands col"><span class="head-title">Заявки пришло / обр.</span></td>
+                    <td class="callbacks col current-col"><span class="head-title">Обратн. звонки пришло / обр.</span></td>
+                    <td class="reviews col"><span class="head-title">Отзывы</span></td>
+                    <td class="complaints col"><span class="head-title">Жалобы пришло / обр.</span></td>
+                </tr>
+            </table>
+            <div class="scrollable-table content-scrollable js-scrollable">
+                <table class="graph-info stat-table">
+                    <tr class="row">
+                        <td class="city col">Москва</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">Кострома</td>
+                        <td class="views-products col max">2145</td>
+                        <td class="show-products col max">2145</td>
+                        <td class="website col negative">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col null">0</td>
+                        <td class="complaints col positive">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">С.-Петербург</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col null">0</td>
+                        <td class="demands col positive">10/9</td>
+                        <td class="callbacks col negative current-col">45/8</td>
+                        <td class="reviews col max">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">Самара</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">Ступино</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">Р.-на-Дону</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">Кашира</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">04 апр 2013</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">04 апр 2013</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">04 апр 2013</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="city col">04 апр 2013</td>
+                        <td class="views-products col">2145</td>
+                        <td class="show-products col">2145</td>
+                        <td class="website col">2</td>
+                        <td class="phones col">41</td>
+                        <td class="demands col">10/9</td>
+                        <td class="callbacks col current-col">45/8</td>
+                        <td class="reviews col">20</td>
+                        <td class="complaints col">20/4</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

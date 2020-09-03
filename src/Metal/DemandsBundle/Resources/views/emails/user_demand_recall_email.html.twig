@@ -1,0 +1,36 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Metalloprokat.ru ПРИНИМАЕТ ЗАЯВКИ НА ПОКУПКУ МЕТАЛЛА 24/7{% endblock %}
+
+{% block body_text %}
+Здравствуйте, {{ user.firstName }}.
+
+    Metalloprokat.ru ПРИНИМАЕТ ЗАЯВКИ НА ПОКУПКУ МЕТАЛЛА 24/7 : https://www.metalloprokat.ru/demands/?open_popup=1
+    И ЕЖЕДНЕВНО 9-18 ЧАСОВ - ПО БЕСПЛАТНОМУ ТЕЛЕФОНУ ГОРЯЧЕЙ ЛИНИИ 8(800) 555-56-65
+
+Некоторое время назад вы оставляли заявку на {{ demand.category.titleAccusativeForEmbed }}. Мы надеемся, что вы нашли хорошего поставщика на искомые позиции.
+Если у вас есть текущая потребность, мы будем рады помочь.
+Для того, чтобы добавить заявку, перейдите по ссылке {{ url('MetalDemandsBundle:Default:index', {'open_popup' : true, 'from': 'email'}) }}
+{{ block('text_footer') }}
+{% endblock body_text %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Здравствуйте, {{ user.firstName }}.
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-family: Arial;font-size: 14px;color: #171F26;">
+        Metalloprokat.ru ПРИНИМАЕТ ЗАЯВКИ НА ПОКУПКУ МЕТАЛЛА 24/7 : <a href="https://www.metalloprokat.ru/demands/?open_popup=1">https://www.metalloprokat.ru/demands/?open_popup=1</a><br/>
+        И ЕЖЕДНЕВНО 9-18 ЧАСОВ - ПО БЕСПЛАТНОМУ ТЕЛЕФОНУ ГОРЯЧЕЙ ЛИНИИ <strong>8(800) 555-56-65</strong>
+    </p>
+    <p style="font-family: Arial;font-size: 14px;color: #171F26;">
+        Некоторое время назад вы оставляли заявку на <strong>{{ demand.category.titleAccusativeForEmbed }}</strong>. Мы надеемся, что вы нашли хорошего поставщика на искомые
+        позиции. Если у вас есть текущая потребность, мы будем рады помочь.
+    </p>
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="{{ url('MetalDemandsBundle:Default:index', {'open_popup' : true, 'from': 'email'}) }}" style="display: inline-block; background: #18A3D1; color: #fff; text-transform: uppercase;
+            padding: 5px 10px; text-decoration: none; border-radius: 4px;">Добавить заявку на {{ tokens.product_title.nominative }}</a>
+    </div>
+{% endblock %}

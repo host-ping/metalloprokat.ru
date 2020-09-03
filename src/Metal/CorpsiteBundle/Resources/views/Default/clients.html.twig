@@ -1,0 +1,61 @@
+{% extends 'MetalCorpsiteBundle::corp_base_layout.html.twig' %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+
+{% block title 'Клиенты / '~titleSuffix %}
+
+{% block content %}
+    <div class="clients-wrapper clearfix">
+        <ul class="clients float-left">
+            {% for company in companies %}
+                {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq168', 'corp') %}
+                {% if companyLogoUrl %}
+                    <li class="client float-left">
+                        <div class="client-logo">
+                            <span class="img ie-radius"><img width="72" height="72" src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}"/></span>
+                        </div>
+                        {% set companyViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) %}
+                        <p class="client-title is-gradiented-bottom">
+                            {% if companyViewUrl and company.minisiteEnabled %}
+                                <a target="_blank" href="{{ companyViewUrl }}" title="{{ company.title }}">{{ company.title }}</a>
+                            {% else %}
+                                {{ company.title }}
+                            {% endif %}
+                        </p>
+
+                        {% if company.getAttribute('company_client_review') %}
+                            {% set review = company.getAttribute('company_client_review') %}
+                            <div class="drop-wrapper opacity-border">
+                                <div class="dropdown table-container">
+                                    <div class="client-info-wrapper table-cell">
+                                        <div class="client-logo " >
+                                            <span class="img ie-radius">
+                                                {% if review.photo.name %}
+                                                    <img src="{{ vich_uploader_asset(review, 'uploadedPhoto')|imagine_filter('client_review_logo_sq136') }}" />
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        {#<p class="client-title">Стальторг</p>#}
+                                    </div>
+                                    <div class="reviews-block table-cell">
+                                        <ul class="reviews list">
+                                            <li class="icon-positive item">
+                                                <p class="text">
+                                                    {{ review.comment|nl2br }}
+                                                </p>
+                                                <div class="info">
+                                                    <span class="author">{{ review.name }}</span>,
+                                                    <span class="period">{{ review.position }}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

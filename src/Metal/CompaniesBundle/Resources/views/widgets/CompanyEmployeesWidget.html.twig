@@ -1,0 +1,111 @@
+{% set company = _options.company %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set employeeViewCount = 3 %}
+
+{% import _self as forms %}
+<div class="js-scrollable thin-scroll">
+    <div class="premium-product-block employees-block">
+        <div class="company-info">
+
+            {% if _options['product_external_url'] %}
+                {% set externalUrlDomain = brouzie_helper('MetalProjectBundle:Formatting').getDomain(_options['product_external_url']) %}
+                <div class="web-site is-gradiented">
+                    <a class="link"
+                       target="_blank" rel="noopener noreferrer"
+                       title="{{ externalUrlDomain }}"
+                       data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {
+                           'source' : 'mini-site',
+                           'object-id' : company.id,
+                           'object-kind' : 'company',
+                           'url' : _options['product_external_url']
+                       }) }}">
+                        {{ externalUrlDomain }}
+                    </a>
+                </div>
+            {% else %}
+                {% for site in company.sites %}
+                    <div class="web-site is-gradiented">
+                        <a class="link"
+                           target="_blank" rel="noopener noreferrer"
+                           title="{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(site) }}"
+                           data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {'source' : 'mini-site', 'object-id' : company.id, 'object-kind' : 'company', 'url': site}) }}">
+                            {{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(site) }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="button-wrapper">
+                <span class="primary button clickable send-button ie-radius"
+                      popup-opener="#request-private-demand"
+                      data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                      data-demand-text="Заявка для компании {{ company.title }}"
+                      data-city-text="{{ company.city.title }}"
+                      data-city-id="{{ company.city.id }}"
+                      data-company-id="{{ company.id }}"
+                        >Отправить заявку</span>
+            </div>
+        </div>
+        <div class="topic-wrapper">
+            <ul class="topic-list">
+            {% for employee in employees|slice(0, employeeViewCount) %}
+                {{ forms.showEmployee(employee, false, imageHelper) }}
+            {% endfor %}
+
+            {% if employees|length > employeeViewCount %}
+                <li class="item clearfix">
+                    <span class="js-show-all-employees secondary write-btn button clickable ie-radius">Показать всех</span>
+                </li>
+
+                {% for employee in employees|slice(employeeViewCount) %}
+                    {{ forms.showEmployee(employee, true, imageHelper) }}
+                {% endfor %}
+            {% endif %}
+        </ul>
+        </div>
+    </div>
+</div>
+{% macro showEmployee(employee, hidden, imageHelper) %}
+    <li class="item clearfix {% if hidden %}g-hidden js-all-employees{% endif %}">
+        <div class="employee-info clearfix">
+            <div class="img float-right">
+                <div class="img-holder">
+                            <span class="img-link pattern-big">
+                                {% set avatarUrl = imageHelper.getAvatarUrl(employee, 'sq28') %}
+                                {% if avatarUrl %}
+                                    <img src="{{ avatarUrl }}" alt="{{ employee.fullName }}"
+                                         title="{{ employee.fullName }}"/>
+                                {% endif %}
+                            </span>
+                </div>
+            </div>
+            <div class="topic-info">
+                <div class="employee-name">{{ employee.getFullName }}</div>
+                <div class="position">{{ employee.job }}</div>
+            </div>
+        </div>
+        <div class="button-wrapper">
+                    <span class="primary write-btn button clickable js-popup-opener ie-radius"
+                          data-popup="#send-email"
+                          data-employee-id="{{ employee.id }}">написать</span>
+        </div>
+    </li>
+{% endmacro %}
+
+<script>
+    $(document).ready(function () {
+        $('.js-show-all-employees').bind('click', function (e) {
+            $el = $(e.target);
+            $el.parent().addClass('g-hidden');
+
+            $('.js-all-employees').removeClass('g-hidden');
+
+            $(window).trigger('resize');
+
+           /* var $rightFixedSide = $('.right-announcement-wrapper .js-fixed-side-banner');
+            $rightFixedSide.scrollToFixed({
+                limit: function () {
+                    return $('#footer').offset().top - $rightFixedSide.outerHeight(true);
+                }
+            })*/
+        });
+    });
+</script>

@@ -1,0 +1,89 @@
+{% extends '@MetalProject/layouts/_portal_layout.html.twig' %}
+
+{% block search_form '' %}
+
+{% block wrapper_additional_class 'js-secondary-announcement' %}
+
+{% block content %}
+    <div id="content" class="register content-wide clearfix js-calc-height float-left">
+        <div class="steps-block float-left">
+            <div class="block-title">Получайте клиентов</div>
+            <ul class="steps list">
+                <li class="step item first">
+                    <div class="step-count is-bordered ie-radius">1</div>
+                    <p class="text">Создайте сайт компании</p>
+                </li>
+                <li class="step item">
+                    <div class="step-count is-bordered ie-radius">2</div>
+                    <p class="text">Добавьте товары</p>
+                </li>
+                <li class="step item">
+                    <div class="step-count is-bordered ie-radius">3</div>
+                    <p class="text">Получайте заявки потребителей</p>
+                </li>
+            </ul>
+
+            <p class="slogan">Быстро и бесплатно!</p>
+
+            <div class="questions">
+                <p class="text">Вопросы?</p>
+
+                <p class="text">
+                    {% if currentCountry.supportPhone %}
+                        <span class="phone-text">{{ currentCountry.supportPhone }}</span> или
+                    {% endif %}
+                    <span class="js-popup-opener email-link link clickable" data-popup="#topic-popup">пишите</span>
+                </p>
+            </div>
+        </div>
+        <div class="register-block float-left">
+            {% block content_inside '' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {% set counterName = project.suppliers_menu_counter_name %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalSupportBundle:TopicCorpSite') }}
+{% endblock %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'premium', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'left-sidebar', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'background', 'category_id' : currentCategory ? currentCategory.id : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-1', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-2', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'frontpage', 'zone_slug' : 'right-sidebar-3', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

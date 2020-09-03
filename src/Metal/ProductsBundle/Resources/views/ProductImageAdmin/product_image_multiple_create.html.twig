@@ -1,0 +1,47 @@
+{% extends admin.getTemplate('edit') %}
+
+{% block form %}
+    <form id="attribute-value-category-create" enctype="multipart/form-data"
+            method="post"
+            {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.images, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.images) }}
+                            {{ form_errors(form.images) }}
+                        </div>
+                    {% if form.category is defined %}
+                        {{ form_label(form.category, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.category) }}
+                            {{ form_errors(form.category) }}
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="submitted" value="Сохранить" />
+
+        {{ form_rest(form) }}
+
+        {% block formactions %}
+            <div class="clearfix">
+                <div class="well well-small form-actions">
+                    <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сохранить">
+
+                </div>
+            </div>
+        {% endblock formactions %}
+    </form>
+{% endblock %}

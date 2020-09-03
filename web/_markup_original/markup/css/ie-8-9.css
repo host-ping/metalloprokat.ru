@@ -1,0 +1,59 @@
+.ie-gradient-bottom{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='#02FFFFFF', EndColorStr='#FFFFFFFF')";
+    z-index: 5;
+    zoom: 1 !important;
+    position: absolute;
+    width: 100%;
+    height: 22px;
+    top: 22px;
+}
+.mini-site .is-gradiented-bottom .ie-gradient-bottom{
+    top: 50px;
+}
+
+.ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02FFFFFF', EndColorStr='#FFFFFFFF')";
+    z-index: 5;
+    zoom: 1 !important;
+    position: absolute;
+    width: 15px;
+    height: 100%;
+    top: 0;
+    right: 0;
+}
+.user-block .user-name .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02262626', EndColorStr='#ff262626')";
+}
+
+.search-block .more .check-holder .ie-gradient,
+.more-columns .ie-gradient,
+.product-management-list .ie-gradient,
+.cities_bottom .is-gradiented .ie-gradient,
+.similar-list .item:hover .title .ie-gradient,
+.hover-block .dropdown .top .title .ie-gradient,
+.user-block .active .user-name .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02f1f1f1', EndColorStr='#fff1f1f1')";
+}
+.breadcrumbs .add .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02FFFFFF', EndColorStr='#FFFFFFFF')";
+    right: 100%;
+    top: 0;
+    height: 49px;
+}
+.filters .product .item.hover .elem .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02c6c6c6', EndColorStr='#ffc6c6c6')";
+}
+.product-management-list .fix-holder:hover .is-gradiented .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02f9f8f6', EndColorStr='#fff9f8f6')";
+}
+.product-management-list .fix-holder .ie-gradient:hover{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='#02ffe359', EndColorStr='#ffffe359')";
+}
+
+
+.is-gradiented-bottom {
+    behavior: url(/markup/js/gradients.htc);
+}
+.is-gradiented {
+    behavior: url(/markup/js/gradients.htc);
+}

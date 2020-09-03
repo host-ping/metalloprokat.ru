@@ -1,0 +1,418 @@
+{% extends '@markup/mini-site/_mini_layout.html.twig' %}
+{% block title 'Product' %}
+{% block content %}
+    <div id="content" class="content table-cell">
+        <div class="company-menu clearfix">
+            <a class="admin-button button gray60-bg float-right ie-radius" href="{{ path('private/mini-site/colors.html.twig') }}">поменять цвета</a>
+            <ul class="list">
+                <li class="item">
+                    <a class="link" href="{{ path('mini-site/about.html.twig') }}">О компании</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/reviews.html.twig') }}" class="link">Отзывы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/documents.html.twig') }}" class="link">Документы</a>
+                </li>
+                <li class="item">
+                    <a href="{{ path('mini-site/contacts.html.twig') }}" class="link">Контакты</a>
+                </li>
+            </ul>
+        </div>
+        <div class="product content-holder clearfix">
+            <div class="admin-button-wrapper clearfix">
+                <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+            </div>
+            <div class="product-inside">
+                <div class="product-info-wrapper clearfix">
+                    <div class="product-img is-bordered float-left">
+                        <a class="img-link pattern-big" href="#">
+                            <img class="js-popup-opener" src="./markup/pic/p-logo2.jpg" alt="image description" data-popup="#photo"/>
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product_main-title">
+                            Швеллер стальной с параллепльными гранями полок 8П, 20П, Москва
+                        </h1>
+                        <div class="information">
+                            <p class="size-price gray60-color">Размер 30x30 <strong class="price">25 000 <span class="icon-rouble"></span></strong> за тонну</p>
+                        </div>
+                        <ul class="links demand_links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item width-182 float-left clearfix">
+                                <a href="#" class="button favorites active-link is-bordered ie-radius js-togglable-block">
+                                    <span class="text">В Избранном</span>
+                                    <span class="icon-favorite-active float-right"></span>
+                                </a>
+                                <a href="#" class="button favorites delete blue-bg g-hidden ie-radius js-togglable-block">
+                                    <span class="text">Удалить</span>
+                                    <span class="icon-favorite-del float-right"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="product-description">
+                    <div><strong>Описание</strong></div>
+                    <p class="text">Комплект вспомогательных устройств и деталей для обеспечения функционирования какого-либо устройства, машины, оборудования или конструкции.</p>
+                </div>
+                <div class="see-also">
+                    <p class="text">Смотрите также: <a href="#" class="link">Арматура, 12, А3</a></p>
+                </div>
+
+                <div id="tabs" class="result-tabs-wrapper tabs clearfix">
+                    <ul class="tabs-list">
+                        <li class="item active ie-radius">
+                            <a class="link" href="#">Другие товары компании</a>
+                            <span class="count">258</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tabs-content">
+                <ul class="product similar-list">
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites active-link small is-bordered ie-radius js-togglable-block">
+                                    <span class="icon-favorite-active"></span>
+                                </a>
+                                <a href="#" class="button favorites small delete is-bordered g-hidden ie-radius js-togglable-block">
+                                    <span class="icon-favorite-del"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая стеклопластиковаястеклопластиковая стеклопластиковая стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="item outline clearfix">
+                    <div class="img is-bordered float-right">
+                        <div class="img-holder">
+                            <a class="img-link pattern-small" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="links-wrapper float-right">
+                        <ul class="links clearfix">
+                            <li class="links_report item float-left clearfix">
+                                <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                    <span class="icon-complaint"></span>
+                                </a>
+                            </li>
+                            <li class="item float-left">
+                                <a href="#" class="button favorites small is-bordered ie-radius">
+                                    <span class="icon-favorite"></span>
+                                </a>
+                            </li>
+                            <li class="links_answer item width-182 float-left clearfix">
+                                <a class="primary button send-button ie-radius" href="#">Отправить заявку</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left">
+                        <p class="title is-gradiented">
+                            <a class="product-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                        </p>
+                        <div class="info">
+                            <p class="text">Размер 6, <strong class="price">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        <div class="loading-mask g-hidden">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+        <div class="search-info-block mini-site-links clearfix">
+            <a class="link" href="#">Арматура А1</a>
+            <a class="link" href="#">Сетка оцинкованная</a>
+            <a class="link" href="#">Винт с кольцом</a>
+            <a class="link" href="#">Лист стальной, металлический</a>
+            <a class="link" href="#">Труба восстановленная</a>
+            <a class="link" href="#">Балка</a>
+            <a class="link" href="#">Катанка</a>
+            <a class="link" href="#">Швеллер</a>
+            <a class="link" href="#">Труба б/у</a>
+            <a class="link" href="#">Арматура А2</a>
+        </div>
+    </div>
+{% endblock content %}
+{% block sidebar %}
+    <div id="sidebar" class="side-left without-products-block table-cell">
+        <div class="products-wrapper">
+            <div class="clearfix">
+                <a class="admin-button button gray60-bg float-right ie-radius" href="#">управлять</a>
+                <div class="title float-left">Товары</div>
+            </div>
+            <ul class="product-categories-list">
+                <li class="level-1 item js-expandable-menu-item" data-expandable-menu-children=".list">
+                    <a href="#" class="check-link"><span class="icon-check black"></span></a>
+                    <a class="item-link active clearfix js-expandable-menu-expander" href="#armatura">
+                        <span class="count float-right">51</span>
+                        <span class="elem is-gradiented">Арматура</span>
+                    </a>
+                    <ul class="list">
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#armatura-1">
+                                <span class="count float-right">31</span>
+                                <span class="elem is-gradiented">Арматура А1</span>
+                            </a>
+                        </li>
+                        <li class="level-inside item">
+                            <span class="link active clearfix" href="#armatura-2">
+                                <span class="count float-right">14</span>
+                                <span class="elem is-gradiented">Арматура 09Г2С</span>
+                            </span>
+                        </li>
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#armatura-3">
+                                <span class="count float-right">103</span>
+                                <span class="elem is-gradiented">Арматура А3</span>
+                            </a>
+                        </li>
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#armatura-4">
+                                <span class="count float-right">52</span>
+                                <span class="elem is-gradiented">Арматура А500С</span>
+                            </a>
+                        </li>
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#armatura-5">
+                                <span class="count float-right">62</span>
+                                <span class="elem is-gradiented">Арматура 12</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level-1 item js-expandable-menu-item" data-expandable-menu-children=".list">
+                    <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                    <a class="item-link clearfix js-expandable-menu-expander" href="#balka">
+                        <span class="count float-right">60</span>
+                        <span class="elem is-gradiented">Балка</span>
+                    </a>
+                    <ul class="list g-hidden">
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#balka-1">
+                                <span class="count float-right">31</span>
+                                <span class="elem is-gradiented">Балка Б2</span>
+                            </a>
+                        </li>
+                        <li class="level-inside item">
+                            <a class="link clearfix" href="#balka-2">
+                                <span class="count float-right">14</span>
+                                <span class="elem is-gradiented">Балка Б4</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level-1 item">
+                    <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                    <a class="item-link clearfix" href="#">
+                        <span class="count float-right">777</span>
+                        <span class="elem is-gradiented">Заглушка</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock sidebar %}

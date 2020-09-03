@@ -1,0 +1,19 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Восстановление пароля{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ user.firstName }}.
+
+Для восстановления пароля, пожалуйста, перейдите по ссылке
+{{ url('MetalUsersBundle:RecoveryPassword:confirmationRecover', {'code' : user.recoverCode, 'id' : user.id })|raw }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ user.firstName }}.<br/><br/>
+        Для восстановления пароля, пожалуйста, перейдите по <a href="{{ url('MetalUsersBundle:RecoveryPassword:confirmationRecover', {'code' : user.recoverCode, 'id' : user.id }) }}">ссылке</a>.
+    </p>
+{% endblock %}

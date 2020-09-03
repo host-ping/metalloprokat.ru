@@ -1,0 +1,206 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="slugify" class="Cocur\Slugify\Slugify">
+            <call method="addRule">
+                <argument>ый</argument>
+                <argument>yi</argument>
+            </call>
+            <call method="addRule">
+                <argument>дж</argument>
+                <argument>j</argument>
+            </call>
+            <call method="addRule">
+                <argument>ю</argument>
+                <argument>u</argument>
+            </call>
+        </service>
+
+        <service id="metal.project.admin.normalized_phone" class="Metal\ProjectBundle\Admin\NormalizedPhoneAdmin">
+            <argument>metal.project.admin.normalized_phone</argument>
+            <argument>Metal\ProjectBundle\Entity\NormalizedPhone</argument>
+            <argument>MetalProjectBundle:NormalizedPhoneAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="clients" label="Телефонные номера клиентов" />
+        </service>
+
+        <service id="metal.project.admin.normalized_email" class="Metal\ProjectBundle\Admin\NormalizedEmailAdmin">
+            <argument>metal.project.admin.normalized_email</argument>
+            <argument>Metal\ProjectBundle\Entity\NormalizedEmail</argument>
+            <argument>MetalProjectBundle:NormalizedEmailAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="clients" label="Email адреса клиентов" />
+        </service>
+
+        <service id="metal.project.admin.site" class="Metal\ProjectBundle\Admin\SiteAdmin">
+            <argument>metal.project.admin.site</argument>
+            <argument>Metal\ProjectBundle\Entity\Site</argument>
+            <argument>MetalProjectBundle:SiteAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" persist_filters="true" group="seo"
+                 label="Регистрация сайтов в вебмастере" />
+        </service>
+
+        <service id="metal_project.admin.seo_template_admin" class="Metal\ProjectBundle\Admin\SeoTemplateAdmin">
+            <argument>metal_project.admin.seo_template_admin</argument>
+            <argument>Metal\ProjectBundle\Entity\SeoTemplate</argument>
+            <argument>MetalProjectBundle:SeoTemplateAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" persist_filters="true" group="seo"
+                 label="Шаблоны генерации метаданных" />
+        </service>
+
+        <service id="metal.project.form_helper" class="Metal\ProjectBundle\Service\FormHelper">
+        </service>
+
+        <service id="metal_project.assetic.filter.fix_behaviors_url_filter"
+                 class="Metal\ProjectBundle\Assetic\Filter\FixBehaviorsUrlFilter">
+            <tag name="assetic.filter" alias="fix_behaviors_url" />
+        </service>
+
+        <service id="pagerfanta.pagination_view.twig" class="Metal\ProjectBundle\Pagerfanta\TwigPaginationView"
+                 public="false">
+            <argument type="service" id="twig" />
+            <tag name="pagerfanta.view" alias="pagination_twig" />
+        </service>
+
+        <service id="pagerfanta.view.twig" class="Metal\ProjectBundle\Pagerfanta\TwigView" public="false">
+            <argument type="service" id="twig" />
+            <tag name="pagerfanta.view" alias="twig" />
+        </service>
+
+        <service id="pagerfanta.convert_not_valid_current_page_to_not_found_listener"
+                 class="Metal\ProjectBundle\Pagerfanta\EventListener\HandleOutOfRangeCurrentPage">
+            <argument type="service" id="router" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="metal.project.admin.block.statistic" class="Metal\ProjectBundle\Admin\Block\StatisticBlockService">
+            <argument>metal.project.admin.block.statistic</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <service id="metal.project.admin.block.statistic_search"
+                 class="Metal\ProjectBundle\Admin\Block\StatisticSearchBlockService">
+            <argument>metal.project.admin.block.statistic_search</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAuthorizationChecker">
+                <argument type="service" id="security.authorization_checker" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <!-- TODO: use service configurator http://symfony.com/doc/current/components/dependency_injection/configurators.html ? -->
+        <service id="session.storage.native" class="Metal\ProjectBundle\Session\SessionStorage">
+            <argument>%session.storage.options%</argument>
+            <argument type="service" id="session.handler" />
+            <argument type="service" id="session.storage.metadata_bag" />
+            <call method="fixCookieDomain">
+                <argument type="service" id="request_stack" />
+                <argument>%project.domains_regex%</argument>
+            </call>
+        </service>
+
+        <service id="metal.project.admin.landing" class="Metal\ProjectBundle\Admin\LandingTemplateAdmin">
+            <argument>metal.project.admin.landing</argument>
+            <argument>Metal\ProjectBundle\Entity\LandingTemplate</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sonata.admin" manager_type="orm" group="project" label="Шаблоны лендинга" />
+        </service>
+
+        <service id="metal.project.admin.company_registration"
+                 class="Metal\CompaniesBundle\Admin\CompanyRegistrationAdmin">
+            <argument>metal.project.admin.company_registration</argument>
+            <argument>Metal\CompaniesBundle\Entity\CompanyRegistration</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="liip_imagine.cache.manager" />
+            <tag name="sonata.admin" manager_type="orm" group="project" label="Регистрация компаний" />
+        </service>
+
+        <service id="metal.project.admin.ban_ip" class="Metal\ProjectBundle\Admin\BanIpAdmin">
+            <argument>metal.project.admin.ban_ip</argument>
+            <argument>Metal\ProjectBundle\Entity\BanIP</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="ipban" label="IP-адреса" />
+        </service>
+
+        <service id="metal.project.admin.redirect" class="Metal\ProjectBundle\Admin\RedirectAdmin">
+            <argument>metal.project.admin.redirect</argument>
+            <argument>Metal\ProjectBundle\Entity\Redirect</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="seo" label="Редиректы" />
+        </service>
+
+        <service id="metal.project.admin.ban_request" class="Metal\ProjectBundle\Admin\BanRequestAdmin">
+            <argument>metal.project.admin.ban_request</argument>
+            <argument>Metal\ProjectBundle\Entity\BanRequest</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="ipban" label="Запросы" />
+        </service>
+
+        <service id="metal.project.cloudflare_service" class="Metal\ProjectBundle\Service\CloudflareService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="buzz.browser.downloader" />
+            <argument>%cloudflare.api_key%</argument>
+            <argument>%cloudflare.auth_email%</argument>
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+        </service>
+
+        <service id="metal.project.menu_builder" class="Metal\ProjectBundle\Menu\MainMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="metal.project.menu" class="Knp\Menu\MenuItem">
+            <factory service="metal.project.menu_builder" method="getMenu" />
+            <argument type="service" id="request_stack" />
+            <tag name="knp_menu.menu" alias="main_menu" />
+        </service>
+
+        <service id="metal.project.menu_builder_stroy" class="Metal\ProjectBundle\Menu\StroyMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="metal.project.menu_stroy" class="Knp\Menu\MenuItem">
+            <factory service="metal.project.menu_builder_stroy" method="getMenu" />
+            <argument type="service" id="request_stack" />
+            <tag name="knp_menu.menu" alias="main_menu_stroy" />
+        </service>
+
+        <service id="liip_imagine.cache.manager" class="Metal\ProjectBundle\Imagine\ImagineCacheManager">
+            <argument type="service" id="liip_imagine.filter.configuration" />
+            <argument type="service" id="router" />
+            <argument type="service" id="liip_imagine.cache.signer" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%liip_imagine.cache.resolver.default%</argument>
+        </service>
+
+        <service id="liip_imagine.controller" class="Metal\ProjectBundle\Controller\ProjectImagineController">
+            <argument type="service" id="liip_imagine.data.manager" />
+            <argument type="service" id="liip_imagine.filter.manager" />
+            <argument type="service" id="liip_imagine.cache.manager" />
+            <argument type="service" id="liip_imagine.cache.signer" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+        </service>
+
+        <service id="metal.project.sonata_admin_menu_builder_listener" class="Metal\ProjectBundle\EventListener\SonataAdminMenuBuilderListener">
+            <argument type="service" id="security.authorization_checker" on-invalid="null" />
+            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems"/>
+        </service>
+
+    </services>
+</container>

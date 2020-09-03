@@ -1,0 +1,44 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a target="_blank" href="{{ path('admin_metal_demands_abstractdemand_list') }}">Статистика созданных
+                        заявок на основании источника за 10 дней</a>
+                </h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Источник</th>
+                        <th>Создано</th>
+                        <th>Промодерировано</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for date, demandsByDate in demands %}
+                        {% for demandsCountBySource in demandsByDate %}
+                            {% set isWeekend = formatHelper.isWeekend(demandsCountBySource.date) %}
+                            <tr {% if isWeekend %}class="red-color"{% endif %}>
+                                {% if loop.first %}
+                                    <td rowspan="{{ demandsByDate|length }}"
+                                        style="background-color:#f3f4f5">{{ formatHelper.formatDate(demandsCountBySource.date) }}</td>
+                                {% endif %}
+                                <td>{{ demandsCountBySource.source_title }}</td>
+                                <td class="text-right">{{ demandsCountBySource._count_created|number_format_decimal }}</td>
+                                <td class="text-right">{{ demandsCountBySource._count_moderated|number_format_decimal }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock block %}

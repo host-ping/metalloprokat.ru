@@ -1,0 +1,84 @@
+{% extends '@markup/private/statistics/_statistic_layout.html.twig' %}
+{% block title 'Управление информацией' %}
+{% block content %}
+    <div id="content" class="statistic-content private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'stats-content' %}
+            {{ parent() }}
+        {% endblock tabs %}
+        {% block filters %}
+            {{ parent() }}
+        {% endblock filters %}
+        <div class="content-tab">
+            <div class="income-graph-wrapper">
+                <img src="./markup/pic/graph.png" alt="image description"/>
+            </div>
+            <table class="graph-head stat-table">
+                <tr class="row"> {#fixed#}
+                    <td class="date col"><span class="head-title sorted asc">Дата</span></td>
+                    <td class="add-products col"><span class="head-title">Добалено и обновлено товаров</span></td>
+                    <td class="on-site-status col"><span class="head-title">Присутствие на сайте</span></td>
+                </tr>
+            </table>
+            <div class="scrollable-table content-scrollable js-scrollable">
+                <table class="graph-info stat-table">
+                    <tr class="total row">
+                        <td class="date col">Всего</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col max">2145</td>
+                        <td class="on-site-status col negative">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="date col">04 апр 2013</td>
+                        <td class="add-products col">2145</td>
+                        <td class="on-site-status col">2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

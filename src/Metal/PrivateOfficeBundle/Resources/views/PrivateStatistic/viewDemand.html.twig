@@ -1,0 +1,88 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% block title 'Работа с потребностями / Статистика / '~titleSuffix %}
+
+{% block viewing_modes %}
+    {% set viewingModes = {
+        'all' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demand', 'title' : 'Все'},
+        'regions' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demandRegion', 'title' : 'По городам'},
+        'category' : {'path' : 'MetalPrivateOfficeBundle:Statistic:demandCategory', 'title' : 'По категориям'},
+    } %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content_inner %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="demand-tab">
+        {% block statistic_chart %}
+            {% set chartRules = {
+                series: [
+                    {
+                        title: 'Просмотры заявок',
+                        field: 'demandsViewsCount',
+                    },
+                    {
+                        title: 'Добавлены в избранное',
+                        field: 'demandsToFavoriteCount',
+                    },
+                    {
+                        title: 'Ответы',
+                        field: 'demandsAnswersCount',
+                    }
+                ]
+            } %}
+
+            {{ parent() }}
+        {% endblock statistic_chart %}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+        {% set columns = {
+            'date' : {'query': null, 'cls': 'date col', 'title': 'Дата'},
+            'demandsViewsCount': {'query': 'demandsViewsCount', 'cls': 'view-demands col', 'title': 'Просмотры заявок'},
+            'demandsToFavoriteCount': {'query': 'demandsToFavoriteCount', 'cls': 'add-favorites col', 'title': 'Добавлены в избранное'},
+            'demandsAnswersCount': {'query': 'demandsAnswersCount', 'cls': 'answers col', 'title': 'Ответы'},
+        } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                    'demandsViewsCount',
+                    'demandsToFavoriteCount',
+                    'demandsAnswersCount'
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="view-demands col">{{ summarizedValues.demandsViewsCount|number_format_decimal }}</td>
+                    <td class="add-favorites col">{{ summarizedValues.demandsToFavoriteCount|number_format_decimal }}</td>
+                    <td class="answers col">{{ summarizedValues.demandsAnswersCount|number_format_decimal }}</td>
+                </tr>
+
+                {% for statsItem in statsResultViewModel.stats %}
+                    {% set isWeekend = false %}
+                    {% if currentGrouping == 'day' %}
+                        {% set isWeekend = formattingHelper.isWeekend(statsItem.date) %}
+                    {% endif %}
+                    <tr class="row">
+                        <td class="date col {% if isWeekend %}red-color{% endif %}">{{ formattingHelper.formatStatsDate(statsItem.date, currentGrouping, statsItem.previousEntry ? statsItem.previousEntry.date : null)|raw }}</td>
+                        <td class="view-demands col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.demandsViewsCount == 0 %}null {% endif %}">{{ statsItem.demandsViewsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="add-favorites col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.demandsToFavoriteCount == 0 %}null {% endif %}">{{ statsItem.demandsToFavoriteCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="answers col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.demandsAnswersCount == 0 %}null {% endif %}">{{ statsItem.demandsAnswersCount|number_format_decimal }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content_inner %}

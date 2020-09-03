@@ -1,0 +1,40 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        Brouzie.Popups.openPopup($('#approving-user'));
+
+        $('.approving-user-button').click(function(){
+            $('#reloading-mask').removeClass('g-hidden');
+        })
+    });
+</script>
+
+<div id="approving-user" class="approving-user popup-block opacity-border large private-room-content" data-popup-non-closable="true">
+    <div class="popup-content private-room-content">
+        <div class="title-popup">Отказано в доступе</div>
+        <p class="text">Для пользования личным кабинетом пользователь <b>{{ _options['main_user'].fullName }} ({{ _options['main_user'].getEmail() }})</b> должен Вас подтвердить</p>
+
+        <form action="{{ path('MetalPrivateOfficeBundle:Default:sendReminderEmail') }}"
+              class="popup-form js-ajax-form-submit"
+              method="post"
+              novalidate="novalidate">
+            <fieldset>
+                <ul class="buttons clearfix">
+                    <li class="item float-left">
+                        <a href="{{ _options['redirect_url'] }}">
+                            <button class="save-btn button blue-bg ie-radius approving-user-button" type="button" onclick="window.location.reload()">Обновить страницу</button>
+                        </a>
+                        <div id="reloading-mask" class="loading-mask g-hidden">
+                            <div class="spinner"></div>
+                        </div>
+                    </li>
+                    <li class="item float-left">
+                        <input type="submit" class="save-btn button green-bg ie-radius float-left" value="Напомнить" />
+                    </li>
+
+                </ul>
+            </fieldset>
+        </form>
+
+    </div>
+</div>
+

@@ -1,0 +1,124 @@
+{% set options = {
+    'itemClass' : '',
+    'moreFilials' : false
+}|merge(options|default({})) %}
+
+{# TODO: грязноватый код, нужно переписать #}
+{% if currentCategory is not defined %}
+    {% set currentCategory = null %}
+    {% if category is defined %}
+        {% set currentCategory = category %}
+    {% endif %}
+{% endif %}
+
+<div id="branch-office-{{ office.city.id }}" class="branch-office js-map-wrapper {% if options.moreFilials %}js-branch-offices {% endif %} {{ options.itemClass }}">
+    {% if office.latitude and office.longitude %}
+        <div class="map-wrapper is-bordered float-right">
+            <div class="heading clearfix">
+                <a class="link float-right" target="_blank" rel="noopener noreferrer" data-href="{{ brouzie_helper('MetalTerritorialBundle:Map').getYandexUrl(office.latitude, office.longitude, office.address) }}">Открыть в Яндекс.Картах</a>
+            </div>
+            <div class="map">
+                <div id="branch-office-map-{{ office.city.id }}"
+                     class="branch-office-map js-map-with-placemark"
+                     data-placemark="[{{ office.latitude }}, {{ office.longitude }}]"
+                     data-placemark-title="{{ office.address }}"
+                        ></div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="company-information">
+        {% if office.city.id != company.city.id %}
+            <p class="city
+             {% if options.moreFilials %} link clickable js-popover-opener icon-check {% endif %}"
+               data-popover="#offices" data-offices-opener="true"
+                    >{{ office.city.title }}</p>
+        {% else %}
+            <strong class="city">Центральный офис</strong>
+        {% endif %}
+        <div class="info-holder">
+            {% if office.city.id != company.city.id and not office.city.isAdministrativeCenter %}
+                <p class="address">{{ office.city.region.title }}</p>
+            {% endif %}
+            {% if office.city.id == company.city.id %}
+                {% for site in company.sites %}
+                    <p class="web-site">
+                        <a target="_blank" rel="noopener noreferrer"
+                        class="link site"
+                        data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {'source' : 'mini-site', 'object-id' : company.id, 'object-kind' : 'company', 'url': site}) }}"
+                        >{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(site) }}</a>
+                    </p>
+                {% endfor %}
+            {% endif %}
+            {% if office.city.id == company.city.id %}
+                <strong class="address" itemprop="address">
+                    {{ company.city.title }}
+                    {%- if not company.city.administrativeCenter -%}
+                        {{ company.city.region.title }}
+                    {% endif %}
+                    {%- if company.address -%}, {{ company.address }}{% endif %}</strong>
+            {% else %}
+                {% if office.site %}
+                    <p class="web-site">
+                        <a target="_blank" rel="noopener noreferrer"
+                           class="link site"
+                           data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {'source' : 'mini-site', 'object-id' : company.id, 'object-kind' : 'company', 'url': office.site}) }}"
+                        >{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(office.site) }}</a>
+                    </p>
+                {% endif %}
+                <span class="g-hidden" itemprop="address">{{ office.city.title }}{% if office.address %}, {{ office.address }}{% endif %}</span>
+                <p class="address">{{ office.address }}</p>
+            {% endif %}
+        </div>
+        <div class="info-holder">
+            {% if office.phonesAsString %}
+                <div class="item-wrapper">
+                    <div class="l-elem float-left">Телефон:</div>
+                    <div class="r-elem float-left">
+                        <span class="phone-text float-left">
+                            <span class="curr-phone float-left js-phone"
+                                data-object-id="{{ company.id }}"
+                                data-object-kind="company"
+                                data-source="mini-site"
+                                data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                data-category-id="{{ currentCategory ? currentCategory.id : null }}"
+                                data-phone-of-company="{{ company.id }}"
+                                data-minisite-phone="true"
+                            >{{ office.phonesAsString }}</span>
+                        </span>
+                    </div>
+                </div>
+            {% elseif company.phonesAsString %}
+                <div class="item-wrapper">
+                    <div class="l-elem float-left">Телефон:</div>
+                    <div class="r-elem float-left">
+                        <span class="phone-text float-left">
+                            <span class="curr-phone float-left js-phone"
+                                  data-object-id="{{ company.id }}"
+                                  data-object-kind="company"
+                                  data-source="mini-site"
+                                  data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                  data-category-id="{{ currentCategory ? currentCategory.id : null }}"
+                                  data-phone-of-company="{{ company.id }}"
+                                  data-minisite-phone="true"
+                                    >{{ company.phonesAsString }}</span>
+                        </span>
+                    </div>
+                </div>
+
+            {% endif %}
+        </div>
+        <ul class="links clearfix">
+            <li class="links_answer item width-182 float-left clearfix">
+                <span class="primary button clickable send-button ie-radius"
+                   popup-opener="#request-private-demand"
+                   data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+                   data-demand-text="Заявка для компании {{ company.title }}"
+                   data-city-text="{{ office.city.title }}"
+                   data-city-id="{{ office.city.id }}"
+                   data-product-city-id="{{ office.city.id }}"
+                   data-company-id="{{ company.id }}"
+                        >Отправить заявку</span>
+            </li>
+        </ul>
+    </div>
+</div>

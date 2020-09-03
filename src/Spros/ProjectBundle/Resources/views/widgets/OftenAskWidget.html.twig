@@ -1,0 +1,11 @@
+<h3>{{ _options.label }}</h3>
+<ul>
+    {% set routeName = 'SprosProjectBundle:Default:index_category' %}
+    {% if city %}
+        {% set routeName = 'SprosProjectBundle:Default:index_subdomain_category' %}
+    {% endif %}
+    {% for category in result %}
+        <li><span class="arrow">→</span> <a class="has-arrow" href="{{ url(routeName, {'category_slug' : category.getSlugCombined(), 'subdomain' : city ? city.slug : null}) }}">{{ category.title }}</a></li>
+    {% endfor %}
+</ul>
+

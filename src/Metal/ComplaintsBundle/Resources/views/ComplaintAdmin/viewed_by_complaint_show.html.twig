@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% if object.viewedBy %}
+        {{ object.viewedByFullName }}
+        <strong>
+            (<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.viewedBy.id} } }) }}">{{ object.viewedBy.id }}</a>)
+        </strong>
+    {% endif %}
+{% endblock %}

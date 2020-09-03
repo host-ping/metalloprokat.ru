@@ -1,0 +1,145 @@
+{% extends '@markup/private/consumers/_private_consumers.html.twig' %}
+{% block title 'Private callbacks' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'callbacks' %}
+            {{ parent() }}
+        {% endblock %}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <input id="wait" type="checkbox" class="js-styled-checkbox bg-grey"/>
+                    <label for="wait">Ожидают звонка</label>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="content-scrollable js-scrollable">
+            <ul class="callback-list private-fix-width">
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <a class="callback-btn button blue-bg ie-radius" href="#">Перезвонили</a>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text">
+                            <strong>Перезвонили</strong>
+                            <span>14 мар 2013 в 17:22</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text">
+                            <strong>Перезвонили</strong>
+                            <span>14 мар 2013 в 17:22</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text">
+                            <strong>Перезвонили</strong>
+                            <span>14 мар 2013 в 17:22</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text">
+                            <strong>Перезвонили</strong>
+                            <span>14 мар 2013 в 17:22</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="phone-text float-left">
+                        (495) 711-79-55
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка компаний
+                            <a class="link is-gradiented" href="#">Арматура А3 12</a>
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text">
+                            <strong>Перезвонили</strong>
+                            <span>14 мар 2013 в 17:22</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}

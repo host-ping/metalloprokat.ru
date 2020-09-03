@@ -1,0 +1,54 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Поздравление с 8 марта - Продукт.ру{% endblock subject %}
+
+{% block body_text %}
+Пусть весны
+подарки восхищают:
+
+Солнце в небе, первые цветы,
+День 8 марта исполняет
+Самые заветные мечты!
+
+Радостных улыбок и удачи,
+Искренних признаний, нежных слов!
+
+Мир вокруг
+становится пусть ярче,
+Как букет,
+в душе цветет любовь!
+
+С уважением,
+{{ user.country.domainTitle }}
+http://www.{{ user.country.baseHost }}
+
+{{ block('text_footer') }}
+{% endblock body_text %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Пусть весны<br/>
+        подарки восхищают:<br/><br/>
+
+        Солнце в небе, первые цветы,<br/>
+        День 8 марта исполняет<br/>
+        Самые заветные мечты!<br/><br/>
+
+        Радостных улыбок и удачи,<br/>
+        Искренних признаний, нежных слов!<br/><br/>
+
+        Мир вокруг<br/>
+        становится пусть ярче,<br/>
+        Как букет,<br/>
+        в душе цветет любовь!<br/>
+
+        {% if embed_image_src is defined %}
+            <br/>
+            <img src="{{ embed_image_src }}" alt="Поздравление с 8 марта - Продукт.ру">
+            <br/>
+        {% endif %}
+        <br/>
+        С уважением,
+        <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a>
+    </p>
+{% endblock text_part_body %}

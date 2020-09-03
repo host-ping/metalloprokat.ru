@@ -1,0 +1,17 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field%}
+    {%- if value is null -%}
+        &nbsp;
+    {%- else -%}
+        {% set attributes = field_description.options.attributes|default({}) %}
+        {% set textAttributes = field_description.options.textAttributes|default({}) %}
+        {% set locale = field_description.options.locale|default(null) %}
+
+        {% if field_description.options.identifier is defined %}
+            {{ value }}
+        {% else %}
+            {{ value | number_format_decimal(attributes, textAttributes, locale) }}
+        {% endif %}
+    {%- endif -%}
+{% endblock %}

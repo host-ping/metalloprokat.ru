@@ -1,0 +1,157 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% block title 'Входящие клиенты / Статистика / '~titleSuffix %}
+
+{% block viewing_modes %}
+   {% set viewingModes = {
+       'all' : {'path' : 'MetalPrivateOfficeBundle:Statistic:income', 'title' : 'Все'},
+       'regions' : {'path' : 'MetalPrivateOfficeBundle:Statistic:incomeRegion', 'title' : 'По городам'},
+       'category' : {'path' : 'MetalPrivateOfficeBundle:Statistic:incomeCategory', 'title' : 'По категориям'}
+   } %}
+
+   {{ parent() }}
+{% endblock %}
+
+{% block content_inner %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="income-tab">
+        {% block statistic_chart %}
+            {% set chartRules = {
+                series: [
+                    {
+                        title: 'Просмотры товаров',
+                        field: 'reviewsProductsCount',
+                    },
+                    {
+                        title: 'Показы товаров',
+                        field: 'showProductsCount'
+                    },
+                    {
+                        title: 'Переходы на сайт',
+                        field: 'websiteVisitsCount',
+                    },
+                    {
+                        title: 'Просмотры телефонов',
+                        field: 'reviewsPhonesCount',
+                    },
+                    {
+                        title: 'Заявки пришло',
+                        field: 'demandsCount',
+                    },
+                    {
+                        title: 'Заявки обработано',
+                        field: 'demandsProcessedCount',
+                    },
+                    {
+                        title: 'Обратн. звонки пришло',
+                        field: 'callbacksCount',
+                    },
+                    {
+                        title: 'Обратн. звонки обработано',
+                        field: 'callbacksProcessedCount',
+                    },
+                    {
+                        title: 'Отзывы',
+                        field: 'reviewsCount',
+                    },
+                    {
+                        title: 'Жалобы пришло',
+                        field: 'complaintsCount',
+                    },
+                    {
+                        title: 'Жалобы обработано',
+                        field: 'complaintsProcessedCount',
+                    }
+                ]
+            } %}
+
+            {{ parent() }}
+        {% endblock statistic_chart %}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+        {% set columns = {
+            'date' : {'query': null, 'cls': 'date col', 'title': 'Дата'},
+            'reviewsProductsCount': {'query': 'reviewsProductsCount', 'cls': 'views-products col', 'title': 'Просмотры товаров'},
+            'showProductsCount': {'query': 'showProductsCount', 'cls': 'show-products col', 'title': 'Показы товаров'},
+            'websiteVisitsCount': {'query': 'websiteVisitsCount', 'cls': 'website col', 'title': 'Переходы на сайт'},
+            'reviewsPhonesCount': {'query': 'reviewsPhonesCount', 'cls': 'phones col', 'title': 'Просмотры телефонов'},
+            'demandsCount': {'query': 'demandsCount', 'cls': 'demands col', 'title': 'Заявки пришло / обр.'},
+            'callbacksCount': {'query': 'callbacksCount', 'cls': 'callbacks col', 'title': 'Обратн. звонки пришло / обр.'},
+            'reviewsCount': {'query': 'reviewsCount', 'cls': 'reviews col', 'title': 'Отзывы'},
+            'complaintsCount': {'query': 'complaintsCount', 'cls': 'complaints col', 'title': 'Жалобы пришло / обр.'}
+        } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                    'reviewsProductsCount',
+                    'showProductsCount',
+                    'websiteVisitsCount',
+                    'reviewsPhonesCount',
+                    'demandsCount',
+                    'demandsProcessedCount',
+                    'callbacksCount',
+                    'callbacksProcessedCount',
+                    'reviewsCount',
+                    'complaintsCount',
+                    'complaintsProcessedCount',
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="views-products col">{{ summarizedValues.reviewsProductsCount|number_format_decimal }}</td>
+                    <td class="show-products col">{{ summarizedValues.showProductsCount|number_format_decimal }}</td>
+                    <td class="website col">{{ summarizedValues.websiteVisitsCount|number_format_decimal }}</td>
+                    <td class="phones col">{{ summarizedValues.reviewsPhonesCount|number_format_decimal }}</td>
+                    <td class="demands col">{{ summarizedValues.demandsCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.demandsProcessedCount|number_format_decimal }}</td>
+                    <td class="callbacks col">{{ summarizedValues.callbacksCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.callbacksProcessedCount|number_format_decimal }}</td>
+                    <td class="reviews col">{{ summarizedValues.reviewsCount }}</td>
+                    <td class="complaints col">{{ summarizedValues.complaintsCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.complaintsProcessedCount|number_format_decimal }}</td>
+                </tr>
+
+                {% for statsItem in statsResultViewModel.stats %}
+                    {% set isWeekend = false %}
+                    {% if currentGrouping == 'day' %}
+                        {% set isWeekend = formattingHelper.isWeekend(statsItem.date) %}
+                    {% endif %}
+                    <tr class="row">
+                        <td class="date col {% if isWeekend %}red-color{% endif %}">{{ formattingHelper.formatStatsDate(statsItem.date, currentGrouping, statsItem.previousEntry ? statsItem.previousEntry.date : null)|raw }}</td>
+                        <td class="views-products col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.reviewsProductsCount == 0 %} null {% endif %}">{{ statsItem.reviewsProductsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="show-products col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.showProductsCount == 0 %} null {% endif %}">{{ statsItem.showProductsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="website col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.websiteVisitsCount == 0 %} null {% endif %}">{{ statsItem.websiteVisitsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="phones col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.reviewsPhonesCount == 0 %} null {% endif %}">{{ statsItem.reviewsPhonesCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="demands col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.demandsCount == 0 %} null {% endif %}">{{ statsItem.demandsCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.demandsProcessedCount == 0 %} null {% endif %}">{{ statsItem.demandsProcessedCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="callbacks col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.callbacksCount == 0 %} null {% endif %}">{{ statsItem.callbacksCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.callbacksProcessedCount == 0 %} null {% endif %}">{{ statsItem.callbacksProcessedCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="reviews col {% if isWeekend %}red-color {% elseif statsItem.reviewsCount == 0 %} null {% endif %}">{{ statsItem.reviewsCount|number_format_decimal }}</td>
+                        <td class="complaints col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.complaintsCount == 0 %} null {% endif %}">{{ statsItem.complaintsCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.complaintsProcessedCount == 0 %} null {% endif %}">{{ statsItem.complaintsProcessedCount|number_format_decimal }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content_inner %}

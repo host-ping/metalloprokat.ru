@@ -1,0 +1,204 @@
+diff -Nur sphinxsearch-2.2.11-release/src/sphinxsort.cpp.orig sphinxsearch-2.2.11-release/src/sphinxsort.cpp
+--- sphinxsearch-2.2.11-release/src/sphinxsort.cpp.orig	2015-06-11 05:32:09.023871716 +0300
++++ sphinxsearch-2.2.11-release/src/sphinxsort.cpp	2015-06-11 14:21:39.000000000 +0300
+@@ -3475,11 +3475,116 @@
+ 	}
+ };
+
++struct MatchGeneric6_fn : public ISphMatchComparator
++{
++	virtual bool VirtualIsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t ) const
++	{
++		return IsLess ( a, b, t );
++	}
++
++	static inline bool IsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t )
++	{
++		SPH_TEST_KEYPART(0);
++		SPH_TEST_KEYPART(1);
++		SPH_TEST_KEYPART(2);
++		SPH_TEST_KEYPART(3);
++		SPH_TEST_KEYPART(4);
++		SPH_TEST_KEYPART(5);
++		return a.m_uDocID>b.m_uDocID;
++	}
++};
++
++struct MatchGeneric7_fn : public ISphMatchComparator
++{
++	virtual bool VirtualIsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t ) const
++	{
++		return IsLess ( a, b, t );
++	}
++
++	static inline bool IsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t )
++	{
++		SPH_TEST_KEYPART(0);
++		SPH_TEST_KEYPART(1);
++		SPH_TEST_KEYPART(2);
++		SPH_TEST_KEYPART(3);
++		SPH_TEST_KEYPART(4);
++		SPH_TEST_KEYPART(5);
++		SPH_TEST_KEYPART(6);
++		return a.m_uDocID>b.m_uDocID;
++	}
++};
++
++struct MatchGeneric8_fn : public ISphMatchComparator
++{
++	virtual bool VirtualIsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t ) const
++	{
++		return IsLess ( a, b, t );
++	}
++
++	static inline bool IsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t )
++	{
++		SPH_TEST_KEYPART(0);
++		SPH_TEST_KEYPART(1);
++		SPH_TEST_KEYPART(2);
++		SPH_TEST_KEYPART(3);
++		SPH_TEST_KEYPART(4);
++		SPH_TEST_KEYPART(5);
++		SPH_TEST_KEYPART(6);
++		SPH_TEST_KEYPART(7);
++		return a.m_uDocID>b.m_uDocID;
++	}
++};
++
++struct MatchGeneric9_fn : public ISphMatchComparator
++{
++	virtual bool VirtualIsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t ) const
++	{
++		return IsLess ( a, b, t );
++	}
++
++	static inline bool IsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t )
++	{
++		SPH_TEST_KEYPART(0);
++		SPH_TEST_KEYPART(1);
++		SPH_TEST_KEYPART(2);
++		SPH_TEST_KEYPART(3);
++		SPH_TEST_KEYPART(4);
++		SPH_TEST_KEYPART(5);
++		SPH_TEST_KEYPART(6);
++		SPH_TEST_KEYPART(7);
++		SPH_TEST_KEYPART(8);
++		return a.m_uDocID>b.m_uDocID;
++	}
++};
++
++struct MatchGeneric10_fn : public ISphMatchComparator
++{
++	virtual bool VirtualIsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t ) const
++	{
++		return IsLess ( a, b, t );
++	}
++
++	static inline bool IsLess ( const CSphMatch & a, const CSphMatch & b, const CSphMatchComparatorState & t )
++	{
++		SPH_TEST_KEYPART(0);
++		SPH_TEST_KEYPART(1);
++		SPH_TEST_KEYPART(2);
++		SPH_TEST_KEYPART(3);
++		SPH_TEST_KEYPART(4);
++		SPH_TEST_KEYPART(5);
++		SPH_TEST_KEYPART(6);
++		SPH_TEST_KEYPART(7);
++		SPH_TEST_KEYPART(8);
++		SPH_TEST_KEYPART(9);
++		return a.m_uDocID>b.m_uDocID;
++	}
++};
++
+ //////////////////////////////////////////////////////////////////////////
+ // SORT CLAUSE PARSER
+ //////////////////////////////////////////////////////////////////////////
+
+-static const int MAX_SORT_FIELDS = 5; // MUST be in sync with CSphMatchComparatorState::m_iAttr
++static const int MAX_SORT_FIELDS = 10; // MUST be in sync with CSphMatchComparatorState::m_iAttr
+
+
+ class SortClauseTokenizer_t
+@@ -3730,6 +3835,11 @@
+ 		case 3:		eFunc = FUNC_GENERIC3; break;
+ 		case 4:		eFunc = FUNC_GENERIC4; break;
+ 		case 5:		eFunc = FUNC_GENERIC5; break;
++		case 6:		eFunc = FUNC_GENERIC6; break;
++		case 7:		eFunc = FUNC_GENERIC7; break;
++		case 8:		eFunc = FUNC_GENERIC8; break;
++		case 9:		eFunc = FUNC_GENERIC9; break;
++		case 10:		eFunc = FUNC_GENERIC10; break;
+ 		default:	sError.SetSprintf ( "INTERNAL ERROR: %d fields in sphParseSortClause()", iField ); return SORT_CLAUSE_ERROR;
+ 	}
+ 	return SORT_CLAUSE_OK;
+@@ -3806,6 +3916,11 @@
+ 		case FUNC_GENERIC3:		return sphCreateSorter3rd<MatchGeneric3_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
+ 		case FUNC_GENERIC4:		return sphCreateSorter3rd<MatchGeneric4_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
+ 		case FUNC_GENERIC5:		return sphCreateSorter3rd<MatchGeneric5_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
++		case FUNC_GENERIC6:		return sphCreateSorter3rd<MatchGeneric6_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
++		case FUNC_GENERIC7:		return sphCreateSorter3rd<MatchGeneric7_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
++		case FUNC_GENERIC8:		return sphCreateSorter3rd<MatchGeneric8_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
++		case FUNC_GENERIC9:		return sphCreateSorter3rd<MatchGeneric9_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
++		case FUNC_GENERIC10:		return sphCreateSorter3rd<MatchGeneric10_fn>	( pComp, pQuery, tSettings, bHasPackedFactors ); break;
+ 		case FUNC_EXPR:			return sphCreateSorter3rd<MatchExpr_fn>		( pComp, pQuery, tSettings, bHasPackedFactors ); break;
+ 		default:				return NULL;
+ 	}
+@@ -3829,6 +3944,11 @@
+ 		case FUNC_GENERIC3:		pComp = new MatchGeneric3_fn(); break;
+ 		case FUNC_GENERIC4:		pComp = new MatchGeneric4_fn(); break;
+ 		case FUNC_GENERIC5:		pComp = new MatchGeneric5_fn(); break;
++		case FUNC_GENERIC6:		pComp = new MatchGeneric6_fn(); break;
++		case FUNC_GENERIC7:		pComp = new MatchGeneric7_fn(); break;
++		case FUNC_GENERIC8:		pComp = new MatchGeneric8_fn(); break;
++		case FUNC_GENERIC9:		pComp = new MatchGeneric9_fn(); break;
++		case FUNC_GENERIC10:		pComp = new MatchGeneric10_fn(); break;
+ 		case FUNC_EXPR:			pComp = new MatchExpr_fn(); break; // only for non-bitfields, obviously
+ 	}
+
+@@ -4804,6 +4924,11 @@
+ 		case FUNC_GENERIC3:		return CreatePlainSorter<MatchGeneric3_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
+ 		case FUNC_GENERIC4:		return CreatePlainSorter<MatchGeneric4_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
+ 		case FUNC_GENERIC5:		return CreatePlainSorter<MatchGeneric5_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
++		case FUNC_GENERIC6:		return CreatePlainSorter<MatchGeneric6_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
++		case FUNC_GENERIC7:		return CreatePlainSorter<MatchGeneric7_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
++		case FUNC_GENERIC8:		return CreatePlainSorter<MatchGeneric8_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
++		case FUNC_GENERIC9:		return CreatePlainSorter<MatchGeneric9_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
++		case FUNC_GENERIC10:		return CreatePlainSorter<MatchGeneric10_fn>		( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
+ 		case FUNC_EXPR:			return CreatePlainSorter<MatchExpr_fn>			( bKbuffer, iMaxMatches, bUsesAttrs, bFactors ); break;
+ 		default:				return NULL;
+ 	}
+diff -Nur sphinxsearch-2.2.11-release/src/sphinx.h.orig sphinxsearch-2.2.11-release/src/sphinx.h
+--- sphinxsearch-2.2.11-release/src/sphinx.h.orig	2015-06-11 05:31:37.111870561 +0300
++++ sphinxsearch-2.2.11-release/src/sphinx.h	2015-06-11 14:21:35.000000000 +0300
+@@ -2915,6 +2915,11 @@
+ 	FUNC_GENERIC3,
+ 	FUNC_GENERIC4,
+ 	FUNC_GENERIC5,
++	FUNC_GENERIC6,
++	FUNC_GENERIC7,
++	FUNC_GENERIC8,
++	FUNC_GENERIC9,
++	FUNC_GENERIC10,
+ 	FUNC_EXPR
+ };
+
+@@ -2956,7 +2961,7 @@
+ /// match comparator state
+ struct CSphMatchComparatorState
+ {
+-	static const int	MAX_ATTRS = 5;
++	static const int	MAX_ATTRS = 10;
+
+ 	ESphSortKeyPart		m_eKeypart[MAX_ATTRS];		///< sort-by key part type
+ 	CSphAttrLocator		m_tLocator[MAX_ATTRS];		///< sort-by attr locator
+diff -Nur sphinxsearch-2.2.11-release/src/searchd.cpp.orig sphinxsearch-2.2.11-release/src/searchd.cpp
+--- sphinxsearch-2.2.11-release/src/searchd.cpp.orig	2015-06-11 05:31:53.095871142 +0300
++++ sphinxsearch-2.2.11-release/src/searchd.cpp	2015-06-11 14:21:31.000000000 +0300
+@@ -8776,7 +8776,7 @@
+ 		if ( eRes!=SORT_CLAUSE_OK )
+ 			return false;
+
+-		assert ( eFunc==FUNC_GENERIC2 || eFunc==FUNC_GENERIC3 || eFunc==FUNC_GENERIC4 || eFunc==FUNC_GENERIC5 );
++		assert ( eFunc==FUNC_GENERIC2 || eFunc==FUNC_GENERIC3 || eFunc==FUNC_GENERIC4 || eFunc==FUNC_GENERIC5 || eFunc==FUNC_GENERIC6 || eFunc==FUNC_GENERIC7 || eFunc==FUNC_GENERIC8 || eFunc==FUNC_GENERIC9 || eFunc==FUNC_GENERIC10 );
+ 		sphSort ( tRes.m_dMatches.Begin(), tRes.m_dMatches.GetLength(), tReorder, MatchSortAccessor_t() );
+ 	}

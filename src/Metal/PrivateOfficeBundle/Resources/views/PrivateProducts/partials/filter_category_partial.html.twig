@@ -1,0 +1,40 @@
+<div class="product-name block float-left">
+    <input type="text" class="search form-text ie-radius js-popover-opener-focus"
+           data-popover="#categories-filter" ng-model="filterByTitle" initial-value
+           value="{{ app.request.query.get('q')|escape('html_attr') }}"
+           placeholder="поиск по товарам" />
+    <button type="button" class="icon-search-small search-button"></button>
+
+    <div id="categories-filter" class="choose-section drop-wrapper categories-filter opacity-border">
+        <div class="heading">
+            <div class="drop-item special">
+                <div class="link-wrapper">
+                    <span class="drop-link clickable js-popover-self-closer" ng-class="{current: specialOffer}" ng-click="specialOffer=!specialOffer; productsController.reloadProducts();">
+                    Спецпредложения</span>
+                </div>
+                <div class="link-wrapper">
+                    <span class="drop-link clickable js-popover-self-closer" ng-class="{current: hotOffer}" ng-click="hotOffer=!hotOffer; productsController.reloadProducts();">
+                    Горячие предложения</span>
+                </div>
+
+
+                <div class="link-wrapper">
+                    <span class="drop-link clickable js-popover-self-closer" {% if app.request.get('uncategorized') %}ng-init="uncategorized = 1"{% endif %} ng-class="{current: uncategorized}" ng-click="uncategorized=!uncategorized; productsController.reloadProducts();">
+                    Без категории</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="sections js-scrollable">
+                <ul class="category-list">
+                    <li class="drop-item" ng-repeat="category in categories|filter:{'title':filterByTitle}">
+                        <span ng-click="productsController.setFilterByCategory(category)"
+                              ng-class="{'green-color': category.isCustomCategory}"
+                              class="drop-link clickable js-popover-self-closer"><%= category.title %>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

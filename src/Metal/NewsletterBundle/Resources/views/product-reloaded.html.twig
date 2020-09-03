@@ -1,0 +1,77 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Обновление Продукт.ру{% endblock %}
+
+{% block body_text -%}
+Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!
+
+Мы обновили интерфейс Портала http://www.product.ru, с целью
+повысить эффективность для потребителей и привлечь больше клиентов для
+Вашей компании.
+
+- Обновите информацию о компании
+- Добавьте товары
+
+Это можно сделать в личном кабинете (http://my.product.ru)
+
+{% if user.email %}
+Также напоминаем Ваш логин для входа в Личный Кабинет:
+{{ user.email }}
+И пароль:
+{{ user.newPassword }}
+{% endif %}
+
+Форум: http://go.yarmarka.net/mfrm.asp
+Новости рынка и аналитика: http://www.yarmarka.net
+
+По любым вопросам пишите:
+http://corp.product.ru/contacts/
+или звоните:
++7 495 268-02-85
+
+
+С уважением,
+Продукт.ру
+http://www.product.ru
+
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!<br/>
+        <br/>
+        Мы обновили интерфейс Портала <a href="http://www.product.ru">Продукт.ру</a>, с целью
+        повысить эффективность для потребителей и привлечь больше клиентов для
+        Вашей компании.<br />
+
+        <ul>
+            <li>Обновите информацию о компании</li>
+            <li>Добавьте товары</li>
+        </ul>
+
+        Это можно сделать в <a href="http://my.product.ru/">личном кабинете</a><br />
+
+        {% if user.email %}
+            <br />
+            Также напоминаем Ваш логин для входа в Личный Кабинет:<br />
+            {{ user.email }}<br />
+            И пароль:<br />
+            {{ user.newPassword }}<br />
+        {% endif %}
+        <br />
+
+        Форум: <a target="_blank" href="http://go.yarmarka.net/mfrm.asp">go.yarmarka.net/mfrm.asp</a><br />
+        Новости рынка и аналитика: <a target="_blank" href="http://www.yarmarka.net/">yarmarka.net</a><br />
+        <br />
+        По любым вопросам пишите - <a href="http://corp.product.ru/contacts/">Продукт.ру</a>
+
+        или звоните:
+
+        +7 495 268-02-85
+
+        <br />
+        <br />
+        С уважением,
+        <a href="http://www.product.ru">Продукт.ру</a>
+    </p>
+{% endblock %}

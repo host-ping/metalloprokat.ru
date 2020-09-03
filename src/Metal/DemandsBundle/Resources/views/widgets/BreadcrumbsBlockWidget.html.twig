@@ -1,0 +1,12 @@
+{% set routeParameters = {'subdomain' : _options['territory'].getSlug() } %}
+
+{% if categories %}
+    <ul class="row first float-left">
+        <li class="title">Смежные разделы</li>
+        {% for category in categories %}
+            <li><a title="{{ category.title }}" class="is-gradiented"
+                   href="{{ path(_options['route_name'], routeParameters|merge({'category_slug' : category.getSlugCombined() })) }}"
+                >{{ category.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

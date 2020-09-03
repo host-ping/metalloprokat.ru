@@ -1,0 +1,138 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/metalproject/css/font.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('bundles/metalproject/css/overrides-font.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('bundles/metalproject/css/admin/admin.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('bundles/metalproject/css/suggest.css') }}" rel="stylesheet" media="screen" />
+
+    <style>
+        .alert-danger {
+            background-color: #f2dede !important;
+            border-color: #ebccd1 !important;
+            color: #a94442 !important;
+        }
+
+        .alert-warning {
+            background-color: #fcf8e3 !important;
+            border-color: #faebcc !important;
+            color: #8a6d3b !important;
+        }
+
+        .alert-success {
+            background-color: #dff0d8 !important;
+            border-color: #d6e9c6 !important;
+            color: #3c763d !important;
+        }
+
+        .alert-info {
+            background-color: #d9edf7 !important;
+            border-color: #bce8f1 !important;
+            color: #31708f !important;
+        }
+
+        .checkbox > label > .control-label__text {
+            margin-left: 5px !important;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.5/tinymce.min.js' type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var TINYMCE_FILE_OPENER_POPUP_URL = '{{ path('MetalContentBundle:AlbumAdmin:list') }}';
+        var TINYMCE_DOCUMENT_BASE_URL = '{{ url('MetalProjectBundle:Default:index') }}';
+        var TINYMCE_LANGUAGE_URL = '{{ asset('bundles/metalproject/js-integration/libs/tinymce/langs/ru.js') }}';
+    </script>
+
+    <script type="text/javascript">
+        function adminScrollToError() {
+            if ($('.sonata-ba-form').length) {
+                var $errorEl = $('.sonata-ba-form').find('.sonata-ba-field-error:first');
+                if (!$errorEl.length) {
+                    $errorEl = $('.sonata-ba-form').find('.sonata-ba-field-error-messages:first');
+                }
+                var $message = $('.alert-danger');
+                if ($message.length && $errorEl.length) {
+                    $message.append('<span class="see-error js-see-error">Перейти к ошибке</span>');
+                }
+
+                $('body').delegate('.js-see-error', 'click', function () {
+                    if ($errorEl.length) {
+                        Admin.setup_form_tabs_for_errors(document);
+
+                        var scrollTop = parseInt($errorEl.offset().top - $('.navbar').outerHeight(true));
+                        $(window).scrollTo(scrollTop);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            Brouzie.TinyMCE.initialize();
+            $('form').each(function (i, el) {
+                if (!$(el).attr('action')) {
+                    $(el).attr('action', document.location.href)
+                }
+            });
+
+            $('body').bind('sonata.add_element', function (e) {
+                if ($(e.target).attr('id').indexOf('field_container_') === 0) {
+                    includeAjax($(e.target));
+                }
+            });
+            adminScrollToError();
+
+            if (!Cookies.get('sidebar_state')) {
+                Cookies.set('sidebar_state', 'hidden');
+            }
+
+            $('.sidebar-toggle').bind('click', function (el) {
+                Cookies.set('sidebar_state', $('body').hasClass('sidebar-collapse') ? 'visible' : 'hidden');
+            });
+        });
+    </script>
+
+    {% javascripts
+        '@MetalProjectBundle/Resources/public/js-integration/libs/shiftcheckbox/shiftcheckbox.js'
+        '@MetalProjectBundle/Resources/public/js-integration/admin/admin.js'
+        '@MetalProjectBundle/Resources/public/js-integration/tinymce-initialization.js'
+        '@MetalProjectBundle/Resources/public/js/js.cookie.js'
+        '@angular'
+        combine = true %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+
+{% endblock javascripts %}
+
+{% block sonata_wrapper %}
+    <script type="text/ng-template" id="typeahead-suggestion-with-parent">
+        <p ng-bind="item.title"></p><p class="region" ng-bind="item.parent_title"></p>
+    </script>
+
+    <script type="text/ng-template" id="typeahead-suggestion-image">
+        <p ng-bind="item.title"></p>
+        <img ng-src="<%= item.src %>" />
+    </script>
+
+    {% block sonata_sidebar_search '' %}
+
+    {% block sonata_left_side %}
+        {{ parent() }}
+    {% endblock sonata_left_side %}
+
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <aside class="right-side strech">
+            {% block sonata_page_content %}
+                {{ parent() }}
+            {% endblock sonata_page_content %}
+        </aside>
+    </div>
+{% endblock sonata_wrapper %}
+
+{% block body_attributes %}
+    class="sonata-bc skin-black fixed {% if 'hidden' == app.request.cookies.get('sidebar_state', 'hidden') %}sidebar-collapse{% endif %}" ng-app="metalApp"
+{% endblock %}

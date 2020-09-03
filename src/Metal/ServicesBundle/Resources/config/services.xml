@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal.services.admin.agreement" class="Metal\ServicesBundle\Admin\AgreementTemplateAdmin">
+            <argument>metal.services.admin.agreement</argument>
+            <argument>Metal\ServicesBundle\Entity\AgreementTemplate</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+                <argument type="service" id="twig" />
+                <argument type="service" id="security.token_storage" />
+                <argument type="service" id="brouzie.helper_factory" />
+            <tag name="sonata.admin" manager_type="orm" group="static_pages" label="Статические страницы" />
+        </service>
+
+        <service id="metal.services.admin.package" class="Metal\ServicesBundle\Admin\PackageAdmin">
+            <argument>metal.services.admin.package</argument>
+            <argument>Metal\ServicesBundle\Entity\Package</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="security.token_storage"/>
+            <tag name="sonata.admin" manager_type="orm" group="services" label="Тип услуги" />
+        </service>
+
+        <service id="metal.services.admin.service_item" class="Metal\ServicesBundle\Admin\ServiceItemAdmin">
+            <argument>metal.services.admin.service_item</argument>
+            <argument>Metal\ServicesBundle\Entity\ServiceItem</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="services" label="Услуга" />
+        </service>
+
+        <service id="metal.services.admin.package_order" class="Metal\ServicesBundle\Admin\PackageOrderAdmin">
+            <argument>metal.services.admin.package_order</argument>
+            <argument>Metal\ServicesBundle\Entity\PackageOrder</argument>
+            <argument>MetalServicesBundle:ServiceAdmin</argument>
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="services" label="Заказанные услуги" />
+        </service>
+
+        <service id="metal.services.admin.payment" class="Metal\ServicesBundle\Admin\PaymentAdmin">
+            <argument>metal.services.admin.payment</argument>
+            <argument>Metal\ServicesBundle\Entity\Payment</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="services" label="Счета (Робокасса)" />
+        </service>
+
+        <service id="metal.services.admin.block.unprocessed_package_order" class="Metal\ServicesBundle\Admin\Block\UnprocessedPackageOrderBlockService">
+            <argument>metal.services.admin.block.unprocessed_package_order</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+    </services>
+</container>

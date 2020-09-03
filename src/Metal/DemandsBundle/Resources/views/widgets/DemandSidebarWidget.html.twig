@@ -1,0 +1,260 @@
+{% set currentCountry = app.request.attributes.get('country') %}
+{% set currentCategory = app.request.attributes.get('category') %}
+{% set currentRegion = app.request.attributes.get('region') %}
+{% set currentCity = app.request.attributes.get('city') %}
+{% set currentTerritory = app.request.attributes.get('territory') %}
+{% set query = app.request.query %}
+{% set currentAttributesCollection = app.request.attributes.get('attributes_collection') %}
+
+<div id="sidebar" class="side-left outline-left float-left static">
+    <div class="sidebar-content js-fixed-filters">
+        {% set route = app.request.attributes.get('_route') %}
+        {% set routeParameters = app.request.attributes.get('_route_params') %}
+        {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+        {% set routeParameters = routeParameters|merge({'page' : null}) %}
+        {% set routeParametersForCount = {} %}
+
+
+        {% set subdomain = currentTerritory.getSlug() %}
+
+        {% set routeParametersForCount = routeParametersForCount|merge({'category_id': currentCategory ? currentCategory.id : null}) %}
+        {% set routeParametersForCount = routeParametersForCount|merge({'subdomain': subdomain}) %}
+
+        {% if currentCity %}
+            {% set routeParametersForCount = routeParametersForCount|merge({'city': currentCity.id}) %}
+        {% endif %}
+
+        <form action="{{ path(route, routeParameters) }}" {% if currentCategory %}data-count-url="{{ path('MetalDemandsBundle:Api:getDemandsCount', routeParametersForCount) }}"{% endif %} method="GET">
+            <div class="js-scrollable-filters side-wrap js-scrollable">
+                <div class="filters">
+
+                    <div class="local filter">
+                        <div class="title" ng-controller="Metal.CitiesWidgetPopoverOpener as citiesWidgetPopoverOpenerController">
+                            {% set citiesTitle = 'Все города' %}
+                            {% if currentTerritory.getKind() != 'country' %}
+                                {% set citiesTitle = currentTerritory.getTitle() %}
+                            {% endif %}
+                            <span class="clickable icon-check black js-popover-opener" data-popover="#sidebar-cities"
+                                  ng-click='citiesWidgetPopoverOpenerController.loadPopover("sidebar-cities")'
+                                  data-different-position="true">
+                                      {{ citiesTitle }}
+                                </span>
+                        </div>
+
+                        {{ brouzie_render_widget('MetalCategoriesBundle:Menu', {
+                            '_template': '@MetalCategories/widgets/Menu/SidebarMenuWidget.html.twig',
+                            'city' : currentCity,
+                            'country' : currentCountry,
+                            'region' : currentRegion,
+                            'category': currentCategory,
+                            'display_empty_root_items': currentCategory is not null,
+                            'counter_name' : 'demands_count',
+                            'route' : 'MetalDemandsBundle:Demands:list_subdomain_category',
+                            'items_count' : _options['demands_count'],
+                            'route_params': {'subdomain': subdomain}
+                        }) }}
+                    </div>
+
+                    {% if currentCategory %}
+                        {% set attributesCollection = _widget.getAttributesCollection() %}
+
+                        {% for attribute, attributeValues in attributesCollection %}
+                            <div class="size filter">
+                                <div class="title">{{ attribute.title }}</div>
+                                <div class="loading-mask g-hidden" id="attribute-values-list-{{ attribute.id }}-loading-mask">
+                                    <div class="spinner"></div>
+                                </div>
+                                {{ include('@MetalProducts/Products/partial/attribute_values.html.twig', {
+                                    'category': currentCategory,
+                                    'attribute': attribute,
+                                    'loadAttributeValuesRoute': 'MetalDemandsBundle:Api:getAttributeValues',
+                                    'attributesCollection': attributesCollection,
+                                    'currentAttributesCollection': currentAttributesCollection,
+                                    'route': route,
+                                    'routeParameters': routeParameters,
+                                    'isHidden': true,
+                                    'encodeContent': true,
+                                }, false) }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="demand type filter">
+                            <ul class="type-list">
+                                <li>
+                                    {% if 'nonrecurrent' == query.get('periodicity') %}
+                                        <span>
+                                            <input id="demand-type-1" name="periodicity" value="nonrecurrent"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-1">Разовые</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'periodicity' : 'nonrecurrent'})) }}">
+                                            <input id="demand-type-1" name="periodicity" value="nonrecurrent"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-1">Разовые</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    {% if 'permanent' == query.get('periodicity') %}
+                                        <span>
+                                            <input id="demand-type-2" name="periodicity" value="permanent"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-2">Постоянные</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'periodicity' : 'permanent'})) }}">
+                                            <input id="demand-type-2" name="periodicity" value="permanent"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-2">Постоянные</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    {% if 'all' == query.get('periodicity', 'all') %}
+                                        <span>
+                                            <input id="demand-type-3" name="periodicity" value="all"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-3">Все</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'periodicity' : null})) }}">
+                                            <input id="demand-type-3" name="periodicity" value="all"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="demand-type-3">Все</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="consumer type filter">
+                            <ul class="type-list">
+                                <li>
+                                    {% if 'trader' == query.get('consumers') %}
+                                        <span>
+                                            <input id="consumer-type-1" name="consumers" value="trader"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-1">{{ tokens.suppliers|capitalize }}</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'consumers' : 'trader'})) }}">
+                                            <input id="consumer-type-1" name="consumers" value="trader"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-1">{{ tokens.suppliers|capitalize }}</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    {% if 'consumer' == query.get('consumers') %}
+                                        <span>
+                                            <input id="consumer-type-2" name="consumers" value="consumer"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-2">Конечные потребители</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'consumers' : 'consumer'})) }}">
+                                            <input id="consumer-type-2" name="consumers" value="consumer"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-2">Конечные потребители</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    {% if 'all' == query.get('consumers', 'all') %}
+                                        <span>
+                                            <input id="consumer-type-3" name="consumers" value="all"
+                                                   checked="checked"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-3">Все</label>
+                                        </span>
+                                    {% else %}
+                                        <a href="{{ path(route, routeParameters|merge({'consumers' : null})) }}">
+                                            <input id="consumer-type-3" name="consumers" value="all"
+                                                   class="radio js-show-button-on-change bg-grey js-preload-items-count-on-change" type="radio"/>
+                                            <label for="consumer-type-3">Все</label>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="toggle-filter filter">
+                            {% set wholesale = query.get('wholesale', '0') %}
+                            <div class="sell-type-list toggle-block js-toggle-block ie-radius">
+                                {% if '1' == wholesale %}
+                                    <span>
+                                        <label class="item-link wholesale active float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="1"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Опт
+                                        </label>
+                                    </span>
+                                {% else %}
+                                    <a href="{{ path(route, routeParameters|merge({'wholesale' : '1'})) }}">
+                                        <label class="item-link wholesale float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="1"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Опт
+                                        </label>
+                                    </a>
+                                {% endif %}
+
+                                {% if '2' == wholesale %}
+                                    <span>
+                                        <label class="item-link retail active float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="2"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Розница
+                                        </label>
+                                    </span>
+                                {% else %}
+                                    <a href="{{ path(route, routeParameters|merge({'wholesale' : '2'})) }}">
+                                        <label class="item-link retail float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="2"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Розница
+                                        </label>
+                                    </a>
+                                {% endif %}
+
+                                {% if '0' == wholesale %}
+                                    <span>
+                                        <label class="item-link all active float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="0"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Все
+                                        </label>
+                                    </span>
+                                {% else %}
+                                    <a href="{{ path(route, routeParameters|merge({'wholesale' : null})) }}">
+                                        <label class="item-link all float-left ie-radius">
+                                            <input type="radio" name="wholesale" value="0"
+                                                   checked="checked"
+                                                   class="not-styling js-show-button-on-change js-preload-items-count-on-change js-toggle-button"/> Все
+                                        </label>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="submit-wrapper js-show-all g-hidden">
+                <a class="button show-btn blue-bg link clearfix ie-radius">
+                    <span class="text float-left">показать</span>
+                    <span class="count float-right js-items-count"></span>
+                </a>
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,49 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'products' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'demands') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/subscriptions/demands.html.twig') }}">Потребности</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'products') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/subscriptions/products.html.twig') }}">Товары</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block filters %}
+    <div class="filters-block outline-right clearfix">
+        {#<div class="filter-product-wrapper float-left">#}
+            {#<a class="filter-product icon-check black link" href="#">Арматура АЗ</a>#}
+        {#</div>#}
+        {#<div class="options-wrapper float-left">#}
+            {#<a class="option-link link js-popup-opener" data-popup="#demand-subscription" href="#">Настройки</a>#}
+        {#</div>#}
+        <div class="float-left">
+            <span class="option-link link clickable">Выбрать категории</span>
+        </div>
+        <div class="float-left">
+            <span class="option-link link clickable">Выбрать регионы</span>
+        </div>
+        <div class="export-block float-right">
+            <a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт</a>
+            <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+                <div class="dropdown">
+                    <div class="export-links block clearfix">
+                        <p class="title export link">Экспорт</p>
+                        <a class="button small-btn blue-bg float-left ie-radius" href="#">XLS</a>
+                        <a class="button small-btn blue-bg float-left ie-radius" href="#">CSV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock filters %}
+{% block sidebar %}
+    {% set activeMenu = 'subscriptions' %}
+    {{ parent() }}
+{% endblock sidebar %}

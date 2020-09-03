@@ -1,0 +1,127 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+{% block title 'Register' %}
+{% block search_form '' %}
+{% block breadcrumbs '' %}
+{% block banner '' %}
+{% block callback '' %}
+{% block content %}
+    <div id="content" class="register content-wide js-calc-height clearfix">
+        <div class="steps-block float-left">
+            <div class="block-title">Получайте клиентов</div>
+            <ul class="steps list">
+                <li class="step item first">
+                    <div class="step-count is-bordered ie-radius">1</div>
+                    <p class="text">Создайте сайт компании</p>
+                </li>
+                <li class="step item">
+                    <div class="step-count is-bordered ie-radius">2</div>
+                    <p class="text">Добавьте товары</p>
+                </li>
+                <li class="step item">
+                    <div class="step-count is-bordered ie-radius">3</div>
+                    <p class="text">Получайте заявки потребителей</p>
+                </li>
+            </ul>
+            <p style="font-size: 16px; margin-bottom: 28px;">Быстро и бесплатно!</p>
+            <div class="questions">
+                <p class="text">Вопросы?</p>
+
+                <p class="text"><span class="phone-text">+7 (495) 984-06-52</span> или <a class="email-link" href="#">пишите</a></p>
+            </div>
+        </div>
+        <div class="register-block float-left">
+            <div class="main-title ">
+                <h1>Регистрация</h1>
+            </div>
+            <form class="register-form form" action="#">
+                <fieldset>
+                    <div class="user-type-wrapper field-wrap">
+                        <select name="#" id="user-type" class="user-type form-select error">
+                            <option value="1">Я поставщик металлопродукции</option>
+                            <option value="2">Я потребитель металлопродукции</option>
+                        </select>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="user-company-wrapper field-wrap float-left">
+                            <input class="register-company form-text ie-radius" type="text" placeholder="Компания"/>
+                        </div>
+                        <div class="company-type-wrapper field-wrap float-left">
+                            <select name="company-type" id="company-type" class="form-select hight">
+                                <option value="-1"> </option>
+                                <option value="1">ЗАО</option>
+                                <option value="2">OАО</option>
+                                <option value="3">OOО</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="user-city-wrapper field-wrap float-left">
+                            <input class="user-city form-text ie-radius" type="text" placeholder="Город"/>
+                        </div>
+                        <div class="phone-wrapper field-wrap float-left">
+                            <input class="user-phone phone form-text ie-radius" type="text" placeholder="Телефон"/>
+                        </div>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="user-name-wrapper field-wrap float-left">
+                            <input class="user-name form-text ie-radius" type="text" placeholder="Имя"/>
+                        </div>
+                        <div class="user-email-wrapper field-wrap float-left">
+                            <input class="user-mail form-email ie-radius" type="email" placeholder="Электронная почта"/>
+                        </div>
+                    </div>
+                    <div class="group clearfix">
+                        <div class="user-pwd-wrapper field-wrap float-left">
+                            <input class="user-password form-text ie-radius" type="password" placeholder="Пароль"/>
+                        </div>
+                        <div class="user-pwd-wrapper-re field-wrap float-left">
+                            <input class="user-password form-text ie-radius" type="password" placeholder="... еще раз"/>
+                        </div>
+                    </div>
+                    <div class="promo-group group clearfix">
+                        <div class="promo-wrapper field-wrap float-left">
+                            <input type="text" class="promo-field form-text ie-radius" placeholder="Промокод">
+                            <span class="icon-help js-helper-opener" data-text="Вы можете ввести промокод, он дает
+                             право на пользование полным пакетом услуг в течении одного месяца"></span>
+
+                        </div>
+                        <div class="promo-description-wrapper field-wrap float-left">
+                            <p class="promo-status green-color">Промокод действителен и дает право на пользование полным пакетом услуг в течении одного месяца</p>
+                            <p class="promo-status red-color">Промокод действителен с 16 окт 2015 до 31 дек 2015</p>
+                        </div>
+                    </div>
+
+                    <div class="agreement-wrapper">
+                        <input id="agreement" type="checkbox" class="js-styled-checkbox js-show-button-on-change bg-grey error"/>
+                        <label for="agreement" >Согласен с <a href="#" class="link" target="_blank">пользовательским соглашением</a></label>
+                        <span class="icon-error-color js-helper-opener" data-text="Вы должны подтвердить пользовательское соглашение"></span>
+                    </div>
+
+                    <div class="register-btn-wrapper">
+                        <input class="register-button button green-bg js-popup-opener ie-radius" data-popup="#register" type="submit" value="Зарегистрироваться"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="user-reviews float-left">
+            <div class="block-title">
+                <a class="link" href="#">Отзывы клиентов</a>
+            </div>
+            <div class="review">
+                <p class="text">Мы в восторге от того, что стали клиентами!</p>
+                <p class="text">Денег столько, что фантазия иссякла!</p>
+            </div>
+            <div class="user-info-block">
+                <div class="user-photo">
+                    <img class="ie-radius" src="./markup/pic/user-img.png" alt="image description"/>
+                </div>
+                <div class="user-info">
+                    <p class="text">Михаил Лесной</p>
+                    <a class="link" href="#">Авангард Престиж</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block sidebar '' %}

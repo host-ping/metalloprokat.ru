@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="viewport" content="width=device-width">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="./markup/css/normalize.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/jquery-ui.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/font.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/overrides-font.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/style.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/layouts/layout.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/color.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/form.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/buttons.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/scroll.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/suggest.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/css/content.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="./markup/js/libs/angular-ui-tree-master/dist/angular-ui-tree.css" type="text/css" media="all"/>
+		<link media="only screen and (max-width: 1340px)" rel="stylesheet" href="./markup/css/responsive/for1280.css" type="text/css"/>
+		<link media="only screen and (max-width: 1252px)" rel="stylesheet" href="./markup/css/responsive/for1024.css" type="text/css"/>
+		<link media="only screen and (max-width: 1023px)" rel="stylesheet" href="./markup/css/responsive/small.css" type="text/css"/>
+		<link rel="stylesheet" href="./markup/css/corporate.css" type="text/css"/>
+		<link rel="stylesheet" href="./markup/css/selectize.css" type="text/css"/>
+		<link rel="stylesheet" href="./markup/css/style-form.css" type="text/css"/>
+		
+		
+    {% endblock stylesheets %}
+
+    
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,800&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+
+    {% block javascript %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+
+
+        <script type="text/javascript" src="./markup/js/libs/momentjs/moment-with-langs.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/underscorejs/underscore.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/underscore.string/underscore.string.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/clndr/clndr.js"></script>
+        <script type="text/javascript" src="./markup/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="./markup/js/modernizr.js"></script>
+        <script type="text/javascript" src="./markup/js/jquery.reject.js"></script>
+        <script type="text/javascript" src="./markup/js/jquery.formstyler.1.4.9.js"></script>
+        <script type="text/javascript" src="./markup/js/jquery-scrolltofixed.js"></script>
+        <script type="text/javascript" src="./markup/js/scrollbar.js"></script>
+        <script type="text/javascript" src="./markup/js/jquery.placeholder-enhanced.js"></script>
+        <script type="text/javascript" src="./markup/js/Brouzie/Behaviors.js"></script>
+        <script type="text/javascript" src="./markup/js/Brouzie/Popups.js"></script>
+        <script type="text/javascript" src="./markup/js/Brouzie/Popovers.js"></script>
+        <script type="text/javascript" src="./markup/js/Brouzie/ExpandableMenu.js"></script>
+        <script type="text/javascript" src="./markup/js/Brouzie/Tabs.js"></script>
+        <script type="text/javascript" src="./markup/js/main.js"></script>
+        <script type="text/javascript" src="./markup/js/project.js"></script>
+        <script type="text/javascript" src="./markup/js/respond.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/maps/infrastructure.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/maps/companyBaloon.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/maps/maps.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/Angular/angular.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/angular-ui-tree-master/dist/angular-ui-tree.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/Angular/angular-initialization.js"></script>
+        <script type="text/javascript" src="./markup/js/libs/angular-ui-tree-master/Categories.js"></script>
+        <script type="text/javascript" src="./markup/js/selectize.min.js"></script>
+        
+
+
+
+
+        {#'@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-locale_ru.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-gettext.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-initial-value.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/angular-collection.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/Angular/bindonce.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/typeahead/bloodhound.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/typeahead/typeahead.jquery.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js/Brouzie/Popups.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js/Brouzie/Popups-angular.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js/Brouzie/Typeahead-angular.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/angular-initialization.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.iframe-transport.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload-process.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/fileupload/jquery.fileupload-angular.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/ajaxform/jquery.ajaxform.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/ajaxform/jquery.ajaxform-angular.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/angular-ui-tree-master/dist/angular-ui-tree.js'#}
+        {#- '@MetalProjectBundle/Resources/public/js-integration/libs/angular-vs-repeat-master/angular-vs-repeat.js'#}
+        {##}
+                <script type="text/javascript">
+            DEBUG = true;
+        </script>
+    {% endblock javascript %}
+    <!--[if gte IE 8]>
+        <link rel="stylesheet" type="text/css" href="./markup/css/ie-8-9.css">
+    <![endif]-->
+
+    <!--[if IE 8]>
+        <link rel="stylesheet" type="text/css" href="./markup/css/ie-8.css">
+    <![endif]-->
+
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="./markup/css/outdatedbrowser.css" type="text/css" media="all"/>
+    <![endif]-->
+
+    <title>{% block title '' %}</title>
+</head>
+<body class="{% block body_additional_class '' %}">
+<!--[if lt IE 8]>
+<div id="outdated">
+    <h6>Ваш браузер устарел!</h6>
+    <p>Обновите ваш браузер для правильного отображения этого сайта. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/ru">Обновить мой браузер </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+
+<script type="text/javascript" src="./markup/js/outdatedbrowser.js"></script>
+<script type="text/javascript">
+    $('document').ready(function(){
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'transform',
+            languagePath: ''
+        });
+    });
+</script>
+<![endif]-->
+{% block body %}
+    <div class="container">
+        <div class="inside-container">
+            <div id="header" class="clearfix">
+                <div class="wrap">
+                    {% block header '' %}
+                </div>
+            </div>
+
+            {% block menu %}
+                <div class="main-menu-wrapper">
+                    <div class="wrap"></div>
+                </div>
+            {% endblock %}
+
+            {% block search_form %}
+                <div class="search-block clearfix"></div>
+            {% endblock %}
+
+			<div id="main" class="{% block main_block_additional_class '' %} clearfix">
+				{% block side_announcements '' %}
+				<div class="wrap clearfix">
+                    {% block breadcrumbs '' %}
+                    {% block banner '' %}
+					{% block callback '' %}
+                    <div class="main-wrapper wrapper outline clearfix">
+                        {% block content %}
+                            {% block tabs '' %}
+                            {% block search_more '' %}
+                        {% endblock %}
+                        {% block sidebar '' %}
+                    </div>
+                </div>
+            </div>
+            {% block buttons '' %}
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer '' %}
+        </div>
+    </div>
+    {% block popups '' %}
+{% endblock %}
+
+{% block html_templates %}
+    {{ include('@markup/ui/_components/datepicker.html.twig') }}
+{% endblock html_templates %}
+<div class="livebotton">
+	<a href="#">оставить заявку</a>
+</div>
+</body>
+</html>

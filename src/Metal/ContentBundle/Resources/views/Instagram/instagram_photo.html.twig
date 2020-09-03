@@ -1,0 +1,64 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% block title %}
+    {{ textHelper.limitByWords(photo.description) }}
+{% endblock %}
+
+{% block inside_left %}
+    <div class="blog-img">
+        <img src="{{ vich_uploader_asset(photo, 'uploadedPhoto')|imagine_filter('instagram_photo_sq640') }}"
+             alt="{{ photo.description }}"
+             title="{{ photo.description }}"
+        />
+    </div>
+
+    <div class="blog-img-description">
+        <p class="text">{{ photo.description|nl2br }}</p>
+    </div>
+
+    <div class="reviews-links">
+        <div class="add-review-btn-wrapper clearfix">
+            <button class="add-review button green-bg float-left js-popup-opener js-triggered"
+                    {% if app.user %}
+                        data-popup="#add-comment"
+                        data-comment-url="{{ path('MetalContentBundle:Instagram:addComment', {'id' : photo.id}) }}"
+                    {% else %}
+                        data-popup="#stroy-login"
+                    {% endif %}
+            >Добавить комментарий</button>
+
+            <div class="share-links float-left">
+                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tabs" class="result-tabs-wrapper tabs demand_tabs catalog-tabs clearfix">
+        <ul class="tabs-list clearfix">
+            {% if comments %}
+                <li class="item active js-tabs" data-tab="#answers-tab">
+                    <a name="comments-tab"></a>
+                    <span class="count float-right">{{ comments|length|number_format_decimal }}</span>
+                    <span class="link" title="Комментарии">Комментарии</span>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="tabs-content">
+        {% if comments %}
+            <div id="answers-tab" class="similar-list reviews-block answers">
+                <ul class="reviews answers-list">
+                    {{ include ('@MetalContent/partial/list_comments.html.twig', {
+                        'comments' : comments,
+                    }, false) }}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block inside_right  %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'entry_type' : 'ENTRY_TYPE_QUESTION'}) }}
+{% endblock inside_right %}

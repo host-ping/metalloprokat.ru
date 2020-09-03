@@ -1,0 +1,48 @@
+{% extends '@markup/corporate/_corporate_layout.html.twig' %}
+{% block title 'Corporate site - Contacts' %}
+{% block header_menu %}
+    {% set activeMenu = 'contacts' %}
+    {{ parent() }}
+{% endblock header_menu %}
+{% block content %}
+    <div id="content" class="corporate-content content-wide">
+        <div class="contact-wrapper clearfix">
+            <div class="contact-left float-left">
+                <p class="big-phone">+7 495 984-06-52</p>
+                <ul class="contacts clearfix">
+                    <li class="item first float-left">
+                        <div class="head-title">
+                            <strong>Наш адрес</strong>
+                        </div>
+                        <p>Москва, Большая Никитская, 22/2</p>
+                    </li>
+                    <li class="item float-left">
+                        <div class="head-title">
+                            <strong>Адрес для бухгалтерии</strong>
+                        </div>
+                        <p>123308, г.Москва, ОПС № 308, а/я 29</p>
+                    </li>
+                    <li class="item float-left">
+                        <div class="head-title">
+                            <strong>Электронная почта</strong>
+                        </div>
+                        <a class="mail-link" href="mailto:info@metalloprokat.ru">info@metalloprokat.ru</a>
+                    </li>
+                </ul>
+                <div class="btn-wrapper">
+                    <a class="send-button button red-bg ie-radius ie-radius" href="#">Написать письмо</a>
+                </div>
+            </div>
+            <div class="map-wrapper is-bordered float-right">
+                <div class="heading clearfix">
+                    <a class="link float-right" href="#">Открыть в Яндекс.Картах</a>
+                </div>
+                <div class="map">
+                    <span class="map-point icon-position" style="top: 50px; left: 150px;"></span>
+                    <img alt="image description" src="./markup/pic/mini-site-map.jpg">
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

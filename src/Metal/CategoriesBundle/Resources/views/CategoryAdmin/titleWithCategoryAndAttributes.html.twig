@@ -1,0 +1,54 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        <p><b>{{ object.title }}</b></p>
+        {% if object.getCategory() %}
+            <div>
+                <span class="label label-primary" title="Категория">{{ object.category.getTitleWithParent() }}</span>
+            </div>
+        {% endif %}
+        {% if object.getBreadcrumbCategory() %}
+            <div>
+                <span class="label label-info"
+                      title="Категория для хлебных крошек">{{ object.breadcrumbCategory.getTitleWithParent() }}</span>
+            </div>
+        {% endif %}
+
+        {% set attributes = object.getAttribute('landing_page_attributes')|default([]) %}
+
+        {% set colors = {
+            (constant('Metal\\CatalogBundle\\Entity\\Product::ATTR_CODE_MANUFACTURER')): '#276db4',
+            (constant('Metal\\CatalogBundle\\Entity\\Product::ATTR_CODE_BRAND')): '#15b4ad'
+        } %}
+        {% for attribute in attributes %}
+            <span class="label label-default"
+                  style="display:inline-block; background-color: {{ colors[attribute['code']]|default('#999') }};  color:#fff;"
+                  title="{{ attribute['attributeTitle'] }}">{{ attribute['attributeValueTitle'] }}</span>
+        {% endfor %}
+        <br />
+        {% if object.searchQuery %}
+            <span class="label label-success" title="строка поиска">{{ object.searchQuery }}</span>
+            <br />
+        {% endif %}
+        {% if object.companyAttributes %}
+            {% for companyAttribute in object.getCompanyAttributesObjects() %}
+                <span class="label label-warning" style="display:inline-block;"
+                      title="{{ companyAttribute.title }}">{{ companyAttribute.title }}</span>
+            {% endfor %}
+            <br />
+        {% endif %}
+        {% if object.metadata.h1Title %}
+            H1 заголовок:
+            <p><em>{{ object.metadata.h1Title }}</em></p>
+        {% endif %}
+        {% if object.metadata.title %}
+            Meta заголовок:
+            <p><em>{{ object.metadata.title }}</em></p>
+        {% endif %}
+        {% if object.metadata.description %}
+            Meta описание:
+            <p><em>{{ object.metadata.description }}</em></p>
+        {% endif %}
+    </div>
+{% endblock %}

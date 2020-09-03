@@ -1,0 +1,7 @@
+parameters:
+    minisite_hostnames_pattern: 'metalloprokat\.dev|me1\.dev|metaltop\.dev'
+    project.domains_regex:
+        '.*\.?metalloprokat\.dev': '.metalloprokat.dev'
+        '.*\.?metaltop\.dev':      '.metaltop.dev'
+        '.*\.?me1\.dev':           '.me1.dev'
+    allow_foreign_countries: true

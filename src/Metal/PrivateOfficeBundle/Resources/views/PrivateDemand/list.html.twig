@@ -1,0 +1,191 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set filter = app.request.query.get('filter') %}
+{% set filterByCity = app.request.query.get('filterByCity') %}
+{% set filterByCategory = app.request.query.get('filterByCategory') %}
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+{% set route = app.request.attributes.get('_route') %}
+
+{% block title 'Заявки / Клиенты / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+
+        {% block filters %}
+            {% set sorts = {
+                'unwatched' : {'query' : null, 'title' : 'Непросмотренные'},
+                'watched' : {'query' : 'watched', 'title' : 'Просмотренные'},
+                'all' : {'query' : 'all', 'title' : 'Все'}
+            } %}
+
+            <div class="filters-block multi-column outline-right clearfix">
+                <div class="clearfix">
+                    <div class="filter-viewed-wrapper filter-item float-left">
+                        {% for typeSort in sorts %}
+                            {% if typeSort.query == filter %}
+                                <span class="filter-type clickable link js-popover-opener icon-check black float-left" data-popover="#filters-watch" title="{{ typeSort.title }}">{{ typeSort.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        <div id="filters-watch" class="drop-wrapper favorite-type_links opacity-border">
+                            <ul class="dropdown">
+                                {% for typeSort in sorts %}
+                                    {% if typeSort.query == filter %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">{{ typeSort.title }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="{{ path(route, { filter : typeSort.query, 'page' : null }) }}">{{ typeSort.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="filter-categories-wrapper filter-item float-left">
+                        {% set isActiveCategory = false %}
+                        {% for category in categories %}
+                            {% if category.id == filterByCategory %}
+                                {% set isActiveCategory = true %}
+                                <span class="filter-category clickable link js-popover-opener float-left icon-check black" data-popover="#filters-categories" title="{{ category.title }}">{{ category.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not isActiveCategory %}
+                            {% if filterByCategory == null %}
+                                <span class="filter-category link js-popover-opener clickable float-left icon-check black" data-popover="#filters-categories" title="Все категории">Все категории</span>
+                            {% elseif filterByCategory == 'other' %}
+                                <span class="filter-category link js-popover-opener clickable float-left icon-check black" data-popover="#filters-categories" title="Прочее">Прочее</span>
+                            {% endif %}
+                        {% endif %}
+                        <div id="filters-categories" class="drop-wrapper favorite-type_links opacity-border">
+                            <div class="js-scrollable">
+                                <ul class="dropdown">
+                                    {% if filterByCategory == null %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">Все категории</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="{{ path(route, routeParameters|merge({ filterByCategory : null, filterByCity : null})) }}">Все категории</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for category in categories %}
+                                        {% if category.id == filterByCategory %}
+                                            <li class="drop-item">
+                                                <span class="drop-link current">{{ category.title }}</span>
+                                            </li>
+                                        {% else %}
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="{{ path(route, routeParameters|merge({ filterByCategory : category.id, filterByCity : null})) }}">{{ category.title }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if filterByCategory == 'other' %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">Прочее</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="{{ path(route, routeParameters|merge({ filterByCategory : 'other', filterByCity : null})) }}">Прочее</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-cities-wrapper filter-item float-left">
+                        {% set isActiveCity = false %}
+                        {% for city in cities %}
+                            {% if city.id == filterByCity %}
+                                {% set isActiveCity = true %}
+                                <span class="filter-city link js-popover-opener clickable float-left icon-check black" data-popover="#filters-cities" title="{{ city.title }}">{{ city.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not isActiveCity %}
+                            <span class="filter-city link js-popover-opener clickable float-left icon-check black" data-popover="#filters-cities" title="Все города">Все города</span>
+                        {% endif %}
+                        <div id="filters-cities" class="drop-wrapper favorite-type_links opacity-border">
+                            <div class="js-scrollable">
+                                <ul class="dropdown">
+                                    {% if filterByCity == null %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">Все города</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="{{ path(route, routeParameters|merge({ filterByCity : null})) }}">Все города</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for city in cities %}
+                                        {% if city.id == filterByCity %}
+                                            <li class="drop-item">
+                                                <span class="drop-link current">{{ city.title }}</span>
+                                            </li>
+                                        {% else %}
+                                            <li class="drop-item">
+                                                <a class="drop-link" href="{{ path(route, routeParameters|merge({ filterByCity : city.id})) }}">{{ city.title }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="export-block filter-item float-left">
+                        <a class="export link js-popover-opener" data-popover="#export-demands">Экспорт</a>
+
+                        <div id="export-demands" class="drop-wrapper export-feed_links opacity-border">
+                            <div class="dropdown">
+                                <div class="export-links block clearfix">
+                                    <p class="title export link">Экспорт</p>
+                                    <a class="button small-btn blue-bg float-left ie-radius" data-href="{{ path('MetalPrivateOfficeBundle:Demands:export', app.request.query.all()|merge(app.request.attributes.get('_route_params'))|merge({'format': 'xlsx'})) }}">XLSX</a>
+                                    <a class="button small-btn blue-bg float-left ie-radius" data-href="{{ path('MetalPrivateOfficeBundle:Demands:export', app.request.query.all()|merge(app.request.attributes.get('_route_params'))|merge({'format': 'csv'})) }}">CSV</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="filter-period sort-period float-left">
+                        <ul class="sort-period list float-left">
+                            <li class="item float-left">
+                                {{ include('@MetalDemands/Demands/partial/period_filter.html.twig', {
+                                    'demandsCountByPeriod': demandsCountByPeriod,
+                                    'route': route,
+                                    'routeParameters': routeParameters,
+                                    'ignoreEmptyPeriods': false,
+                                }, false) }}
+                            </li>
+                            <li class="item float-left">
+                                {{ include('@MetalProject/partials/datepicker_range.html.twig', {'dateFrom': dateFrom, 'dateTo': dateTo}, false) }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="private-view-category view-category demands">
+            <div class="content-scrollable js-scrollable">
+                <ul class="demands list">
+                    {{ include ('MetalPrivateOfficeBundle:partials:private_demands_list.html.twig', {
+                        'pagerfanta' : pagerfanta,
+                        'company' : company
+                    }, false) }}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'demand'}) }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandAnswerForm') }}
+{% endblock %}

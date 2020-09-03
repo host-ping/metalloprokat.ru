@@ -1,0 +1,46 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a target="_blank"
+                       href="{{ path('admin_metal_grabbers_parseddemand_list', {'filter' :  {'createdAt' : {'value' : { 'start': "-5 day"|date("d.m.Y"), 'end': "now"|date("d.m.Y") } } } } ) }}">Статистика
+                        распарсеных заявок по сайтам за 5 дней.</a>
+                </h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered table-hover table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Сайт</th>
+                        <th>Дата</th>
+                        <th>Спарсено</th>
+                        <th>Обработано</th>
+                        <th>Промодерированно</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for siteId, site in statistics %}
+                        {% for date, counter in site.counters %}
+                            <tr>
+                                {% if loop.first %}
+                                    <td rowspan="5" style="background-color:#f3f4f5">{{ site.site_info.title }}</td>
+                                {% endif %}
+                                <td>{{ formattingHelper.formatDate(counter.date) }}</td>
+                                <td class="text-right {% if counter.total_parsed_demands == 0 %}red-color{% endif %}">{{ counter.total_parsed_demands|number_format_decimal }}</td>
+                                <td class="text-right {% if counter.total_processed_demands == 0 %}red-color{% endif %}">{{ counter.total_processed_demands|number_format_decimal }}</td>
+                                <td class="text-right {% if counter.total_moderated_demands == 0 %}red-color{% endif %}">{{ counter.total_moderated_demands|number_format_decimal }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock block %}

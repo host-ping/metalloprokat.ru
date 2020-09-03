@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service class="Metal\DemandsBundle\Widget\CountingWidget" id="metal_demands.widget.counting_widget">
+            <argument type="service" id="metal.demands.data_fetcher" />
+            <tag name="brouzie_widgets.widget" widget="MetalDemandsBundle:Counting" />
+        </service>
+    </services>
+</container>

@@ -1,0 +1,41 @@
+{% set popupId = 'add-support-request' %}
+
+<div id="{{ popupId }}" class="support-block popup-block opacity-border large"
+     data-popup-template="#{{ popupId }}-template"></div>
+
+<script>
+    $(document).ready(function() {
+        var $popup = $('#{{ popupId }}');
+
+        $popup.bind('response.success', function(e, data) {
+            Brouzie.Popups.closePopup($popup);
+            document.location.href = data.topic.url;
+        });
+    });
+</script>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Добавление заявки</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form" class="popup-form js-ajax-form-submit"
+              action="{{ path('MetalPrivateOfficeBundle:Support:addTopic') }}"
+              novalidate="novalidate"
+              method="post">
+            <fieldset>
+                <div class="field-wrap">
+                    {{ form_widget(form.title, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Проблема', 'data-bind-value' : 'support-text'} }) }}
+                </div>
+                <div class="field-wrap">
+                    {{ form_widget(form.description, {'attr' : {'class' : 'form-textarea ie-radius', 'placeholder' : 'Подробно опишите проблему', 'data-bind-value' : 'support-description'} }) }}
+                </div>
+                <div class="submit-wrapper">
+                    <input class="add-btn button blue-bg ie-radius" type="submit" value="Отправить" />
+                </div>
+            </fieldset>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

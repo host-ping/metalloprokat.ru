@@ -1,0 +1,62 @@
+{% for attribute, attributeValues in attributesCollection %}
+    <div class="size filter">
+        <div class="title">{{ attribute.title }}</div>
+        <div class="loading-mask g-hidden" id="attribute-values-list-{{ attribute.id }}-loading-mask">
+            <div class="spinner"></div>
+        </div>
+        {{ include('@MetalProducts/Products/partial/attribute_values.html.twig', {
+            'category': _options['category'],
+            'attribute': attribute,
+            'loadAttributeValuesRoute': _options['load_attribute_values_route'],
+            'attributesCollection': attributesCollection,
+            'currentAttributesCollection': _options['current_attributes_collection'],
+            'route': _options['route'],
+            'routeParameters': _options['route_parameters'],
+            'isHidden': true,
+            'encodeContent': true,
+        }, false) }}
+    </div>
+{% endfor %}
+
+{% if priceRange and priceRange.max %}
+    <div class="price filter js-slider-range-block">
+        <div class="amount-title clearfix">
+            <div class="title float-left">Цена</div>
+            <span id="amount" class="price-text float-right js-slider-range-amount"></span>
+
+            <input class="min-price js-preload-items-count-on-change js-slider-range-min"
+                   value="{{ app.request.query.get('price_from') }}"
+                   data-initial-value="{{ priceRange.min }}"
+                   type="hidden" name="price_from" />
+
+            <input class="max-price js-preload-items-count-on-change js-slider-range-max"
+                   value="{{ app.request.query.get('price_to') }}"
+                   data-initial-value="{{ priceRange.max }}"
+                   type="hidden" name="price_to" />
+        </div>
+        <div id="slider-range" class="js-slider-range"></div>
+        <div class="price-length clearfix">
+            <span class="price-label float-left">{{ priceRange.min|number_format_decimal({'fraction_digits': 0}) }}</span>
+            <span class="price-label float-right">{{ priceRange.max|number_format_decimal({'fraction_digits': 0}) }}</span>
+        </div>
+    </div>
+{% endif %}
+
+{% if _options['show_company_attrs'] %}
+    <div class="type filter">
+        <ul class="type-list">
+            {% set selectedCompanyAttributes = app.request.query.get('cattr')|default([]) %}
+            {% for companyService in companyServices %}
+                <li class="filter-item">
+                    <input name="cattr[]"
+                           value="{{ companyService.id }}"
+                           id="type-{{ companyService.id }}"
+                           {% if companyService.id in selectedCompanyAttributes %}checked="checked"{% endif %}
+                           class="js-styled-checkbox js-preload-items-count-on-change bg-grey"
+                           type="checkbox"/>
+                    <label for="type-{{ companyService.id }}">{{ companyService.title }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.catalog.concrete_data_fetcher"
+                 class="Metal\CatalogBundle\DataFetching\CatalogProductsDataFetcher" public="false">
+            <argument type="service" id="sphinxy.default_connection" />
+        </service>
+
+        <service id="metal.catalog.data_fetcher" class="Metal\ProjectBundle\DataFetching\Sphinxy\SphinxyDataFetcher">
+            <argument type="service" id="sphinxy.default_connection" />
+            <argument type="service" id="metal.catalog.concrete_data_fetcher" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="metal.catalog.concrete_entity_loader"
+                 class="Metal\CatalogBundle\DataFetching\CatalogProductsEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.catalog.entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.catalog.concrete_entity_loader" />
+        </service>
+
+        <service id="metal.catalog.brand.concrete_entity_loader"
+                 class="Metal\CatalogBundle\DataFetching\CatalogBrandsEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.catalog.brand.entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.catalog.brand.concrete_entity_loader" />
+        </service>
+
+        <service id="metal.catalog.manufacturer.concrete_entity_loader"
+                 class="Metal\CatalogBundle\DataFetching\CatalogManufacturersEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.catalog.manufacturer.entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.catalog.manufacturer.concrete_entity_loader" />
+        </service>
+
+
+        <service id="metal.catalog.admin.product" class="Metal\CatalogBundle\Admin\ProductAdmin">
+            <argument>metal.catalog.admin.product</argument>
+            <argument>Metal\CatalogBundle\Entity\Product</argument>
+            <argument>MetalCatalogBundle:ProductAdmin</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="slugify" />
+
+            <tag name="sonata.admin" manager_type="orm" persist_filters="true" group="catalog" label="Продукты" />
+        </service>
+
+        <service id="metal.catalog.catalog_products_indexer" class="Metal\CatalogBundle\Indexer\CatalogProductIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="catalog_products" />
+        </service>
+
+        <service id="metal.catalog.admin.product_city" class="Metal\CatalogBundle\Admin\ProductCityAdmin">
+            <argument>metal.catalog.admin.product_city</argument>
+            <argument>Metal\CatalogBundle\Entity\ProductCity</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="catalog" show_in_dashboard="false" label="Города" />
+        </service>
+
+        <service id="metal.catalog.admin.product_attribute_value"
+                 class="Metal\CatalogBundle\Admin\ProductAttributeValueAdmin">
+            <argument>metal.catalog.admin.product_attribute_value</argument>
+            <argument>Metal\CatalogBundle\Entity\ProductAttributeValue</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="catalog" show_in_dashboard="false" label="Атрибуты" />
+        </service>
+
+        <service id="metal.catalog.admin.manufacturer" class="Metal\CatalogBundle\Admin\ManufacturerAdmin">
+            <argument>metal.catalog.admin.manufacturer</argument>
+            <argument>Metal\CatalogBundle\Entity\Manufacturer</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="catalog" label="Производители" />
+        </service>
+
+        <service id="metal.catalog.admin.brand" class="Metal\CatalogBundle\Admin\BrandAdmin">
+            <argument>metal.catalog.admin.brand</argument>
+            <argument>Metal\CatalogBundle\Entity\Brand</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="catalog" label="Бренды" />
+        </service>
+
+        <service id="metal.catalog.admin.product_review" class="Metal\CatalogBundle\Admin\ProductReviewAdmin">
+            <argument>metal.catalog.admin.product_review</argument>
+            <argument>Metal\CatalogBundle\Entity\ProductReview</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="sonata.admin" manager_type="orm" group="catalog" label="Отзывы о продуктах" />
+        </service>
+
+        <service id="metal.catalog.sitemap_listener" class="Metal\CatalogBundle\EventListener\SitemapListener">
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <argument>%project.catalog_enabled%</argument>
+            <argument type="service" id="metal.catalog.data_fetcher" />
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+            <tag name="presta.sitemap.listener" />
+        </service>
+
+        <service id="metal.catalog.admin.block.added_products" class="Metal\CatalogBundle\Admin\Block\AddedProductBlockService">
+            <argument>metal.catalog.admin.block.added_products</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+    </services>
+</container>

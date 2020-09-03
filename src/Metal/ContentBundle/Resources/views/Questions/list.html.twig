@@ -1,0 +1,51 @@
+{% extends 'MetalContentBundle::_content_layout.html.twig' %}
+{% set contentSeoHelper = brouzie_helper('MetalContentBundle:Seo') %}
+
+{% block title %}
+    {% set page = app.request.query.get('page') %}
+    {% if category %}
+        {{ contentSeoHelper.getMetaTitleForContentEntryPages(category)|capitalize }}{{ page ? ' — страница '~page : '' }}
+    {% else %}
+        {{ contentSeoHelper.getMetaTitleForAllQuestionsPage() }}{{ page ? ' — страница '~page : '' }}
+    {% endif %}
+{% endblock %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalContentBundle:Seo').getAdditionalMetaTagsForContentQuestions()|raw }}
+{% endblock %}
+
+{% block meta_description %}
+    {% if category %}
+        {{ category.metadata.description ?: category.parent.metadata.description }}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbsRoute = 'MetalContentBundle:Questions:list' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block inside_left %}
+    <div id="msg" class="g-hidden">
+        <div class="alert alert-success">
+            Ваша заявка на добавление вопроса отправлена!
+        </div>
+    </div>
+
+    {{ include ('@MetalContent/partial/sorts_and_filters.html.twig', {
+        'entry_type' : 'question'
+    }, false) }}
+
+    <div class="view-category products questions js-calc-height">
+        <ul class="product list">
+            {{ include ('@MetalContent/partial/list_content_entries.html.twig', {
+                'pagerfanta' : pagerfanta
+            }, false) }}
+        </ul>
+    </div>
+{% endblock inside_left %}
+
+{% block inside_right %}
+    {{ brouzie_render_widget('MetalContentBundle:ContentEntry', {'entry_type' : 'ENTRY_TYPE_TOPIC'}) }}
+{% endblock inside_right %}

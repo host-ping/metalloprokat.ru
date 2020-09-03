@@ -1,0 +1,71 @@
+{% set popupId = 'add-product' %}
+
+<div id="{{ popupId }}-popup" data-popup-template="#{{ popupId }}-template" class="add-product-block popup-block opacity-border large"></div>
+
+<script type="text/ng-template" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Добавить товар</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              action="{{ path('MetalPrivateOfficeBundle:Product:save') }}"
+              data-file-upload="productAddFileUploadOptions"
+              data-replace-file-input="false"
+              data-ajax-form="productAddAjaxFormOptions"
+              method="post"
+              enctype="multipart/form-data"
+              class="add-product-form popup-form"
+              novalidate="novalidate"
+                >
+            <fieldset>
+                <div class="clearfix">
+                    <div class="data-wrapper float-left">
+                        <div class="field-wrap">
+                            {{ form_widget(form.title, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Название' }}) }}
+                        </div>
+                        <div class="field-wrap">
+                            {{ form_widget(form.size, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : tokens.product_volume_title|capitalize }}) }}
+                        </div>
+                        <div class="group clearfix">
+                            <div class="product-price-wrapper field-wrap float-left">
+                                {{ form_widget(form.price, {'attr' : {'class' : 'product-price form-text ie-radius', 'placeholder' : 'Цена' }}) }}
+                                <span class="suffix">
+                                    <span class="{{ company.country.currency.symbolClass }}"></span>.
+                                    <span class="currency {% if company.country.currency.symbolClass %}g-hidden{% endif %}">{{ company.country.currency.token }}.</span>
+                                </span>
+                            </div>
+                            <div class="product-hundredweight-wrapper field-wrap float-left">
+                                {{ form_widget(form.measureId, {'attr' : {'class': 'form-select', 'styled-select': ''} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-wrapper float-left">
+                        <label class="file-upload">
+                            <div class="img is-bordered">
+                                <span class="no-photo" ng-class="{'file-added': productPhotoFile}"></span>
+                            </div>
+                            {% if company.packageChecker.isAllowedConnectWithPhoto() %}
+                                {{ form_widget(form.image.uploadedPhoto, {'attr': {'file-model': 'productPhotoFile'}}) }}
+                            {% else %}
+                                {{ form_widget(form.image.uploadedPhoto, {'attr': {'file-model': 'productPhotoFile', 'class': 'js-popup-opener', 'data-popup': '#complete-package-photos'}}) }}
+                            {% endif %}
+
+                        </label>
+                    </div>
+                </div>
+                <div class="field-wrap">
+                    {{ form_widget(form.description, {'attr': {'class' : 'form-textarea ie-radius', 'placeholder' : 'Описание'}}) }}
+                </div>
+                <div class="submit-wrapper">
+                    <input class="add-btn button blue-bg ie-radius" type="submit" value="Добавить"/>
+                    <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </fieldset>
+            {{ form_widget(form.category, {'attr' : {'class' : 'g-hidden'}}) }}
+            {{ form_widget(form.branchOffice, {'attr' : {'class' : 'g-hidden', 'value' : '<%=filial.id%>'}}) }}
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set url = 'http://webmaster.yandex.ua/site/?host='~object.yandexSiteId %}
+    <a href="{{ url }}" target="_blank" rel="noopener noreferrer">{{ object.yandexSiteId }}</a>
+{% endblock %}

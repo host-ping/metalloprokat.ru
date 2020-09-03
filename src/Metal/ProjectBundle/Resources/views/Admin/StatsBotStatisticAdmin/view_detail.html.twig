@@ -1,0 +1,158 @@
+{% extends admin_pool.getTemplate('layout') %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">Статистика для {{ value }}</li>
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        #next,
+        #prev {
+            color: #333;
+            display: inline-block;
+            font: normal bold 4em Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+            text-decoration: none;
+            width: auto;
+        }
+
+        #next,
+        #prev {
+            padding: 0.5em 1.5em
+        }
+
+        #next {
+            text-align: right
+        }
+
+        #next:before,
+        #next:after,
+        #prev:before,
+        #prev:after {
+            background: #333;
+            -moz-border-radius: 0.25em;
+            -webkit-border-radius: 0.25em;
+            border-radius: 0.25em;
+            content: "";
+            display: block;
+            height: 0.5em;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 1em;
+        }
+
+        #prev:before,
+        #prev:after {
+            left: 0
+        }
+
+        #next:before,
+        #prev:before {
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        #next:after,
+        #prev:after {
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+
+        #prev:after,
+        #next:before {
+            margin-top: -.36em
+        }
+
+        #next:hover,
+        #next:focus,
+        #prev:hover,
+        #prev:focus {
+            color: #c00
+        }
+
+        #next:hover:before,
+        #next:hover:after,
+        #next:focus:before,
+        #next:focus:after,
+        #prev:hover:before,
+        #prev:hover:after,
+        #prev:focus:before,
+        #prev:focus:after {
+            background: #c00
+        }
+
+        /* container styles  */
+
+        nav {
+            text-align: center
+        }
+    </style>
+
+
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <a href="{{ path('sonata_admin_stats_bots_statistic_view_detail', app.request.query.all|merge({'date': prevDate|date('Y-m-d') })) }}"
+                   id="prev">{{ prevDate|format_date }}</a>
+                {% if nextDate %}
+                    <a href="{{ path('sonata_admin_stats_bots_statistic_view_detail', app.request.query.all|merge({'date': nextDate|date('Y-m-d') })) }}"
+                       id="next">{{ nextDate|format_date }}</a>
+                {% endif %}
+            </h3>
+        </div>
+        <div class="box-body">
+
+            {% set headers = {
+            'for_user_agent': 'Статистика по UserAgent',
+            'for_ip': 'Статистика по IP',
+            'for_city': 'Статистика по Городам',
+            'for_category': 'Статистика по Категориям',
+            } %}
+
+            {% for key, stat in statistics if stat|length %}
+                <h3>{{ headers[key]|raw }}</h3>
+                <table class="table table-bordered table-hover sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th width="10px">
+                            №
+                        </th>
+                        <th width="90px">
+                            Значение
+                        </th>
+                        <th width="90px">
+                            count
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for el in stat %}
+                        <tr>
+                            <td class="text-right" width="10px;">
+                                <b>{{ loop.index }}</b>
+                            </td>
+                            <td class="text-left" width="200px;">
+                                <b>{{ el['value'] }}</b>&nbsp;
+                                {% if key == 'for_ip' %}<a href="http://ipinfo.io/{{ el['value'] }}" target="_blank">
+                                        Проверить</a>{% endif %}
+                            </td>
+                            <td class="text-right" width="200px;">
+                                <b>{{ el['_count']|number_format_decimal }}</b>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

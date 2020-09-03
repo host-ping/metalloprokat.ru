@@ -1,0 +1,36 @@
+'MetalCatalogBundle:Manufacturers:list_category_subdomain':
+    path:      /{category_slug}/manufacturers/
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults: { _controller: MetalCatalogBundle:Manufacturers:list, subdomain: www, tab: manufacturers, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+'MetalCatalogBundle:Brands:list_category_subdomain':
+    path:      /{category_slug}/brands/
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults: { _controller: MetalCatalogBundle:Brands:list, subdomain: www, tab: brands, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+'MetalCatalogBundle:Products:list_category_subdomain':
+    path:      /{category_slug}/products/
+    host:      "{subdomain}.{base_host}"
+    condition: "request.attributes.has('category')"
+    defaults: { _controller: MetalCatalogBundle:Products:list, subdomain: www, tab: catalog_products, base_host: %base_host% }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+
+
+'MetalCatalogBundle:Product:view':
+    path:     /{category_slug}/{id}
+    condition: "request.attributes.has('category') and request.attributes.get('catalog_product_view')"
+    host:      "{subdomain}.{base_host}"
+    defaults: { _controller: MetalCatalogBundle:Product:view, subdomain: www, base_host: %base_host% }
+    requirements:
+        id: \d+
+        category_slug: %category_with_parameters_slug_regex%
+        base_host: .+

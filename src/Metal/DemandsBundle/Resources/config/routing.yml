@@ -1,0 +1,138 @@
+MetalDemandsBundle:Demands:informer:
+    path:      /netcat/modules/informer/demand.php
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalDemandsBundle:Demands:informer }
+
+MetalDemandsBundle:Demands:informerVersion:
+    path:      /netcat/modules/informer/update.php
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalDemandsBundle:Demands:informerVersion }
+
+MetalDemandsBundle:Demands:searchSuggest:
+    path:      /demand/search-suggest/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalDemandsBundle:Suggest:searchSuggest }
+
+MetalDemandsBundle:Api:territorial:
+    path:      /api/demands/territorial.json
+    defaults:  { _controller: MetalDemandsBundle:Api:territorial }
+
+MetalDemandsBundle:Demands:search:
+    path:      /demand/search/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalDemandsBundle:Demands:search}
+
+MetalDemandsBundle:Demands:list:
+    path:      /demand/
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalDemandsBundle:Demands:list}
+
+MetalDemandsBundle:Demands:list_subdomain:
+    path:      /demand/
+    host:      "{subdomain}.%base_host%"
+    defaults:  { _controller: MetalDemandsBundle:Demands:list}
+
+MetalDemandsBundle:Demand:answer:
+    path:   /spros/answer/{id}
+    methods:  [POST]
+    defaults:  { _controller: MetalDemandsBundle:Demand:answer}
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:Demand:show:
+    path:   /spros/show/{id}.html
+    defaults:  { _controller: MetalDemandsBundle:Demand:show}
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:Demand:confirmDemandFromPossibleUser:
+   path:   /demand/confirm
+   defaults:  { _controller: MetalDemandsBundle:Demand:confirmDemandFromPossibleUser }
+
+MetalDemandsBundle:Demand:save_private_form:
+    path:  /spros/private/form
+    defaults: { _controller: MetalDemandsBundle:Demand:saveForm, is_private: true}
+
+MetalDemandsBundle:Demand:save_form:
+    path:  /spros/form
+    defaults: { _controller: MetalDemandsBundle:Demand:saveForm, is_private: false}
+
+MetalDemandsBundle:Default:index:
+    path:   /demands/
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    'MetalDemandsBundle:Default:index.html.twig'
+    host: %host_prefix%%base_host%
+
+MetalDemandsBundle:Default:index_subdomain:
+    path:      /demands/
+    host:      "{subdomain}.%base_host%"
+    condition: "request.attributes.has('city') or request.attributes.has('region')"
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    'MetalDemandsBundle:Default:index.html.twig'
+
+MetalDemandsBundle:Api:getDemandsCount:
+    path:   /demands-count/{category_id}
+    host:     "{subdomain}.%base_host%"
+    methods:  [POST]
+    defaults:  { _controller: MetalDemandsBundle:Api:getDemandsCount }
+    requirements:
+        category_id: \d+
+
+MetalDemandsBundle:Demands:redirectFromSpros:
+    path:      /spros/
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: FrameworkBundle:Redirect:redirect, route: MetalDemandsBundle:Demands:list }
+
+MetalDemandsBundle:Demands:redirectFromOldDemandView:
+    path:      /spros/spros_{id}.html
+    host:      %host_prefix%%base_host%
+    defaults:  { _controller: MetalDemandsBundle:Demand:redirectFromOldDemandView }
+    requirements:
+      id: \d+
+
+MetalDemandsBundle:Demands:export:
+  path: /demands/export/{format}
+  defaults: {_controller: MetalDemandsBundle:Demands:export, subdomain: 'www' }
+  host: "{subdomain}.%base_host%"
+  requirements:
+      format: xlsx|csv
+
+MetalDemandsBundle:DemandFile:downloadFile:
+    path: /demands/demand_{id}/download_file
+    defaults: { _controller: MetalDemandsBundle:DemandFile:downloadFile }
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:DemandFile:downloadFileFromCommand:
+    path: /demands/download/{id}
+    defaults: { _controller: MetalDemandsBundle:DemandFile:downloadFileFromCommand }
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:DemandFile:downloadFileFromArchive:
+    path: /demand_{id}/download_my_file
+    defaults: { _controller: MetalDemandsBundle:DemandFile:downloadFileFromArchive }
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:DemandFile:downloadFileFromPrivate:
+    path: /demand_{id}/download_file
+    defaults: { _controller: MetalDemandsBundle:DemandFile:downloadFileFromPrivate }
+    requirements:
+        id: \d+
+
+MetalDemandsBundle:Api:getAttributeValues:
+    path:      /api/demands/get_attributes/{category_id}/{attribute_id}
+    host:      "{subdomain}.{base_host}"
+    methods:  [POST]
+    defaults: { _controller: MetalDemandsBundle:Api:getAttributeValues, subdomain: www, base_host: %base_host% }
+    requirements:
+        category_id: \d+
+        attribute_id: \d+
+        base_host: .+
+
+MetalDemandsBundle:Telegram:callback:
+    path: /tg/callback
+    defaults: { _controller: MetalDemandsBundle:Telegram:callback }

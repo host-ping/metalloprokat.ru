@@ -1,0 +1,115 @@
+{% extends '@markup/private/archive/_archive_layout.html.twig' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'callbacks' %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="content-scrollable js-scrollable">
+            <ul class="callback-list callback-archive private-fix-width">
+                <li class="item clearfix">
+                    <div class="date-text float-left is-gradiented-bottom">
+                        Для Айрон-ЕКБ asdg asdfg sdgh s
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            <span class="is-gradiented">Арматура А3 12 23123 235252 678678</span>
+                            Екатеринбург
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text ">
+                            <strong>Перезвонили</strong>
+                            <span class="js-processed-date">28 май 2014 16:34</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="date-text float-left is-gradiented-bottom">
+                        Для Айрон-ЕКБ
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            <span class="is-gradiented">Арматура А3 12</span>
+                            Екатеринбург
+                        </p>
+                    </div>
+                    <div class="status float-left">
+
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="date-text float-left is-gradiented-bottom">
+                        Для Айрон-ЕКБ
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="icon-clip is-gradiented-bottom">
+                        прикреплен к товару<a href="#" class="link"> Арматура 12 А3 </a>
+
+                        </p>
+                        <p class="text">Екатеринбург</p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text ">
+                            <strong>Перезвонили</strong>
+                            <span class="js-processed-date">28 май 2014 16:34</span>
+                        </p>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="date-text float-left is-gradiented-bottom">
+
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            Со списка товаров
+                        </p>
+                    </div>
+                    <div class="status float-left">
+
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <div class="date-text float-left is-gradiented-bottom">
+                        Для Айрон-ЕКБ
+                    </div>
+                    <div class="date-text float-left">
+                        12 мар 2013 в 15:31
+                    </div>
+                    <div class="page-from float-left">
+                        <p class="text">
+                            <span class="is-gradiented">Арматура А3 12</span>
+                            Екатеринбург
+                        </p>
+                    </div>
+                    <div class="status float-left">
+                        <p class="text ">
+                            <strong>Перезвонили</strong>
+                            <span class="js-processed-date">28 май 2014 16:34</span>
+                        </p>
+                    </div>
+                </li>
+
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}

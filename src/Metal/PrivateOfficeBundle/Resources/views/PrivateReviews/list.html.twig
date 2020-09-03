@@ -1,0 +1,101 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Отзывы / Клиенты / '~titleSuffix %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set isCompanyModerator = is_granted('COMPANY_MODERATOR', company) %}
+
+{% set defaultOptions = {
+    'reviews_from_mini_site': true
+} %}
+
+{% set options = defaultOptions|merge(options|default({})) %}
+
+{% set reviewsControllerOptions = {
+    'loadMoreReviewsUrl': path('MetalPrivateOfficeBundle:Reviews:list'),
+} %}
+
+{% block content %}
+    {% set notAnswered = app.request.query.get('notAnswered') %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <form class="js-filter-form" action="{{ path('MetalPrivateOfficeBundle:Reviews:list') }}"
+                          method="get">
+                        <input id="no-answer" {% if (notAnswered) %} checked="checked" {% endif %} value="1"
+                               name="notAnswered" type="checkbox"
+                               class="js-styled-checkbox bg-grey js-filter-check"/>
+                        <label for="no-answer" class="clickable">Без ответа</label>
+                    </form>
+
+                </div>
+            </div>
+        {% endblock %}
+
+        <div class="content-scrollable js-scrollable">
+            <div class="reviews list private-fix-width">
+                <div ng-controller="Metal.Core as coreController" ng-cloak>
+                    <div ng-controller="Metal.Reviews as reviewController" ng-init='reviews.addAll({{ reviews|json_encode|raw }}); hasMore = {{ hasMore|json_encode|raw }} ; reviewController.options = {{ reviewsControllerOptions|json_encode|raw }};'>
+                        <div ng-repeat="review in reviews.all()" ng-class="{'icon-positive' : review.isCommentPositive, 'icon-negative' : !review.isCommentPositive}" class="item">
+                            <div class="heading">
+                                <span class="user"><%= review.firstName %>,</span>
+                                <span class="updated-date"><%= review.createdAt %> назад</span>
+
+                                <p class="text" ng-if="review.comment"><%= review.comment %></p>
+                            </div>
+                            <div class="review-wrapper" ng-if="review.answer">
+                                <p class="gray60-color">{% if isCompanyModerator %}Ваш ответ{% else %}Ответ{% endif %}:</p>
+                                <p>
+                                    <strong><%= review.answer.comment %></strong>
+                                </p>
+                            </div>
+                            {% if isCompanyModerator and options.reviews_from_mini_site %}
+                                <div class="clearfix" ng-if="!review.answer">
+                                    <span class="review-wrapper float-left primary review-btn button clickable blue-bg ie-radius"
+                                          ng-if="review.isModerated"
+                                          ng-click='reviewController.popups.open({"popup": "#review-answer", "data": {"currentReview" : review}}, $event.currentTarget)'>
+                                        Ответить
+                                    </span>
+                                    <div class="submit-wrapper float-left" ng-if="!review.isModerated">
+                                        <a class="moderate-btn button green-bg width-141 clickable ie-radius"
+                                           ng-if="!review.isModerated"
+                                           ng-click="reviewController.moderateReview(review)"
+                                                >
+                                            Опубликовать
+                                            <div class="loading-mask" ng-if="review.isProcessing">
+                                                <div class="spinner"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if isCompanyModerator and options.reviews_from_mini_site %}
+                                <span class="close-item icon-popup-close clickable"
+                                      ng-click="coreController.confirm('Удалить отзыв?', [reviewController.deleteReview, [review]])"></span>
+                            {% endif %}
+                            <div class="items overflow" ng-class="{'g-hidden' : !review.isDeleted}"></div>
+                        </div>
+                        <div class="see-more-block-wrapper" ng-if="hasMore">
+                            <div class="see-more-block">
+                                <a class="see-more button ie-radius"
+                                   ng-click="reviewController.loadMoreReviews()"
+                                >Показать еще...</a>
+
+                                <div class="loading-mask" ng-show="reviewsLoading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalCompaniesBundle:ReviewAnswerForm') }}
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Документы / Мини-сайт / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@MetalPrivateOfficeBundle/Resources/public/js/controllers/CompanyFile.js'
+    combine = true %}
+    <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right"
+         ng-controller="Metal.Core as coreController">
+        <div class="private-fix-width"
+             ng-controller="Metal.CompanyFile as companyFileController">
+            {{ block('tabs') }}
+            {% block filters %}
+                <div class="filters-block clearfix">
+                    <form class="add-document form" id="add-document form"
+                          action="{{ path('MetalPrivateOfficeBundle:MiniSite:documents') }}"
+                          data-replace-file-input="false"
+                          method="post"
+                          enctype="multipart/form-data"
+                          novalidate="novalidate"
+                          data-ajax-form="documentAddAjaxFormOptions"
+                          data-file-upload="productsImportFileUploadOptions"
+                            >
+                        <fieldset>
+                            <div class="field-wrap float-left">
+                                <label class="file-upload">
+                                    <span class="file-btn button white-bg is-bordered ie-radius" ng-if="file"><%= file.name %></span>
+                                    <span class="file-btn button white-bg is-bordered ie-radius" ng-if="!file">Выбрать файл...</span>
+
+                                    {{ form_widget(form.uploadedFile, {'attr' : {'class' : 'file-btn button white-bg is-bordered ie-radius', 'file-model': 'file'  }}) }}
+                                </label>
+                            </div>
+                            <div class="submit-wrapper field-wrap float-left">
+                                <input class="add-btn button blue-bg ie-radius" type="submit" value="Добавить" />
+
+                                <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        {{ form_rest(form) }}
+                    </form>
+                </div>
+            {% endblock %}
+
+            {% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+            <div ng-init='companyFileController.icons = {{ companyMacroses.fileTypeIconsAsJson }}; companyFileController.initializeDocuments({{ documents|json_encode|raw }})'>
+                <div class="content-scrollable js-scrollable">
+                    <ul class="documents-list private-fix-width">
+                        <li class="item clearfix" ng-repeat="document in documents.all()">
+                            <div ng-if="!editableDocument || editableDocument.id != document.id" class="fix-holder">
+                                <div class="doc-photo float-left">
+                                    <img
+                                            width="35"
+                                            ng-src="<%= document.iconUrl %>"
+                                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                                </div>
+                                <div class="title-text float-left">
+                                    <p class="edited ie-radius"
+                                       ng-click="companyFileController.editDocument(document)"><%= document.title %></p>
+                                </div>
+                                <div class="size-text float-left"
+                                     ng-click="companyFileController.editDocument(document)">
+                                    <%= document.fileSize|filesize %>
+                                </div>
+                                <div class="status float-left">
+                                    <a class="download-btn button blue-bg ie-radius float-left" ng-href="<%= document.downloadUrl %>">Скачать</a>
+                                    <span class="delete-btn button red-bg ie-radius float-left"
+                                          ng-click="coreController.confirm('Вы действительно хотите удалить файл?', [companyFileController.deleteCompanyFile, [document]])">Удалить</span>
+                                </div>
+                            </div>
+                            <div ng-if="editableDocument && editableDocument.id == document.id" class="change-holder">
+                                <form class="add-document form" id="add-document form"
+                                      action="<%= editableDocument.saveUrl %>"
+                                      data-replace-file-input="false"
+                                      data-ajax-form="documentEditAjaxFormOptions"
+                                      method="post"
+                                      enctype="multipart/form-data"
+                                      novalidate="novalidate"
+                                        >
+                                    <div class="doc-photo float-left">
+                                        <img
+                                                width="35"
+                                                ng-src="<%= editableDocument.iconUrl %>"
+                                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                                    </div>
+                                    <div class="title-text float-left">
+                                        {{ form_widget(editForm.title, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Название', 'ng-model' : 'editableDocument.title' }}) }}
+                                    </div>
+                                    <div class="size-text float-left">
+                                        <%= document.fileSize|filesize %>
+                                    </div>
+                                    <div class="status float-left">
+                                        <button class="delete-btn button blue-bg ie-radius">Сохранить</button>
+                                        {#<div class="loading-mask">#}
+                                        {#<div class="spinner"></div>#}
+                                        {#</div>#}
+                                    </div>
+
+                                    {{ form_rest(editForm) }}
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                    <div ng-show="globalOperationProcessing">
+                        <div class="items overflow">
+                        </div>
+                        <div class="loading-mask big">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {% if not company.packageChecker.isDocumentsAllowed() %}
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Стандартный, расширенный и полный пакеты дают возможность загружать документы компании', 'popup_non_closable' : true} ) }}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Brouzie.Popups.openPopup($('#complete-package'));
+            });
+        </script>
+    {% endif %}
+{% endblock %}

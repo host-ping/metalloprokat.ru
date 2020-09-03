@@ -1,0 +1,65 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}СКИДКА 25% НА ВЕСЬ ПРАЙС + 1 МЕСЯЦ БЕСПЛАТНОГО ДОСТУПА НА МЕТАЛЛОПРОКАТ.РУ{% endblock subject %}
+
+{% block body_text -%}
+    Уважаемые наши партнеры!
+
+    Скидка или бонус? Не надо выбирать: скидка 25% на весь прайс + 1 месяц бесплатного доступа
+
+    Всем, кто ранее не пользовался услугами Metalloprokat.ru:
+
+    Успейте до 15.05.2020г. подключить доступ к заявкам и размещению на портале Metalloprokat.ru с 25% скидкой на весь прайс:
+
+    На 3 мес + 1 мес - Расширенный 18 000 руб. вместо 24 000 руб. или Полный 21 000 руб. вместо 28 000 руб.
+
+    На 6 мес + 1 мес - Расширенный 29 250 руб. вместо 39 000 руб. или Полный 35 250 руб. вместо 47 000 руб.
+
+    На 1 год + 1 мес - Расширенный 45 750 руб. вместо 61 000 руб. или Полный 55 500 руб. вместо 74 000 руб.
+
+
+    ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ
+
+    Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: https://corp.metalloprokat.ru/services/
+
+    С ценами на баннерную рекламу Вы можете ознакомиться здесь: https://corp.metalloprokat.ru/media/
+
+    или по телефону +7 (495) 268-02-85
+
+    * кроме подключения на 1 месяц
+
+    {{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p>Уважаемые наши партнеры!</p>
+
+    <p>Скидка или бонус? Не надо выбирать: скидка 25% на весь прайс + 1 месяц бесплатного доступа *</p>
+
+    <p>Успейте до 15.05.2020г. подключить доступ к заявкам и размещению на портале Metalloprokat.ru с 25% скидкой на весь прайс:</p>
+    <p>Скидка на весь прайс услуг* и баннерную рекламу для тех, кто не пользовался услугами metalloprokat.ru:</p>
+    <p>
+        На 3 мес + 1 мес - Расширенный <strike style="color: red;">24 000 руб.</strike> <b style="color: green; font-size: 14px;">18 000 руб.</b> или Полный <strike style="color: red">28 000 руб.</strike> <b style="color: green; font-size: 14px;">21 000 руб.</b>
+    </p>
+    <p>
+        На 6 мес + 1 мес - Расширенный <strike style="color: red;">39 000 руб.</strike> <b style="color: green; font-size: 14px;">29 250 руб.</b> или Полный <strike style="color: red">47 000 руб.</strike> <b style="color: green; font-size: 14px;">35 250 руб.</b>
+    </p>
+    <p>
+        На 1 год + 1 мес - Расширенный <strike style="color: red;">61 000 руб.</strike> <b style="color: green; font-size: 14px;">45 750 руб.</b> или Полный <strike style="color: red">74 000 руб.</strike> <b style="color: green; font-size: 14px;">55 500 руб.</b>
+    </p>
+
+
+    <p>ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ</p>
+    <p>Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: <a href="https://corp.metalloprokat.ru/services/">corp.metalloprokat.ru/services</a></p>
+    <p>С ценами на баннерную рекламу Вы можете ознакомиться <a href="https://corp.metalloprokat.ru/media/">здесь</a></p>
+    <p>или по телефону +7 (495) 268-02-85</p>
+    <p>* кроме подключения на 1 месяц</p>
+    <br/>
+    <p>С уважением, <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+
+    {% if hashKey is defined %}
+        <img src="{{- url('MetalNewsletterBundle:NewsletterViewer:track', {
+            'hashKey': hashKey
+        } ) -}}" />
+    {% endif %}
+{% endblock %}

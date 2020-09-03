@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% block field %}
+    {% set imageUrl = imageHelper.getPhotoUrlForProduct(object, 'sq40', 'admin') %}
+    {% set imageUrl250 = imageHelper.getPhotoUrlForProduct(object, 'sq250', 'admin') %}
+    {% if imageUrl %}
+        <img style="max-width: 40px; max-height: 40px" src="{{ imageUrl }}" rel="popover" data-img="{{ imageUrl250 }}" />
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+parameters:
+    hostnames_map:
+        # metalloprokat.ru
+        metalloprokat.dev:
+            country_id: 165
+            title: Металлопрокат.ру
+            currency_id: 1
+            host_prefix: https
+            # zone_id from cloudflare site
+            cloudflare_zone_id: ''
+        # metalloprokat.co.ua
+        metalloprokat-ua.dev:
+            country_id: 209
+            title: Металлопрокат
+            currency_id: 4
+            host_prefix: http
+            cloudflare_zone_id: ''
+        # metalloprokat.kz
+        metalloprokat-kz.dev:
+            country_id: 83
+            title: Металлопрокат
+            currency_id: 5
+            host_prefix: http
+            cloudflare_zone_id: ''
+        # metalaprakat.by
+        metalloprokat-by.dev:
+            country_id: 19
+            title: Металапракат
+            currency_id: 6
+            host_prefix: http
+            cloudflare_zone_id: ''

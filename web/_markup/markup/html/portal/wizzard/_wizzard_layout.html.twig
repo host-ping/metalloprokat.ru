@@ -1,0 +1,58 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+
+{% block menu '' %}
+{% block search_form '' %}
+{% block banner '' %}
+{% block side_announcements '' %}
+{% block breadcrumbs '' %}
+{% block callback '' %}
+
+{% block container_arrtibutes %}
+    class="container wizzard"
+{% endblock %}
+
+{% block header %}
+    <div class="left float-left">
+        <div class="logo float-left">
+            <a href="/">
+                <img src="./markup/img/logo.png" width="36" height="27" alt="металлопрокат.ру"/>
+            </a>
+        </div>
+        <div class="logo-text float-left">
+            <p>
+                <a class="header-logo-text" href="#">металлопрокат.ру</a>
+            </p>
+        </div>
+    </div>
+    {% block login %}
+        <div class="user-block float-right">
+            <a class="login js-popup-opener icon-exit float-right no-margin" data-popup="#login" href="#">Вход в кабинет</a>
+        </div>
+    {% endblock %}
+{% endblock header %}
+{% block content ''%}
+
+{% block footer %}
+    <ul class="footer-links-list first">
+        <li class="item"><p class="support">Техническая поддержка: <span class="support-phone">(495) 984-06-52</span>
+            </p></li>
+    </ul>
+    <ul class="footer-links-list">
+        <li class="item">
+            <p class="copy">Металлопрокат.ру © 2000-2013</p>
+        </li>
+        <li class="item">
+            <a class="agreement" href="#" target="_blank">Пользовательское соглашение</a>
+        </li>
+    </ul>
+    <div class="counters-block clearfix">
+        <a href="#" class="rspm-member float-left">Действительный член РСПМ</a>
+
+        <div class="counter-container float-right">
+            <img src="./markup/pic/counter1.png" width="80" height="31" alt="image description"/>
+            <img src="./markup/pic/counter2.png" width="88" height="31" alt="image description"/>
+        </div>
+    </div>
+{% endblock %}
+
+

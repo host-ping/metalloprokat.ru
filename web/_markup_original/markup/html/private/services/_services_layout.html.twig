@@ -1,0 +1,65 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block user_alert %}
+    <div class="user-alert clearfix">
+        <div class="wrap clearfix">
+            <div class="account-info float-right">
+                <a class="choose-account link" href="#">
+                    <strong>выбрать другой пакет</strong>
+                </a>
+                или
+                <a class="extend-btn button green-bg" href="#">Продлить</a>
+                <span class="close-popup icon-popup-close js-popup-closer clickable"></span>
+            </div>
+
+            <div class="info">
+                <p class="text">До завершения действия расширенного пакета услуг осталось <strong class="days">3 дня</strong></p>
+            </div>
+        </div>
+    </div>
+{% endblock user_alert %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'services' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'services') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/services/services.html.twig') }}">Услуги</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'accounts') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/services/accounts.html.twig') }}">Счета</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'details') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/services/details.html.twig') }}">Реквизиты</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'contract') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/services/contract.html.twig') }}">Договор</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block package %}
+     <div class="extend-package-info clearfix">
+        <div class="package-name float-left">
+            <div class="name">
+                <a class="package-link" href="#">Расширенный пакет</a>
+            </div>
+            <p class="package-valid">
+                Действие услуги до 15 мая / <a href="#">выбрать другой пакет</a>
+            </p>
+        </div>
+         <div class="order-package float-right">
+             <strong class="left-period">Осталось 3 дня</strong>
+             <a class="extend-btn button green-bg js-popup-opener" data-popup="#order-service" href="#">Продлить</a>
+         </div>
+     </div>
+{% endblock package %}
+{% block sidebar %}
+    {% set activeMenu = 'services' %}
+    {{ parent() }}
+{% endblock sidebar %}
+
+
+

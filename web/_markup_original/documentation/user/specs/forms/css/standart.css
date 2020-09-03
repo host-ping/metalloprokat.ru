@@ -1,0 +1,12 @@
+.tag-wrapper{
+    width: auto;
+}
+.radio, .checkbox{
+    margin: 0;
+}
+.tt-dropdown-menu{
+    position: relative;
+}
+.source_example.tags{
+    background-color: #f1f1f1;
+}

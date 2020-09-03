@@ -1,0 +1,22 @@
+{% if imagesHelper is not defined %}
+    {% set imagesHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% endif %}
+
+{% if formattingHelper is not defined %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% endif %}
+
+<div class="comment clearfix">
+    <div class="manager-photo float-left">
+        <div class="pattern-small img-link">
+            {% set avatarUrl = imagesHelper.getAvatarUrl(answer.author, 'sq36') %}
+            {% if avatarUrl %}
+                <img src="{{ avatarUrl }}" alt="{{ answer.author.fullName }}" title="{{ answer.author.fullName }}" />
+            {% endif %}
+        </div>
+    </div>
+    <div class="comment-text float-left">
+        <p class="comment-title">Отвечает {{ answer.author.fullName}}, {{ formattingHelper.formatDateTime(answer.createdAt) }}</p>
+        <strong class="comment-text">{{ answer.message }}</strong>
+    </div>
+</div>

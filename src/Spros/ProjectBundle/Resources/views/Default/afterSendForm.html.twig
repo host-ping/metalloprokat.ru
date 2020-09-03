@@ -1,0 +1,22 @@
+{% extends 'SprosProjectBundle:Default:index.html.twig' %}
+
+{% block redirect_to_form_block '' %}
+
+{% block add_demand_block_additional_class 'disabled' %}
+
+{%- block footer_messages %}
+    <ul id="messages" class="form-message with-margin">
+        {% set messages = app.session.flashbag.get('success_demand') %}
+        {% for message in messages %}
+            <li class="message complete-message">
+                {{ message }}
+            </li>
+        {% endfor %}
+
+        {% for message in app.session.flashbag.get('error') %}
+            <li class="message error-message">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock -%}

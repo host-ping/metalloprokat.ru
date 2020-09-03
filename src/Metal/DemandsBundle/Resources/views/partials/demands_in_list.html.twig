@@ -1,0 +1,49 @@
+{% set projectHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+<ul class="favorites_demands clearfix">
+    {% for favoriteDemand in favoriteDemands %}
+        {% set demandItemsPerDemand = 2 %}
+        <li class="favorite-item clearfix">
+            {% set hasComment = favoriteDemand.comment|length %}
+            <div class="notes-form float-left">
+                <form action="{{ path('MetalUsersBundle:Favorite:addComment', {'id' : favoriteDemand.id, 'object' : 'favorite'}) }}"
+                        method="post"
+                        novalidate="novalidate">
+                    <fieldset>
+                        <div class="note-wrapper is-bordered js-favorite-comment {% if hasComment %} focus {% endif %}" >
+                            <div class="area-wrapper g-hidden" data-favorite="textarea">
+                                <textarea name="form[comment]" id="notearea"
+                                          class="note js-favorite-comment-field ie-radius"></textarea>
+
+                                <div class="send-button-wrapper">
+                                    <input type="submit" class="button send-button gray60-bg js-favorite-comment-submit ie-radius" value="ok"/>
+
+                                    <div class="loading-mask g-hidden">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="placeholder js-placeholder-text">{% if not hasComment %}Написать комментарий{% endif %}</span>
+                            <div class="text-wrapper {% if not hasComment %} g-hidden {% endif %}" data-favorite="text">
+                                <span class="text js-favorite-comment-text">{{ favoriteDemand.comment }}</span>
+                                <span class="date js-favorite-comment-date">{{ hasComment ? projectHelper.formatDateTime(favoriteDemand.commentUpdatedAt) : '' }}</span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="float-left">
+                {{ include('@MetalDemands/partials/demand_in_list.html.twig', {
+                    'demand': favoriteDemand.demand,
+                    'pagerfanta' : pagerfanta,
+                }, false) }}
+            </div>
+        </li>
+    {% endfor %}
+
+    {{ pagerfanta(pagerfanta, 'pagination_twig') }}
+</ul>
+
+
+
+

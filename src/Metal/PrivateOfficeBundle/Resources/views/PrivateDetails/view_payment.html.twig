@@ -1,0 +1,38 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Счета / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% if app.request.query.get('show_flash') %}
+            <div id="msg">
+                <div class="alert-success outline-right">
+                    <div class="alert">
+                        {% for flash in app.session.flashbag.get('success') %}
+                            {{ flash }}<br />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                {{ block('tabs') }}
+                {% block package %}
+                    {% if is_granted('ROLE_SUPPLIER') and is_granted('ROLE_APPROVED_USER') %}
+                        {{ brouzie_render_widget('MetalPrivateOfficeBundle:ShowEndCompanyPackage', {
+                            'company' : app.user.company,
+                            '_template' : '@MetalPrivateOffice/widgets/ShowEndCompanyPackageInPaymentWidget.html.twig',
+                            'always_show' : true
+                        }) }}
+                    {% endif %}
+                {% endblock %}
+
+                {{ include('MetalProjectBundle:partials:payments.html.twig', {
+                    'payments': payments
+                }, false) }}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

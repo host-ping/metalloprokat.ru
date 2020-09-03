@@ -1,0 +1,3 @@
+spros_project:
+    resource: "@SprosProjectBundle/Resources/config/routing.yml"
+    prefix:   /

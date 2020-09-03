@@ -1,0 +1,14 @@
+{% set dataToSend = {
+    'category': _options.category ? _options.category.id : null,
+    'category_slug' : _options.category_slug,
+    'route_type' : _options.route_type,
+    'counter_name' : _options.counter_name,
+    'filter_parameters' : _options.filter_parameters,
+    'is_header': _options.is_header,
+    'landing_id': _options.landing_id
+} %}
+<div id="{{ _options.id }}" ng-controller="{{ _options.ng_controller|default('Metal.CitiesWidgetPopover') }} as citiesWidgetPopoverController"
+     class="drop-wrapper popover-block cities opacity-border"
+     ng-include="'cities-widget'"
+     ng-init='citiesWidgetPopoverController.initialize("{{ _options.id }}", "{{ path(_options.loading_route)}}", {{ dataToSend|json_encode }})'>
+</div>

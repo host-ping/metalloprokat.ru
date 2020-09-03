@@ -1,0 +1,153 @@
+{
+    "name": "symfony/framework-standard-edition",
+    "description": "The \"Symfony Standard Edition\" distribution",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php",
+            "src/Metal/ProjectBundle/Widget/WidgetAbstract.php"
+        ]
+    },
+    "require": {
+        "php": ">=7.1.10",
+        "symfony/symfony": "~2.8",
+        "symfony/cache": "^3.2",
+        "doctrine/dbal": "~2.5",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.6",
+        "twig/twig": "~1.24",
+        "twig/extensions": "~1.0",
+        "symfony/assetic-bundle": "~2.4",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "^5.0.17",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "ptachoire/cssembed": "~1.0",
+        "doctrine/doctrine-migrations-bundle": "1.2.*",
+        "pagerfanta/pagerfanta": "dev-lazy-adapters as 1.0.5",
+        "white-october/pagerfanta-bundle": "~1.0",
+        "knplabs/knp-menu-bundle": "~2.0",
+        "gregwar/form-bundle": "~2.7",
+        "presta/sitemap-bundle": "1.4.*",
+        "smart-core/accelerator-cache-bundle": "^1.2",
+        "juliendidier/buzz-bundle": "dev-master",
+        "zapimir/sypexgeo": "dev-master",
+        "willdurand/geocoder": "dev-sypex-geo-adapter as 1.7-dev",
+        "willdurand/geocoder-bundle": "dev-sypexgeo",
+        "stof/doctrine-extensions-bundle": "1.1.*@dev",
+        "brouzie/sphinxy-bundle": "dev-master",
+        "brouzie/brouzie-crossdomain-auth-bundle": "dev-master",
+        "brouzie/widgets-bundle": "dev-master",
+        "snc/redis-bundle": "^2.0",
+        "predis/predis": "^1.0",
+        "symfony-cmf/routing-bundle": "~1.2",
+        "liuggio/excelbundle": "~2.0",
+        "dompdf/dompdf": "0.6.*",
+        "liip/imagine-bundle": "^1.5",
+        "sonata-project/intl-bundle": "2.2.*@dev",
+        "jh9/robokassa-bundle": "dev-copy-of-master",
+        "vipx/bot-detect-bundle": "~2.0",
+        "ornicar/akismet-bundle": "dev-master",
+        "myclabs/deep-copy": "~1.3",
+        "tedivm/fetch": "~0.6",
+        "egulias/email-validator": "~1.2",
+        "intaro/pinba-bundle": "~0.4",
+        "oro/doctrine-extensions": "~1.0",
+        "excelwebzone/recaptcha-bundle": "dev-master#2b85953d9ceb5719c878a0a1f6ea51fc86397d6c",
+        "cocur/slugify": "dev-patch-2 as 1.4",
+        "helios-ag/fm-bbcode-bundle": "^6.8",
+        "gregwar/captcha-bundle": "2.*",
+        "alchemy/zippy": "^0.4.4",
+        "mxkh/url-finder": "^0.1.8",
+        "jmikola/auto-login-bundle": "~1.0",
+        "vich/uploader-bundle": "^1.6.0",
+        "sonata-project/admin-bundle": "^3.0",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.0",
+        "sonata-project/notification-bundle": "^3.0",
+        "friendsofsymfony/elastica-bundle": "dev-elastica-compat as 4.1.2",
+        "ruflin/elastica": "5.3.0 as 3.2.3",
+        "enqueue/enqueue-bundle": "^0.8.9",
+        "enqueue/amqp-ext": "^0.8.9",
+        "botman/botman": "^2.3",
+        "botman/driver-telegram": "^1.5"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~3.0",
+        "pyrech/composer-changelogs": "^1.3@dev"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Metal\\ProjectBundle\\Composer\\ScriptHandler::buildParameters",
+            "SxGeo\\Composer::installDatabases",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-update-cmd": [
+            "Metal\\ProjectBundle\\Composer\\ScriptHandler::buildParameters",
+            "SxGeo\\Composer::installDatabases",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ]
+    },
+    "conflict": {
+        "ocramius/package-versions": "*",
+        "twig/twig": ">=1.35.1",
+        "sonata-project/notification-bundle": "3.3.1"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "relative",
+        "branch-alias": {
+            "dev-master": "2.8-dev"
+        },
+        "sxgeo-databases": [
+            "SxGeoCity"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/BazingaGeocoderBundle"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/Pagerfanta"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/Geocoder"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/jh9RobokassaBundle"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/slugify"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/EWZRecaptchaBundle"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Koc/FOSElasticaBundle"
+        }
+    ]
+}

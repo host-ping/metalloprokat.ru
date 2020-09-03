@@ -1,0 +1,129 @@
+{% extends '@markup/private/consumers/_private_consumers.html.twig' %}
+{% block title 'Private reviews' %}
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {% block tabs %}
+            {% set activeTab = 'reviews' %}
+            {{ parent() }}
+        {% endblock %}
+        {% block filters %}
+            <div class="filters-block outline-right clearfix">
+                <div class="float-left">
+                    <input id="no-answer" type="checkbox" class="js-styled-checkbox bg-grey"/>
+                    <label for="no-answer">Без ответа</label>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="content-scrollable js-scrollable">
+            <ul class="reviews list private-fix-width">
+                <li class="icon-positive item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Покупал у них старые гвозди. Но гвозди оказались даже старее, чем я ожидал!</p>
+                    </div>
+                    <div class="clearfix">
+                        <div class="review-wrapper float-left">
+                            <a class="review-btn button blue-bg ie-radius" href="#">Ответить</a>
+                        </div>
+                        <div class="submit-wrapper float-left">
+                            <span class="moderate-btn button green-bg width-141 clickable ie-radius">промодерировано</span>
+                        </div>
+                    </div>
+
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="icon-negative item">
+                    <div class="heading">
+                        <a class="user link" href="#">Николай Чистяков</a>,
+                        <span class="updated-date">4 недели назад</span>
+                        <p class="text">Мы заказывали тележку Lema LMF-50. Менеджер , который с нами работал — Палкин Валерий работать не умеет.</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <p class="gray60-color">Ваш ответ:</p>
+                        <p>
+                            <strong>Спасибо, учтем.</strong>
+                        </p>
+                    </div>
+                    <span class="close-item icon-popup-close clickable"></span>
+                </li>
+                <li class="see-more-block-wrapper">
+                    <div class="see-more-block">
+                        <a class="see-more button ie-radius" href="#">показать еще...</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}

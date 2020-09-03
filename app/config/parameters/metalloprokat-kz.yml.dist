@@ -1,0 +1,6 @@
+parameters:
+    base_host: metalloprokat-kz.dev
+    domain_country_id: 83
+    minisite_hostnames_pattern: 'metalloprokat-kz\.dev'
+    project.domains_regex:
+        '.*\.?metalloprokat-kz\.dev': '.metalloprokat-kz.dev'

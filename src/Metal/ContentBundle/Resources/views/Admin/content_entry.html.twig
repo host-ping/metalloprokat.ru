@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_flat_field.html.twig' %}
+
+{% block field %}
+    <td>
+        {% if object.contentEntry is defined %}
+            {% set entry = object.contentEntry %}
+            {% if entry.kind == 'topic' %}
+                <a target="_blank" href="{{ path('admin_metal_content_topic_list', {'filter' : {'id': {'value' : entry.id}}}) }}">{{ entry.title }}</a>
+                (тема, <a target="_blank" href="{{ path('MetalContentBundle:Topic:view', {'id' : entry.id, 'category_slug': entry.category.slugCombined}) }}">ссылка на портал</a>)
+            {% else %}
+                <a target="_blank" href="{{ path('admin_metal_content_question_list', {'filter' : {'id': {'value' : entry.id}}}) }}">{{ entry.title }}</a>
+                (вопрос, <a target="_blank" href="{{ path('MetalContentBundle:Question:view', {'id' : entry.id, 'category_slug': entry.category.slugCombined}) }}">ссылка на портал</a>)
+            {% endif %}
+        {% endif %}
+    </td>
+{% endblock %}

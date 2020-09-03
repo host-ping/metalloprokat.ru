@@ -1,0 +1,256 @@
+
+{# formattingHelper \Metal\ProjectBundle\Helper\Formatting #}
+{# company \Metal\CompaniesBundle\Entity\Company #}
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set company = app.user.company %}
+<div class="clearfix">
+    <div class="left-group float-left">
+        {% if company.isVisibleInAllCountries()  %}
+            <div id="msg">
+                <div class="alert alert-success">
+                    В рамках подключенной услуги ваши товары отображаются во всех городах СНГ, на этой странице можно
+                    уточнить адрес филиала.
+                </div>
+            </div>
+        {% elseif company.isVisibleInAllCities()  %}
+            <div id="msg">
+                <div class="alert alert-success">
+                    В рамках подключенной услуги ваши товары отображаются во всех городах {{ company.country.titleLocative }}, на этой странице можно
+                    уточнить адрес филиала.
+                </div>
+            </div>
+        {% endif %}
+        <form action="{{ path('MetalPrivateOfficeBundle:Cities:simpleSave') }}"
+              class="simple-filial-form js-ajax-form-submit"
+              method="post"
+              novalidate="novalidate"
+              data-success="reload"
+              ng-controller="suggestController"
+              ng-show="!expanded"
+              id="simple-city-form"
+        >
+            <fieldset>
+                <script id="new-city-row" type="text/html">
+                    <li class="item ie-radius js-changed-element">
+                        {{ form_widget(simpleForm.companyCities.vars.prototype.city, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'id'}}) }}
+                        {{ form_widget(simpleForm.companyCities.vars.prototype.cityTitle, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'title' }}) }}
+                        <span data-bind-text="title"></span>
+                        <span class="icon-filter-del clickable js-del-element"></span>
+                    </li>
+                </script>
+
+                <div class="field-wrap">
+                    <input type="text" class="form-text ie-radius"
+                           placeholder="Город"
+                           typeahead=""
+                           typeahead-prefetch-url="{{ path('MetalTerritorialBundle:Suggest:getAllCities') }}"
+                           typeahead-suggestion-template-url="'typeahead-suggestion-with-parent'"
+                           typeahead-loading="typeaheadLoadingCities"
+                           typeahead-clear-on-select="true"
+                           typeahead-model="city"
+                    >
+                    <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoadingCities">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <div class="filtered-block">
+                        <ul class="list" id="city-list-container">
+                            {% for companyCity in simpleForm.companyCities %}
+                                <li class="item ie-radius js-changed-element g-hidden">
+                                    {{ form_widget(companyCity, {'attr' : {
+                                        'class' : 'g-hidden',
+                                    }} ) }}
+                                    {{ companyCity.cityTitle.vars.value }}
+                                    <span class="icon-filter-del clickable js-del-element"></span>
+                                </li>
+                            {% else %}
+                                {% do simpleForm.companyCities.setRendered() %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="submit-wrapper field-wrap submit-wrapper-branch">
+                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                </div>
+            </fieldset>
+
+            {{ form_rest(simpleForm) }}
+
+        </form>
+        <div class="toggle-links field-wrap centered">
+        <span class="gray60-color toggle-link clickable centered js-show-filial"
+              ng-show="expanded"
+              ng-click="citiesController.setExpanded(false)"
+              data-url="{{ path('MetalPrivateOfficeBundle:Cities:view', {'id': null}) }}"
+        >Кратко</span>
+        <span class="gray60-color toggle-link clickable centered"
+              ng-show="!expanded"
+              ng-click="citiesController.setExpanded(true)"
+        >Подробнее</span>
+        </div>
+        <form ng-show="expanded" class="filials-form form clearfix js-ajax-form-submit" id="add-company-city-form"
+              action="{{ path('MetalPrivateOfficeBundle:Cities:save', {'id': branch.id ? branch.id : null}) }}"
+              method="post"
+              novalidate="novalidate"
+              data-success="reload">
+
+            <fieldset>
+                <div class="group clearfix">
+                    <div class="city-field-wrapper field-wrap float-left">
+                        {{ form_widget(form.cityTitle, {'attr' : {
+                            'class' : 'form-text ie-radius',
+                            'placeholder' : 'Город',
+                            'data-recipient' : '#'~form.city.vars.id,
+                            'typeahead': '',
+                            'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                            'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                            'typeahead-loading': 'typeaheadLoading',
+                            'typeahead-model' : 'city'
+                        }
+                        }) }}
+                        <div class="loading-mask embed-mask for-high-input ng-hide" ng-show="typeaheadLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        {{ form_widget(form.city, {'attr' : {
+                            'class' : 'g-hidden',
+                            'ng-model' : 'city.id',
+                            'initial-value' : ''
+                        } }) }}
+                    </div>
+
+                    <div class="field-wrap float-left">
+                        {{ form_widget(form.address, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Адрес' }} ) }}
+                    </div>
+                </div>
+                <script id="new-phone-row" type="text/html">
+                    <div class="phones group clearfix js-phone-row">
+                        <div class="field-wrap float-left">
+                            {{ form_widget(form.phones.vars.prototype.phone, {'attr' : {'class' : 'phone form-text ie-radius', 'placeholder' : 'Телефон' }}) }}
+                        </div>
+                        <div class="field-wrap float-left">
+                            {{ form_widget(form.phones.vars.prototype.additionalCode, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Добавочный' }}) }}
+                        </div>
+                        <div class="add-string float-left js-phone-row-controls">
+                            <span class="add-string-link icon-add-btn clickable float-left js-add-phone-row"> Еще телефон</span>
+                            <span class="del-btn clickable float-right ico-delete-btn js-del-phone-row"></span>
+                        </div>
+                    </div>
+                </script>
+
+                <div id="phone-list-container" data-items-index="{{ form.phones|length }}">
+                    {% for companyPhone in form.phones %}
+                        <div class="phones group clearfix js-phone-row">
+                            <div class="field-wrap float-left">
+                                {{ form_widget(companyPhone.phone, {'attr' : {'class' : 'phone form-text ie-radius', 'placeholder' : 'Телефон' }}) }}
+                            </div>
+                            <div class="field-wrap float-left">
+                                {{ form_widget(companyPhone.additionalCode, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Добавочный' }}) }}
+                            </div>
+
+                            <div class="add-string float-left js-phone-row-controls {% if not loop.last %}g-hidden{% endif %}">
+                                <span class="add-string-link icon-add-btn clickable float-left js-add-phone-row"> Еще телефон</span>
+                                <span class="del-btn clickable float-right ico-delete-btn js-del-phone-row {% if loop.first %}g-hidden{% endif %}"></span>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% do form.phones.setRendered() %}
+                    {% endfor %}
+                </div>
+
+                <div class="field-wrap">
+                    {{ form_widget(form.email, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Email' }}) }}
+                </div>
+
+                <div class="field-wrap">
+                    {{ form_widget(form.site, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Сайт' }}) }}
+                </div>
+
+                <div class="textarea-wrapper field-wrap">
+                    {{ form_widget(form.description, {'attr' : {'class' : 'form-textarea ie-radius' , 'placeholder' : 'Комментарий' }} ) }}
+                </div>
+
+                {#TODO использовать другой класс? employee-rating#}
+                <div class="employee-rating">
+                    {{ form_widget(form.displayPosition, {'type' : 'text', 'attr': {'class' : 'form-text', 'placeholder' : 'Порядок вывода'}}) }}
+                    <span class="icon-help js-helper-opener"
+                          data-text="Отображает порядок вывода городов в контактах минисайта">
+                </span>
+                </div>
+
+                <div class="submit-wrapper submit-wrapper-branch">
+                    <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                </div>
+                <p class="last-update">Последнее обновление <span data-bind-text="date">{{ formattingHelper.formatDateTime(branch.updatedAt) }}</span></p>
+            </fieldset>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+    <div class="right-group float-right">
+        <div>
+            {#<span class="icon-help js-helper-opener" data-text="Ваша компания будет#}
+            {#отображаться в списке по запросам указанных категорий продукции."></span>#}
+        </div>
+        <ul class="filials-list clearfix">
+            {% for filial in branches %}
+                {% if filial.id == branch.id %}
+                    <li class="item active float-left">
+                        <span class="link is-gradiented float-left" title="{{ filial.city.title }}">{{ filial.city.title }}</span>
+                    </li>
+                {% else %}
+                    <li class="item float-left">
+                            <span class="del-btn clickable ico-delete-btn float-right js-del-item"
+                                  data-url="{{ path('MetalPrivateOfficeBundle:Cities:delete', {'id': filial.id}) }}"
+                                  data-kind="filial"></span>
+                            <span ng-click="citiesController.setExpanded(true)"
+                                  class="link clickable is-gradiented float-left js-show-filial"
+                                  data-url="{{ path('MetalPrivateOfficeBundle:Cities:view', {'id': filial.id}) }}"
+                                  title="{{ filial.city.title }}">{{ filial.city.title }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if branch.id == 0 %}
+                <li class="add-filial item active float-left">
+                    <span class="link">Добавить город</span>
+                </li>
+            {% else %}
+                <li class="add-filial item float-left">
+                    <span ng-click="citiesController.setExpanded(false)" class="link clickable js-show-filial" data-url="{{ path('MetalPrivateOfficeBundle:Cities:view', {'id': null}) }}">Добавить город</span>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="help-block icon-help">
+            <p class="text">При наличии городов ваши товары будут отображаться в них.</p>
+            {% set maxPossibleCompanyCitiesCount = company.getMaxPossibleCompanyCitiesCount() %}
+
+            {% if maxPossibleCompanyCitiesCount %}
+                <p class="text">{{ 'your_package_allows_you_to_add_number_cities'|transchoice(maxPossibleCompanyCitiesCount, {'%count%': maxPossibleCompanyCitiesCount}, 'MetalPrivateOfficeBundle') }}</p>
+                <p class="text">Если Вы хотите еще больше городов или отображения по СНГ,
+                    <span data-description="Недостаточное количество допустимых городов." class="callback link clickable js-popup-opener"
+                          data-popup="#topic-popup">свяжитесь с нами</span>.</p>
+            {% elseif maxPossibleCompanyCitiesCount is not null %}
+                <p class="text">Для добавления городов необходимо выбрать и оплатить
+                    <a class="link" target="_blank" href="{{ path('MetalCorpsiteBundle:Default:services') }}">доступ к порталу</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function suggestController($scope) {
+        $scope.$watch('city', function (item) {
+            processItem(item, $('#city-list-container'), $('#new-city-row'));
+        });
+    }
+    $(document).ready(function () {
+        initializeForms();
+        $('#add-company-city-form, #simple-city-form').bind('response.error', function(e, data) {
+             if (data.html) {
+                 $('#add-company-city-error-popup').html(data.html);
+                 Brouzie.Popups.openPopup($('#add-company-city-error-popup .popup-block'));
+             }
+        });
+    });
+</script>
+
+

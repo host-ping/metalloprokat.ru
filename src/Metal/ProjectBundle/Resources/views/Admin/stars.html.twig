@@ -1,0 +1,10 @@
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+{% if object.companyRating %}
+    {% for i in range(0, object.companyRating - 1) %}
+        {{ companyMacroses.star(object.codeAccess) }}
+    {% endfor %}
+{% endif %}
+{%- if object.promocode %} *{% endif %}
+
+{%- if object.isVisibleInAllCountries() %} ++{% elseif object.isVisibleInAllCities() %} +{% endif %}

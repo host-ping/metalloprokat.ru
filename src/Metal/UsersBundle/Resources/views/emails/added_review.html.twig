@@ -1,0 +1,28 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}
+Новый отзыв
+{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ employee.firstName }}!
+
+{% if employee.company %}
+Вашей компании {{ employee.company.title}} ({{ employee.company.city.title }}) был оставлен отзыв пользователем {{ review.getFixedUserTitle() }} ({{ review.getFixedEmail() }}).
+
+Что бы просмотреть отзыв, перейдите по ссылке {{ url('MetalPrivateOfficeBundle:Reviews:list')|raw }}.
+{% endif %}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ employee.firstName }}!<br/>
+        <br/>
+        {% if employee.company %}
+            Вашей компании <b>{{ employee.company.title}} ({{ employee.company.city.title }})</b> был оставлен отзыв пользователем <b>{{ review.getFixedUserTitle()  }} ({{ review.getFixedEmail() }})</b>.<br/>
+            Что бы просмотреть отзыв, перейдите по <a href="{{ url('MetalPrivateOfficeBundle:Reviews:list')|raw }}">ссылке</a>.<br/>
+        {% endif %}
+    </p>
+{% endblock %}

@@ -1,0 +1,57 @@
+{# expected:
+    demandsCountByPeriod: array with keys demands_count_day, demands_count_week, ...
+    route
+    routeParameters
+    ignoreEmptyPeriods: true by default
+#}
+
+{% set ignoreEmptyPeriods = ignoreEmptyPeriods is defined ? ignoreEmptyPeriods : true %}
+
+{% set demandsCountByPeriod = {
+'demands_count_day': 0,
+'demands_count_week': 0,
+'demands_count_month': 0,
+'demands_count_year': 0,
+'demands_count_custom': 0,
+'demands_count_total': 0,
+}|merge(demandsCountByPeriod) %}
+
+{% set periods = {
+    'day' : {'count': demandsCountByPeriod['demands_count_day'], 'query' : 'day', 'title' : 'За день'},
+    'week' : {'count': demandsCountByPeriod['demands_count_week'], 'query' : 'week', 'title' : 'За неделю'},
+    'month' : {'count': demandsCountByPeriod['demands_count_month'], 'query' : 'month', 'title' : 'За месяц'},
+    'year' : {'count': demandsCountByPeriod['demands_count_year'], 'query' : 'year', 'title' : 'За год'},
+    'custom' : {'count': demandsCountByPeriod['demands_count_custom'], 'query' : 'custom', 'title' : 'За период', 'popover': '#datepicker-period-from'},
+    'all' : {'count': demandsCountByPeriod['demands_count_total'], 'query' : null, 'title' : 'За все время'},
+} %}
+
+{% set currentPeriod = app.request.query.get('period', 'all') %}
+{% if app.request.query.get('date_from') or app.request.query.get('date_to') %}
+    {% set currentPeriod = 'custom' %}
+{% endif %}
+
+<span class="period-link icon-check black link clickable js-popover-opener" data-popover="#periods">
+    {{ periods[currentPeriod].title }}
+</span>
+
+<div id="periods" class="drop-wrapper period-list opacity-border">
+    <ul class="dropdown">
+        {% for key, period in periods %}
+            <li class="drop-item">
+                {% if currentPeriod == key %}
+                    <span class="drop-link current">{{ period.title }} {% if period.count %}<span class="num">{{ period.count|number_format_decimal }}</span>{% endif %}</span>
+                {% elseif period.popover is defined %}
+                    <span class="drop-link clickable js-popover-opener"
+                          data-popover="{{ period.popover }}"
+                    >{{ period.title }} {% if period.count %}<span class="num">{{ period.count|number_format_decimal }}</span>{% endif %}</span>
+                {% elseif not ignoreEmptyPeriods or period.count %}
+                    {% set parameters  = {'period' : period.query} %}
+                    {% if period.query != 'custom' %}
+                        {% set parameters = parameters|merge({'date_to' : null, 'date_from' : null}) %}
+                    {% endif %}
+                    <a class="drop-link" href="{{- path(route, routeParameters|merge(parameters)) -}}">{{ period.title }} <span class="num">{{ period.count|number_format_decimal }}</span></a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

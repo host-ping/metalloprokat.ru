@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal_services.event_listener.package_order_listener" class="Metal\ServicesBundle\EventListener\PackageOrderListener">
+            <argument type="service" id="service_container"/>
+            <argument>%admin_emails_for_creation_demand_package%</argument>
+            <tag name="doctrine.orm.entity_listener" entity="Metal\ServicesBundle\Entity\PackageOrder" event="postPersist" />
+        </service>
+    </services>
+</container>

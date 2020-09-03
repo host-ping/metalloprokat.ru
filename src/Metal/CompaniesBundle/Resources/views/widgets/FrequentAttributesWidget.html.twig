@@ -1,0 +1,13 @@
+{% set company = _options.company %}
+
+{% if categories %}
+    <div class="search-info-block mini-site-links clearfix">
+        {% for category in categories %}
+            <a class="link" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalProductsBundle:Products:list_category_subdomain', {
+                'category_slug' : category.slugWithAttr,
+                'subdomain' : company.city.getSlugWithFallback(),
+                '_secure' : company.country.secure
+            }) }}">{{ category.title }}</a>
+        {% endfor %}
+    </div>
+{% endif %}

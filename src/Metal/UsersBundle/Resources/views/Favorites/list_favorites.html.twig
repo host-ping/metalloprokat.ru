@@ -1,0 +1,196 @@
+{% extends '@MetalProject/layouts/_portal_layout.html.twig' %}
+
+{% block title 'Избранные поставщики' %}
+
+{% block search_form '' %}
+
+{% block breadcrumbs '' %}
+
+{% block banner '' %}
+
+{% block additional_announcement_wrapper_class 'not-moved' %}
+
+{% block content %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+    {% set route = app.request.attributes.get('_route') %}
+    {% set comment = app.request.query.get('comment') %}
+    {% set order = app.request.query.get('order', false) %}
+
+    <div id="content" class="content-wide float-left">
+        <div class="favorites main-title ">
+            <h1>Избранные: <span
+                        class="current link">поставщики <sup>{{ userCounter.getFavoriteCompaniesCount() }}</sup></span>,
+                <a href="{{ path('MetalUsersBundle:Favorites:demandsList') }}" class="link">потребители
+                    <sup>{{ userCounter.getFavoriteDemandsCount() }}</sup></a></h1>
+        </div>
+
+        {% block tabs %}
+            <div class="favorites_result-tabs-wrapper outline clearfix">
+                <div class="tabs favorite-filter float-left">
+                    <ul class="list">
+                        <li class="item">
+                            {% if app.request.query.has('comment') %}
+                                <a class="link" href="{{ path(route) }}">Все</a>
+                            {% else %}
+                                <span class="active">Все</span>
+                            {% endif %}
+                        </li>
+                        <li class="item">
+                            {% if app.request.query.get('comment') == 'with' %}
+                                <span class="active">С пометками</span>
+                            {% else %}
+                                <a class="link" href="{{ path(route, { 'comment' : 'with'}) }}">С пометками</a>
+                            {% endif %}
+                        </li>
+                        <li class="item">
+                            {% if app.request.query.get('comment') == 'without' %}
+                                <span class="active">Без пометок</span>
+                            {% else %}
+                                <a class="link" href="{{ path(route, { 'comment' : 'without'}) }}">Без пометок</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="sort-view float-right clearfix">
+                    {#<div class="export-block float-left">
+                        <a class="export link js-popover-opener" href="#" data-popover="#export-feed">Экспорт</a>
+
+                        <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+                            <div class="dropdown">
+                                <div class="export-links block clearfix">
+                                    <p class="title">Экспорт</p>
+                                    <a class="button small-btn blue-bg float-left" href="#">XLS</a>
+                                    <a class="button small-btn blue-bg float-left" href="#">CSV</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+#}
+                    {% set sorts = {
+                    'reviews' : {'query' : 'reviews', 'title' : 'По отзывам'},
+                    'company_rating' : {'query' : 'company_rating', 'title' : 'По рейтингу'},
+                    'all' : {'query' : null, 'title' : 'По дате'}
+                    } %}
+
+                    <div class="order-block float-left">
+                        {% for typeSort in sorts %}
+                            {% if typeSort.query == order %}
+                                <span class="order-link icon-check black clickable link js-popover-opener"
+                                   data-popover="#order">{{ typeSort.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        <div id="order" class="drop-wrapper order-list opacity-border">
+                            <ul class="dropdown">
+                                {% for typeSort in sorts %}
+                                    {% if typeSort.query == order %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">{{ typeSort.title }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link"
+                                               href="{{ path(app.request.attributes.get('_route'), routeParameters|merge({ order : typeSort.query, 'page' : null })) }}">{{ typeSort.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% if favoriteCompanies %}
+            <div class="view-category fav-consumers clearfix js-calc-height" data-replacement-zone="page.favorites_companies_list" data-replacement-callback="scrollToElement">
+                {{ include('MetalCompaniesBundle:partial:companies_in_list.html.twig', {
+                'favoriteCompanies': favoriteCompanies,
+                'pagerfanta' : pagerfanta,
+                }, false) }}
+            </div>
+        {% else %}
+            <div class="no-favorites js-calc-height">
+                <span class="text">Нет избранных потребителей</span>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {% set counterName = project.suppliers_menu_counter_name %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'company'}) }}
+    {{ brouzie_render_widget('MetalCallbacksBundle:CallbackForm', {'for_moderator': false}) }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandRequestForm', {'private_demand' : true}) }}
+
+    {% for favoriteCompany in favoriteCompanies %}
+        <div id="favorite-product-{{ favoriteCompany.company.id }}"
+             class="favorite-block popup-block opacity-border large">
+            <div class="popup-content">
+                <div class="title-popup">Избранные товары компании <br />
+                    {% if favoriteCompany.company.minisiteEnabled %}
+                        <a target="_blank" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : favoriteCompany.company.domain, '_secure' : favoriteCompany.company.packageChecker.isHttpsAvailable()}) }}">
+                            {{ favoriteCompany.company.title }}
+                        </a>
+                    {% else %}
+                        {{ favoriteCompany.company.title }}
+                    {% endif %}
+                </div>
+                <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+                <div class="favorite-product-block is-bordered">
+                    <div class="js-scrollable">
+                        <ul class="topic-list">
+                            {% for favorite in favoriteCompany.getAttribute('favorites') %}
+                                <li class="item clearfix">
+                                    {% set subdomain = favorite.product.company.city.getSlugWithFallback %}
+                                    <div class="topic-info float-left">
+                                        <a class="title-link"
+                                           href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id' : favorite.product.id, 'subdomain' : subdomain}) }}">{{ favorite.product.title }}</a>
+
+                                        <p class="text">
+                                            {% if favorite.product.size %}
+                                                {{ tokens.product_volume_title|capitalize }} {{ favorite.product.getCutSize() }},
+                                            {% endif %}
+                                            {% if favorite.product.isContractPrice() %}
+                                                <span class="price gray60-color">цена договорная</span>
+                                            {% else %}
+                                                {% if favorite.product.isPriceFrom %}от {% endif %}
+                                                <strong class="red-color
+                                                    {% if favorite.product.getAttribute('normalized_price') %}other-currency js-helper-opener{% endif %}"
+                                                    data-text="примерно <span class='red-color'>
+                                                    {{ favorite.product.getAttribute('normalized_price')|number_format_decimal }}
+                                                    <span class='{{ app.request.attributes.get('country').currency.symbolClass }}'></span></span>"
+                                                >
+                                                    {{ favorite.product.price|number_format_decimal }}
+                                                    <span class="{{ favorite.product.currency.symbolClass }}"></span>
+                                                    <span class="currency {% if favorite.product.currency.symbolClass %}g-hidden{% endif %}">{{ favorite.product.currency.token }}</span>
+                                                </strong>
+                                                {% if favorite.product.measureId %}
+                                                    за {{ favorite.product.measure.tokenPrice }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="img is-bordered float-right">
+                                        {% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+                                        <div class="img-holder">
+                                            <a href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id' : favorite.product.id, 'subdomain' : subdomain}) }}"
+                                               class="img-link pattern-small">
+                                                {% set imageUrl = imageHelper.getPhotoUrlForProduct(favorite.product, 'sq28', 'portal') %}
+                                                {% if imageUrl %}
+                                                    <img src="{{ imageUrl }}"
+                                                         alt="{{ favorite.product.title }}"
+                                                         title="{{ favorite.product.title }}" />
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

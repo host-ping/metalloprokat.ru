@@ -1,0 +1,33 @@
+MetalCompaniesBundle:Company:products_category:
+    path:      /{company_slug}/{category_slug}/
+    host:      "{subdomain}.%base_host%"
+    condition: "not request.attributes.get('company_on_subdomain', false) and request.attributes.has('category') and request.attributes.has('company') and request.attributes.has('city')"
+    defaults:  { _controller: MetalCompaniesBundle:Company:products }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        company_slug: %company_slug_regex%
+
+MetalCompaniesBundle:Company:products:
+    path:      /{company_slug}/
+    host:      "{subdomain}.%base_host%"
+    condition: "not request.attributes.get('company_on_subdomain', false) and request.attributes.has('company') and request.attributes.has('city')"
+    defaults:  { _controller: MetalCompaniesBundle:Company:products }
+    requirements:
+        company_slug: %company_slug_regex%
+
+MetalCompaniesBundle:Company:products_category_domain:
+    path:      /{company_slug}/{category_slug}/
+    host:      "{subdomain}.{domain}"
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+        company_slug: %company_slug_regex%
+        domain: %domain_regex%
+
+MetalCompaniesBundle:Company:products_domain:
+    path:      /{company_slug}/
+    host:      "{subdomain}.{domain}"
+    methods:  [FOR_GENERATING_URL_ONLY]
+    requirements:
+        company_slug: %company_slug_regex%
+        domain: %domain_regex%

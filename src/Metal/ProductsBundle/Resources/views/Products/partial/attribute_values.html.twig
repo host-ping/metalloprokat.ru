@@ -1,0 +1,103 @@
+{% set hasMore = false %}
+{% set visibleAttributesCount = 6 %}
+{% set clickableAttributesCount = 10 %}
+
+{% set isHidden = isHidden ?? false %}
+{% set encodeContent = encodeContent ?? false %}
+
+{% set classes = { 1 : 'one-column', 2 : 'two-column', 3 : 'three-column' } %}
+{% set showRel = currentAttributesCollection.containsAttribute(attribute) %}
+
+{% set content %}
+    <ul class="size-list list {{ classes[attribute.getColumnsCount]|default('one-column') }} clearfix">
+
+        {% if currentAttributesCollection.containsAttribute(attribute) %}
+            <li class="g-hidden">
+                {% for currentAttributeValue in currentAttributesCollection[attribute] %}
+                    {% if not attributesCollection.containsAttributeValue(currentAttributeValue) %}
+                        <input name="attribute[{{ attribute.id }}][]" type="hidden"
+                               value="{{ currentAttributeValue.id }}" />
+                    {% endif %}
+                {% endfor %}
+            </li>
+        {% endif %}
+
+        {% for attributeValue in attributesCollection[attribute] %}
+            {% set attributeValueId = attributeValue.id %}
+            {% set attributeValueTitle = attributeValue.value %}
+
+            {% if loop.index > visibleAttributesCount %}
+                {% set hasMore = true %}
+            {% endif %}
+
+            <li class="filter-item is-gradiented float-left {% if hasMore and isHidden %} g-hidden {% endif %}"
+                {% if hasMore %}data-expandable-section="{{ attribute.id }}"{% endif %}>
+                {% set checked = currentAttributesCollection.containsAttributeValue(attributeValue) %}
+                <input id="attributes-{{ attributeValueId }}"
+                       name="attribute[{{ attribute.id }}][]" type="checkbox"
+                       {% if checked %}checked="checked"{% endif %}
+                       class="js-styled-checkbox js-preload-items-count-on-change bg-grey"
+                       value="{{ attributeValueId }}"
+                />
+                {% if checked %}
+                    {% if isHidden %}
+                        <label for="attributes-{{ attributeValueId }}"
+                               title="{{ attributeValueTitle }}"
+                               ng-bind="'{{- attributeValueTitle|escape('angular')|raw -}}'">
+                            {{ category.title }} {{ attributeValueTitle }}
+                        </label>
+                    {% else %}
+                        <label for="attributes-{{ attributeValueId }}" title="{{ attributeValueTitle }}">
+                            {{- attributeValueTitle -}}
+                        </label>
+                    {% endif %}
+                {% else %}
+                    {% set slug = currentAttributesCollection.getUrl(attributeValue) %}
+                    {% if isHidden %}
+                        <label for="attributes-{{ attributeValueId }}">
+                            <a href="{{ path(route, routeParameters|merge({'category_slug' : category.getUrl(slug) })) }}"
+                               class="link" title="{{ attributeValueTitle }}"
+                               ng-bind="'{{ attributeValueTitle|escape('angular')|raw }}'"
+                               {% if showRel %}rel="nofollow"{% endif %}
+                            >{{ category.title }} {{ attributeValueTitle }}</a>
+                        </label>
+                    {% else %}
+                        <label for="attributes-{{ attributeValueId }}">
+                            <a href="{{ path(route, routeParameters|merge({'category_slug' : category.getUrl(slug) })) }}"
+                               class="link" title="{{ attributeValueTitle }}" {% if showRel %}rel="nofollow"{% endif %}
+                            >{{ attributeValueTitle }}</a>
+                        </label>
+                    {% endif %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% if hasMore %}
+        {% if isHidden %}
+            {% set loadAttributeValuesUrl = path(loadAttributeValuesRoute, {
+            'tab': app.request.attributes.get('tab'),
+            'subdomain': app.request.attributes.get('subdomain')?: 'www',
+            'category_id': category.id,
+            'attribute_id': attribute.id
+            }) %}
+            <span class="link clickable js-replace-load-more"
+                  data-load-more-replace="#attribute-values-list-{{ attribute.id }}"
+                  data-send-data="{{ {'attribute': currentAttributesCollection.toArray()}|json_encode }}"
+                  data-loading-mask="#attribute-values-list-{{ attribute.id }}-loading-mask"
+                  data-url="{{ loadAttributeValuesUrl }}">Показать все</span>
+        {% else %}
+            <span class="link js-expandable clickable js-categories-expand g-hidden"
+                  data-expandable="{{ attribute.id }}">Показать все</span>
+        {% endif %}
+        <span class="link js-expandable clickable js-categories-expand {% if isHidden %}g-hidden{% endif %}"
+              data-expandable="{{ attribute.id }}">Скрыть</span>
+    {% endif %}
+{% endset %}
+
+<div id="attribute-values-list-{{ attribute.id }}">
+    {% if encodeContent and showRel %}
+        <div data-encoded-content="{{ content|base64_encode|escape('html_attr') }}"></div>
+    {% else %}
+        {{ content }}
+    {% endif %}
+</div>

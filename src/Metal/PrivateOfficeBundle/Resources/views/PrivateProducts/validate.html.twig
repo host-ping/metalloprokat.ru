@@ -1,0 +1,55 @@
+<div class="popup-content">
+    <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+    <div>Загрузка завершена</div>
+    <br />
+    {% if countNewProducts %}
+        Загружено {{ countNewProducts }} {{ 'products_by_count'|transchoice(countNewProducts, [], 'MetalProductsBundle') }}
+        <br />{% if not errorsArray %}<br />{% endif %}
+    {% endif %}
+    {% if countUpdatedProducts %}
+        Обновлено {{ countUpdatedProducts }} {{ 'products_by_count'|transchoice(countUpdatedProducts, [], 'MetalProductsBundle') }}
+        <br />{% if not errorsArray %}<br />{% endif %}
+    {% endif %}
+    {% if errorsArray %}
+        При импорте товаров произошли ошибки<br /><br />
+        <div class="errors-block dropdown is-bordered">
+            <div class="js-scrollable">
+                <table class="errors-list">
+                    {% for key, error in errorsArray %}
+                        <tr class="row">
+                            <td class="link">{{ key }}</td>
+                            <td>
+                                {% for err in error %}
+                                    {% if loop.index > loop.first %},{% endif %}
+                                    {% if loop.first %}{{ err|capitalize }}{% else %}{{ err }}{% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if warningsArray %}
+        Предупреждения при импорте товаров<br /><br />
+        <div class="errors-block dropdown is-bordered">
+            <div class="js-scrollable">
+                <table class="errors-list">
+                    {% for key, warnings in warningsArray %}
+                        <tr class="row">
+                            <td class="link">{{ key }}</td>
+                            <td>
+                                {% for warning in warnings %}
+                                    {% if loop.index > loop.first %},{% endif %}
+                                    {% if loop.first %}{{ warning|capitalize }}{% else %}{{ warning }}{% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    <button class="send-button button blue-bg js-popup-closer ie-radius" type="submit">Ок</button>
+</div>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width">
+
+    {% block head_prepend '' %}
+
+    <title data-replacement-zone="page.title" data-replacement-mode="text">{% filter normalize_whitespace %}{% block title '' %}{% endfilter %}</title>
+
+    {% block meta '' %}
+
+    {% set canonicalUrl -%}
+        {% filter normalize_whitespace %}{% block canonical_url '' %}{% endfilter %}
+    {%- endset %}
+    {% if canonicalUrl %}
+        <link rel="canonical" href="{{ canonicalUrl }}" />
+    {% endif %}
+
+    {% set metaDescriptionContent -%}
+        {% filter normalize_whitespace %}{% block meta_description '' %}{% endfilter %}
+    {%- endset %}
+    {% if metaDescriptionContent %}
+        <meta name="description" content="{{ metaDescriptionContent }}" />
+    {% endif %}
+
+    {% set metaKeywordsContent -%}
+        {% filter normalize_whitespace %}{% block meta_keywords '' %}{% endfilter %}
+    {%- endset %}
+    {% if metaKeywordsContent %}
+        <meta name="Keywords" content="{{ metaKeywordsContent }}">
+    {% endif %}
+
+    {% block stylesheets %}
+        {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/normalize.css'
+            '@MetalProjectBundle/Resources/public/css/jquery-ui.css'
+            '@MetalProjectBundle/Resources/public/css/style.css'
+            '@MetalProjectBundle/Resources/public/css/layouts/layout.css'
+            '@MetalProjectBundle/Resources/public/css/color.css'
+            '@MetalProjectBundle/Resources/public/css/form.css'
+            '@MetalProjectBundle/Resources/public/css/buttons.css'
+            '@MetalProjectBundle/Resources/public/css/scroll.css'
+            '@MetalProjectBundle/Resources/public/css/suggest.css'
+            '@MetalProjectBundle/Resources/public/css/content.css'
+            filter='phpcssembed,?uglifycss'
+            combine=true
+        %}
+            <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+
+        {% stylesheets
+            'bundles/metalproject/css/font.css'
+            'bundles/metalproject/css/overrides-font.css'
+            filter='cssrewrite,?uglifycss'
+            combine=true
+        %}
+            <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+
+        <link href="{{ asset('bundles/metalproject/css/print.css') }}" rel="stylesheet" media="print" />
+
+        {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/responsive/for1280.css'
+            filter='phpcssembed,?uglifycss'
+            combine=true
+        %}
+            <link media="only screen and (max-width: 1340px)" type="text/css" rel="stylesheet" href="{{ asset(asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/responsive/for1024.css'
+            filter='phpcssembed,?uglifycss'
+            combine=true
+        %}
+            <link media="only screen and (max-width: 1252px)" type="text/css" rel="stylesheet" href="{{ asset(asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/responsive/small.css'
+            filter='phpcssembed,?uglifycss'
+            combine=true
+        %}
+            <link media="only screen and (max-width: 1023px)" type="text/css" rel="stylesheet" href="{{ asset(asset_url) }}"/>
+        {% endstylesheets %}
+
+        <!--[if (IE 8)|(IE 9)]>
+            {% stylesheets
+                '@MetalProjectBundle/Resources/public/css/ie-8-9.css'
+                filter='fix_behaviors_url'
+            %}
+                <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+            {% endstylesheets %}
+        <![endif]-->
+
+        <!--[if IE 8]>
+            {% stylesheets
+                '@MetalProjectBundle/Resources/public/css/ie-8.css'
+                filter='fix_behaviors_url'
+            %}
+                <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+            {% endstylesheets %}
+        <![endif]-->
+
+        <!--[if lt IE 8]>
+            {% stylesheets
+            '@MetalProjectBundle/Resources/public/css/outdatedbrowser.css'
+            filter='phpcssembed,?uglifycss'
+            %}
+            <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+            {% endstylesheets %}
+        <![endif]-->
+
+        {% stylesheets
+        'bundles/metalproject/css/corporate.css'
+        'bundles/metalproject/css/selectize.css'
+        'bundles/metalproject/css/style-form.css'
+        filter='cssrewrite,?uglifycss'
+        combine=true
+        %}
+        <link href="{{ asset(asset_url) }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800&amp;subset=latin,cyrillic-ext,latin-ext,cyrillic" rel="stylesheet" type="text/css">
+
+    {% endblock stylesheets %}
+
+    {% block javascripts %}
+        <script src="//yandex.st/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+        {# если нет интернета и не грузятся страницы, то комментируем все что связано с внешними адресами и меняем путь для загрузки js с локалки #}
+
+        <script src="{{asset('bundles/metalproject/js/noindex/seohide.js') }}" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            var User = {
+                id : {{ app.user.id|default(null)|json_encode }}
+            };
+
+            {% if app.user %}
+                User.allow_add_in_favorite = {{ app.user.isAllowedAddInFavorite|json_encode }}
+            {% endif %}
+        </script>
+
+        {% javascripts
+            '@MetalProjectBundle/Resources/public/js/jquery-scrolltofixed.js'
+            '@MetalProjectBundle/Resources/public/js/jquery-ui.min.js'
+            '@MetalProjectBundle/Resources/public/js/modernizr.js'
+            '@MetalProjectBundle/Resources/public/js/jquery.formstyler.1.4.9.js'
+            '@MetalProjectBundle/Resources/public/js/scrollbar.js'
+            '@MetalProjectBundle/Resources/public/js/jquery.placeholder-enhanced.js'
+            '@MetalProjectBundle/Resources/public/js/Brouzie/Behaviors.js'
+            '@MetalProjectBundle/Resources/public/js/Brouzie/Popovers.js'
+            '@MetalProjectBundle/Resources/public/js/Brouzie/ExpandableMenu.js'
+            '@MetalProjectBundle/Resources/public/js/Brouzie/Tabs.js'
+            '@MetalProjectBundle/Resources/public/js/libs/momentjs/moment-with-langs.js'
+            '@MetalProjectBundle/Resources/public/js/libs/underscorejs/underscore.js'
+            '@MetalProjectBundle/Resources/public/js/libs/underscore.string/underscore.string.js'
+            '@MetalProjectBundle/Resources/public/js/libs/clndr/clndr.js'
+            '@MetalProjectBundle/Resources/public/js/js.cookie.js'
+            '@MetalProjectBundle/Resources/public/js/main.js'
+            '@MetalProjectBundle/Resources/public/js/project.js'
+            '@MetalProjectBundle/Resources/public/js/base64.js'
+            '@MetalProjectBundle/Resources/public/js-integration/common.js'
+            '@MetalProjectBundle/Resources/public/js-integration/maps/infrastructure.js'
+            '@MetalProjectBundle/Resources/public/js-integration/maps/companyBaloon.js'
+            '@MetalProjectBundle/Resources/public/js-integration/maps.js'
+            '@MetalProjectBundle/Resources/public/js-integration/demands.js'
+            '@MetalProjectBundle/Resources/public/js-integration/privateOffice.js'
+            '@MetalProjectBundle/Resources/public/js/selectize.min.js'
+            '@angular'
+            filter='?uglifyjs2'
+            combine = true
+        %}
+            <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+        {% endjavascripts %}
+    {% endblock javascripts %}
+
+    <link rel="shortcut icon" href="{{ asset(project.favicon) }}" type="image/x-icon" />
+
+    {% if app.environment == 'dev' or true %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('form').each(function () {
+                    $(this).attr('novalidate', 'novalidate');
+                });
+            });
+        </script>
+    {% endif %}
+</head>
+
+<body class="{% block body_additional_class '' %}" ng-app="metalApp">
+    <script type="text/ng-template" id="typeahead-suggestion-with-parent">
+        <p ng-bind="item.title"></p><p class="region" ng-bind="item.parent_title"></p>
+    </script>
+
+    <!--[if lt IE 8]>
+        <div id="outdated">
+            <h6>Ваш браузер устарел!</h6>
+            <p>Обновите ваш браузер для правильного отображения этого сайта. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/ru">Обновить мой браузер </a></p>
+            <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+        </div>
+
+        {% javascripts
+            '@MetalProjectBundle/Resources/public/js/outdatedbrowser.js'
+            filter='?uglifyjs2'
+            combine = true
+        %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+        {% endjavascripts %}
+
+        <script type="text/javascript">
+            $('document').ready(function(){
+                outdatedBrowser({
+                    bgColor: '#f25648',
+                    color: '#ffffff',
+                    lowerThan: 'transform',
+                    languagePath: ''
+                });
+            });
+        </script>
+    <![endif]-->
+
+    {% block body %}
+        <div class="container">
+            <div class="inside-container">
+                <div id="header" class="clearfix">
+                    <div class="wrap">
+                        {% block header '' %}
+                    </div>
+                </div>
+
+                {% block menu %}
+                    <div class="main-menu-wrapper">
+                        <div class="wrap"></div>
+                    </div>
+                {% endblock %}
+
+                {% block search_form %}
+                    <div class="search-block clearfix"></div>
+                {% endblock %}
+
+                <div id="main" class="clearfix">
+                    <div class="wrap clearfix">
+                        {% block breadcrumbs '' %}
+                        {% block banner '' %}
+                        <div class="wrapper outline clearfix">
+                            {% block content %}
+                                {% block tabs '' %}
+                            {% endblock %}
+                            {% block sidebar '' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="footer-content wrap">
+                {% block footer '' %}
+            </div>
+        </div>
+
+        {% block additional_popups %}
+
+            {{ include ('@MetalProject/partials/_login_popup.html.twig') }}
+
+            <script id="calendar-template" type="text/html">
+                <div class="heading white-bg">
+                    <div class="date icon-calendar"><% if (selectedDate) { %> <%= selectedDate.format('D MMM YYYY') %><% } %></div>
+                </div>
+                <div class="calendar-wrapper white95-bg">
+                    <div class="calendar-navigation clearfix">
+                        <div class="month float-left">
+                            <ul class="month-list">
+                                <li class="item"><%= _.str.capitalize(month) %></li>
+                            </ul>
+                            <div class="nav-btn">
+                                <span class="prev btn clndr-previous-button">prev</span>
+                                <span class="next btn clndr-next-button">next</span>
+                            </div>
+                        </div>
+                        <div class="year float-right">
+                            <ul class="year-list">
+                                <li class="item"><%= year %></li>
+                            </ul>
+                            <div class="nav-btn">
+                                <span class="prev btn clndr-previous-year-button">prev</span>
+                                <span class="next btn clndr-next-year-button">next</span>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="calendar">
+                        <thead>
+                            <tr class="row">
+                                <% _.each(daysOfTheWeek, function(day) { %>
+                                    <th class="col"><%= day %></th>
+                                <% }); %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i = 0; i < numberOfRows; i++) { %>
+                                <tr class="week row">
+                                    <% for (var j = 0; j < 7; j++){ %>
+                                        <% var d = j + i * 7; %>
+                                        <% var dayTs = days[d].date.format('YYYY-MM-DD'); %>
+                                        <% var selectedDayTs = selectedDate ? selectedDate.format('YYYY-MM-DD') : 0; %>
+                                        <% var relatedSelectedDayTs = relatedDatepickerDate ? relatedDatepickerDate.format('YYYY-MM-DD') : 0; %>
+                                        <% var rowClass = ''; %>
+                                        <% if (j == 0) { %>
+                                            <% rowClass += ' first'; %>
+                                        <% } %>
+                                        <% if (j == 6) { %>
+                                            <% rowClass += ' last'; %>
+                                        <% } %>
+
+                                        <% if (!relatedDatepickerDate) { %>
+                                            <% if (dayTs == selectedDayTs) { %>
+                                                <% rowClass += ' in-range'; %>
+                                                <% rowClass += ' first-range'; %>
+                                                <% rowClass += ' last-range'; %>
+                                            <% } %>
+                                        <% } else { %>
+
+                                            <% if (relatedDatepickerMode == 'finish') { %>
+                                                <% if (dayTs >= selectedDayTs && dayTs <= relatedSelectedDayTs) { %>
+                                                    <% rowClass += ' in-range'; %>
+
+                                                    <% if (dayTs == selectedDayTs) { %>
+                                                        <% rowClass += ' first-range'; %>
+                                                    <% } %>
+                                                    <% if (dayTs == relatedSelectedDayTs) { %>
+                                                        <% rowClass += ' last-range'; %>
+                                                    <% } %>
+                                                <% } %>
+                                            <% } else { %>
+                                                <% if (dayTs <= selectedDayTs && dayTs >= relatedSelectedDayTs) { %>
+                                                    <% rowClass += ' in-range'; %>
+
+                                                    <% if (dayTs == selectedDayTs) { %>
+                                                        <% rowClass += ' last-range'; %>
+                                                    <% } %>
+                                                    <% if (dayTs == relatedSelectedDayTs) { %>
+                                                        <% rowClass += ' first-range'; %>
+                                                    <% } %>
+                                                <% } %>
+                                            <% } %>
+
+                                        <% } %>
+
+                                        <% if (days[d].classes.indexOf('today') > -1) { %>
+                                            <% rowClass += ' current'; %>
+                                        <% } %>
+
+                                        <% if (days[d].classes.indexOf('adjacent-month') > -1) { %>
+                                            <td class="col disabled <%= rowClass %>">
+                                                <%= days[d].day %>
+                                            </td>
+                                        <% } else { %>
+                                            <td class="col <%= rowClass %>">
+                                                <div class="elem">
+                                                    <span class="link ie-radius <%= days[d].classes %>"><%= days[d].day %></span>
+                                                </div>
+                                            </td>
+                                        <% } %>
+                                    <% } %>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </script>
+
+            {{ brouzie_render_widget('MetalDemandsBundle:DemandWithoutEmail') }}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Стартовый, полный и расширенный пакеты позволяют добавлять в избранное', 'widget_id': 'complete-package-favorites'} )}}
+            {{ brouzie_render_widget('MetalUsersBundle:RecoverPassword') }}
+
+            <div id="user-info" class="popup-block opacity-border large"></div>
+            <div id="popup-cover" class="popup-block popup-cover opacity-border large">
+                <div class="popup-content">
+                    <div class="loading-mask ">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
+    {% endblock %}
+
+    <!--  <div class="livebotton">
+        <a class="clickable" popup-opener="#request-demand" data-source-type-id="7" data-request-demand-url="/spros/form">оставить заявку</a>
+    </div>-->
+
+    <!-- generated at {{ 'now'|date('d.m.Y H:i:s') }} -->
+</body>
+</html>

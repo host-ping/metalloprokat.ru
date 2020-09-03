@@ -1,0 +1,17 @@
+{# TODO: переделать виджет на партиал #}
+{% set popupId = 'demand-without-email' %}
+
+<div id="{{ popupId }}" class="popup-block opacity-border large"
+     data-popup-template="#{{ popupId }}-template"></div>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content private-room-content">
+        <div class="text">Потребитель не оставил электронного адреса, свяжитесь по телефону, указанному в контактах.
+        </div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <div class="submit-wrapper">
+            <div class="save-btn button blue-bg ie-radius js-popup-closer">ОК</div>
+        </div>
+    </div>
+</script>

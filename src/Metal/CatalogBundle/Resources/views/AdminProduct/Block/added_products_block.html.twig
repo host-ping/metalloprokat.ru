@@ -1,0 +1,49 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if isGranted %}
+        {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Статистика добавленных продуктов в каталог
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-hover table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Пользователь</th>
+                        <th>Количество</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for date, el in data %}
+                        <tr {% if formattingHelper.isWeekend(date(date)) %}class="red-color"{% endif %}>
+                            {% for product in el %}
+                                {% if loop.first %}
+                                    <td rowspan="{{ el|length }}">
+                                        {{ formattingHelper.formatStatsDate(date(date), 'day')|raw }}
+                                    </td>
+                                {% endif %}
+
+                                <td>
+                                    {{ product.fullName }} (<a target="_blank"
+                                                               href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': product.user_id} } }) }}">{{ product.user_id }}</a>)
+                                </td>
+                                <td class="text-right">
+                                    <a target="_blank"
+                                       href="{{ path('admin_metal_catalog_product_list', {'filter': {'user': {'value': product.user_id}, 'createdAt': {'value': {'start': date|date("d.m.Y"), 'end': date|date_modify("+1 day")|date("d.m.Y")}} } }) }}">{{ product.product_total_count|number_format_decimal }}</a>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,4 @@
+demands_by_count : позиция|позиции|позиций
+similar_demands_by_count : заявка|заявки|заявок
+demands_by_request : %count% заявка по запросу|%count% заявки по запросу|%count% заявок по запросу
+for_hours : час|часа|часов

@@ -1,0 +1,25 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Сообщение обратной связи на {% if isPrivate is defined %}личный кабинет{% else %}корпоративный сайт{% endif %}{% if isDuplicate is defined %} (копия){% endif %}{% endblock %}
+
+{% block body_text -%}
+Пользователь {{ senderUserName }} отправил {% if reopen is defined %}ответ на {% endif %}письмо обратной связи на {% if isPrivate is defined %}личный кабинет{% else %}корпоративный сайт{% endif %}.
+
+Электронная почта пользователя: {{ senderEmail }}
+Текст сообщения: {{ textMessage }}
+Для перехода на панель администрирования, пожалуйста, перейдите по ссылке
+{{ url('admin_metal_support_topic_show', {'id':topicId}) }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Пользователь {{ senderUserName }} отправил {% if reopen is defined %}ответ на {% endif %}письмо обратной связи на {% if isPrivate is defined %}личный кабинет{% else %}корпоративный сайт{% endif %}. <br/><br/>
+        Электронная почта пользователя: {{ senderEmail }} <br/>
+        Текст сообщения: {{ textMessage }} <br/>
+        <a href="{{ url('admin_metal_support_topic_show', {'id':topicId}) }}">Панель администрирования</a>
+    </p>
+{% endblock %}
+
+{% block user_agreement '' %}

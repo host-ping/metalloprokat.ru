@@ -1,0 +1,72 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a href="{{ path('admin_metal_services_packageorder_list') }}">Необработанные заявки на подключение
+                        услуг</a>
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата</th>
+                        <th>Тип пакета</th>
+                        <th>Период</th>
+                        <th>Компания</th>
+                        <th>Дата начала</th>
+                        <th>Дата окончания</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for unprocessedServiceOrder in unprocessedServiceOrders %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('admin_metal_services_packageorder_edit', {'id': unprocessedServiceOrder.id}) }}">{{ unprocessedServiceOrder.id }}</a>
+                            </td>
+                            <td>
+                                {{ formatHelper.formatStatsDate(unprocessedServiceOrder.createdAt, 'day')|raw }}
+                            </td>
+                            <td>
+                                {% if unprocessedServiceOrder.package %}
+                                    {{ unprocessedServiceOrder.getPackageName() }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedServiceOrder.packagePeriod %}
+                                    {{ unprocessedServiceOrder.getPackagePeriodName() }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedServiceOrder.company or unprocessedServiceOrder.companyTitle %}
+                                    {{ include('MetalCompaniesBundle:AdminCompany:companyInfo.html.twig', {'object' : unprocessedServiceOrder}) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedServiceOrder.startAt %}
+                                    {{ formatHelper.formatStatsDate(unprocessedServiceOrder.startAt, 'day')|raw }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if unprocessedServiceOrder.finishAt %}
+                                    {{ formatHelper.formatStatsDate(unprocessedServiceOrder.finishAt, 'day')|raw }}
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

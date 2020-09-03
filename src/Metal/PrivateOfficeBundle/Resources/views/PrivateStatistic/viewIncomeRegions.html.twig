@@ -1,0 +1,150 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% block title 'Входящие клиенты — регионы / Статистика / '~titleSuffix %}
+
+{% block grouping_modes '' %}
+
+{% set chartsRules =
+    [
+        {
+            fields: ['reviewsProductsCount'],
+            commonTitle: 'Просмотры товаров',
+            titles: ['Просмотры товаров']
+        },
+        {
+            fields: ['showProductsCount'],
+            commonTitle: 'Показы товаров',
+            titles: ['Показы товаров']
+        },
+        {
+            fields: ['websiteVisitsCount'],
+            commonTitle: 'Переходы на сайт',
+            titles: ['Переходы на сайт']
+        },
+        {
+            fields: ['reviewsPhonesCount'],
+            commonTitle: 'Просмотры телефонов',
+            titles: ['Просмотры телефонов']
+        },
+        {
+            fields: ['demandsCount', 'demandsProcessedCount'],
+            commonTitle: 'Заявки пришло / обр.',
+            titles: ['Заявки пришло', 'Заявки обр.']
+        },
+        {
+            fields: ['callbacksCount', 'callbacksProcessedCount'],
+            commonTitle: 'Обратн. звонки пришло / обр.',
+            titles: ['Обратн. звонки пришло', 'Обратн. звонки обр.']
+        },
+        {
+            fields: ['reviewsCount'],
+            commonTitle: 'Отзывы',
+            titles: ['Отзывы']
+        },
+        {
+            fields: ['complaintsCount', 'complaintsProcessedCount'],
+            commonTitle: 'Жалобы пришло / обр.',
+            titles: ['Жалобы пришло', 'Жалобы обр.']
+        }
+    ]
+%}
+{% set chartLabelField = 'cityTitle' %}
+
+{% block viewing_modes %}
+    {% set viewingModes = {
+    'all' : {'path' : 'MetalPrivateOfficeBundle:Statistic:income', 'title' : 'Все'},
+    'regions' : {'path' : 'MetalPrivateOfficeBundle:Statistic:incomeRegion', 'title' : 'По городам'},
+    'category' : {'path' : 'MetalPrivateOfficeBundle:Statistic:incomeCategory', 'title' : 'По категориям'}
+    } %}
+
+    {{ parent() }}
+{% endblock viewing_modes %}
+
+{% block content_inner %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="income-regions-tab">
+        {{ block('statistic_pie_chart') }}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+        {% set columns = {
+            'city' : {'query': null, 'cls': 'city col', 'title': 'Город'},
+            'reviewsProductsCount': {'query': 'reviewsProductsCount', 'cls': 'views-products col', 'title': 'Просмотры товаров'},
+            'showProductsCount': {'query': 'showProductsCount', 'cls': 'show-products col', 'title': 'Показы товаров'},
+            'websiteVisitsCount': {'query': 'websiteVisitsCount', 'cls': 'website col', 'title': 'Переходы на сайт'},
+            'reviewsPhonesCount': {'query': 'reviewsPhonesCount', 'cls': 'phones col', 'title': 'Просмотры телефонов'},
+            'demandsCount': {'query': 'demandsCounts', 'cls': 'demands col', 'title': 'Заявки пришло / обр.'},
+            'callbacksCount': {'query': 'callbacksCount', 'cls': 'callbacks col', 'title': 'Обратн. звонки пришло / обр.'},
+            'reviewsCount': {'query': 'reviewsCount', 'cls': 'reviews col', 'title': 'Отзывы'},
+            'complaintsCount': {'query': 'complaintsCount', 'cls': 'complaints col', 'title': 'Жалобы пришло / обр.'}
+        } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table js-stats-table-body">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                    'reviewsProductsCount',
+                    'showProductsCount',
+                    'websiteVisitsCount',
+                    'reviewsPhonesCount',
+                    'demandsCount',
+                    'demandsProcessedCount',
+                    'callbacksCount',
+                    'callbacksProcessedCount',
+                    'reviewsCount',
+                    'complaintsCount',
+                    'complaintsProcessedCount',
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="views-products col">{{ summarizedValues.reviewsProductsCount|number_format_decimal }}</td>
+                    <td class="show-products col">{{ summarizedValues.showProductsCount|number_format_decimal }}</td>
+                    <td class="website col">{{ summarizedValues.websiteVisitsCount|number_format_decimal }}</td>
+                    <td class="phones col">{{ summarizedValues.reviewsPhonesCount|number_format_decimal }}</td>
+                    <td class="demands col">{{ summarizedValues.demandsCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.demandsProcessedCount|number_format_decimal }}</td>
+                    <td class="callbacks col">{{ summarizedValues.callbacksCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.callbacksProcessedCount|number_format_decimal }}</td>
+                    <td class="reviews col">{{ summarizedValues.reviewsCount|number_format_decimal }}</td>
+                    <td class="complaints col">{{ summarizedValues.complaintsCount|number_format_decimal }} <span class="null">/</span> {{ summarizedValues.complaintsProcessedCount|number_format_decimal }}</td>
+                </tr>
+                {% for statsItem in statsResultViewModel.stats %}
+                    <tr class="row">
+                        <td class="city col">{{ statsItem.cityTitle }}</td>
+                        <td class="views-products col">
+                            <span class="{% if statsItem.reviewsProductsCount == 0 %}null {% endif %}">{{ statsItem.reviewsProductsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="show-products col">
+                            <span class="{% if statsItem.showProductsCount == 0 %}null {% endif %}">{{ statsItem.showProductsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="website col">
+                            <span class="{% if statsItem.websiteVisitsCount == 0 %}null {% endif %}">{{ statsItem.websiteVisitsCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="phones col">
+                            <span class="{% if statsItem.reviewsPhonesCount == 0 %}null {% endif %}">{{ statsItem.reviewsPhonesCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="demands col">
+                            <span class="{% if statsItem.demandsCount == 0 %}null{% endif %}">{{ statsItem.demandsCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if statsItem.demandsProcessedCount == 0 %}null{% endif %}">{{ statsItem.demandsProcessedCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="callbacks col">
+                            <span class="{% if statsItem.callbacksCount == 0 %}null{% endif %}">{{ statsItem.callbacksCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if statsItem.callbacksProcessedCount == 0 %}null{% endif %}">{{ statsItem.callbacksProcessedCount|number_format_decimal }}</span>
+                        </td>
+                        <td class="reviews col {% if statsItem.reviewsCount == 0 %}null {% endif %}">{{ statsItem.reviewsCount|number_format_decimal }}</td>
+                        <td class="complaints col">
+                            <span class="{% if statsItem.complaintsCount == 0 %}null{% endif %}">{{ statsItem.complaintsCount|number_format_decimal }}</span>
+                            <span class="null">/</span>
+                            <span class="{% if statsItem.complaintsProcessedCount == 0 %}null{% endif %}">{{ statsItem.complaintsProcessedCount|number_format_decimal }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock content_inner %}

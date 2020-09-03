@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="brouzie.bridge.twig.extension.whitespaces_normaliaztion_extension"
+                 class="Brouzie\Bridge\Twig\Extension\WhitespacesNormaliaztionExtension" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="brouzie.bridge.twig.extension.angular_escaping_extension"
+                 class="Brouzie\Bridge\Twig\Extension\AngularEscapingExtension"
+                 public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="brouzie.bridge.twig.extension.base64extension"
+                 class="Brouzie\Bridge\Twig\Extension\Base64Extension"
+                 public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="brouzie.bridge.twig.extension.string_extension"
+                 class="Brouzie\Bridge\Twig\Extension\StringExtension"
+                 public="false">
+            <argument type="service" id="sonata.intl.templating.helper.number" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="metal_project.twig.http_extension" class="Metal\ProjectBundle\Twig\HttpExtension">
+            <argument>%hostnames_map%</argument>
+            <argument>%base_host%</argument>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

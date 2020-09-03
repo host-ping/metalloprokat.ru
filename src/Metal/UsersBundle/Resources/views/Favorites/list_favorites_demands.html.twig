@@ -1,0 +1,129 @@
+{% extends '@MetalProject/layouts/_portal_layout.html.twig' %}
+
+{% block title 'Избранные потребители' %}
+
+{% block search_form '' %}
+
+{% block breadcrumbs '' %}
+
+{% block banner '' %}
+
+{% block additional_announcement_wrapper_class 'not-moved' %}
+
+{% block content %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    {% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+    {% set route = app.request.attributes.get('_route') %}
+    {% set comment = app.request.query.get('comment') %}
+    {% set order = app.request.query.get('order', false) %}
+
+    <div id="content" class="content-wide float-left">
+        <div class="favorites main-title ">
+            <h1>Избранные: <a href="{{ path('MetalUsersBundle:Favorites:list') }}" class="supplier">поставщики
+                    <sup>{{ userCounter.getFavoriteCompaniesCount() }}</sup></a>, <span class="current link">потребители <sup>{{ userCounter.getFavoriteDemandsCount() }}</sup></span>
+            </h1>
+        </div>
+
+        {% block tabs %}
+            <div class="favorites_result-tabs-wrapper outline clearfix">
+                <div class="tabs favorite-filter float-left">
+                    <ul class="list">
+                        <li class="item">
+                            {% if app.request.query.has('comment') %}
+                                <a class="link" href="{{ path(route) }}">Все</a>
+                            {% else %}
+                                <span class="active">Все</span>
+                            {% endif %}
+                        </li>
+                        <li class="item">
+                            {% if app.request.query.get('comment') == 'with' %}
+                                <span class="active">С пометками</span>
+                            {% else %}
+                                <a class="link" href="{{ path(route, { 'comment' : 'with'}) }}">С пометками</a>
+                            {% endif %}
+                        </li>
+                        <li class="item">
+                            {% if app.request.query.get('comment') == 'without' %}
+                                <span class="active">Без пометок</span>
+                            {% else %}
+                                <a class="link" href="{{ path(route, { 'comment' : 'without'}) }}">Без пометок</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="sort-view float-right clearfix">
+                    <div class="export-block float-left">
+                        {% if app.user.company and app.user.company.packageChecker.isAllowedExportDemands() %}
+                            <a class="export link js-popover-opener" data-popover="#export-feed">Экспорт</a>
+                        {% else %}
+                            <a class="export link js-popup-opener" data-popup="#complete-package" >Экспорт</a>
+                        {% endif %}
+                        <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+                            <div class="dropdown">
+                                <div class="export-links block clearfix">
+                                    <p class="title">Экспорт</p>
+                                    <a class="button small-btn blue-bg float-left ie-radius" data-href="{{ path('MetalUsersBundle:Favorites:export', app.request.query.all()|merge(app.request.attributes.get('_route_params'))|merge({'format': 'xlsx'})) }}">XLSX</a>
+                                    <a class="button small-btn blue-bg float-left ie-radius" data-href="{{ path('MetalUsersBundle:Favorites:export', app.request.query.all()|merge(app.request.attributes.get('_route_params'))|merge({'format': 'csv'})) }}">CSV</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% set sorts = {
+                    'viewsCount' : {'query' : 'viewsCount', 'title' : 'По популярности'},
+                    'answersCount' : {'query' : 'answersCount', 'title' : 'По ответам'},
+                    'date' : {'query' : null, 'title' : 'По дате'}
+                    } %}
+
+                    <div class="order-block float-left">
+                        {% for typeSort in sorts %}
+                            {% if typeSort.query == order %}
+                                <span class="order-link icon-check black clickable link js-popover-opener"
+                                   data-popover="#order">{{ typeSort.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        <div id="order" class="drop-wrapper order-list opacity-border">
+                            <ul class="dropdown">
+                                {% for typeSort in sorts %}
+                                    {% if typeSort.query == order %}
+                                        <li class="drop-item">
+                                            <span class="drop-link current">{{ typeSort.title }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="drop-item">
+                                            <a class="drop-link"
+                                               href="{{ path(app.request.attributes.get('_route'), routeParameters|merge({ order : typeSort.query, 'page' : null })) }}">{{ typeSort.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% if favoriteDemands %}
+            <div class="view-category favorites clearfix js-calc-height" data-replacement-zone="page.favorites_demands_list" data-replacement-callback="scrollToElement">
+                {{ include('MetalDemandsBundle:partials:demands_in_list.html.twig', {
+                'favoriteDemands': favoriteDemands,
+                'pagerfanta' : pagerfanta,
+                }, false) }}
+            </div>
+        {% else %}
+            <div class="no-favorites js-calc-height">
+                <span class="text">Нет избранных поставщиков</span>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block additional_popups %}
+    {% set counterName = 'demands_count' %}
+    {% set routeTypeForHeader = 'demands_list' %}
+    {% set loadingRoute = 'MetalDemandsBundle:Api:territorial' %}
+
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Полный пакет даёт возможность экспортировать заявки и многое другое.'}) }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'demand'}) }}
+{% endblock %}

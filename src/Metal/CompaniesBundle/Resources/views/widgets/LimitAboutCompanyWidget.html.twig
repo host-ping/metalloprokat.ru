@@ -1,0 +1,5 @@
+{% if text|length %}
+    <div class="related-topics">
+        <div class="related-topics_title" data-encoded-content="{{ text|base64_encode|escape('html_attr') }}"></div>
+    </div>
+{% endif %}

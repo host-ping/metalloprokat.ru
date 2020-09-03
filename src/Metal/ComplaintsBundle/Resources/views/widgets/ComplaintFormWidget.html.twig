@@ -1,0 +1,32 @@
+{% set popupId = 'complaint-'~ _options.kind %}
+
+<div id="{{ popupId }}"
+     class="report-form popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Неверная информация</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              data-success="close-popup"
+              class="popup-form js-ajax-form-submit"
+              method="post"
+              data-bind-attr="action:complaint-url"
+              novalidate="novalidate">
+            <fieldset>
+                <div class="select-wrapper field-wrap">
+                    {{ form_widget(form.complaintTypeId, {'attr' : {'placeholder' : 'Выберите причину', 'class': 'form-select'} }) }}
+                </div>
+                <div class="textarea-wrapper field-wrap">
+                    {{ form_widget(form.body, {'attr' : {'placeholder' : 'Комментарии', 'class': 'form-textarea ie-radius' }} ) }}
+                </div>
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit" value="Отправить"/>
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

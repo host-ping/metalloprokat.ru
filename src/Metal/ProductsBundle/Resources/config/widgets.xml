@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="metal_products.widget.premium_products_widget"
+                 class="Metal\ProductsBundle\Widget\PremiumProductsWidget">
+            <argument type="service" id="metal_products.data_fetcher_factory" />
+            <argument type="service" id="metal.products.products_entity_loader" />
+            <argument type="service" id="cache.app" />
+            <tag name="brouzie_widgets.widget" widget="MetalProductsBundle:PremiumProducts" />
+        </service>
+
+        <service id="metal_products.widget.hot_line_widget"
+                 class="Metal\ProductsBundle\Widget\HotLineWidget">
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="metal_products.data_fetcher_factory" />
+            <tag name="brouzie_widgets.widget" widget="MetalProductsBundle:HotLine" />
+        </service>
+    </services>
+</container>

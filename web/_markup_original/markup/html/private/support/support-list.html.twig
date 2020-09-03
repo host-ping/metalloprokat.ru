@@ -1,0 +1,120 @@
+{% extends '@markup/private/support/_support_layout.html.twig' %}
+{% block title 'Support' %}
+
+{% block content %}
+    <div id="content" class="support-content private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                <div class="support-admin-block clearfix">
+                    <div class="back-to-list float-left">
+                        <a class="link" href="{{ path('private/support/list.html.twig') }}">Вернуться к списку всех заявок</a>
+                    </div>
+                    <div class="add-btn-wrapper float-right">
+                        <a href="#" class="button green-bg ie-radius js-popup-opener ie-radius" data-popup="#add-support-request">Добавить завку</a>
+                    </div>
+                </div>
+                <div class="content-wrapper">
+                    <div class="support-wrapper clearfix">
+                        <div class="left float-left">
+                            <div class="support-title">
+                                <h1 class="title">Не могу сменить пароль</h1>
+                                <p class="creation-date">21 апр 2013</p>
+                            </div>
+                            <p class="text">Менял пароль много раз. В какой-то момент пальцы начали болеть, теперь не могу нажимать на
+                                кнопки. Помогите черт возьми.</p>
+                        </div>
+                        <div class="user-photo float-right">
+                            <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                        </div>
+                    </div>
+                    <div class="manager-comment">
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <div class="comment clearfix">
+                            <div class="manager-photo float-left">
+                                <img src="./markup/pic/user-img-small.jpg" alt="image description"/>
+                            </div>
+                            <div class="comment-text float-left">
+                                <p class="comment-title">Отвечает <a href="#">Галина Шильдяева</a>, 5 минут назад</p>
+                                <strong class="comment-text">Попробуйте весенний салат. Он сочный, свежий и невероятно вкусный</strong>
+                            </div>
+                        </div>
+                        <form class="add-comment form" action="#">
+                            <fieldset>
+                                <div class="field-wrap helper-left-position">
+                                    <textarea class="form-textarea error ie-radius" placeholder="Ваш комментарий"></textarea>
+                                    <span class="icon-error-color js-helper-opener" data-text="Поле не должно быть пустым"></span>
+                                </div>
+                                <div class="btn-wrapper float-right">
+                                    <input type="submit" class="button blue-bg ie-radius" value="Отправить"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

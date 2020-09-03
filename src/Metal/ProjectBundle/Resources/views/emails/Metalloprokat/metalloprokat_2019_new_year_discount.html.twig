@@ -1,0 +1,41 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %} Бонус или скидка - выбор за вами!{% endblock subject %}
+
+{% block body_text -%}
+    Уважаемые наши партнеры!
+
+    Всем, кто ранее не пользовался услугами Metalloprokat.ru:
+
+    До 31.12.2019 при оплате доступа на 3 мес. вы получаете 1 мес. в подарок, 6 мес. - 2 мес. в подарок, а при оплате года - дополнительную скидку 30%
+
+
+
+    ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ
+
+    Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: https://corp.metalloprokat.ru/services/
+
+    С ценами на баннерную рекламу Вы можете ознакомиться здесь: https://corp.metalloprokat.ru/media/
+
+    или по телефону +7 (495) 268-02-85
+
+
+    {{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p>Уважаемые наши партнеры!</p>
+    <p>Всем, кто ранее не пользовался услугами Metalloprokat.ru:</p>
+    <p>До 31.12.2019 при оплате доступа
+    <li>на <b>3 мес.</b> вы получаете <b style="color: green; font-size: 14px;">1 мес. в подарок</b></li>
+    <li>на <b>6 мес.</b> - <b style="color: green; font-size: 14px;"> 2 мес. в подарок</b></li>
+    <li> при оплате <b>года</b> - дополнительную   <b style="color: green; font-size: 14px;">скидку 30%</b></li>
+    </p>
+
+    <p>ПОДКЛЮЧЕНИЕ СЕРВИСОВ ПОСЛЕ ОПЛАТЫ ВОЗМОЖНО ПО ДОГОВОРЕННОСТИ С ЛЮБОЙ ЖЕЛАЕМОЙ ДАТЫ</p>
+    <p>Более подробную информацию по расценкам и сервисам портала вы можете получить на портале: <a href="https://corp.metalloprokat.ru/services/">corp.metalloprokat.ru/services</a></p>
+    <p>С ценами на баннерную рекламу Вы можете ознакомиться <a href="https://corp.metalloprokat.ru/media/">здесь</a></p>
+    <p>или по телефону +7 (495) 268-02-85</p>
+     <br/>
+    <p>С уважением, <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+{% endblock %}

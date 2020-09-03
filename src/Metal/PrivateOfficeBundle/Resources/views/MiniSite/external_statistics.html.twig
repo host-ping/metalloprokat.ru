@@ -1,0 +1,49 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Внешняя статистика / Мини-сайт / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right" >
+        <div class="private-fix-width">
+            {{ block('tabs') }}
+            <div class="content-wrapper">
+                <div class="company-details-wrapper">
+                    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+                    <form class="company-details form" enctype="multipart/form-data"
+                          data-ajax-form="ajaxFormOptions"
+                          ng-init='
+                                updatedAt = {{ formattingHelper.formatDateTime(miniSiteConfig.updatedAt)|json_encode|raw }}'
+                          action="{{ path('MetalPrivateOfficeBundle:MiniSite:analytics') }}"
+                          method="post"
+                          novalidate="novalidate">
+                        <fieldset>
+                            <div class="field-groups clearfix">
+
+                                    <div class="field-wrap">
+                                        {{ form_widget(form.googleAnalyticsId, {'attr' : {'class' : 'form-text ie-radius'} }) }}
+                                        {{ form_label(form.googleAnalyticsId, null, {'label_attr' : {'class' : 'input-label', 'style' : 'width:220px'}}) }}
+                                    </div>
+                                    <div class="field-wrap">
+                                        {{ form_widget(form.yandexMetrikaId, {'attr' : {'class' : 'form-text ie-radius'} }) }}
+                                        {{ form_label(form.yandexMetrikaId, null, {'label_attr' : {'class' : 'input-label', 'style' : 'width:220px'}}) }}
+                                    </div>
+
+
+                            </div>
+                            <div class="submit-wrapper">
+                                <input type="submit" class="save-btn button blue-bg ie-radius" value="Сохранить"/>
+                                <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{ form_rest(form) }}
+
+                        <p class="last-update">Последнее обновление <%= updatedAt %></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

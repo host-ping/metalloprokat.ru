@@ -1,0 +1,182 @@
+﻿<link rel="stylesheet" href="css/button.css">
+<h1>Основные кнопки</h1>
+
+<section class="source_section">
+    <h2>Узкие кнопки</h2>
+
+    <div class="source_example">
+        <span class="button send-button red-bg ie-radius">Отправить заявку</span>
+    </div>
+
+    <div class="source_example">
+        <span class="button send-button gray60-bg ie-radius">Отправить заявку</span>
+    </div>
+
+    <div class="source_example">
+        <span class="button send-button blue-bg ie-radius">Запросить цены</span>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Стандартные кнопки</h2>
+    <div class="source_example">
+        <span class="see-more button ie-radius">показать еще...</span>
+    </div>
+
+    <div class="source_warn">
+        <p>Эта же кнопка с loading mask. У родительского селектора должен быть стиль <code>position: relative;</code></p>
+    </div>
+
+    <div class="source_example">
+        <div class="see-more-block">
+            <span class="see-more button ie-radius">показать еще...</span>
+            <div class="loading-mask">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="source_section">
+    <h2>Блоки кнопок</h2>
+    <div class="source_example">
+        <ul class="links clearfix">
+            <li class="links_report item float-left clearfix">
+                <span class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                   data-tooltip-title="Пожаловаться" data-popup="#report">
+                    <span class="icon-complaint"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="source_example">
+        <ul class="links clearfix">
+            <li class="links_report item float-left clearfix">
+                <div class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                      data-tooltip-title="Пожаловаться" data-popup="#report">
+                    <div class="tooltip report-link with-bullet">
+                        Пожаловаться
+                        <i class="chat-bubble-arrow-border"></i>
+                        <span class="chat-bubble-arrow"></span>
+                    </div>
+                    <span class="icon-complaint"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="source_example">
+        <ul class="links clearfix">
+            <li class="links_comment item medium float-left clearfix">
+                <span class="button comment is-bordered ie-radius">
+                    <span class="text">Отзывы</span>
+                    <span class="icon-comment active float-right"></span>
+                    <span class="count red-color float-right">12</span>
+                </span>
+            </li>
+            <li class="links_comment item medium float-left clearfix">
+                <span class="button comment is-bordered ie-radius">
+                    <span class="text">Отзывы</span>
+                    <span class="icon-comment float-right"></span>
+                </span>
+            </li>
+            <li class="item medium float-left clearfix">
+                <span class="button favorites is-bordered ie-radius">
+                    <span class="text">В Избранное</span>
+                    <span class="icon-favorite float-right"></span>
+                </span>
+            </li>
+            <li class="item medium float-left clearfix">
+                <span class="button favorites active-link is-bordered ie-radius js-togglable-block">
+                    <span class="text">В Избранном</span>
+                    <span class="icon-favorite-active float-right"></span>
+                </span>
+                <span class="button favorites delete blue-bg ie-radius js-togglable-block">
+                    <span class="text">Удалить</span>
+                    <span class="icon-favorite-del float-right"></span>
+                </span>
+            </li>
+            <li class="links_answer item width-181 float-left clearfix">
+                <span class="button answer is-bordered green-bg js-popup-opener ie-radius"
+                   data-popup="#demand-answer" data-demand-id="39525">
+                    <span class="text">Ответить</span>
+                    <span class="icon-back float-right"></span>
+                </span>
+            </li>
+            <li class="links_read-answers item default-width float-left clearfix">
+                <span class="button is-bordered js-popup-opener ie-radius" data-popup="#demand-answers">
+                    <span class="text">Читать ответы</span>
+                    <strong class="count gray80-color">3</strong>
+                    <span class="read-answers icon-back float-right"></span>
+                </span>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="source_example">
+        <ul class="links clearfix">
+            <li class="links_contacts item default-width float-left clearfix">
+                <span class="button js-view-contacts contacts is-bordered js-popover-opener ie-radius"
+                      data-popover="#contact">
+                    <span class="text">Контакты и условия</span>
+                    <span class="icon-points float-right"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="source_example">
+        <ul class="links clearfix">
+            <li class="links_contacts item default-width float-left clearfix">
+                <span class="button js-view-contacts contacts is-bordered js-popover-opener active ie-radius"
+                      data-popover="#contact">
+                    <span class="text">Контакты и условия</span>
+                    <span class="icon-points float-right"></span>
+                </span>
+
+                <div id="contact" class="drop-wrapper contact is-bordered ie-radius">
+                    <p class="text">Для просмотра контактной информации о потребителе необходимо зарегистрироваться и
+                        авторизоваться.</p>
+                    <a class="button is-bordered ie-radius" href="#">Перейти на страницу потребности</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="source_example" style="height: 275px; padding-top: 210px;">
+        <ul class="links clearfix">
+            <li class="links_contacts item default-width float-left clearfix">
+                <span class="button js-view-contacts contacts is-bordered js-popover-opener active ie-radius top-opener"
+                      data-popover="#contact1">
+                    <span class="text">Контакты и условия</span>
+                    <span class="icon-points float-right"></span>
+                </span>
+
+                <div id="contact1" class="drop-wrapper contact top-position is-bordered ie-radius">
+                    <p class="text">Для просмотра контактной информации о потребителе необходимо зарегистрироваться и
+                        авторизоваться.</p>
+                    <a class="button is-bordered ie-radius" href="#">Перейти на страницу потребности</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</section>
+
+
+    <div class="source_info">
+        <h3>Что можно переделать!</h3>
+
+        <ol>
+            <li>
+                Сделать чтобы ширину кнопки определял родитель(для кнопок сделать width: 100%)
+            </li>
+            <li>
+                На сайте есть 2 типа кнопок по высоте. Для каждого типа выделить отдельные классы.
+            </li>
+        </ol>
+    </div>
+

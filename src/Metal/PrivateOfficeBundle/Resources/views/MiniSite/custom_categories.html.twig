@@ -1,0 +1,116 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Категории / Мини-сайт / '~titleSuffix %}
+
+{% block content %}
+    {% set categoriesControllerOptions = {
+    'saveItemsUrl': path('MetalPrivateOfficeBundle:PrivateCustomCategories:saveCategoriesByLevels')
+    } %}
+
+    <style type="text/css">
+        input.ng-invalid {
+        {#TODO: нужно такие же стили, как у #}
+            color: #f16961 !important;
+            border: 1px solid #f16961;
+        }
+    </style>
+
+    <div ng-controller="Metal.Core as coreController" ng-cloak>
+        <div ng-controller="Metal.Categories as categoriesController">
+
+            <div id="content" class="private-room-content content-right outline-right float-right"
+                 ng-init='categoriesController.options = {{ categoriesControllerOptions|json_encode|raw }}; categories = {{ categories|json_encode|raw }}'>
+
+                {% block tabs %}
+                    {% set activeTab = 'categories' %}
+                    {{ parent() }}
+                {% endblock tabs %}
+
+                {% block filters %}
+                    <div class="filters-block mini-site-categories outline-right clearfix">
+                        <button type="button" class="add button blue-bg float-left ie-radius"
+                                ng-click="categoriesController.newItem()">Добавить
+                        </button>
+                        <button type="button" class="delete button red-bg float-left ie-radius"
+                                ng-disabled="categoriesForm.$invalid"
+                                ng-click="categoriesController.saveItems(categories)"
+                        >Сохранить
+                        </button>
+                        <button type="button" class="add button green-bg float-left ie-radius"
+                                ng-click="categoriesController.expandAll()">Развернуть список</button>
+                        <button type="button" class="add button green-bg float-left ie-radius"
+                                ng-click="categoriesController.collapseAll()">Свернуть список</button>
+                    </div>
+                {% endblock %}
+
+                <div class="private-scrollable content-scrollable js-scrollable">
+                    <div class="mini-site-content-wrapper mini-site-categories-wrapper">
+                        <script type="text/ng-template" id="nodes_renderer.html">
+                            <div class="tree-node tree-node-content">
+                                <span class="black clickable"
+                                      ng-if="category.nodes && category.nodes.length > 0"
+                                      data-nodrag
+                                      ng-click="this.toggle()"
+                                      ng-class="{ 'icon-check': collapsed, 'icon-check-collapse': !collapsed }"
+                                ></span>
+                                <span ui-tree-handle class="tree-handle icon-view-list"></span>
+                                <input type="text" ng-model="category.title"
+                                       name="dummy" placeholder="Название категории"
+                                       class="form-text ie-radius"
+                                       focus-if="category.focused" ng-blur="category.focused = false; category.title = category.title + '';"
+                                       required ng-minlength="2" />
+
+                                <div class="btns-wrapper float-right">
+                                    <span class="add-button icon-add-btn clickable demand"
+                                          data-nodrag ng-click="categoriesController.newSubItem(this)"></span>
+                                    <span class="icon-delete-btn clickable"
+                                          data-nodrag ng-click="this.remove()"></span>
+                                </div>
+                            </div>
+
+                            <ol ui-tree-nodes="" ng-model="category.nodes" ng-show="!collapsed">
+                                <li ng-repeat="category in category.nodes" ui-tree-node data-collapsed="true"
+                                    ng-include="'nodes_renderer.html'">
+                                </li>
+                            </ol>
+                        </script>
+
+                        <form name="categoriesForm">
+                            <div ui-tree ng-if="categories.length">
+                                <ol ui-tree-nodes="" ng-model="categories" id="tree-root">
+                                    <li ng-repeat="category in categories" ui-tree-node data-collapsed="true"
+                                        ng-include="'nodes_renderer.html'">
+                                    </li>
+                                </ol>
+                            </div>
+                        </form>
+                        <div ng-if="!categories.length" class="empty-result">
+                            <p class="message">Вы можете создать произвольные категории на Вашем минисайте! Обратитесь к
+                                менеджеру за дополнительной информацией</p>
+                        </div>
+                        <div ng-show="formSubmitting">
+                            <div class="overflow">
+                            </div>
+                            <div class="loading-mask big">
+                                <div class="spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block additional_popups %}
+    {{ parent() }}
+    {% if not company.packageChecker.isCustomCategoriesAllowed() %}
+        {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Возможность указать порядок вывода произвольных категорий доступна при подключении Расширенного или Полного пакета услуг ', 'widget_id': 'complete-package-custom-categories', 'popup_non_closable' : true} ) }}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Brouzie.Popups.openPopup($('#complete-package-custom-categories'));
+            });
+        </script>
+    {% endif %}
+{% endblock %}

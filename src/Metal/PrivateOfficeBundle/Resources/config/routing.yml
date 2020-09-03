@@ -1,0 +1,473 @@
+'MetalPrivateOfficeBundle:Default:index':
+    path:   /
+    defaults: { _controller: MetalPrivateOfficeBundle:Default:index }
+
+'MetalPrivateOfficeBundle:Default:notApproved':
+    path:   /not-approved
+    defaults: { _controller: MetalPrivateOfficeBundle:Default:notApproved }
+
+'MetalPrivateOfficeBundle:Default:sendReminderEmail':
+    path: /reminder
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:Default:sendReminderEmail }
+
+'MetalPrivateOfficeBundle:Reviews:list':
+    path: /clients/reviews
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateReviews:list }
+
+'MetalPrivateOfficeBundle:Reviews:delete':
+    path: /clients/reviews/{id}/delete
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateReviews:delete }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Complaint:list':
+    path:   /clients/complaints
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateComplaints:list }
+
+'MetalPrivateOfficeBundle:Complaint:processed':
+    path: /clients/complaints/{id}/processed
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateComplaints:processComplaint}
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Callbacks:list':
+    path: /clients/callbacks
+    defaults: {_controller: MetalPrivateOfficeBundle:PrivateCallback:list }
+
+'MetalPrivateOfficeBundle:Callbacks:processed':
+    path: /clients/callbacks/{id}/processed
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCallback:processCallback }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Demand:show':
+    path: /clients/demands/{id}
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateDemand:show }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Demands:list':
+    path: /clients/demands
+    defaults: {_controller: MetalPrivateOfficeBundle:PrivateDemands:list }
+
+'MetalPrivateOfficeBundle:Archive:demands':
+    path: /archive/demands
+    defaults: {_controller: MetalPrivateOfficeBundle:PrivateArchive:demands }
+
+'MetalPrivateOfficeBundle:Archive:toggleDemand':
+    path:   /archive/demand/{subject}/{id}
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateArchive:toggleDemand }
+    methods:  [POST]
+    requirements:
+        subject: delete|restore|update
+        id: \d+
+
+'MetalPrivateOfficeBundle:Archive:callbacks':
+    path: /archive/callbacks
+    defaults: {_controller: MetalPrivateOfficeBundle:PrivateArchive:callbacks }
+
+'MetalPrivateOfficeBundle:Employees:list':
+    path: /management/employees
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:list }
+
+'MetalPrivateOfficeBundle:Employees:create':
+    path: /management/employees/create
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:create }
+
+'MetalPrivateOfficeBundle:Employees:save':
+    path: /management/employees/save/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:save }
+
+'MetalPrivateOfficeBundle:Employees:approved':
+    path: /management/employees/approved/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:approved }
+
+'MetalPrivateOfficeBundle:Employees:load':
+    path: /management/employees/load/{id}
+    methods: [GET]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:load }
+
+'MetalPrivateOfficeBundle:Employees:delete':
+    path: /management/employees/delete/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateEmployees:delete }
+
+'MetalPrivateOfficeBundle:Account:view':
+    path: /management/account
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:viewAccount }
+
+'MetalPrivateOfficeBundle:Account:connectTelegram':
+    path: /management/account/connect/telegram
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:connectTelegram }
+
+'MetalPrivateOfficeBundle:CompanyCreation:createCompany':
+    path: /management/company-creation
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCompanyCreation:createCompany }
+
+'MetalPrivateOfficeBundle:Account:save':
+    path: /management/account/save
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:save }
+
+'MetalPrivateOfficeBundle:Cities:save':
+    path: /management/offices/save/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCities:save, id: null }
+
+'MetalPrivateOfficeBundle:Cities:simpleSave':
+    path: /management/offices/simple-save
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCities:simpleSave }
+
+'MetalPrivateOfficeBundle:Cities:view':
+    path: /management/offices/{id}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCities:view, id: null }
+
+'MetalPrivateOfficeBundle:Cities:delete':
+    path: /management/offices/{id}/delete
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCities:delete }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Agreement:show':
+    path: /services/agreement
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAgreement:show }
+
+'MetalPrivateOfficeBundle:Agreement:downloadPdf':
+    path: /services/agreement/download
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAgreement:downloadPdf }
+
+'MetalPrivateOfficeBundle:Company:edit':
+    path: /management/company
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCompany:edit }
+
+'MetalPrivateOfficeBundle:Company:usePromocode':
+    path: /management/company/use_promocode
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCompany:usePromocode }
+
+######################################## products #####################
+'MetalPrivateOfficeBundle:Product:save':
+    path: /management/products/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProduct:save, id: null }
+    requirements:
+        id: \d*
+
+'MetalPrivateOfficeBundle:Products:import':
+    path: /management/products/import
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:import }
+
+'MetalPrivateOfficeBundle:Products:export':
+    path: /management/products/export/{format}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:export }
+    requirements:
+        format: xls|yml
+
+'MetalPrivateOfficeBundle:Products:saveScheduledActualization':
+    path: /management/products/save-sheduled-actualization
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:saveScheduledActualization }
+
+'MetalPrivateOfficeBundle:Products:downloadExport':
+    path: /management/products/download-export/{filename}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:findFileUrl }
+
+'MetalPrivateOfficeBundle:Products:list':
+    path: /management/products
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:list }
+
+'MetalPrivateOfficeBundle:Products:loadProductsById':
+    path: /management/products/load-products-by-id
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:loadProductsById, for_custom_category: false }
+
+'MetalPrivateOfficeBundle:Products:loadCategoriesByFilialId':
+    path: /management/products/load-categories-by-filial-id
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:loadCategoriesByFilialId }
+
+'MetalPrivateOfficeBundle:Products:loadProductsIdsUrl':
+    path: /management/products/load-products-ids-url
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:getProductsIdsByFilter }
+
+'MetalPrivateOfficeBundle:Products:loadCompanyPhotos':
+    path: /management/products/load-company-photos
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:loadCompanyPhotos }
+
+'MetalPrivateOfficeBundle:Products:moveToCategory':
+    path: /management/products/move-to-category
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:moveToCategory }
+
+'MetalPrivateOfficeBundle:Products:changeOfferStatus':
+    path: /management/products/change-offer-status
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:changeOfferStatus }
+
+
+'MetalPrivateOfficeBundle:Products:delete':
+    path: /management/products/delete
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:delete }
+
+'MetalPrivateOfficeBundle:Products:connectProductsWithPhoto':
+    path: /management/products/connect-with-photo/{photo_id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:connectProductsWithPhoto }
+
+'MetalPrivateOfficeBundle:PrivateProductPhoto:save':
+    path: /management/products/save-photo/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProductPhoto:save, id:null }
+
+'MetalPrivateOfficeBundle:PrivateProductPhoto:delete':
+    path: /management/products/delete-photo/{photo_id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProductPhoto:delete }
+
+'MetalPrivateOfficeBundle:Products:disconnectPhotoFromProduct':
+    path: /management/products/delete-photo-from-product
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:disconnectPhotoFromProduct }
+
+'MetalPrivateOfficeBundle:Products:actualize':
+    path: /management/products/actualize
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:actualize }
+
+########################################### statistics
+'MetalPrivateOfficeBundle:Statistic:income':
+    path: /statistic/incoming
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: income_daily }
+
+'MetalPrivateOfficeBundle:Statistic:incomeRegion':
+    path: /statistic/incoming/by-region
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: income_region }
+
+'MetalPrivateOfficeBundle:Statistic:incomeCategory':
+    path: /statistic/incoming/by-category
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: income_category }
+
+'MetalPrivateOfficeBundle:Statistic:demand':
+    path: /statistic/demands
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: demand_daily }
+
+'MetalPrivateOfficeBundle:Statistic:demandRegion':
+    path: /statistic/demands/by-region
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: demand_region }
+
+'MetalPrivateOfficeBundle:Statistic:demandCategory':
+    path: /statistic/demands/by-category
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: demand_category }
+
+'MetalPrivateOfficeBundle:Statistic:media':
+    path: /statistic/media/{id}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:viewMedia, id:null }
+
+'MetalPrivateOfficeBundle:Statistic:management':
+    path: /statistic/management
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateStatistic:view, mode: management }
+
+
+'MetalPrivateOfficeBundle:MiniSite:header':
+    path: /minisite/header
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:viewHeader }
+
+'MetalPrivateOfficeBundle:MiniSite:uploadCover':
+    path: /minisite/header/upload-cover
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:uploadCover }
+
+'MetalPrivateOfficeBundle:MiniSite:saveCover':
+    path: /minisite/header/save-cover/{cover_id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:saveCover }
+
+'MetalPrivateOfficeBundle:MiniSite:address':
+    path: /minisite/address
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:address }
+
+'MetalPrivateOfficeBundle:MiniSite:analytics':
+    path: /minisite/analitics
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:analytics }
+
+'MetalPrivateOfficeBundle:PrivateCustomCategories:products':
+    path: /minisite/products
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCustomCategories:products }
+
+'MetalPrivateOfficeBundle:PrivateCustomCategories:categories':
+    path: /minisite/categories
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCustomCategories:categories }
+
+'MetalPrivateOfficeBundle:PrivateCustomCategories:saveCategoriesByLevels':
+    path: /minisite/categories/save
+    methods: [POST]
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateCustomCategories:saveCategoriesByLevels }
+
+'MetalPrivateOfficeBundle:PrivateCustomCategories:moveToCategory':
+    path: /management/minisite/move-to-category
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCustomCategories:moveToCategory }
+
+'MetalPrivateOfficeBundle:PrivateCustomCategories:loadProductsById':
+    path: /management/minisite/load-products-by-id
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateProducts:loadProductsById, for_custom_category: true }
+
+'MetalPrivateOfficeBundle:MiniSite:colors':
+    path: /minisite/colors
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:colors }
+
+'MetalPrivateOfficeBundle:MiniSite:share':
+    path: /minisite/share
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateMiniSite:share }
+
+'MetalPrivateOfficeBundle:MiniSite:documents':
+    path: /minisite/documents
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDocumentsManagement:list }
+
+'MetalPrivateOfficeBundle:DocumentsManagement:delete':
+    path: /minisite/delete/document/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDocumentsManagement:delete }
+
+'MetalPrivateOfficeBundle:DocumentsManagement:save':
+    path: /minisite/edit/document/{id}
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDocumentsManagement:save }
+
+'MetalPrivateOfficeBundle:Details:edit':
+    path: /details
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:edit }
+
+'MetalPrivateOfficeBundle:Details:payment':
+    path: /details/payment
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:payment }
+
+'MetalPrivateOfficeBundle:Details:deletePayment':
+    path: /details/delete-payment/{id}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:deletePayment }
+
+'MetalPrivateOfficeBundle:Details:printPayment':
+    path: /details/print-payment/{id}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:printPayment }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Details:downloadPayment':
+    path: /details/download-payment/{id}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:downloadPayment }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:Details:downloadDocument':
+    path: /details/download-document
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDetails:downloadDocument }
+
+'MetalPrivateOfficeBundle:Account:changePassword':
+    path: /account/change-password
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:changePassword }
+
+'MetalPrivateOfficeBundle:Email:change':
+    path: /account/change-email
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:changeEmail }
+
+'MetalPrivateOfficeBundle:Company:saveCompanyLogo':
+    path: /company/save-company-logo
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCompany:saveCompanyLogo }
+
+'MetalPrivateOfficeBundle:Company:deleteCompanyLogo':
+    path: /company/delete-company-logo
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateCompany:deleteCompanyLogo }
+
+'MetalPrivateOfficeBundle:Account:saveUserPhoto':
+    path: /account/save-photo
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:saveUserPhoto }
+
+'MetalPrivateOfficeBundle:Support:view':
+    path: /support/{id}
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateSupport:view }
+    requirements:
+        id: \d+
+
+'MetalPrivateOfficeBundle:PrivateAccount:deleteAvatar':
+    path: /account/delete-avatar
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateAccount:deleteAvatar }
+
+'MetalPrivateOfficeBundle:Support:list':
+    path: /support
+    defaults:  { _controller: MetalPrivateOfficeBundle:PrivateSupport:list }
+
+'MetalPrivateOfficeBundle:Support:addTopic':
+    path: /support/add-topic
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSupport:addTopic }
+
+'MetalPrivateOfficeBundle:Support:addAnswer':
+    path: /support/{topic_id}/add-answer
+    methods: [POST]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSupport:addAnswer }
+    requirements:
+        topic_id: \d+
+
+'MetalPrivateOfficeBundle:Services:edit':
+    path: /services
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateServices:edit }
+
+'MetalPrivateOfficeBundle:Default:orderPackage':
+    path: /services/order
+    methods: [POST]
+    defaults: { _controller: MetalCorpsiteBundle:Default:orderPackage }
+
+'MetalPrivateOfficeBundle:Subscriptions:updateCategoriesSubscriptions':
+    path: /subscriptions/update
+    methods: [post]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptionsManagement:updateCategoriesSubscriptions }
+
+'MetalPrivateOfficeBundle:Subscriptions:updateTerritorySubscriptions':
+    path: /subscriptions/territories/update
+    methods: [post]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptionsManagement:updateTerritorySubscriptions }
+
+'MetalPrivateOfficeBundle:Subscriptions:toggleSubscribtionStatus':
+    path: /subscriptions/status
+    methods: [post]
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptionsManagement:toggleSubscriptionStatus }
+
+'MetalPrivateOfficeBundle:Subscriptions:categoriesSubscriptionByUser':
+    path: /subscriptions/categories
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptionsManagement:categoriesSubscriptionByUser }
+
+'MetalPrivateOfficeBundle:Subscriptions:territoriesSubscriptionByUser':
+    path: /subscriptions/territories
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptionsManagement:territoriesSubscriptionByUser }
+
+'MetalPrivateOfficeBundle:Subscriptions:demands':
+    path: /subscriptions/demands
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptions:demandsList }
+
+'MetalPrivateOfficeBundle:Subscriptions:export':
+    path: /subscriptionsdemands/export/{format}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateSubscriptions:export }
+    requirements:
+        format: xlsx|csv
+
+'MetalPrivateOfficeBundle:Demands:export':
+    path: /private-demands/export/{format}
+    defaults: { _controller: MetalPrivateOfficeBundle:PrivateDemands:export }
+    requirements:
+        format: xlsx|csv

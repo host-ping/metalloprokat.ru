@@ -1,0 +1,15 @@
+{% set bannerInsertPosition = {
+    1: 'email-1',
+    2: 'email-2',
+    3: 'email-3',
+    4: 'email-4',
+    5: 'email-5'
+} %}
+
+{% if bannerInsertPosition[index] is defined %}
+    <div class="announcement">
+        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceEmail', {
+            'zone_slug' : bannerInsertPosition[index]
+        }) }}
+    </div>
+{% endif %}

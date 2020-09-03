@@ -1,0 +1,29 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if object.company %}
+            <div>
+                {% if object.company.deletedAtTS %}
+                    <strike>{{ object.company.title }}</strike>
+                {% else %}
+                    {{ object.company.title }}
+                {% endif %}
+                (<b><a href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': object.company.id}}}) }}">{{ object.company.id }}</a></b>)
+                {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : object.company}, false) }}
+
+                {% if object.productLog.createdBy %}
+                    <br />
+                    Добавил: {% if not object.productLog.createdBy.isEnabled %}<strike>{% endif %}{{ object.productLog.createdBy.fullName }} {% if not object.productLog.createdBy.isEnabled %}</strike>{% endif %}(<b><a href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.productLog.createdBy.id }}}) }}">{{object.productLog.createdBy.id }}</a></b>)
+                {% endif %}
+
+                {% if object.productLog.updatedBy %}
+                    <br />
+                    Обновил: {% if not object.productLog.updatedBy.isEnabled %}<strike>{% endif %}{{ object.productLog.updatedBy.fullName }}{% if not object.productLog.updatedBy.isEnabled %}</strike>{% endif %} (<b><a href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.productLog.updatedBy.id }}}) }}">{{object.productLog.updatedBy.id }}</a></b>)
+                {% endif %}
+            </div>
+        {% elseif object.companyTitle is defined %}
+            {{ object.companyTitle }}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}
+Присоединение к компании
+{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ user.firstName }}!
+
+Администратор компании {{ user.company.title }} ({{ user.company.city.title }}) - {{ app.user.fullName }} ({{ app.user.email }}) посчитал, что Вы являетесь сотрудником данной компании. Теперь Вы можете приступить к работе на сайте от лица компании {{ user.company.title }}.
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте, {{ user.firstName }}!<br/>
+        <br/>
+        Администратор компании <b>{{ user.company.title }} ({{ user.company.city.title }})</b> - <b>{{ app.user.fullName }} ({{ app.user.email }})</b> посчитал, что Вы являетесь сотрудником данной компании. Теперь Вы можете приступить к работе на сайте от лица компании <b>{{ user.company.title }}</b>.<br/>
+    </p>
+{% endblock %}

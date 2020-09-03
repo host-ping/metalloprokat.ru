@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for demandFile in object.demandFiles %}
+            <li>
+                <a target="_blank"
+                   href="{{ admin.getConfigurationPool().getAdminByAdminCode('metal.demands.admin.demand_file').generateUrl('download_file', {'file_id': demandFile.id}) }}">
+                    {{ demandFile.file.originalName }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

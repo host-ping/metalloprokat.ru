@@ -1,0 +1,104 @@
+{% extends '@MetalProject/layouts/_wizzard_layout.html.twig' %}
+
+{% block title 'Регистрация / '~currentCountry.domainTitle %}
+
+{% block wizzard_content %}
+    <div class="main-title">
+        <h1>Прайс-лист</h1>
+    </div>
+    {{ form_start(form, {
+        'action' : path('MetalUsersBundle:WizzardRegistration:registerSecondStep', {'category_id': category.id}),
+        'attr': {
+            'class' : 'register-form form',
+            'novalidate': 'novalidate',
+            'ng-controller': 'Metal.Company as companyController'
+        }
+    }) }}
+        <fieldset>
+            <div class="category-list-wrapper">
+                <script id="new-category-row" type="text/html">
+                    <li class="item ie-radius js-changed-element">
+                        {{ form_widget(form.companyCategories.vars.prototype.category, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'id'}}) }}
+                        {{ form_widget(form.companyCategories.vars.prototype.categoryTitle, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'title' }}) }}
+                        <span data-bind-text="title"></span>
+                        <span class="icon-filter-del clickable js-del-element"></span>
+                    </li>
+                </script>
+                <div class="field-wrap">
+                    <input type="text" class="form-text ie-radius" placeholder="Предлагаемая продукция"
+                           typeahead-prefetch-url="{{ path('MetalCategoriesBundle:Suggest:getCategories') }}"
+                           data-container="#category-list-container"
+                           typeahead=""
+                           typeahead-model="category"
+                           typeahead-clear-on-select="true"
+                           typeahead-suggestion-template-url="'typeahead-suggestion-with-parent'"
+                            />
+                    <div class="filtered-block">
+                        <ul class="list" id="category-list-container">
+                            {% for companyCategory in form.companyCategories %}
+                                <li class="item ie-radius js-changed-element">
+                                    {{ form_widget(companyCategory, {
+                                        'attr' : {
+                                            'class' : 'g-hidden'
+                                        }}
+                                    ) }}
+                                    {{ companyCategory.categoryTitle.vars.value }}
+                                    <span class="icon-filter-del clickable js-del-element"></span>
+                                </li>
+                            {% else %}
+                                {% do form.companyCategories.setRendered() %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="field-wrap">
+                    <label class="file-upload">
+                        <span class="load-file-btn ico-upload">Загрузить прайс-лист (можно потом)</span>
+                        {{ form_widget(form.uploadedPrice, {'attr': {'class': 'js-file'} }) }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="update-price-list">
+                <div class="update-price-item">
+                    <input id="id-1" type="checkbox" disabled="disabled" checked class="js-styled-checkbox bg-grey"/>
+                    <label for="id-1">цены буду обновлять самостоятельно</label>
+                </div>
+
+                <div class="update-price-item">
+                    {{ form_widget(form.ourExperts, {'attr' : {'class' : 'js-styled-checkbox bg-grey js-our-experts' }}) }}
+                    {{ form_label(form.ourExperts) }}
+
+                    <div class="radio-group">
+                        {% for updater in form.updater %}
+                            <div class="radio-item">
+                                {{ form_widget(updater, {'attr' : { 'class' : 'radio bg-grey80 js-updater-checkbox' }}) }}
+                                {{ form_label(updater) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+            <div class="button-wrapper clearfix">
+                <input class="button green-bg ie-radius" type="submit" value="Продолжить"/>
+                <a href="{{ path('MetalUsersBundle:WizzardRegistration:registerThirdStep', {'category_id': category.id}) }}" class="link">Пропустить</a>
+            </div>
+        </fieldset>
+    {{ form_end(form) }}
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('.js-our-experts').bind('click', function () {
+                var $el = $('.js-updater-checkbox');
+                var $ourExperts = $('input.js-our-experts');
+
+                if ($ourExperts.prop('checked')) {
+                    $el.prop('disabled', false).trigger('refresh');
+                } else {
+                    $el.prop('disabled', true).trigger('refresh');
+                }
+            });
+        });
+    </script>
+{% endblock %}

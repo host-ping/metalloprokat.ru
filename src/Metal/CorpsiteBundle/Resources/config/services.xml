@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.corpsite.admin.client" class="Metal\CorpsiteBundle\Admin\ClientAdmin">
+            <argument>metal.corpsite.admin.client</argument>
+            <argument>Metal\CorpsiteBundle\Entity\Client</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument>%upload_dir%</argument>
+            <tag name="sonata.admin" manager_type="orm" group="corp_site" label="Клиенты" />
+        </service>
+
+        <service id="metal.corpsite.admin.client_review" class="Metal\CorpsiteBundle\Admin\ClientReviewAdmin">
+            <argument>metal.corpsite.admin.client_review</argument>
+            <argument>Metal\CorpsiteBundle\Entity\ClientReview</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="corp_site" label="Отзывы клиентов" />
+        </service>
+
+        <service id="metal.corpsite.admin.promotion" class="Metal\CorpsiteBundle\Admin\PromotionAdmin">
+            <argument>metal.corpsite.admin.promotion</argument>
+            <argument>Metal\CorpsiteBundle\Entity\Promotion</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <tag name="sonata.admin" manager_type="orm" group="corp_site" label="Промо-акции" />
+        </service>
+
+        <service id="metal.corpsite.menu_builder" class="Metal\CorpsiteBundle\Menu\CorpMainMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.corpsite.menu" class="Knp\Menu\MenuItem">
+            <factory service="metal.corpsite.menu_builder" method="getMenu" />
+            <tag name="knp_menu.menu" alias="corp_main_menu" />
+        </service>
+
+
+        <service id="metal.corpsite.menu_builder_stroy" class="Metal\CorpsiteBundle\Menu\CorpStroyMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+        </service>
+
+        <service id="metal.corpsite.menu_stroy" class="Knp\Menu\MenuItem">
+            <factory service="metal.corpsite.menu_builder_stroy" method="getMenu" />
+            <tag name="knp_menu.menu" alias="corp_main_menu_stroy" />
+        </service>
+
+    </services>
+</container>

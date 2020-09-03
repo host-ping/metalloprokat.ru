@@ -1,0 +1,14 @@
+# used for autosuggest
+metal_territorial:
+    resource: "@MetalTerritorialBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# used for autosuggest
+metal_categories:
+    resource: "@MetalCategoriesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+8_800_project:
+    resource: "@SprosProjectBundle/Resources/config/routing_8_800.yml"
+    prefix:   /
+

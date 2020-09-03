@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        Brouzie.Popups.openPopup($('#age-confirm'));
+
+        $('#confirm-age-button').click(function() {
+            Cookies.set('age_confirmed', 'true');
+            Brouzie.Popups.closePopup($('#age-confirm'));
+        });
+    });
+
+</script>
+<div id="age-confirm" class="age-confirm popup-block opacity-border large private-room-content" data-popup-non-closable="true" style="position:fixed!important;">
+    <div class="popup-content">
+        <div class="title-popup">Данная страница предназначена для лиц старше 18 лет</div>
+        <p class="text">Подтвердите, что вам исполнилось 18</p>
+
+        <fieldset>
+            <ul class="buttons clearfix">
+                <li class="item float-left">
+                    <a href="">
+                        <button class="save-btn button blue-bg ie-radius approving-user-button" type="button" onclick="window.location.href='{{ path('MetalUsersBundle:Registration:register') }}'">Нет, мне нет 18 лет</button>
+                    </a>
+                    <div id="reloading-mask" class="loading-mask g-hidden">
+                        <div class="spinner"></div>
+                    </div>
+                </li>
+                <li class="item float-left">
+                    <button class="save-btn button green-bg ie-radius float-left" type="button" id="confirm-age-button">Да, мне больше 18 лет</button>
+                </li>
+            </ul>
+        </fieldset>
+
+    </div>
+</div>

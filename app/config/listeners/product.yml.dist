@@ -1,0 +1,3 @@
+parameters:
+    base_host_product: product.dev
+    base_host_pokupaev: pokupaev.dev

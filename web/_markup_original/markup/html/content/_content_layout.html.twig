@@ -1,0 +1,252 @@
+{% extends '@markup/_base_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock stylesheets %}
+
+{% block container_arrtibutes %}
+    class="container portal js-announcement js-layout-announcement"
+{% endblock %}
+
+{% block main_block_additional_class 'main-wide' %}
+
+{% block body %}
+    <div {{ block('container_arrtibutes') }}>
+        <div class="inside-container">
+            <div id="header" class="clearfix">
+                <div class="wrap">
+                    {% block header %}
+                        <div class="left float-left">
+                            <div class="logo float-left">
+                                <a href="/">
+                                    <img src="./markup/img/logo.png" width="36" height="27" alt="строй.ру"/>
+                                </a>
+                            </div>
+                            <div class="logo-text float-left">
+                                <p>
+                                    <a class="header-logo-text" href="#">строй.ру</a>
+                                </p>
+                            </div>
+                        </div>
+                        {% block login %}
+                            <div class="user-block float-right">
+                                <a class="login js-popup-opener icon-exit" data-popup="#login" href="#">Вход в кабинет</a>
+                                <a class="register-link js-popup-opener" data-popup="#register-company" href="#">Регистрация</a>
+                            </div>
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block menu %}
+                <div class="main-menu-wrapper">
+                    <div class="wrap clearfix">
+                        <div class="menu-holder">
+                            <ul id="menu" class="main-menu clearfix">
+                                <li>
+                                    <a class="favorites link icon-idea" href="#">Идеи</a>
+                                </li>
+                                <li class="prev-active">
+                                    <a href="#" class="supplier link icon-suppliers-color">Поставщики</a>
+                                </li>
+                                <li class="active">
+                                    <span class="consumer link icon-consumers-color">Потребители</span>
+                                </li>
+                                <li>
+                                    <a class="favorites link icon-favorite-active" href="#">Избранное <sup>24</sup></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+
+            {% block search_form %}
+                <div class="search-block clearfix">
+                    <form action="#" class="search-form">
+                        <fieldset id="search-fixed" class="main-block js-fixed">
+                            <div class="wrap clearfix">
+                                <div class="search-field-wrap float-left">
+                                    <span class="icon-search-big"></span>
+                                    <span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;">
+                                        <input type="text" placeholder="Введите название товара или компании" class="search-input"/>
+                                        <span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;">
+                                        <div class="tt-dataset-0">
+                                            <ul class="tt-suggestions">
+                                                <li class="tt-suggestion tt-cursor"><strong>Арм</strong>атура</li>
+                                                <li class="tt-suggestion"><strong>Арм</strong>атура вязанная</li>
+                                                <li class="tt-suggestion"><strong>Арм</strong>атура лежалая</li>
+                                                <li class="tt-suggestion"><strong>Арм</strong>атура в бухтах</li>
+                                                <li class="tt-suggestion"><strong>Арм</strong>атура утонченная</li>
+                                            </ul>
+                                        </div>
+                                    </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            {% endblock %}
+
+            <div id="main" class="main-wide clearfix">
+                <div class="wrap clearfix">
+                    {% block breadcrumbs %}
+                        <div class="breadcrumbs-wrapper">
+                            <div class="breadcrumbs outline">
+                                <ul class="breadcrumbs_item-list clearfix js-collapsable-breadcrumbs"
+                                    data-collapsable-breadcrumbs-reserve=".js-collapsable-breadcrumbs-reserve">
+                                    <li class="breadcrumbs_item home first">
+                                        <a class="breadcrumbs_link icon-home" href="#"></a>
+                                    </li>
+                                    <li class="breadcrumbs_item">
+                                        <a class="breadcrumbs_link js-collapsable-item" data-collapsable-breadcrumb-priority="1"
+                                           href="#">Части квартиры</a>
+                                    </li>
+                                    <li class="breadcrumbs_item">
+                                        <a href="#" class="breadcrumbs_link js-collapsable-item icon-check black js-popover-opener"
+                                           data-collapsable-breadcrumb-priority="12" data-popover="#p"
+                                           data-different-position="true">Коммуникации</a>
+                                    </li>
+                                    <li class="breadcrumbs_item">
+                                        <a class="breadcrumbs_link js-collapsable-item" data-collapsable-breadcrumb-priority="3"
+                                           href="#">Технические средства</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="p" class="drop-wrapper product-list opacity-border">
+                                <div class="js-scrollable">
+                                    <ul class="dropdown menu-drop">
+                                        <li class="drop-item ">
+                                            <span class="drop-link current">Канализация</span>
+                                        </li>
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="#">Электрика</a>
+
+                                        </li>
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="#">Отопление</a>
+                                        </li>
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="#">Водоснабжение</a>
+                                        </li>
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="#">Вентиляция</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="opacity"></div>
+                            </div>
+                        </div>
+                    {% endblock breadcrumbs %}
+                    {% block banner %}
+                        <div class="premium-announcement announcement">
+                        </div>
+                    {% endblock %}
+                    <div class="wrapper outline clearfix"  data-redirect-url="http://katushkin.ru">
+                        {% block content %}
+                            {% block callback '' %}
+                            {% block tabs '' %}
+                            {% block search_more %}
+                                <div class="search-info-block outline-right clearfix">
+                                    <div class="block-title">Не нашли что искали?</div>
+                                    <div class="search-info-list">
+                                        <ul class="items">
+                                            <li class="item icon-lamp">У нас есть еще <a class="link" href="#">18 компаний</a>, которые торгуют арматурой в Москве.</li>
+                                            <li class="item icon-lamp">Подпишитесь на эту страницу, мы пришлем вам письмо, как только здесь появятся товары.
+                                            </li>
+                                            <li class="item icon-lamp">Отправьте <a class="link" href="#">заявку на Арматуру А3 500С</a> в Москве, мы найдем вам поставщика.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="more-columns clearfix">
+                                        <ul class="row first float-left">
+                                            <li class="title">Смежные разделы</li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Балка, Катанка, Швеллер</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="row float-left">
+                                            <li class="title">В других регионах</li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Арматура в Бобруйске</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Арматура в Гатчине</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="row float-left">
+                                            <li class="title">В других странах</li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Арматура в Украине</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Арматура в Беларуси</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="is-gradiented">Арматура в Казахстане</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endblock search_more %}
+                        {% endblock %}
+                        {% block sidebar '' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer %}
+                <div class="footer-links-wrapper clearfix">
+                    <div class="footer-links">
+                        <div class="footer-title">Компания</div>
+                        <ul class="footer-links-list first">
+                            <li class="item"><a href="#">О сервисе</a></li>
+                            <li class="item"><a href="#">Реклама и услуги</a></li>
+                            <li class="item"><a href="#">Клиенты</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Контактная информация</a></li>
+                            <li class="item"><p class="support">Техническая поддержка: <span class="support-phone">(495) 984-06-52</span>
+                                </p></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-title">Информация на сайте</div>
+                        <ul class="footer-links-list">
+                            <li class="item"><a href="#">Компании</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Товары</a></li>
+                            <li class="item"><a href="#">Потребности</a></li>
+                            <li class="item"><a href="#">Последние обновления</a></li>
+                            <li class="item"><a href="#" class="green-color">Добавить компанию и товары</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="footer-links-list clearfix">
+                    <li class="item">
+                        <p class="copy">Металлопрокат.ру © 2000-2013</p>
+                    </li>
+                    <li class="item">
+                        <a class="agreement" href="#" target="_blank">Пользовательское соглашение</a>
+                    </li>
+                </ul>
+                <div class="counters-block clearfix">
+                    <a href="#" class="rspm-member float-left">Действительный член РСПМ</a>
+
+                    <div class="counter-container float-right">
+                        <img src="./markup/pic/counter1.png" width="80" height="31" alt="image description"/>
+                        <img src="./markup/pic/counter2.png" width="88" height="31" alt="image description"/>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+    {% include '@markup/_popups.html.twig' %}
+{% endblock %}
+

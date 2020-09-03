@@ -1,0 +1,134 @@
+{% set currentCategory = app.request.attributes.get('category') %}
+{% set currentCity = app.request.attributes.get('city') %}
+{% set currentRegion = app.request.attributes.get('region') %}
+{% set currentCountry = app.request.attributes.get('country') %}
+{% set currentTerritory = app.request.attributes.get('territory') %}
+{% set currentAttributesCollection = app.request.attributes.get('attributes_collection') %}
+{# @var currentAttributesCollection \Metal\AttributesBundle\Entity\DTO\AttributesCollection #}
+
+{% set currentRoute = _options['current_route'] %}
+{% set routeParameters = _options['route_parameters'] %}
+{% set activeTab = app.request.attributes.get('tab', 'products') %}
+
+{% set subdomain = 'www' %}
+
+{% set routeParametersForCount = {'category_id': currentCategory ? currentCategory.id : null, 'tab': activeTab} %}
+
+{% if currentCity %}
+    {% set subdomain = currentCity.slug %}
+    {% set routeParameters = routeParameters|merge({'subdomain': subdomain}) %}
+    {% set routeParametersForCount = routeParametersForCount|merge({'city': currentCity.id, 'subdomain': subdomain}) %}
+{% elseif currentRegion %}
+    {% set subdomain = currentRegion.id %}
+    {% set routeParameters = routeParameters|merge({'subdomain': subdomain}) %}
+    {% set routeParametersForCount = routeParametersForCount|merge({'region': currentRegion.id, 'subdomain': subdomain}) %}
+{% endif %}
+
+{% set categoriesRouteParams = {'subdomain': subdomain} %}
+
+{% set activeTabParams = {
+    'products' : {'counter_name' : 'products_count', 'route_type' : 'MetalProductsBundle:Products:list_category_subdomain'},
+    'companies' : {'counter_name' : 'companies_count', 'route_type' : 'MetalProductsBundle:Products:companies_list_category_subdomain'},
+    'manufacturers' : {'counter_name' : 'manufacturers_count', 'route_type' : 'MetalCatalogBundle:Manufacturers:list_category_subdomain'},
+    'brands' : {'counter_name' : 'brands_count', 'route_type' : 'MetalCatalogBundle:Brands:list_category_subdomain'},
+    'catalog_products' : {'counter_name' : 'catalog_products_count', 'route_type' : 'MetalCatalogBundle:Products:list_category_subdomain'}
+} %}
+
+{% set counterName = 'products_count' %}
+{% set categoriesRoute = 'MetalProductsBundle:Products:list_category_subdomain' %}
+{% if activeTab in activeTabParams|keys %}
+    {% set counterName = activeTabParams[activeTab]['counter_name'] %}
+    {% set categoriesRoute = activeTabParams[activeTab]['route_type'] %}
+{% endif %}
+
+{% set loadCountRoute = 'MetalProductsBundle:Api:getItemsCount' %}
+{% set loadAttributeValuesRoute = 'MetalProductsBundle:Api:getAttributeValues' %}
+{% if activeTab in ['manufacturers', 'brands', 'catalog_products'] %}
+    {% set loadCountRoute = 'MetalCatalogBundle:Api:getItemsCount' %}
+    {% set loadAttributeValuesRoute = 'MetalCatalogBundle:Api:getAttributeValues' %}
+{% endif %}
+<div class="wrap-openbox">
+    <input type="checkbox" id="sidebar-openclose" class="input-openclose">
+    <label for="sidebar-openclose">Фильтры</label>
+    <div class="box-open">
+        <div id="sidebar" class="side-left outline-left float-left static">
+            <div class="sidebar-content js-fixed-filters">
+                <form action="{{ path(currentRoute, routeParameters) }}" {% if currentCategory %}data-count-url="{{- path(loadCountRoute, routeParametersForCount) -}}" {% endif %} method="GET">
+                    <div class="js-scrollable-filters side-wrap js-scrollable">
+                        <div class="filters">
+
+                            <div class="local filter">
+                                <div class="title" ng-controller="Metal.CitiesWidgetPopoverOpener as citiesWidgetPopoverOpenerController">
+                                    {% set citiesTitle = 'Все города' %}
+                                    {% if  currentTerritory.getKind() != 'country' %}
+                                        {% set citiesTitle = currentTerritory.getTitle() %}
+                                    {% endif %}
+                                    <span class="clickable icon-check black js-popover-opener" data-popover="#cities"
+                                          ng-click='citiesWidgetPopoverOpenerController.loadPopover("cities")'
+                                          data-different-position="true">
+                                          {{ citiesTitle }}
+                                    </span>
+                                </div>
+
+                                {{ brouzie_render_widget('MetalCategoriesBundle:Menu', {
+                                    '_template': '@MetalCategories/widgets/Menu/SidebarMenuWidget.html.twig',
+                                    'city': currentCity,
+                                    'country': currentCountry,
+                                    'category': currentCategory,
+                                    'region': currentRegion,
+                                    'display_empty_root_items': currentCategory is not null,
+                                    'counter_name': counterName,
+                                    'route': categoriesRoute,
+                                    'route_params': categoriesRouteParams,
+                                    'active_tab': activeTab
+                                }) }}
+                            </div>
+
+                            {% if currentCategory %}
+                                {{ brouzie_render_widget('MetalProductsBundle:FacetFilters', {
+                                    'route': _options['current_route'],
+                                    'route_parameters': _options['route_parameters'],
+                                    'load_attribute_values_route': loadAttributeValuesRoute,
+                                    'category': currentCategory,
+                                    'current_attributes_collection': currentAttributesCollection,
+                                    'active_tab': activeTab,
+                                    'show_company_attrs': currentCategory.allowProducts and activeTab in ['products', 'companies'],
+                                    'show_price_range': currentCategory.allowProducts and activeTab in ['products', 'companies'],
+                                }) }}
+                            {% endif %}
+
+                            {% if _options['seo_text'] %}
+                                <div class="text-wrapper">
+                                    {% set seoText = _options['seo_text']|normalize_whitespace %}
+                                    {% set seoTextHasHtmlMarup = seoText != seoText|striptags %}
+
+                                    {% if seoTextHasHtmlMarup %}
+                                        {{- seoText|raw -}}
+                                    {% else %}
+                                        <p>{{ seoText }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if routeParameters['view']|default(false) %}
+                        <input type="hidden" value="{{ routeParameters['view'] }}" name="view" />
+                    {% endif %}
+
+                    {% if currentCategory %}
+                        <div class="submit-wrapper js-show-all g-hidden">
+                            <a class="button show-btn blue-bg link clearfix ie-radius">
+                                <span class="text float-left">показать</span>
+                                <span class="count float-right js-items-count"></span>
+                            </a>
+                            <div class="loading-mask g-hidden">
+                                <div class="spinner"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

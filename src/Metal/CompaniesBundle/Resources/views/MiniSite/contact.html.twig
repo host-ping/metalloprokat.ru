@@ -1,0 +1,334 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% block title %}
+    Контакты компании — {{ currentCompany.title }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ include('@MetalProject/partials/yandex_maps_initialization.html.twig') }}
+{% endblock javascripts %}
+
+{% block tab_content %}
+    {% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+    <div class="contacts content-holder" itemscope itemtype="http://schema.org/Organization">
+        <div class="company-contacts clearfix">
+            <div class="title">
+                <h1 class="minisite-title">Контакты</h1>
+            </div>
+
+            {% set viewFilialsCount = 1 %}
+            {% set hasMoreFilials = false %}
+            {% set filialsCount = offices|length %}
+
+            {{ include('MetalCompaniesBundle:partial:company_contact.html.twig', {
+                'company': company,
+                'office': company
+            }, false) }}
+
+            {% if filialsCount > viewFilialsCount %}
+                {% set filialsCountToShow = 0 %}
+                {% for office in offices if office.city.id != company.city.id %}
+                    {% set filialsCountToShow = filialsCountToShow + 1 %}
+                {% endfor %}
+                <span class="js-show-all-offices secondary write-btn button clickable ie-radius" onClick="$('.all-branch-offices').removeClass('g-hidden'); $(this).hide();" style="text-align:center; width:300px;">
+                    Показать все ({{ filialsCountToShow }} {{ 'branch_office'|transchoice(filialsCountToShow, [], 'MetalCompaniesBundle') }})
+                </span>
+                <div class="all-branch-offices g-hidden">
+                    {% for office in offices if office.city.id != company.city.id %}
+                        {{ include('MetalCompaniesBundle:partial:company_contact.html.twig', {
+                            'company': company,
+                            'office': office,
+                            'options': {
+                                'moreFilials': hasMoreFilials
+                            }
+                        }, false) }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if isCompanyModerator %}
+                <div class="contact admin-button-wrapper float-left">
+                    <a class="admin-button button gray60-bg ie-radius" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Cities:view', {'_secure' : company.country.secure}) }}">редактировать
+                        города</a>
+                </div>
+            {% endif %}
+        </div>
+        {% if companyDetails.displayOnMiniSite %}
+            <div class="company-contacts details clearfix">
+                {% if isCompanyModerator %}
+                    <a class="admin-button button gray60-bg float-right ie-radius" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Details:edit', {'_secure' : company.country.secure}) }}">изменить</a>
+                {% endif %}
+                <span class="admin-button button primary float-right ie-radius js-print-page">распечатать</span>
+                <div class="minisite-title">Реквизиты компании {{ company.title }}</div>
+                <table class="company-details table">
+                    <tbody>
+                        {% if companyDetails.nameOfLegalEntity %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Наименование юридического лица</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.nameOfLegalEntity }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.legalAddress %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Юридический адрес</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.legalAddress }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.mailAddress %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Почтовый адрес</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.mailAddress }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.inn %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">ИНН</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.inn }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.kpp %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">КПП</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.kpp }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.orgn %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">ОГРН</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.orgn }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.directorFullName %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">ФИО руководителя</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.directorFullName }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.bankAccount %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Номер р/счета в рублях</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.bankAccount }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.bankCorrespondentAccount %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Номер корр. счета</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.bankCorrespondentAccount }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.bankBik %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Бик банка</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.bankBik }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if companyDetails.bankTitle %}
+                            <tr class="row">
+                                <td class="col">
+                                    <p class="name">Наименование банка</p>
+                                </td>
+                                <td class="col">
+                                    <p class="text">{{ companyDetails.bankTitle }}</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <div class="staff clearfix">
+            {% if isCompanyModerator %}
+                <a class="admin-button button gray60-bg float-right ie-radius" href="{{ urlHelper.generateUrl('MetalPrivateOfficeBundle:Employees:list', {'_secure' : company.country.secure}) }}">изменить</a>
+            {% endif %}
+            <div class="staff-title">Сотрудники</div>
+            <ul class="staff-list">
+                {% for employee in employees if employee.isApproved() %}
+                    <li class="employee clearfix">
+                        <div class="employee-info float-left">
+                            <div class="employee-name" itemprop="member">{{ employee.getFullName }}</div>
+                            {% if employee.job %}
+                                <div class="position">{{ employee.job }}</div>
+                            {% endif %}
+                            <div class="info-holder">
+                                {% if employee.phone and currentCompany.isContactsShouldBeVisible() %}
+                                    <div class="item-wrapper clearfix">
+                                        <div class="l-elem float-left">Телефон:</div>
+                                        <div class="r-elem float-left">
+                                            {% set employeePhone = employee.getAttribute('territorial_phone') ?: (employee.additionalCode ? employee.phone~' доб. '~employee.additionalCode : employee.phone) %}
+                                            <span class="phone-text float-left">
+                                                <span class="curr-phone float-left js-phone"
+                                                      data-object-id="{{ currentCompany.id }}"
+                                                      data-object-kind="company"
+                                                      data-source="mini-site-contacts"
+                                                      data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                                      data-phone-of-company="{{ currentCompany.id }}"
+                                                      data-minisite-phone="true"
+                                                        >{{ employeePhone }}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+
+                                {% if employee.skype %}
+                                    <div class="item-wrapper clearfix">
+                                        <div class="l-elem float-left">Skype:</div>
+                                        <div class="r-elem float-left">{{ employee.skype }}</div>
+                                    </div>
+                                {% endif %}
+
+                                {% if employee.icq %}
+                                    <div class="item-wrapper clearfix">
+                                        <div class="l-elem float-left">ICQ:</div>
+                                        <div class="r-elem float-left">{{ employee.icq }}</div>
+                                    </div>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="right float-right">
+                            <div class="pic float-right">
+                                <span class="img-link pattern-big">
+                                    {% set avatarUrl = imageHelper.getAvatarUrl(employee, 'sq84') %}
+                                    {% if avatarUrl %}
+                                        <img src="{{ avatarUrl }}" alt="{{ employee.fullName }}" title="{{ employee.fullName }}" />
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="button-wrapper float-left">
+                                <span class="primary write-btn button clickable js-popup-opener ie-radius"
+                                   data-popup="#send-email"
+                                   data-employee-id="{{ employee.id }}"
+                                   >написать</span>
+                            </div>
+                        </div>
+                    </li>
+               {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                    'source_type_slug' : 'mini-site-contacts',
+                    'zone_slug' : 'head-side-1',
+                    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                }) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                    'source_type_slug' : 'mini-site-contacts',
+                    'zone_slug' : 'head-side-2',
+                    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                }) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+                            'source_type_slug' : 'mini-site-contacts',
+                            'zone_slug' : 'head-center',
+                            'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+    'source_type_slug' : 'mini-site-contacts',
+    'zone_slug' : 'premium',
+    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id,
+    'additional_class' : 'premium-announcement'
+    }) }}
+{% endblock %}
+
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+    'source_type_slug' : 'mini-site-contacts',
+    'zone_slug' : 'left-sidebar',
+    'additional_class' : 'left-announcement',
+    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+    }) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ block('company_employees') }}
+
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+    'source_type_slug' : 'mini-site-contacts',
+    'zone_slug' : 'right-sidebar-1',
+    'additional_class' : 'right-announcement top-announcement',
+    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+    }) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+    'source_type_slug' : 'mini-site-contacts',
+    'zone_slug' : 'right-sidebar-2',
+    'additional_class' : 'right-announcement',
+    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+    }) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+    'source_type_slug' : 'mini-site-contacts',
+    'zone_slug' : 'right-sidebar-3',
+    'additional_class' : 'right-announcement',
+    'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+    }) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {
+        'source_type_slug' : 'mini-site-contacts',
+        'zone_slug' : 'background',
+        'only_company_id' : currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() ? null : currentCompany.id
+    }) }}
+{% endblock %}

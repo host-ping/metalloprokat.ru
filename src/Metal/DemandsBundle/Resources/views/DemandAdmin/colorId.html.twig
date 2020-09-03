@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="{% if object.isDeleted() %}color: #ff0000;{% elseif object.isModerated() %}color: #009900;{% endif %}">
+        {{ object.id }}
+    </div>
+    <span data-scroll-el="{{ object.id }}"></span>
+{% endblock %}

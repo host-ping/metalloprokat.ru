@@ -1,0 +1,129 @@
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+{% set country = brouzie_helper('MetalProjectBundle').getCurrentCountry() %}
+{% set currentTerritory = brouzie_helper('MetalProjectBundle').getCurrentTerritory() %}
+{% set secure = country.secure %}
+{% set parameters = {'subdomain' : currentTerritory.getSlug(), '_secure' : secure} %}
+{% set currentCompany = app.request.attributes.get('company') %}
+
+{% set options = {
+    'corpFooter' : false,
+    'isDataHref' : false,
+    'rspmEnabled': true
+}|merge(options|default({})) %}
+
+{% set hrefAttr = 'href' %}
+{% if options.isDataHref %}
+    {% set hrefAttr = 'data-href' %}
+{% endif %}
+<div class="footer-links-wrapper clearfix">
+
+        {% if not options.corpFooter %}
+            <div class="footer-links">
+                <div class="footer-title">Компания</div>
+
+                <ul class="footer-links-list first">
+                    {% if project.portal_enabled %}
+                        <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:index', {'_secure' : secure}) }}" rel="nofollow">О сервисе</a></li>
+                    {% endif %}
+                    <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:announcementOrder', {'_secure' : secure}) }}" rel="nofollow">Реклама и услуги</a></li>
+                    {% if project.portal_enabled %}
+                        <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:clients', {'_secure' : secure}) }}" rel="nofollow">Клиенты</a></li>
+                        {#<li class="item"><a href="#">Отзывы</a></li>#}
+                        <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:contacts', {'_secure' : secure}) }}">Контактная информация</a></li>
+                        {# FIXME: #MET-668 на 404 странице другой request и телефон из-за этого никогда не выводится #}
+                        {% if country.supportPhone %}
+                            <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:contacts', {'_secure' : secure}) }}" rel="nofollow">Техническая поддержка</a></li>
+                            {#<li class="item"><p class="support">Техническая поддержка: <span class="support-phone">{{ country.supportPhone }}</span></p></li>#}
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+    {% if project.portal_enabled %}
+        <div class="footer-links">
+            <div class="footer-title">Информация на сайте</div>
+            <ul class="footer-links-list">
+                <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalProductsBundle:Products:companies_list_without_sort', parameters) }}" rel="nofollow">Компании</a></li>
+                <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalProductsBundle:Products:products_list_without_sort', parameters) }}">Товары</a></li>
+                <li class="item"><a {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalDemandsBundle:Demands:list_subdomain', parameters) }}" rel="nofollow">Потребности</a></li>
+                <li class="item"><a data-href="{{ urlHelper.getRegisterAndAddProductsUrl() }}" href="{{ urlHelper.generateUrl('MetalUsersBundle:Registration:register', {'_secure' : secure}) }}" class="green-color" rel="nofollow">Добавить компанию и товары</a></li>
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+<ul class="footer-links-list last clearfix">
+    <li class="item">
+        <p class="copy">{{ project.copyright_title }} в {{ currentTerritory.getTitleLocative() }} © {{ project.copyright_year }}-{{ 'now'|date('Y') }}</p>
+    </li>
+    {% if project.portal_enabled %}
+        <li class="item">
+            <a class="agreement" {{ hrefAttr }}="{{ urlHelper.generateUrl('MetalCorpsiteBundle:Default:licenseAgreement', {'_secure' : secure}) }}" target="_blank" rel="nofollow">Пользовательское соглашение</a>
+        </li>
+    {% endif %}
+    {% set encodedContent %}
+        <span class="copy">Дизайн разработан в бюро</span> <a data-href="http://monographic.ru/" target="_blank" rel="noopener noreferrer nofollow">Монографик</a>
+    {% endset %}
+    <li class="item" data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}"></li>
+</ul>
+<div class="counters-block clearfix">
+    {% if options.rspmEnabled %}
+        {% set encodedContent %}
+            {{ project.rspm_title|raw }}
+        {% endset %}
+        <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}"></span>
+    {% endif %}
+
+    <div class="counter-container float-right">
+        {{ include('@MetalProject/partials/counters.html.twig') }}
+
+        {% if livetex_id %}
+            <style type="text/css" id="livetex-styles"></style>
+            {# Перегружаем стили для закрывашки livetex для каждого проекта #}
+            <style type="text/css">
+                .lt-widget-wrap.lt-internal .lt-wrapper-close .lt-icon {
+                    background: rgb({{ livetex_color }}) none repeat scroll 0 0 !important;
+                    box-shadow: 0 0 0 1px rgb({{ livetex_color }}) inset !important;
+                }
+            </style>
+
+            <!-- {literal} -->
+            <script type='text/javascript'>
+                window['liv'+'eTe'+'x'] = true,
+                        window['liv'+'e'+'TexI'+'D'] = {{ livetex_id }},
+                        window['liv'+'eTex_o'+'bj'+'ect'] = true;
+
+                var LiveTex = {
+                    onLiveTexReady: function () {
+                        updateLiveTexPosition();
+                    }
+                };
+
+                (function() {
+                    var t = document['creat'+'eEle'+'men'+'t']('script');
+                    t.type ='text/javascript';
+                    t.async = true;
+                    t.src = '//'+'cs1'+'5.li'+'ve'+'t'+'ex.ru/j'+'s'+'/client.j'+'s';
+                    var c = document['getEleme'+'ntsByTag'+'Name']('script')[0];
+                    if ( c ) c['paren'+'tNod'+'e']['inse'+'rtBe'+'for'+'e'](t, c);
+                    else document['docume'+'n'+'tElemen'+'t']['first'+'C'+'hil'+'d']['appen'+'d'+'Ch'+'ild'](t);
+                })();
+
+            </script>
+            <!-- {/literal} -->
+        {% endif %}
+
+        {% if project.family == 'metalloprokat' %}
+            {% if not currentCompany or currentCompany.packageChecker.isForeignAdvertiseShouldBeVisibleOnMinisite() %}
+                <!-- BEGIN JIVOSITE CODE {literal} -->
+                <script type='text/javascript'>
+                    (function(){ var widget_id = 'YTrsuwCgwY';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+                </script>
+                <!-- {/literal} END JIVOSITE CODE -->
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>

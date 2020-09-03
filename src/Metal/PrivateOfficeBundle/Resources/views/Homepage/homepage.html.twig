@@ -1,0 +1,151 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Главная' %}
+
+{% block content %}
+    {% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+    {% set company = app.user.company %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                <div class="notice-block users-home-block clearfix outline-right">
+                    <div class="left float-left">
+                        {# TODO: выводить непромодерированные отзывы #}
+                        <div class="title">Новые уведомления</div>
+                        <ul class="notice list">
+                            {% set complaintsCount = company.counter.getNewComplaintsCount() %}
+                            {% set reviewsCount = company.counter.getNewCompanyReviewsCount() %}
+                            {% set counts = {
+                                'demands' : { 'count' : demandsCount, 'path' : path('MetalPrivateOfficeBundle:Demands:list') },
+                                'callbacks' : { 'count' : callbacksCount, 'path' : path('MetalPrivateOfficeBundle:Callbacks:list') },
+                                'complaints' : { 'count' : complaintsCount, 'path' : path('MetalPrivateOfficeBundle:Complaint:list') },
+                                'reviews' : { 'count' : reviewsCount, 'path' : path('MetalPrivateOfficeBundle:Reviews:list') }
+                            } %}
+
+                            {% for notice, count in counts if count['count'] %}
+                                <li class="item">
+                                    +{{ count['count'] }} <a class="link" href="{{ count['path'] }}" >{{ notice|transchoice(count['count'], [], 'MetalPrivateOfficeBundle') }}</a>
+                                </li>
+                            {% else %}
+                                <li class="gray60-color">Новых уведомлений нет</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="right float-right">
+                        <span class="icon-flag big"></span>
+                    </div>
+                </div>
+                {#<div class="complete-info users-home-block clearfix ">#}
+                    {#<div class="left float-left">#}
+                        {#<div class="title">Мини-сайт заполен на 50% <a href="#" class="link">чем заполнять?</a></div>#}
+                        {#<ul class="info list">#}
+                            {#<li class="item">#}
+                                {#<strong class="percent">+10%</strong>#}
+                                {#<a href="#" class="link">Загрузите</a>#}
+                                {#логотип#}
+                            {#</li>#}
+                            {#<li class="item">#}
+                                {#<strong class="percent">+10%</strong>#}
+                                {#<a href="#" class="link">Напишите</a>#}
+                                {#категории продукции#}
+                            {#</li>#}
+                        {#</ul>#}
+                    {#</div>#}
+                    {#<div class="progress-bar-wrapper float-right">#}
+                        {#<div class="progress-bar ie-radius">#}
+                            {#<span class="progress ie-radius" style="width: 50%;"></span>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+                <div class="rating-block users-home-block clearfix">
+                    <div class="left float-left">
+                        <div class="title">Ваш рейтинг <span class="link clickable js-popup-opener" data-popup="#about-rating">зачем нужен рейтинг?</span></div>
+                        <ul class="add-rating list">
+                            <li class="item star-mini icon-star-colored">
+                                <a class="link" href="{{ path('MetalPrivateOfficeBundle:Details:edit') }}">Предоставьте</a>
+                                нам копию свидетельства о регистрации компании
+                            </li>
+                            <li class="item star-mini icon-star-colored">
+                                <a class="link" href="{{ path('MetalPrivateOfficeBundle:Products:list') }}">Загружайте</a>
+                                товары (или обновляйте цены) не реже, чем раз в неделю
+                            </li>
+                            <li class="item star-mini icon-star-colored">&nbsp;Посещайте сайт ежедневно, чтобы оперативно отвечать на запросы потребителей</li>
+                        </ul>
+                    </div>
+                    {{ companyMacroses.rating(company, 'float-right', 'big') }}
+                </div>
+                <div class="user-package users-home-block ">
+                    <div class="title-wrapper">
+                        {{ brouzie_render_widget('MetalPrivateOfficeBundle:ShowEndCompanyPackage', {
+                            '_template' : '@MetalPrivateOffice/widgets/ShowEndCompanyPackageOnMainPageWidget.html.twig',
+                            'company' : app.user.company,
+                            'show_on_main' : true
+                        }) }}
+                    </div>
+
+                    {% if app.user.getHasEditPermission() %}
+                        {% set reviewsProductsCount = companyStatistics.reviewsProductsCount %}
+                        {% set demandsCount = companyStatistics.demandsCount %}
+                        {% set callbacksCount = companyStatistics.callbacksCount  %}
+                        {% if reviewsProductsCount or demandsCount or callbacksCount %}
+                            <div class="report-block">
+                                <p class="reriod">За весь период:</p>
+                                <ul class="report clearfix">
+                                    {% if reviewsProductsCount %}
+                                        <li class="item float-left">
+                                            <div class="big-count">
+                                                <a href="{{ path('MetalPrivateOfficeBundle:Statistic:income') }}">
+                                                    {{ reviewsProductsCount }}
+                                                </a>
+                                            </div>
+                                            <p class="text">{{ 'person_products'|transchoice(reviewsProductsCount, [], 'MetalPrivateOfficeBundle') }} ваши товары</p>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if demandsCount %}
+                                        <li class="item float-left">
+                                            <div class="big-count">
+                                                <a href="{{ path('MetalPrivateOfficeBundle:Demands:list') }}">
+                                                    {{ demandsCount }}
+                                                </a>
+                                            </div>
+                                            <p class="text">{{ 'person_demands'|transchoice(demandsCount, [], 'MetalPrivateOfficeBundle') }} заявки</p>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if callbacksCount %}
+                                        <li class="item float-left">
+                                            <div class="big-count">
+                                                <a href="{{ path('MetalPrivateOfficeBundle:Callbacks:list') }}">
+                                                    {{ callbacksCount }}
+                                                </a>
+                                            </div>
+                                            <p class="text">{{ 'person_callbacks'|transchoice(callbacksCount, [], 'MetalPrivateOfficeBundle') }} перезвонить</p>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block user_alert %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductsWithoutCategoryNotice') }}
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalProjectBundle:ShowText', {
+        'popup_name' : 'about-rating',
+        'popup_text' : 'По умолчанию в разделе «Поставщики» товары и компании сортируются по рейтингу. Это необходимо для того, чтобы в первую очередь показывать компании, которые имеют актуальные цены и готовы ответить на вопросы потребителей как можно более оперативно.'}) }}
+{% endblock %}
+

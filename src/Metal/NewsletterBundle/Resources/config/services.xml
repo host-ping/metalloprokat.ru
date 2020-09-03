@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="metal.newsletter.admin.newsletter" class="Metal\NewsletterBundle\Admin\NewsletterAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="newsletter" label="Рассылки" />
+            <argument>metal.newsletter.admin.newsletter</argument>
+            <argument>Metal\NewsletterBundle\Entity\Newsletter</argument>
+            <argument>MetalNewsletterBundle:AdminNewsletter</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.newsletter.admin.subscriber" class="Metal\NewsletterBundle\Admin\SubscriberAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="newsletter" label="Подписки" />
+            <argument>metal.newsletter.admin.subscriber</argument>
+            <argument>Metal\NewsletterBundle\Entity\Subscriber</argument>
+            <argument>MetalNewsletterBundle:AdminSubscriber</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.newsletter.mailer" class="Metal\NewsletterBundle\Service\Mailer">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="twig" />
+            <argument>%mailer_from%</argument>
+        </service>
+
+        <service id="metal.newsletter.subscriber_service" class="Metal\NewsletterBundle\Service\SubscriberService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="metal.newsletter.admin.block.newsletter_statistic" class="Metal\NewsletterBundle\Admin\Block\NewsletterStatisticBlockService">
+            <argument>metal.newsletter.admin.block.newsletter_statistic</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+    </services>
+
+</container>
+

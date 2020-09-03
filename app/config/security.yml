@@ -1,0 +1,56 @@
+services:
+    metal.users.security.encoder:
+        class: Metal\UsersBundle\Security\Core\Encoder\MysqlPasswordEncoder
+
+security:
+    encoders:
+        Metal\UsersBundle\Entity\User:
+            id: metal.users.security.encoder
+
+    role_hierarchy:
+        ROLE_SEO_ADMINISTRATOR: [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_CATALOG_PRODUCT_MODERATOR: [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_CONTENT_MODERATOR: [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_PRODUCT_MODERATOR: [ROLE_USER, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_EXTENDED_MODERATOR: [ROLE_USER, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_MANAGER: [ROLE_PRODUCT_MODERATOR, ROLE_ALLOWED_TO_SWITCH, ROLE_ALLOWED_VIEW_DEMAND_CONTACTS]
+        ROLE_ADMIN: [ROLE_MANAGER, ROLE_CONTENT_MODERATOR, ROLE_EXTENDED_MODERATOR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+
+    providers:
+        users_provider:
+            entity: { class: MetalUsersBundle:User }
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt|fragment)|css|images|js)/
+            security: false
+
+#        login:
+#            pattern:  ^/login$
+#            security: false
+
+        %security_main_firewall%:
+            pattern:    ^/
+            anonymous: ~
+            provider: users_provider
+            context: user_authentication
+            form_login:
+                login_path:  login
+                check_path:  login_check
+                use_referer: true
+            switch_user: true
+            remember_me:
+                key:      "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path:     /
+                domain:   %framework_session_cookie_domain%
+            jmikola_auto_login:
+                auto_login_user_provider: metal.auto_login_user_provider
+            logout:
+                path:  /logout
+                target: /
+
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/_admin, host: %base_host_admin_panel%, roles: ROLE_SONATA_ADMIN }

@@ -1,0 +1,475 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+
+{% set statusFilter = app.request.query.get('statusFilter') %}
+{% set photoFilter = app.request.query.get('photoFilter') %}
+{% set sort = app.request.query.get('sort') %}
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+
+{% block title 'Товары / Управление информацией / '~titleSuffix %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@MetalPrivateOfficeBundle/Resources/public/js/controllers/Products.js'
+        combine = true
+    %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block after_tabs %}
+    <div class="export-products-block float-right">
+        <span class="export link clickable js-popover-opener" data-popover="#export-feed">Экспорт</span>
+
+        <div id="export-feed" class="drop-wrapper export-feed_links opacity-border">
+            <div class="dropdown">
+                <div class="export-links block clearfix">
+                    <span class="title export link">Экспорт</span>
+                    <a class="button small-btn blue-bg float-left ie-radius" ng-click="productsController.exportProducts('{{ path('MetalPrivateOfficeBundle:Products:export', {'format': 'xls'}) }}')">XLS</a>
+                    <a class="button small-btn blue-bg float-left ie-radius" ng-click="productsController.exportProducts('{{ path('MetalPrivateOfficeBundle:Products:export', {'format': 'yml'}) }}')">YML</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% set productsControllerOptions = {
+        'loadMoreProductsUrl': path('MetalPrivateOfficeBundle:Products:loadProductsById'),
+        'loadMoreCompanyPhotosUrl': path('MetalPrivateOfficeBundle:Products:loadCompanyPhotos'),
+        'loadProductsIdsUrl': path('MetalPrivateOfficeBundle:Products:loadProductsIdsUrl'),
+        'deleteProductsUrl': path('MetalPrivateOfficeBundle:Products:delete'),
+        'disconnectPhotoFromProductUrl': path('MetalPrivateOfficeBundle:Products:disconnectPhotoFromProduct'),
+        'moveProductsToCategoryUrl': path('MetalPrivateOfficeBundle:Products:moveToCategory'),
+        'changeOfferStatusUrl': path('MetalPrivateOfficeBundle:Products:changeOfferStatus'),
+        'actualizeProductsUrl': path('MetalPrivateOfficeBundle:Products:actualize'),
+        'loadCategoriesUrl': path('MetalPrivateOfficeBundle:Products:loadCategoriesByFilialId')
+    } %}
+    <style>
+        [ng-click] {
+            cursor: pointer;
+        }
+    </style>
+
+    <div ng-controller="Metal.Core as coreController" ng-cloak>
+        <div ng-controller="Metal.Products as productsController">
+
+        <div id="content" class="private-room-content content-right outline-right float-right"
+             ng-init='productsController.options = {{ productsControllerOptions|json_encode|raw }}; productsUpdatedAt = "{{ formatHelper.formatDateTime(company.getCounter().getProductsUpdatedAt()) }}"'
+                >
+        {{ block('tabs') }}
+
+        {% set filtersStatuses = [
+            {'query' : null, 'title' : 'все', 'class' : '', 'descr' : ''},
+            {'query' : 'moderated', 'title' : 'промодерировано', 'class' : 'icon-check-big complete'},
+            {'query' : 'unmoderated', 'title' : 'не промодерировано', 'class' : 'icon-clock process'},
+            {'query' : 'exceeding', 'title' : 'превышен лимит', 'class' : 'icon-filter-del'}
+        ] %}
+
+        {% set filtersPhotos = [
+            {'query' : null, 'title' : 'все', 'cutTitle' : 'все'},
+            {'query' : 'with', 'title' : 'с фото', 'cutTitle' : 'с'},
+            {'query' : 'without', 'title' : 'без фото', 'cutTitle' : 'без'},
+        ] %}
+
+        {% set orderByVariants = [
+            {'query' : null, 'title' : 'по дате'},
+            {'query' : 'price', 'title' : 'по цене'},
+            {'query' : 'abc', 'title' : 'по алфавиту'},
+            {'query' : 'position', 'title' : 'по позиции'},
+         ] %}
+
+            <div class="products-content-wrapper outline-right">
+            <div class="header-icons clearfix">
+                <div class="items overflow" ng-show="scheduledActualizationFormSubmitting" ng-cloak>
+                    <div class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                <div class="icons float-left">
+                    <ul class="icons-list clearfix">
+                        <li class="item float-left">
+                            <span class="add link clickable js-popover-opener" data-popover="#add-product-list"></span>
+                            <div id="add-product-list" class="drop-wrapper add-product-drop opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item">
+                                        <span
+                                                ng-click='productsController.popups.open({"popup": "#add-product-popup"}, $event.currentTarget)'
+                                                class="drop-link js-popover-self-closer"
+                                                >Добавить товар
+                                        </span>
+                                    </li>
+                                    <li class="drop-item">
+                                         <span
+                                                 ng-click='productsController.popups.open({"popup": "#add-products-popup"}, $event.currentTarget)'
+                                                 class="drop-link js-popover-self-closer"
+                                                 >Загрузить товары
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="item float-left">
+                            {% if company.packageChecker.isScheduledActualizationAvailable() %}
+                                <button class="revert link"
+                                    title="Актуализировать прайс-лист"
+                                    ng-click="coreController.confirm('Вы действительно хотите актуализировать информацию о прайс-листах?', productsController.actualizeProducts)"
+                                    ></button>
+                            {% else %}
+                                <button class="revert link js-popup-opener"
+                                    data-popup="#complete-package-update-products-actualization"
+                                    ></button>
+                            {% endif %}
+                        </li>
+
+                        <li class="item float-left">
+                            {% if company.packageChecker.isAllowedConnectWithPhoto() %}
+                                <span class="photo link" ng-click='productsController.popups.open({"popup": "#upload-product-image-popup"}, $event.currentTarget)'></span>
+                            {% else %}
+                                <span class="photo link clickable js-popup-opener" data-popup="#complete-package-photos"></span>
+                            {% endif %}
+                        </li>
+
+                        <li class="item float-left">
+                            <form action="{{ path('MetalPrivateOfficeBundle:Products:saveScheduledActualization') }}" class="form clickable" novalidate="novalidate" method="POST" data-ajax-form="selectTimeAjaxFormOptions">
+                                <fieldset>
+                                    <div class="autoupdate select-wrapper field-wrap ">
+                                        {% if company.packageChecker.isScheduledActualizationAvailable() %}
+                                            {{ form_widget(form.scheduledActualizationTime, {'attr' : {'class': 'form-select', 'ng-model' : 'updateActualizationTime', 'ng-change': 'ajaxFormSubmit()'} }) }}
+                                        {% else %}
+                                            {{ form_widget(form.scheduledActualizationTime, {'attr' : {'class': 'form-select js-popup-opener', 'data-popup': '#complete-package-products-actualization', 'disabled': 'disabled'} }) }}
+                                        {% endif %}
+                                        <span class="icon-help js-helper-opener"
+                                              data-text="Выберите время, в которое ежедневно будет производиться автоматическое подтверждение актуальности цен"
+                                        ></span>
+                                    </div>
+                                </fieldset>
+                                {{ form_rest(form) }}
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="float-right">
+                    <p class="last-update float-right">Обновлено <%= productsUpdatedAt %></p>
+                    {% if app.user.company.city %}
+                        <div class="filials-list-wrapper float-left"
+                             ng-init='productsLoadingConfig.filtersStatuses = {{ filtersStatuses|first|json_encode|raw }}; productsLoadingConfig.filtersPhotos = {{ filtersPhotos|first|json_encode|raw }}; productsLoadingConfig.orderBy = {{ orderByVariants|first|json_encode|raw }}; filials.addAll({{ branches|json_encode|raw }});'>
+                            <span class="filial icon-check black clickable js-popover-opener" data-popover="#filials-list-filter"><%= filial.title %></span>
+                            <div id="filials-list-filter" class="drop-wrapper filials-list-filter opacity-border">
+                                <div class="js-scrollable">
+                                    <ul class="dropdown">
+                                        <li class="drop-item" ng-repeat="branchOffice in filials.all()">
+                                            <span
+                                                    class="drop-link clickable js-popover-self-closer"
+                                                    ng-class="{current : branchOffice.id == filial.id}"
+                                                    ng-click="productsController.setFilial(branchOffice)"
+                                                    ><%= branchOffice.title %></span>
+                                        </li>
+                                        <li class="drop-item">
+                                            <a class="drop-link" href="{{ path('MetalPrivateOfficeBundle:Cities:view') }}">Добавить</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="product-management form js-private-product-container">
+            <div class="form-container clearfix">
+                <div class="products-list float-left">
+                    <div class="heading clearfix">
+                        <div class="check-all block float-left">
+                            <input type="checkbox" class="js-styled-checkbox bg-grey"
+                                   ng-click="productsController.toggleAllProductsSelection($event.target.checked)"
+                                   ng-checked="products.size() > 0 && selectedProductsIds.length == products.size()"
+                                   styled-checkbox
+                                    />
+                        </div>
+                        <div class="product-photo block float-left" ng-init='filtersPhotos = {{ filtersPhotos|json_encode|raw }};'>
+                            <span class="link icon-check black clickable js-popover-opener"
+                            data-popover="#photo-product-filter"><%= productsLoadingConfig.filtersPhotos.cutTitle %></span>
+
+                            <div id="photo-product-filter" class="drop-wrapper photo-product-filter opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item" ng-repeat="filtersPhoto in filtersPhotos">
+                                        <span ng-class="{current: productsLoadingConfig.filtersPhotos.query == filtersPhoto.query}"
+                                        class="drop-link js-popover-self-closer"
+                                        ng-click="productsLoadingConfig.filtersPhotos = filtersPhoto; productsController.reloadProducts();"><%= filtersPhoto.title %></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {{ include('@MetalPrivateOffice/PrivateProducts/partials/filter_category_partial.html.twig') }}
+
+                        <div class="product-price block float-left" ng-init='orderByVariants = {{ orderByVariants|json_encode|raw }};'>
+                            <span class="link icon-check black clickable js-popover-opener"
+                               data-popover="#products-list-sorting"><%= productsLoadingConfig.orderBy.title %></span>
+
+                            <div id="products-list-sorting" class="drop-wrapper status-filter opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item" ng-repeat="orderByVariant in orderByVariants">
+                                        <span ng-class="{current: productsLoadingConfig.orderBy.query == orderByVariant.query}"
+                                              class="drop-link js-popover-self-closer"
+                                              ng-click="productsLoadingConfig.orderBy = orderByVariant; productsController.reloadProducts();"><%= orderByVariant.title %></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="product-status block float-left" ng-init='filtersStatuses = {{ filtersStatuses|json_encode|raw }};'>
+                            <span class="<%= productsLoadingConfig.filtersStatuses.class %> link link js-popover-opener clickable"
+                            data-popover="#status"><span class="icon-check black" ng-if="!productsLoadingConfig.filtersStatuses.class"><%= productsLoadingConfig.filtersStatuses.title %></span></span>
+
+                            <div id="status" class="drop-wrapper status-filter opacity-border">
+                                <ul class="dropdown">
+                                    <li class="drop-item" ng-repeat="filtersStatus in filtersStatuses">
+                                        <span ng-class="{current: productsLoadingConfig.filtersStatuses.query == filtersStatus.query}"
+                                        class="<%= filtersStatus.class %> filtersStatus.class drop-link js-popover-self-closer"
+                                        ng-click="productsLoadingConfig.filtersStatuses = filtersStatus; productsController.reloadProducts();"><%= filtersStatus.title %></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="product-management-list">
+                        {# Устанавливаем филиал и триггерим загрузку товаров #}
+                        <div class="list js-scrollable" id="products-scroll-container"
+                             ng-init="productsController.setFilial(filials.at(0))">
+                            {{ include ('MetalPrivateOfficeBundle:partials:private_products_list.html.twig', {
+                                'company': company
+                            }, false) }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="photo-list float-left">
+                    <div class="heading">
+                        <div class="search-photo block">
+                            <input type="text" class="search form-text ie-radius" ng-model="photosSearch" placeholder="поиск по фото" />
+                            <button type="button" class="icon-search-small search-button"></button>
+                        </div>
+                    </div>
+                    <div class="photos">
+                        <div class="photo-container js-scrollable clearfix ng-cloak">
+                            <div class="clearfix" ng-init='productsController.loadMoreCompanyPhotos()'>
+                                <div ng-repeat="companyPhoto in companyPhotos.all()"
+                                     class="img is-bordered item float-left"
+                                     ng-class="{current: selectedPhoto && selectedPhoto.id == companyPhoto.id}">
+                                            <span class="pattern-small" ng-if="companyPhoto.imageUrl" ng-click="productsController.selectPhoto(companyPhoto)">
+                                                <img ng-src="<%= companyPhoto.imageUrl %>"
+                                                     alt="<%= companyPhoto.description %>"
+                                                     title="<%= companyPhoto.description %>"
+                                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                                            </span>
+                                            <span class="pattern-small" ng-if="!companyPhoto.imageUrl" title="изображение в процессе загрузки">
+                                                <div class="loading-mask">
+                                                    <div class="spinner"></div>
+                                                </div>
+                                            </span>
+                                </div>
+
+                            </div>
+                            {% if commonPhotos %}
+                                <div class="special-title float-left empty-text">
+                                    <p class="text"></p>
+                                </div>
+                            {% endif %}
+                            <div class="clearfix" ng-init='commonPhotos.addAll({{ commonPhotos|json_encode|raw }})'>
+                                <div ng-repeat="commonPhoto in commonPhotos.all()|filter:photosSearch"
+                                     class="img is-bordered item float-left"
+                                     ng-class="{current: selectedPhoto && selectedPhoto.id == commonPhoto.id}">
+                                            <span class="pattern-small" ng-click="productsController.selectPhoto(commonPhoto)">
+                                                <img ng-src="<%= commonPhoto.imageUrl %>"
+                                                     alt="<%= commonPhoto.description %>"
+                                                     title="<%= commonPhoto.description %>"
+                                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                                            </span>
+                                </div>
+                            </div>
+                            <div class="submit-wrapper" ng-if="hasMore">
+                                <a class="see-more button"
+                                   ng-click="productsController.loadMoreCompanyPhotos()"
+                                        >Показать еще...</a>
+
+                                <div class="loading-mask" ng-show="photosLoading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-shadow"></div>
+                    </div>
+                    <div class="big-photo">
+                        <div class="img-wrapper is-bordered">
+                            <span class="img-link pattern-big"
+                                    >
+                                <img
+                                        ng-if="selectedPhoto"
+                                        ng-src="<%= selectedPhoto.imageUrl %>"
+                                        ng-attr-alt="<%= selectedPhoto.description %>"
+                                        ng-attr-title="<%= selectedPhoto.description %>"
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                            </span>
+                            {#<div ng-show="ajaxFormSubmitting" class="loading-mask"></div>#}
+
+                            <div class="photo-btns-wrapper">
+                                <div class="add-photo-wrapper float-left">
+                                    {% if company.packageChecker.isAllowedConnectWithPhoto() %}
+                                        <label class="file-upload with-icon"
+                                               ng-click='!selectedPhoto.isCommon && productsController.popups.open({"popup": "#upload-product-image-popup", "data": {"editablePhoto": selectedPhoto}}, $event.currentTarget)'
+                                        >
+                                            <span class="add-photo-link ico-upload"></span>
+                                        </label>
+                                       {% else %}
+                                           <label class="file-upload with-icon js-popup-opener" data-popup="#complete-package-photos">
+                                               <span class="add-photo-link ico-upload"></span>
+                                           </label>
+                                    {% endif %}
+
+                                </div>
+
+
+                            <span class="del-btn ico-delete-btn float-left clickable" ng-if="selectedPhoto && !selectedPhoto.isCommon"
+                                  ng-click="coreController.confirm('Вы действительно хотите удалить выбранную фотографию?', productsController.deleteSelectedPhoto)"
+                                    ></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-shadow"></div>
+            </div>
+            <fieldset class="bottom-block clearfix">
+                <div class="choose-products float-left" ng-show="selectedProductsIds.length > 0">
+                    <span translate
+                          translate-n="selectedProductsIds.length"
+                          translate-plural="selected_products_n">selected_products_n</span><br />
+                    из <span ng-bind="allProductsIds.length"></span>
+                </div>
+
+                <div class="choose-products all-products float-left" ng-show="selectedProductsIds.length == 0">
+                    <span translate
+                          translate-n="allProductsIds.length"
+                          translate-plural="total_products_n">total_products_n</span>
+                </div>
+
+                <ul class="float-right">
+                    <li class="delete-btn item float-left">
+                        <button type="button" class="delete button red-bg ie-radius {#js-popup-opener#}"
+                                ng-disabled="selectedProductsIds.length < 1"
+                                ng-click="coreController.confirm('Вы действительно хотите удалить выбранные товары?', productsController.deleteProducts)"
+                                data-popup="#delete-product">Удалить
+                        </button>
+                    </li>
+                    <li class="replace-btn item float-left">
+                        <button type="submit" class="replace button white-bg is-bordered ie-radius js-popover-opener"
+                                ng-disabled="selectedProductsIds.length < 1"
+                                data-different-position="true"
+                                data-popover="#choose-section" data-left="0" data-offset-top="-250">Перенести в раздел
+                        </button>
+                    </li>
+                    <li class="change-btn item float-left">
+                        <button type="submit" class="replace button white-bg is-bordered js-popover-opener ie-radius"
+                                ng-disabled="selectedProductsIds.length < 1"
+                                data-different-position="true"
+                                data-popover="#change-special"
+                                data-left="0" data-offset-top="-79"
+                                >Изменить СП/ГП
+                        </button>
+                    </li>
+                    <li class="photo-btn-wrapper item float-left">
+                        {% if company.packageChecker.isAllowedConnectWithPhoto() %}
+                            <button type="submit" class="photo-btn button white-bg is-bordered clearfix ie-radius"
+                                    ng-disabled="selectedProductsIds.length < 1 || !selectedPhoto"
+                                    ng-click="coreController.confirm('Вы действительно хотите связать выбранные товары с фото?', productsController.connectProductsWithPhoto)">
+                                <span class="text float-left">Связать с фото</span>
+                                <span class="photo-ico float-right"></span>
+                            </button>
+                        {% else %}
+                            <button type="submit"
+                                    class="photo-btn button white-bg is-bordered clearfix ie-radius js-popup-opener"
+                                    ng-disabled="selectedProductsIds.length < 1 || !selectedPhoto"
+                                    data-popup="#complete-package-photos">
+                                <span class="text float-left">Связать с фото</span>
+                                <span class="photo-ico float-right"></span>
+                            </button>
+                        {% endif %}
+                    </li>
+                </ul>
+            </fieldset>
+            </div>
+
+                <div ng-show="globalOperationProcessing">
+                    <div class="items overflow">
+                    </div>
+                    <div class="loading-mask big">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div id="change-special" class="change-special drop-wrapper popover-block opacity-border">
+                <ul class="dropdown">
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-popover-self-closer"
+                              ng-click="coreController.confirm('Вы действительно хотите добавить выбранные товары в СП?', productsController.changeProductsOfferStatus('isSpecialOffer', true))"
+                        >
+                            Добавить в СП
+                        </span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-popover-self-closer"
+                              ng-click="coreController.confirm('Вы действительно хотите удалить выбранные товары из СП?', productsController.changeProductsOfferStatus('isSpecialOffer', false))"
+                        >
+                            Удалить из СП
+                        </span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-popover-self-closer"
+                              ng-click="coreController.confirm('Вы действительно хотите добавить выбранные товары в горячие предложения?', productsController.changeProductsOfferStatus('isHotOffer', true))"
+                        >
+                            Добавить в ГП
+                        </span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-popover-self-closer"
+                              ng-click="coreController.confirm('Вы действительно хотите удалить выбранные товары из горячих предложений?', productsController.changeProductsOfferStatus('isHotOffer', false))"
+                        >
+                            Удалить из ГП
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            {{ brouzie_render_widget('MetalProductsBundle:AddProductsFromFile', {'company_id': company.id}) }}
+            {{ brouzie_render_widget('MetalProductsBundle:ProductForm', {'company' : company, 'existing_product_editing' : false}) }}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductCategory', {'categories': categories, 'widget_id': 'choose-section', 'ng_click': "coreController.confirm('Вы действительно хотите перенести выбранные товары в раздел?', [productsController.moveProductsToCategory, [%id%]])"})}}
+            {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductCategory', {'categories': categories, 'widget_id': 'choose-section-inline', 'ng_click': "productsController.moveProductToCategory(%id%, %title%)"})}}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block user_alert %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:ProductsWithoutCategoryNotice') }}
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    <div id="errors-load-products" class="popup-block opacity-border large"></div>
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:UploadProductsImages') }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Полный и расширенный пакеты позволяют прикреплять фото к продукту', 'widget_id': 'complete-package-photos'} )}}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Полный и расширенный пакеты позволяют выбрать время, в которое ежедневно будет производиться автоматическое подтверждение актуальности цен', 'widget_id': 'complete-package-products-actualization'} )}}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Полный и расширенный пакеты позволяют актуализировать прайс продуктов', 'widget_id': 'complete-package-update-products-actualization'} )}}
+{% endblock %}

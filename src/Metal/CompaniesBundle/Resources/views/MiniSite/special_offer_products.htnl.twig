@@ -1,0 +1,57 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+
+{% block title 'Горячие предложения от компании ' ~ company.title %}
+{% block meta_description company.title ~ ': каталог товаров, цены.' %}
+{% block meta %}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getMetaPagination(pagerfanta)|raw }}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getAdditionalMetaTagsForMinisiteProducts()|raw }}
+{% endblock %}
+
+{% block tab_content %}
+    {% set company = app.request.attributes.get('company') %}
+
+    <div class="main-page content-holder">
+        <div class="clearfix">
+
+            <div class="admin-button-wrapper float-left">
+                {% if is_granted('COMPANY_MODERATOR', company) %}
+                    <a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalPrivateOfficeBundle:Products:list', {'_secure' : company.country.secure}) }}"
+                       class="admin-button button clickable gray60-bg float-right ie-radius">изменить</a>
+                {% endif %}
+                <h1 class="minisite-title product-list-title">Горячие предложения</h1>
+            </div>
+        </div>
+    </div>
+
+    {% if not pagerfanta|length %}
+        <li class="empty-item gray60-color">
+            <div class="table-container no-favorites js-calc-height">
+                <div class="table-cell">
+                    В данный раздел попадают товары, отмеченные как "горячие предложения".
+
+                    {% if not company.getPackageChecker().getShowHotOfferMenuItem() %}
+                        <p class="text">
+                            Доступно в стандартном, расширенном и полном пакетах.
+                            <a href="{{ path('MetalCorpsiteBundle:Default:services') }}" target="_blank">Получить.</a>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% endif %}
+
+    {% if company.getPackageChecker().getShowHotOfferMenuItem() %}
+        <ul class="product similar-list">
+            {{ include('MetalCompaniesBundle:partial:products_in_list_mini.html.twig', {
+                'pagerfanta' : pagerfanta,
+                'company': company
+            }, false) }}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'product'}) }}
+{% endblock %}
+

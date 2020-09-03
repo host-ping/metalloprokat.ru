@@ -1,0 +1,37 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+{% block field %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>Описание</th>
+                <th>Оъем</th>
+                <th>Единицы измерения</th>
+                <th>Категория</th>
+            </tr>
+            {% for item in object.demandItems %}
+                <tr>
+                    <td>
+                        {{ item.title }}
+                    </td>
+                    <td>
+                        {% if item.volume %}
+                             {{ item.volume }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.volumeType %}
+                            {{ item.volumeType.title }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.category %}
+                            {{ item.category.title }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+{% endblock %}
+

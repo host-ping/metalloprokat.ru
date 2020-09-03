@@ -1,0 +1,45 @@
+{% block captcha_widget %}
+    {% if is_human %}
+        -
+    {% else %}
+        {% spaceless %}
+            <script type="text/javascript">
+                function resetCodeInput() {
+                    var $selector = $('div.field-wrap input.js-captcha-code')
+                    if ($selector.length) {
+                        $selector.val('');
+                    }
+                }
+
+                function reload_{{ image_id }}() {
+                    var img = document.getElementById('{{ image_id }}');
+                    img.src = '{{ captcha_code }}?n=' + (new Date()).getTime();
+                    resetCodeInput();
+                }
+
+                $(document).delegate('#add-comment-form', 'response.error', function(event) {
+                    reload_{{ image_id }}();
+                });
+
+                $(document).ready(function () {
+                    $('body').bind('popup.open', function (e) {
+                                resetCodeInput();
+                            }).bind('popup.close', function (e) {
+                                resetCodeInput();
+                            }
+                    );
+                });
+
+            </script>
+
+            <div class="field-wrap">
+                <a class="captcha_reload" href="javascript:reload_{{ image_id }}();">
+                    <img id="{{ image_id }}" src="{{ captcha_code }}" title="Нажмите для обновления кода" width="{{ captcha_width }}" height="{{ captcha_height }}" />
+                </a>
+            </div>
+            <div class="field-wrap">
+                {{ form_widget(form, {'attr' : { 'class' : 'ie-radius form-text js-captcha-code', 'placeholder' : 'Введите код с изображения сверху' }}) }}
+            </div>
+        {% endspaceless %}
+    {% endif %}
+{% endblock %}

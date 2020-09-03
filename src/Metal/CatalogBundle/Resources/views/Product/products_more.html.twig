@@ -1,0 +1,37 @@
+{% set subdomain = city ? city.getSlugWithFallback : 'www' %}
+
+{% if displayBrand is not defined %}
+    {% set displayBrand = false %}
+{% endif %}
+
+{% for product in products %}
+    {% set productTitle = displayBrand ? product.title~' '~product.brand.value : product.title %}
+    {% set productViewUrl = path('MetalCatalogBundle:Product:view', {'id' : product.id, 'category_slug': product.category.slugCombined, 'subdomain': subdomain}) %}
+    <li class="item outline clearfix">
+        <div class="img is-bordered float-right">
+            <div class="img-holder">
+                <a class="img-link {% if not product.photo.name %}pattern-small{% endif %}"
+                   data-href="{{ productViewUrl }}">
+                    {% if product.photo.name %}
+                        <img src="{{ vich_uploader_asset(product, 'uploadedPhoto')|imagine_filter('products_sq28_non_optim') }}"
+                             alt="{{ productTitle }}"
+                             title="{{ productTitle }}" />
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="left">
+            <p class="title is-gradiented">
+                <a class="product-link" href="{{ productViewUrl }}" title="{{ productTitle }}">{{ productTitle }}</a>
+            </p>
+
+            <div class="info">
+                <p class="text">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+            </div>
+        </div>
+    </li>
+{% endfor %}
+
+{% if isPagerfanta %}
+    {{ pagerfanta(products, 'pagination_twig') }}
+{% endif %}

@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <imports>
+        <import resource="listeners/metalloprokat.yml" />
+    </imports>
+
+    <services>
+        <service id="metal.project.metaltop_request_listener"
+                 class="Metal\ProjectBundle\EventListener\Metalloprokat\MetaltopRequestListener">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument key="base_host_metaltop_prefix">%base_host_metaltop%</argument>
+            <argument key="base_host_me1_prefix">%base_host_me1%</argument>
+            <argument key="web_dir">%upload_dir%</argument>
+            <argument type="service" id="router" />
+            <argument type="service" id="service_container" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestBeforeRouting"
+                 priority="39" />
+        </service>
+        <service id="metal.project.controller_listener"
+                 class="Metal\ProjectBundle\EventListener\Metalloprokat\ControllerListener">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="router" />
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+        </service>
+    </services>
+</container>

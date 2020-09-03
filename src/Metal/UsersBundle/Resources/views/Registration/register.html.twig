@@ -1,0 +1,162 @@
+{% extends '@MetalProject/layouts/_wizzard_layout.html.twig' %}
+
+{% block title 'Регистрация / '~currentCountry.domainTitle %}
+
+{% block wizzard_content %}
+    <div class="register-block">
+
+        <div class="main-title ">
+            <h1>Регистрация</h1>
+        </div>
+
+        {% set route = 'MetalUsersBundle:Registration:register' %}
+        {% if category %}
+            {% set route = 'MetalUsersBundle:Registration:registerFirstStep' %}
+        {% endif %}
+        {{ form_start(form, {
+            'action' : path(route, {'category_id': category ? category.id : null}),
+            'attr': {
+                'id': 'registration-form',
+                'data-success': 'redirect',
+                'class' : 'register-form form js-ajax-form-submit',
+                'novalidate': 'novalidate'
+            }
+        }) }}
+            <fieldset>
+                <div class="user-type-wrapper field-wrap {% if category %}g-hidden{% endif %}">
+                    {{ form_widget(form.userType, {'attr' : { 'id': 'user-type', 'class' : 'js-user-type user-type form-select', 'separator' : ''}}) }}
+                </div>
+
+                <div class="group clearfix js-fields-for-trader">
+                    <div class="user-company-wrapper field-wrap float-left">
+                        {{ form_widget(form.companyTitle, {'attr' : {'class' : 'register-company form-text ie-radius', 'placeholder' : 'Компания'}} ) }}
+                        {{ form_widget(form.company, {'attr' : {'class' : 'g-hidden js-selected-company-id'} }) }}
+                    </div>
+                    <div class="company-type-wrapper field-wrap float-left">
+                        {{ form_widget(form.companyType, {'attr' : {'class' : 'form-select hight', 'separator' : ''}}) }}
+                    </div>
+                </div>
+
+                <div class="group clearfix">
+                    <div class="user-city-wrapper field-wrap float-left">
+                        {{ form_widget(form.cityTitle, {
+                            'attr' : {
+                                'class' : 'user-city form-text ie-radius',
+                                'placeholder' : 'Город',
+                                'typeahead': '',
+                                'typeahead-loading': 'typeaheadLoading',
+                                'typeahead-prefetch-url': path('MetalTerritorialBundle:Suggest:getAllCities'),
+                                'typeahead-suggestion-template-url': "'typeahead-suggestion-with-parent'",
+                                'typeahead-model': "city"
+                            }
+                        }) }}
+
+                        {{ form_widget(form.city, {
+                            'attr' : {
+                                'class' : 'g-hidden',
+                                'ng-model': "city.id",
+                                'initial-value': ''
+                            } }) }}
+                    </div>
+                    <div class="phone-wrapper field-wrap float-left">
+                        {{ form_widget(form.phone, {'attr' : {'class' : 'user-phone phone form-text ie-radius', 'placeholder' : 'Телефон'}} ) }}
+                    </div>
+                </div>
+                <div class="group clearfix">
+                    <div class="user-name-wrapper field-wrap float-left">
+                        {{ form_widget(form.fullName, {'attr' : {'class' : 'user-name form-text ie-radius', 'placeholder' : 'Имя и фамилия'}} ) }}
+                    </div>
+                    <div class="user-email-wrapper field-wrap float-left">
+                        {{ form_widget(form.email, {'attr' : {'class' : 'user-mail form-email ie-radius', 'placeholder' : 'Электронная почта'}} ) }}
+                    </div>
+                </div>
+                <div class="group clearfix">
+                    <div class="user-pwd-wrapper field-wrap float-left">
+                        {{ form_widget(form.newPassword.first, {'attr' : {'class' : 'user-password form-text ie-radius', 'placeholder' : 'Пароль'}} ) }}
+                    </div>
+                    <div class="user-pwd-wrapper-re field-wrap float-left">
+                        {{ form_widget(form.newPassword.second, {'attr' : {'class' : 'user-password form-text ie-radius', 'placeholder' : '...еще раз'}} ) }}
+                    </div>
+                </div>
+
+                {% if form.promocode is defined %}
+                    <div class="promo-group group clearfix js-fields-for-trader">
+                        <div class="promo-wrapper field-wrap float-left">
+                            {{ form_widget(form.promocode, {'attr' : {'class' : 'promo-field form-text ie-radius', 'placeholder' : 'Промокод'}} ) }}
+                            <span class="icon-help js-helper-opener" data-text="Вы можете ввести промокод, он дает
+                                 право на пользование полным пакетом услуг в течении одного месяца"></span>
+
+                        </div>
+                        <div class="promo-description-wrapper field-wrap float-left g-hidden">
+                            <p class="promo-status green-color">Промокод действителен и дает право на пользование полным пакетом услуг в течении одного месяца</p>
+                            <p class="promo-status red-color">Промокод действителен с 16 окт 2015 до 31 дек 2015</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="agreement-wrapper">
+                    {{ form_widget(form.agreeWithTerms, {'attr' : {'class' : 'js-styled-checkbox js-show-button-on-change bg-grey'}} ) }}
+
+                    <label for="{{ form.agreeWithTerms.vars.id }}">Согласен с </label><a href="{{ path('MetalCorpsiteBundle:Default:licenseAgreement') }}" class="link" target="_blank">
+                        пользовательским соглашением</a>
+                </div>
+
+                {{ form_widget(form.checkDuplication, {'attr' : {'class' : 'g-hidden js-check-duplication'}} ) }}
+
+                <div class="submit-wrapper">
+                    {% if category %}
+                        <input class="register-button button green-bg ie-radius" type="submit" value="Продолжить" />
+                    {% else %}
+                        <input class="register-button button green-bg ie-radius" type="submit" value="Зарегистрироваться" />
+                    {% endif %}
+                </div>
+            </fieldset>
+        {{ form_end(form) }}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $body = $('body');
+
+            $('#registration-form').bind('response.error', function(e, data) {
+                if (data.html) {
+                    $('#company-registration-error-popup').html(data.html);
+
+                    $('#company-registration-error-popup .js-scrollable').scrollbar({
+                        type: 'simple',
+                        disableBodyScroll: true
+                    });
+
+                    Brouzie.Popups.openPopup($('#company-registration-error-popup .popup-block'));
+                }
+            });
+
+            $('.js-user-type').bind('change', function(e) {
+                var TYPE_CONSUMER = 1;
+                $('.js-fields-for-trader').toggleClass('g-hidden', $(e.target).val() == TYPE_CONSUMER);
+            });
+
+            $body.delegate('.js-register-new', 'click', function(event) {
+                event.preventDefault();
+
+                $('.js-check-duplication').val(0);
+                $('.register-button').click();
+            });
+
+            $body.delegate('.js-choice-comp', 'click', function(event) {
+                event.preventDefault();
+                var $el = $(event.currentTarget);
+
+                $('.js-check-duplication').val(0);
+                $('.js-selected-company-id').val($el.data('id'));
+                $('.register-button').click();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    <div id="company-registration-error-popup"></div>
+{% endblock %}

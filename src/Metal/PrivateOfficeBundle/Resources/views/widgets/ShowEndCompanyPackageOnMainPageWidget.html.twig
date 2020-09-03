@@ -1,0 +1,29 @@
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% if companyPackage is not null %}
+    <div class="title">Вы используете <strong>{{ textHelper.lcFirst(companyPackage.title) }} пакет</strong> услуг
+        <a class="link" href="{{ path('MetalCorpsiteBundle:Default:services') }}">что это?</a>
+    </div>
+    <div class="for-date">
+        до
+        <strong class="days">
+            {{ formatHelper.formatDate(companyPackage.endAt, 'full') }}
+        </strong>
+    </div>
+{% elseif days is not null and days > 0 %}
+    <div class="title">
+        Вы используете доступ к заявкам (<a target="_blank" href="{{ path('MetalDemandsBundle:Default:index') }}">Потребители</a>)
+        <a class="link" target="_blank" href="{{ path('MetalCorpsiteBundle:Default:services') }}">что это?</a>
+    </div>
+    <div class="for-date">
+        до
+        <strong class="days">
+            {{ formatHelper.dateEndOfPackage(days) }}
+        </strong>
+    </div>
+{% else %}
+    <div class="title">
+        Вы используете <strong>базовый пакет</strong> услуг
+        <a class="link" href="{{ path('MetalCorpsiteBundle:Default:services') }}">что это?</a>
+    </div>
+{% endif %}

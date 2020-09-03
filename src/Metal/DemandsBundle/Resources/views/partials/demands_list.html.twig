@@ -1,0 +1,51 @@
+{#
+    партиал вывода списка заявок
+
+    ожидает:
+        demands: Demand[] с зааттаченными атрибутами demandItems, isInFavorite
+#}
+
+{% set defaultOptions = {
+    'demand_item_additional_class': '',
+    'include_banners': false
+} %}
+{% set options = defaultOptions|merge(options|default({})) %}
+
+{{ include('@MetalDemands/partials/telegram_adv.html.twig') }}
+
+{% for demand in pagerfanta %}
+    <li class="demand_item">
+        {{ include('@MetalDemands/partials/demand_in_list.html.twig', {
+            'demand': demand,
+            'options': options,
+        }, false) }}
+    </li>
+    {% if options['include_banners'] %}
+        {% include '@MetalDemands/Demands/partial/banner_inclusion.html.twig' with {
+            'index' : loop.index,
+            'category' : category,
+            'additional_class' : 'float-left'
+        } only %}
+    {% endif %}
+{% endfor %}
+
+{% if use_pagination is not defined or use_pagination %}
+    {{ pagerfanta(pagerfanta, 'pagination_twig') }}
+{% else %}
+    {% if pagerfanta.hasNextPage() %}
+        <li class="see-more-block-wrapper" id="demands-load-more">
+            <div class="see-more-block">
+                <a class="see-more button js-load-more ie-radius"
+                   data-href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+                   data-load-more-replace="#demands-load-more"
+                >Показать еще...</a>
+
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </li>
+    {% endif %}
+
+    {{ pagerfanta(pagerfanta, 'twig') }}
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Новое сообщение{% endblock %}
+
+{% block body_text -%}
+Здравствуйте, {{ user.firstName }}.
+
+Отправитель: {{ sender.name }} {{ sender.email }}{% if sender.company %}, {{ sender.company.getTitle() }} {{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain': sender.company.domain, '_secure' : sender.company.packageChecker.isHttpsAvailable()}) }}{% endif %}
+
+{{ text }}
+
+Ответить: {{ sender.name }} {{ sender.email }}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <div style="font-size: 12;">
+        Отправитель: <a href="mailto:{{ sender.email }}">{{ sender.name }}</a>
+    {%- if sender.company -%},
+        <a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain': sender.company.domain, '_secure' : sender.company.packageChecker.isHttpsAvailable()}) }}">{{ sender.company.getTitle() }}</a>
+    {% endif %}
+        <p>{{ text }}</p>
+    <a href="mailto:{{ sender.email }}">Ответить</a>
+    </div>
+{% endblock %}

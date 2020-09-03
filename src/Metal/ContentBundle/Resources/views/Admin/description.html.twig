@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_flat_field.html.twig' %}
+
+{% block field %}
+    <td>
+        <p class="text">{{ object.description|bbcode_filter('default')}}</p>
+    </td>
+{% endblock %}

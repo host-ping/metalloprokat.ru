@@ -1,0 +1,48 @@
+{% extends 'MetalCompaniesBundle:MiniSite:_mini_layout.html.twig' %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block title brouzie_helper('MetalProjectBundle:Seo').getMetaTitleForMiniSiteFrontPage() %}
+
+{% block meta_description brouzie_helper('MetalProjectBundle:Seo').getMetaDescriptionsForMiniSiteFrontPage() %}
+{% block meta brouzie_helper('MetalProjectBundle:Seo').getMetaPagination(pagerfanta)|raw %}
+{% block canonical_url brouzie_helper('MetalProjectBundle:Seo').getCanonicalUrlForMinisite() %}
+
+{% block tab_content %}
+    {% set routeParameters = app.request.attributes.get('_route_params') %}
+    <div class="main-page content-holder">
+        <div class="clearfix">
+            <div class="admin-button-wrapper float-left">
+                {% if isCompanyModerator %}
+                    <a href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalPrivateOfficeBundle:Products:list', {'_secure' : currentCompany.country.secure}) }}" class="admin-button button clickable gray60-bg float-right ie-radius">изменить</a>
+                {% endif %}
+                <h1 class="minisite-title is-gradiented" title="{{ currentCompany.title }}">{{- currentCompany.title -}}</h1>
+            </div>
+            <div class="search-wrapper float-right">
+                <form action="{{ path(currentRoute, routeParameters) }}" method="GET">
+                    <fieldset>
+                        <input class="search-field form-text ie-radius" type="text" name="q" value="{{ app.request.query.get('q')|escape('html_attr') }}" placeholder="Поиск" />
+                        <button class="icon-search-small search-button" type="submit">
+
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="about content-holder">
+            <p>
+                {{ formatHelper.getFullSentences(currentCompany.companyDescription.description, 1000, '.') }}
+            </p>
+        </div>
+        {% if pagerfanta.getNbResults() %}
+            <ul class="deals clearfix" itemscope itemtype="http://schema.org/http://schema.org/ItemList">
+                {{ include('MetalCompaniesBundle:partial:products_in_list_mini_special.html.twig', {
+                'pagerfanta' : pagerfanta,
+                'currentCompany' : currentCompany,
+                'imageHelper' : imageHelper,
+                'route' : currentRoute,
+                }, false) }}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
+

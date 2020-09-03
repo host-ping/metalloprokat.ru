@@ -1,0 +1,189 @@
+.icon-help:after,
+.icon-exit:after,
+.icon-delete-btn:after,
+.icon-check-collapse:after,
+.icon-check:after{
+    display: inline-block;
+    font-family: "fontcustom";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-decoration: inherit;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+}
+.icon-help:before,
+.icon-exit:before,
+.icon-delete-btn:before,
+.icon-check-collapse:before,
+.icon-check:before{content: '';}
+
+
+.icon-check:after{ content: "\f104"; }
+.icon-delete-btn:after { content: "\f10d"; }
+.icon-exit:after{ content: "\f110"; }
+.icon-help:after{ content: "\f116"; }
+.icon-check-collapse:after { content: "\f132"; }
+
+.icon-check-big:before{
+    font-size: 18px;
+    color: #3fab61;
+}
+.icon-position:before{
+    font-size: 20px;
+    color: #f16961;;
+}
+.icon-upload:before{
+    font-size: 20px;
+    color: #18A3D1;
+}
+.icon-delete-btn:after{
+    font-size: 20px;
+    color: #f16961;
+}
+.icon-help{
+    position: relative;
+    margin-left: 5px;
+    cursor: help;
+}
+.icon-help:after{
+    color: #3fab61;
+    font-size: 14px;
+}
+.icon-flag:before{
+    color: #f16961;
+    font-size: 20px;
+}
+.icon-star.default:before,
+.icon-star-colored.default:before,
+.disabled .icon-flag:before{
+    color: #919191;
+}
+.icon-star.hovered:before,
+.icon-star-colored:before{
+    color: #f16961;
+}
+.icon-star-colored.metalindex:before{
+    color: #00ADEF;
+}
+
+.star-mini:before{
+    font-size: 18px;
+    line-height: 1;
+}
+.star-big{
+    display: inline-block;
+}
+.star-big.icon-star-colored:before,
+.star-big.icon-star:before,
+.big.icon-flag:before{
+    font-size: 32px;
+}
+.icon-positive:before{
+    font-size: 24px;
+    color: #3fab61;
+}
+.icon-negative:before{
+    font-size: 24px;
+    color: #f16961;
+
+}
+.icon-popup-close:before{
+    font-size: 18px;
+    color: #A6A39D;
+}
+.icon-search-small:before{
+    font-size: 12px;
+    display: block;
+    color: #919191;
+}
+.icon-search-small{
+    width: 30px;
+    height: 32px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+}
+.icon-search-small.for-high-input{
+    height: 42px;
+}
+.icon-calendar{
+    margin: 0 5px;
+}
+.icon-calendar:before{
+    font-size: 18px;
+    color: #E6E3DF;
+    position: relative;
+    top: 3px;
+}
+.icon-clock:before{
+    color: #A6A39D;
+    font-size: 16px;
+}
+.icon-position-color:before{
+    color: #3386CC;
+    font-size: 14px;
+}
+.icon-error-color{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+}
+.icon-error-color:before{
+    color: #f16961;
+    display: block;
+}
+.icon-lamp:before{
+    color: #E75748;
+    font-size: 18px;
+}
+
+.icon-euro:before,
+.icon-rouble:before,
+.icon-tenge:before,
+.icon-hrivna:before{
+    font-size: 9px;
+    position: relative;
+    top: -1px;
+}
+.product-inside .product-info .information span[class^="icon"]:before,
+.view-category.products .list .product-info span[class^="icon"]:before{
+    font-size: 13px;
+    font-weight: 600;
+}
+.helper .content span[class^="icon"]:before{
+    font-size: 8px !important;
+}
+.promotion-popup .item span[class^="icon"]:before,
+.wizzard-block .promotions-form .price span[class^="icon"]:before{
+    font-size: 16px;
+}
+
+.popup-block .total-sum-wrapper span[class^="icon"]:before{
+    font-size: 26px;
+}
+
+.product-info .helper span[class^="icon"]:before{
+    font-size: 8px;
+}
+.corporate-content .service-wrapper .service thead .bottom .price .icon-rouble:before{
+    font-size: 14px;
+}
+.icon-comment:before{
+    margin-right: 5px;
+}
+
+.icon-idea:before{
+    color: #ffc600;
+    font-size: 18px;
+    position: relative;
+    top: 3px;
+    left: 0;
+
+}

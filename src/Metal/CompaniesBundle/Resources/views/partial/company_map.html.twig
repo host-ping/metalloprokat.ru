@@ -1,0 +1,22 @@
+{% set contactInfo = company.getContactInfo() %}
+{% if contactInfo.getLongitude() and contactInfo.getLatitude() %}
+    <div class="map-wrapper is-bordered js-map-wrapper">
+        <div class="heading clearfix">
+            <p class="address is-gradiented" title="{{ contactInfo.getAddress() }}">
+                <strong>
+                    {{ contactInfo.getAddress() }}
+                </strong>
+            </p>
+        </div>
+        <div class="map">
+            <div class="map-resizeble-block js-resizable-map">
+                <div class="map-container js-map-with-placemark" data-placemark="[{{ contactInfo.getLatitude() }}, {{ contactInfo.getLongitude() }}]"
+                     data-placemark-title="{{ contactInfo.getAddress() }}"></div>
+            </div>
+        </div>
+        <div class="heading"><p class="yandex-map float-right">
+                <a class="link" target="_blank" rel="noopener noreferrer nofollow" data-href="{{ brouzie_helper('MetalTerritorialBundle:Map').getYandexUrl(contactInfo.getLatitude(), contactInfo.getLongitude(), contactInfo.getAddress()) }}">Открыть в Яндекс.Картах</a>
+            </p>
+        </div>
+    </div>
+{% endif %}

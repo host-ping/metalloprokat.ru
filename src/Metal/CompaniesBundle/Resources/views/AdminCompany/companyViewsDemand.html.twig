@@ -1,0 +1,44 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block show %}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                История просмотров заявок
+            </h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Заявка</th>
+                    <th>Дата просмотра</th>
+                    <th>Пользователь</th>
+                </tr>
+                </thead>
+                <tbody class="sonata-ba-body">
+                {% for demandView in demandViews %}
+                    <tr>
+                        <td class="control-group">
+                            <b><a target="_blank"
+                                  href="{{ path('admin_metal_demands_abstractdemand_edit', {'id': demandView.demand.id}) }}">{{ demandView.demand.id }}</a></b>
+                        </td>
+                        <td class="control-group">
+                            {{ brouzie_helper('MetalProjectBundle:Formatting').formatDateTime(demandView.viewedAt) }}
+                        </td>
+                        <td class="control-group">
+                            <span>{{ demandView.user.fullName }}</span>
+                            <b>(<a target="_blank"
+                                   href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': demandView.user.id}}}) }}">{{ demandView.user.id }}</a>)</b>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+

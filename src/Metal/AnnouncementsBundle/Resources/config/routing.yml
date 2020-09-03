@@ -1,0 +1,16 @@
+MetalAnnouncementsBundle:Default:away:
+    path: /away
+    defaults: {_controller: MetalAnnouncementsBundle:Default:away}
+
+MetalAnnouncementsBundle:Announcement:getAnnouncements:
+    path: /load-announcements
+    methods: [POST]
+    defaults: {_controller: MetalAnnouncementsBundle:Announcement:getAnnouncements}
+
+MetalAnnouncementsBundle:Announcement:trackEmailAnnouncement:
+    path:   /announcement-email-track/{subscriber_id}/{announcementsIds}.gif
+    methods:  [GET]
+    defaults:  { _controller: MetalAnnouncementsBundle:Announcement:trackEmailAnnouncement }
+    requirements:
+        subscriber_id: \d+
+        announcementsIds: (\d+?-?)+

@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="router.attributes_loader" class="Metal\ProjectBundle\Routing\AttributesLoadingRouter">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%kernel.hostname_package%</argument>
+            <argument type="collection">
+                <argument key="category_slug">%category_with_parameters_slug_regex%</argument>
+                <argument key="company_slug">%company_slug_regex%</argument>
+            </argument>
+            <argument type="collection">
+                <argument key="main">true</argument>
+                <argument key="catalog">%project.catalog_enabled%</argument>
+                <argument key="content">%project.content_enabled%</argument>
+            </argument>
+        </service>
+
+        <service id="metal_project.routing.routing_parser" class="Metal\ProjectBundle\Routing\RoutingParser">
+            <argument type="service" id="router" />
+            <argument /> <!-- cache provider -->
+        </service>
+
+        <service id="metal_project.routing.routing_parser.cache.array" class="Doctrine\Common\Cache\ArrayCache"
+                 public="false">
+        </service>
+
+        <service id="metal_project.routing.routing_parser.cache.apcu" class="Doctrine\Common\Cache\ApcuCache"
+                 public="false">
+            <call method="setNamespace">
+                <argument>rp_</argument>
+            </call>
+        </service>
+    </services>
+</container>

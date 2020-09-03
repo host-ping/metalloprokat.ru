@@ -1,0 +1,236 @@
+{% extends '@markup/content/_content_layout.html.twig' %}
+
+{% block content %}
+    {% block callback %}
+        <div class="title-callback outline big-size">Купить стройматериалы в России по
+            <span class="link clickable">лучшей цене</span>
+            <strong class="phone-company">8 (800) 555-56-65</strong>
+            <span class="callback-link link clickable js-popup-opener">обратный звонок</span>
+        </div>
+    {% endblock callback %}
+    <div id="content" class="content-wide table-container outline-left">
+        <div class="left table-cell">
+            <div class="blog-wrapper-block clearfix">
+                <div class="blog-btn width-141">
+                    <a href="#" class="clickable button white-bg ie-radius">Блог</a>
+                </div>
+                <div class="item">
+                    <img src="/markup/pic/blog-img.jpeg" alt="image description">
+
+                </div>
+                <div class="item">
+                    <img src="/markup/pic/blog-img.jpeg" alt="image description">
+
+                </div>
+                <div class="item">
+                    <img src="/markup/pic/blog-img.jpeg" alt="image description">
+
+                </div>
+                <div class="item">
+                    <img src="/markup/pic/blog-img.jpeg" alt="image description">
+
+                </div>
+                <div class="item">
+                    <img src="/markup/pic/blog-img.jpeg" alt="image description">
+
+                </div>
+
+            </div>
+            <div class="sort-view content-sort clearfix">
+
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#order">Новое</a>
+
+                    <div id="order" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">Новое</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Самое интересное</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Самое комментируемое</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#period">За все время</a>
+
+                    <div id="period" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">За все время</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За сутки</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За неделю</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">За месяц</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="order-block float-right">
+                    <a class="order-link icon-check black link js-popover-opener" href="#" data-popover="#categories">Все темы</a>
+
+                    <div id="categories" class="drop-wrapper order-list opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                <span class="drop-link current">Все темы</span>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Проекты и технологии</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Отделочные материалы</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Выполнение работ</a>
+                            </li>
+                            <li class="drop-item">
+                                <a class="drop-link" href="#">Мебель, декор, аксессуары</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="links float-right">
+                    <li class="item width-181">
+                        <div class="button send-button green-bg js-popup-opener ie-radius" data-popup="">
+                            <span class="text">Добавить публикацию</span>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="view-category products">
+                <ul class="product list">
+                    <li class="view-product item">
+                        <div class="all-product-holder clearfix">
+                            <div class="product-logo is-bordered float-left">
+                                <a class="img-link pattern-big" href="#"></a>
+                            </div>
+                            <div class="holder">
+                                <div class="top-block">
+                                    <div class="creation-info gray60-color">
+                                        <span class="date icon-clock">15 апр 2015 11:25</span>,
+                                        <span class="user-name link js-popup-opener clickable" data-popup="#user-info">admin</span>
+                                    </div>
+                                    <div class="title">
+                                        <a href="{{ path('content/topics/topic.html.twig') }}" class="is-gradiented-bottom">Реально ли сэкономить при использовании печи на отработке</a>
+                                    </div>
+                                    <div class="tags icon-clip gray60-color">
+                                        <span>Метки: </span>
+                                        <a class="link">Кондиционер</a>,
+                                        <a class="link">Электроснабжение</a>
+                                    </div>
+                                    <p class="description gray60-color is-gradiented-bottom">
+                                        Каждый из нас когда-то задумывался о приобретении, а лучше – изготовлении печи –
+                                        буржуйки. И, конечно же, желательно, чтобы она работала на отработанном масле,
+                                        ибо это максимально дешево. А в идеале хотелось бы сделать печь максимально
+                                        автономной и эффективной.
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="view-product item">
+                        <div class="all-product-holder clearfix">
+                            <div class="product-logo is-bordered float-left">
+                                <a class="img-link pattern-big" href="#"></a>
+                            </div>
+                            <div class="holder">
+                                <div class="top-block">
+                                    <div class="creation-info gray60-color">
+                                        <span class="date icon-clock">15 апр 2015 11:25</span>,
+                                        <span class="user-name link js-popup-opener clickable" data-popup="#user-info">admin</span>
+                                    </div>
+                                    <div class="title">
+                                        <a href="{{ path('content/topics/topic.html.twig') }}" class="is-gradiented-bottom">Реально ли сэкономить при использовании печи на отработке</a>
+                                    </div>
+                                    <div class="tags icon-clip gray60-color">
+                                        <span>Метки: </span>
+                                        <a class="link">Кондиционер</a>,
+                                        <a class="link">Электроснабжение</a>
+                                    </div>
+                                    <p class="description gray60-color is-gradiented-bottom">
+                                        Каждый из нас когда-то задумывался о приобретении, а лучше – изготовлении печи –
+                                        буржуйки. И, конечно же, желательно, чтобы она работала на отработанном масле,
+                                        ибо это максимально дешево. А в идеале хотелось бы сделать печь максимально
+                                        автономной и эффективной.
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="see-more-block-wrapper">
+                        <div class="see-more-block">
+                            <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="product-right right table-cell">
+            <div class="info-wrapper white-bg">
+
+                <div class="questions-block">
+                    <h3 class="title">Вопросы</h3>
+
+                    <ul class="questions list">
+                        <li class="item">
+                            <div class="title"><strong>Хочу камин</strong></div>
+                            <p class="text">
+                                Ребят, хочу камин. Этим, в принципе, все сказано. Дом свой, без соседей безо всего. Имеется
+                            </p>
+                            <div class="info">
+                                <a href="#" class="author">nicolas</a>,
+                                <span class="period">3 недели назад</span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="title"><strong>Лепнина из пенопласта для фасадных работ</strong></div>
+                            <p class="text">
+                                Скажите, а можно использовать лепнину из пенопласта для фасадных работ? Хочу придать более
+                            </p>
+                            <div class="info">
+                                <a href="#" class="author">admin</a>,
+                                <span class="period">3 недели назад</span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="title"><strong>Выбор толщины магнезитовой плиты</strong></div>
+                            <p class="text">
+                                А скажите мне, пожалуйста, от чего зависит выбор толщины магнезитовой плиты? Разбег толщины
+                            </p>
+                            <div class="info">
+                                <a href="#" class="author">Николай Чистяков</a>,
+                                <span class="period">3 недели назад</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="block-links">
+                        <a class="add-link link" href="#">Добавить вопрос</a>
+                        <a class="all-link link" href="#">Все вопросы</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+
+

@@ -1,0 +1,63 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+    <form enctype="multipart/form-data"
+          action=""
+          class="form-horizontal"
+          method="post"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.attachment, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural"> {{ form_widget(form.attachment) }} </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.template, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural"> {{ form_widget(form.template) }} </div>
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.branchOffice, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural"> {{ form_widget(form.branchOffice) }} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+
+        {% block formactions %}
+            <div class="clearfix">
+                <div class="well well-small form-actions">
+                    <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Импортировать">
+                    {% set currentRoute = app.request.attributes.get('_route') %}
+                    {% set rotesForCompanyProducts = {
+                    'edit': 'admin_metal_companies_company_product_edit',
+                    'batch': 'admin_metal_companies_company_product_batch',
+                    'import': 'admin_metal_companies_company_product_import'
+                    } %}
+
+                    {% if currentRoute in rotesForCompanyProducts %}
+                        {% set productsListUrl = path('admin_metal_companies_company_product_list', {'id': app.request.attributes.get('id')}) %}
+                    {% else %}
+                        {% set productsListUrl = path('admin_metal_products_product_list') %}
+                    {% endif %}
+
+                    <a href="{{ productsListUrl }}">
+                        <input type="button" class="btn" value="Вернуться к списку">
+                    </a>
+                </div>
+            </div>
+        {% endblock formactions %}
+    </form>
+{% endblock %}

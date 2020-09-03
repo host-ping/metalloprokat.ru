@@ -1,0 +1,80 @@
+{% extends 'MetalPrivateOfficeBundle:PrivateStatistic:_statistic_layout.html.twig' %}
+
+{% block title 'Управление информацией / Статистика / '~titleSuffix %}
+
+{% block viewing_modes '' %}
+
+{% block content_inner %}
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+    <div class="content-tab">
+        {% block statistic_chart  %}
+            {% set chartRules = {
+                series: [
+                    {
+                        title: 'Добавлено товаров',
+                        field: 'addedProductsCount',
+                    },
+                    {
+                        title: 'Обновлено',
+                        field: 'updatedProductsCount',
+                    },
+                    {
+                        title: 'Присутствие на сайте',
+                        field: 'usersOnSiteCount',
+                    }
+                ]
+            } %}
+
+            {{ parent() }}
+        {% endblock statistic_chart %}
+
+        {% set currentOrder = app.request.query.get('sort', 'date') %}
+        {% set currentOrderDirection = app.request.query.get('order', 'desc') %}
+
+        {% set columns = {
+            'date' : {'query': null, 'cls': 'date col', 'title': 'Дата'},
+            'addedProductsCount' : {'query': 'addedProductsCount', 'cls': 'add-products col', 'title': 'Добавлено товаров'},
+            'updatedProductsCount' : {'query': 'updatedProductsCount', 'cls': 'upd-products col', 'title': 'Обновлено'},
+            'usersOnSiteCount' : {'query': 'usersOnSiteCount', 'cls': 'on-site-status col', 'title': 'Присутствие на сайте'}
+        } %}
+
+        {{ block('table_head') }}
+
+        <div class="scrollable-table content-scrollable js-scrollable">
+            <table class="graph-info stat-table">
+                {% set summarizedValues = statsResultViewModel.getSum([
+                'addedProductsCount',
+                'updatedProductsCount',
+                'usersOnSiteCount'
+                ]) %}
+
+                <tr class="total row">
+                    <td class="date col">Всего</td>
+                    <td class="add-products col">{{ summarizedValues.addedProductsCount }}</td>
+                    <td class="upd-products col">{{ summarizedValues.updatedProductsCount }}</td>
+                    <td class="on-site-status col">{{ summarizedValues.usersOnSiteCount }}</td>
+                </tr>
+
+                {% for statsItem in statsResultViewModel.stats %}
+                    {% set isWeekend = false %}
+                    {% if currentGrouping == 'day' %}
+                        {% set isWeekend = formattingHelper.isWeekend(statsItem.date) %}
+                    {% endif %}
+                    <tr class="row">
+                        <td class="date col {% if isWeekend %}red-color{% endif %}">{{ formattingHelper.formatStatsDate(statsItem.date, currentGrouping, statsItem.previousEntry ? statsItem.previousEntry.date : null)|raw }}</td>
+                        <td class="add-products col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.addedProductsCount == 0 %}null {% endif %}">{{ statsItem.addedProductsCount }}</span>
+                        </td>
+                        <td class="upd-products col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.updatedProductsCount == 0 %}null {% endif %}">{{ statsItem.updatedProductsCount }}</span>
+                        </td>
+                        <td class="on-site-status col">
+                            <span class="{% if isWeekend %}red-color {% elseif statsItem.usersOnSiteCount == 0 %}null {% endif %}">{{ statsItem.usersOnSiteCount }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content_inner %}

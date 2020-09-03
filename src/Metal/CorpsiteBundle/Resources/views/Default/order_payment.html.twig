@@ -1,0 +1,22 @@
+{% extends '@MetalProject/layouts/_base_layout.html.twig' %}
+
+{% block title 'Оплата счета' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ jh9_robokassa_form(
+        payment.id,
+        payment.pSum, {
+            'template': 'MetalPrivateOfficeBundle:PrivateDetails:pay_form.html.twig',
+            'Desc': payment.servName
+        }) }}
+
+
+    </div>
+
+    <script>
+        window.onload = function(){
+            document.getElementsByName("pay_button")[0].click();
+        }
+    </script>
+{% endblock content %}

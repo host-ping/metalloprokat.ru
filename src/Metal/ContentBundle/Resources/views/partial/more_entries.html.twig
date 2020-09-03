@@ -1,0 +1,14 @@
+{% set textHelper = brouzie_helper('MetalProjectBundle:Text') %}
+{% for entry in similarEntries %}
+    {% if entry.kind == 'topic' %}
+        {% set route = 'MetalContentBundle:Topic:view' %}
+    {% elseif entry.kind == 'question' %}
+        {% set route = 'MetalContentBundle:Question:view' %}
+    {% endif %}
+    <li class="item outline">
+        <div class="title">
+            <strong><a href="{{ path(route, {'id' : entry.id, 'category_slug': entry.category.slugCombined}) }}" class="link">{{ entry.title }}</a></strong>
+        </div>
+        <p class="text is-gradiented-bottom">{{ textHelper.formatDescription(entry.shortDescription)|striptags|bbcode_clean }}</p>
+    </li>
+{% endfor %}

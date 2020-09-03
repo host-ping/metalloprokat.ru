@@ -1,0 +1,24 @@
+metal:project:reset-project --companies-products-users --banners --demands --statistics --support-orders --categories --content
+
+metal:territorial:update-countries
+metal:project:migrate-from-old-stroy | tee not_moved_images.txt
+
+sphinxy:populate-index --truncate content_entry --batch-size=100
+
+redis:flushdb --client=cache -n
+
+
+metal:content:get-photo-by-tags
+metal:content:liker-photo
+
+metal:content:actualize-uploaded-instagram-photo-id
+
+php app/console metal:content:detect-potential-spam --process=entry
+
+
+#Первый раз нужно запустить с опцией --page=%LAST_PAGE%
+metal:content:parse-companies --code=mirstroek
+
+metal:newsletter:send-notification-grabber-users
+
+metal:demands:mirror-demands-to-stroy

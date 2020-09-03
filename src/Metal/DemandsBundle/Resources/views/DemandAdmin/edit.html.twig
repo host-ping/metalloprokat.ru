@@ -1,0 +1,96 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block actions %}
+    {{ parent() }}
+
+    {% if object and object.id %}
+        <li>
+            <a class="sonata-action-element"
+               href="{{ path('admin_metal_demands_abstractdemand_copy_demand', {'id': object.id, '_csrf': csrf_token('copy_demand')}) }}">
+                <i class="fa fa-copy"></i>
+                Скопировать заявку</a>
+        </li>
+    {% endif %}
+{% endblock actions %}
+
+{% block notice %}
+    {{ parent() }}
+
+    {% set fromProkatConst = 'Metal\\ProjectBundle\\Entity\\ValueObject\\SiteSourceTypeProvider::SOURCE_MIRROR_FROM_METALLOPROKAT' %}
+    {% if object.isPublic() and (object.getFromDemand() or object.getFromCallback() or object.getParsedDemand() or object.getSourceTypeId() is constant(fromProkatConst)) %}
+        <div class="alert alert-info alert-dismissable">
+            {% if object.getFromDemand() %}
+                <span>Данная заявка была создана на основании приватной заявки с id - <b>{{ object.getFromDemand().getId() }}</b> для компании: <b>{{ object.getFromDemand().getCompany().getTitle() }} ({{ object.getFromDemand().getCompany().getId() }})</b>.</span>
+            {% elseif object.getFromCallback() %}
+                <span>Данная заявка была создана на основании обратного звонка с id - <b> {{ object.getFromCallback().getId() }}</b>.</span><br/>
+            {% elseif object.getParsedDemand() %}
+                <span>Данная <a href="http://anonym.to/?{{ object.getParsedDemand().getUrl() }}" target="_blank" rel="noopener noreferrer">заявка</a> была автоматически спарсена с сайта: <b>{{ object.getParsedDemand().getSite().getTitle() }}</b>.</span><br/>
+            {% elseif object.getSourceTypeId() is constant(fromProkatConst) %}
+                <span>Данная заявка была скопирована с сайта Металлопрокат.ру на основании заявки с id - <b> {{ object.getAttribute('id_demand_from_metalloprokat') }}</b>.</span><br/>
+                <a href="{{ path('MetalDemandsBundle:Demand:viewOutside', {'id': object.getAttribute('id_demand_from_metalloprokat')}) }}" target="_blank" rel="noopener noreferrer">Просмортеть заявку на сайте Металлопрокат.ру</a><br/>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock notice %}
+
+{% block form %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").delegate('.js-attribute-values', 'change', function ($el) {
+                $($el.currentTarget).parents('tr').find('input.js-locked-attribute-values').prop('checked', true);
+            });
+
+            $("body").delegate('.js-attribute-values-reload', 'click', function ($el) {
+                var $tr = $($el.currentTarget).parents('tr');
+                var $element = $tr.find('select.js-attribute-values');
+                reloadAttributes($tr.find('.js-textarea-title').val(), $tr.find('.js-textarea-size').val(), $tr.find('.js-category-id').val(), $element);
+            });
+        });
+
+        function insertLoadingMask($element) {
+            $element.before("<div class='loading-mask'><div class='spinner'></div></div>");
+        }
+
+        function reloadAttributes(text, size, categoryId, $select) {
+            $.get(
+                    "{{ path('MetalAttributesBundle:Api:getPossibleAttributesForTitle') }}",
+                    {category_id: categoryId, text_area: text, size_area: size},
+                    function (data) {
+                        function createOptions(itemsCollection) {
+                            var $items = [];
+                            $.each(itemsCollection, function (i, attribute) {
+                                var $optgroup = $('<optgroup />').attr('label', attribute.title);
+                                $.each(attribute.values, function (j, attributeValue) {
+                                    $optgroup.append($('<option />').attr('value', attributeValue.id).text(attributeValue.title));
+                                });
+                                $items.push($optgroup);
+                            });
+
+                            return $items;
+                        }
+
+                        var oldVal = $select.select2('val');
+                        $select
+                                .html(createOptions(data.possible))
+                                .select2('val', '')
+                                .select2('val', data.selected)
+                                .siblings('.loading-mask').remove();
+                    },
+                    'json'
+            );
+        }
+
+        ngApp
+            .controller('DemandAdminController', ['$scope', function($scope) {
+                $scope.reloadAttributeValues = function ($event, $item) {
+                    var $el = $($event.currentTarget).parents('tr').find('select.js-attribute-values');
+                    insertLoadingMask($el);
+                    reloadAttributes($($event.currentTarget).parents('tr').find('.js-textarea-title').val(), $($event.currentTarget).parents('tr').find('.js-textarea-size').val(), $item.id, $el);
+                }
+            }]);
+    </script>
+
+    <div ng-controller="DemandAdminController">
+        {{ parent() }}
+    </div>
+{% endblock %}

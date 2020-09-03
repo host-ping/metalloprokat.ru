@@ -1,0 +1,109 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Потребности / Подписки / '~titleSuffix %}
+
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+{% set route = app.request.attributes.get('_route') %}
+
+{% set  subscriptionControllerOptions={
+    'updateDemandSubsribtionStatusUrl': path('MetalPrivateOfficeBundle:Subscriptions:toggleSubscribtionStatus')
+}%}
+
+{% block filters %}
+    <div class="filters-block outline-right clearfix" ng-controller="Metal.Core as coreController">
+        {#<div class="filter-product-wrapper float-left">#}
+        {#<a class="filter-product icon-check black link" href="#">Арматура АЗ</a>#}
+        {#</div>#}
+        <div class="options-wrapper float-left">
+            <div class="float-left">
+                <span class="option-link link clickable is-gradiented float-left" title="Выбрать категории" ng-click='coreController.popups.open({"popup": "#demands-subscriptions-popup"}, $event.currentTarget)'>Выбрать категории</span>
+                <span class="option-link link clickable is-gradiented float-left" title="Выбрать регионы" ng-click='coreController.popups.open({"popup": "#demands-territorial-subscriptions-popup"}, $event.currentTarget)'>Выбрать регионы</span>
+
+            </div>
+
+            <div class="filter-period sort-period float-right">
+                <ul class="sort-period list float-left">
+                    <li class="item float-left">
+                        {{ include('@MetalDemands/Demands/partial/period_filter.html.twig', {
+                            'demandsCountByPeriod': demandsCountByPeriod,
+                            'route': route,
+                            'routeParameters': routeParameters,
+                        }, false) }}
+                    </li>
+                    <li class="item float-left">
+                        {{ include('@MetalProject/partials/datepicker_range.html.twig', {'dateFrom': criteria.dateFrom, 'dateTo': criteria.dateTo}, false) }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sort-view float-right clearfix">
+
+        </div>
+        <div class="float-left sort-period">Рассылать по электронной почте: </div>
+        <div class="float-left" ng-controller="Metal.Subscription as subscriptionController" ng-init='subsctiptionStatus = {{ demandSubscriptionStatuses[subscribedForDemands]|json_encode|raw}}'>
+             <span style="padding-left:20px;"
+                  class="link icon-check black clickable js-popover-opener"
+                  data-popover="#demand-subscription-status"><%= subsctiptionStatus.title %></span>
+            <div id="demand-subscription-status" class="drop-wrapper status-filter opacity-border">
+                <ul class="dropdown" ng-init='subscriptionController.options = {{ subscriptionControllerOptions|json_encode|raw }}; demandSubscriptionStatuses={{ demandSubscriptionStatuses|json_encode|raw }}'>
+                    <li class="drop-item" ng-repeat="demandSubscriptionStatus in demandSubscriptionStatuses">
+                        <span ng-class="{current: subsctiptionStatus.query == demandSubscriptionStatus.query}"
+                              class="drop-link js-popover-self-closer clickable"
+                              ng-click="subscriptionController.updateDemandSubscriptionStatus(demandSubscriptionStatus.query)"><%= demandSubscriptionStatus.title %></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock filters %}
+
+{% block content %}
+    <div id="content" class="content-right private-room-content float-right">
+        {{ block('tabs') }}
+
+        {{ block('filters') }}
+
+        <div id="demand" class="demands content-scrollable js-scrollable">
+            <ul class="demands list private-fix-width">
+                {{ include('MetalDemandsBundle:partials:demands_list.html.twig', {
+                    'pagerfanta' : demandsViewModel.pagerfanta,
+                    'use_pagination': false,
+                }, false) }}
+            </ul>
+        </div>
+    </div>
+    <script type="application/javascript">
+        $('document').ready(function () {
+            $('.private-tabs')
+                .find('.item.active')
+                .append("<span class='counts'>{{ demandsViewModel.count|number_format_decimal > 0 ? demandsViewModel.count|number_format_decimal : '' }}</span>");
+        });
+    </script>
+{% endblock %}
+
+{% block additional_popups %}
+    {{ parent() }}
+
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandSubscription', {
+            'popup_id': 'demands-subscriptions',
+            'route': 'MetalPrivateOfficeBundle:Subscriptions:updateCategoriesSubscriptions',
+            'popup_title': 'Подписка на потребности',
+            'load_url': 'MetalCategoriesBundle:Suggest:getCategoriesByLevels',
+            'load_subscribe_url': 'MetalPrivateOfficeBundle:Subscriptions:categoriesSubscriptionByUser',
+            'search_title': 'Категория'
+        })
+    }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandSubscription', {
+            'popup_id': 'demands-territorial-subscriptions',
+            'route': 'MetalPrivateOfficeBundle:Subscriptions:updateTerritorySubscriptions',
+            'popup_title': 'Подписка на регионы',
+            'load_url': 'MetalTerritorialBundle:Suggest:getTerritoriesByLevels',
+            'load_subscribe_url': 'MetalPrivateOfficeBundle:Subscriptions:territoriesSubscriptionByUser',
+            'search_title': 'Регион'
+        })
+    }}
+    {{ brouzie_render_widget('MetalComplaintsBundle:ComplaintForm', {'kind' : 'demand'}) }}
+    {{ brouzie_render_widget('MetalDemandsBundle:DemandAnswerForm') }}
+    {{ brouzie_render_widget('MetalPrivateOfficeBundle:CompletePackage', {'text': 'Полный пакет даёт возможность экспортировать заявки и многое другое.'}) }}
+{% endblock %}

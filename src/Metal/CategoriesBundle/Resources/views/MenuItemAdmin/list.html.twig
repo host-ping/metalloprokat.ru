@@ -1,0 +1,20 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block actions %}
+    {{ parent() }}
+
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('show_tree', {'redirect_to': app.request.requestUri}) }}">
+            <i class="fa fa-list-alt"></i>
+            Посмотреть в виде дерева
+        </a>
+    </li>
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('validate', {'redirect_to': app.request.requestUri}) }}">
+            <i class="fa fa-check"></i>
+            Валидация
+        </a>
+    </li>
+{% endblock %}

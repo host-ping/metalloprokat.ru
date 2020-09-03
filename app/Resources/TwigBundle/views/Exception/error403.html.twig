@@ -1,0 +1,16 @@
+{% extends 'MetalProjectBundle:layouts:_error_layout.html.twig' %}
+
+{% block title 'Доступ запрещен' %}
+
+{% block content %}
+    <div id="content" class="error-page content-wide content-scrollable">
+        <h1 class="error-title">Ошибка 403</h1>
+        <p class="error-description">Доступ запрещен ({{ exception.getMessage() }}).</p>
+        {% if app.user and is_granted('ROLE_PREVIOUS_ADMIN') %}
+            {% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+            <p class="text">Возможно, это произошло из-за того, что вы залогинены под чужим пользователем. Попробуйте
+                <a href="{{ urlHelper.getLogoutUrl() }}">вернуться в свою учетную запись</a>.</p>
+        {% endif %}
+    </div>
+{% endblock %}

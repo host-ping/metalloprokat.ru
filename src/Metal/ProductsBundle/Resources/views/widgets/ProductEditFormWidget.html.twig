@@ -1,0 +1,95 @@
+{% set popupId = 'edit-product' %}
+
+<form   action="<%= editableProduct.saveUrl %>"
+        data-ajax-form="productEditAjaxFormOptions"
+        novalidate="novalidate"
+        >
+    <div class="check-all block"></div>
+    <div class="product-photo block">
+        <div class="img is-bordered">
+            <span class="pattern-small">
+                <img ng-if="editableProduct.photo"
+                     ng-src="<%= editableProduct.photo.imageUrl %>"
+                     alt="<%= editableProduct.title %>"
+                     title="<%= editableProduct.title %>"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+            </span>
+        </div>
+    </div>
+
+    <div class="product-name block">
+        {{ form_widget(form.title, {'attr' : {'class' : 'product form-text ie-radius', 'placeholder' : 'Название', 'ng-model' : 'editableProduct.title', 'data-absolute-parent' : '.products-list' }}) }}
+        <p class="category link clickable js-popover-opener" data-popover="#choose-section-inline" data-different-position="true"><%= editableProduct.category.title || 'Категория не задана' %></p>
+    </div>
+
+    <div class="product-size block">
+        {{ form_widget(form.size, {'attr' : {'class' : 'size form-text ie-radius', 'placeholder' : tokens.product_volume_title|capitalize, 'ng-model' : 'editableProduct.size' } }) }}
+    </div>
+
+    <div class="product-price block">
+        {{ form_widget(form.price, {'attr' : {'class' : 'price form-text red-color ie-radius', 'placeholder' : 'договорная', 'ng-model' : 'editableProduct.price', 'data-absolute-parent' : '.products-list' } }) }}
+
+        <div class="price-for-wrapper">
+            <label for="{{ form.isPriceFrom.vars.id }}">от</label>
+            {{ form_widget(form.isPriceFrom, {'attr' : {'class' : 'checkbox bg-grey js-styled-checkbox', 'ng-model' : 'editableProduct.isPriceFrom', 'styled-checkbox' : '' } }) }}
+        </div>
+        <div class="select-wrapper">
+            {{ form_widget(form.measureId, {'attr' : {'class': 'vol form-select selectized', 'ng-model' : 'editableProduct.measureTypeId', 'styled-select': '', 'data-absolute-parent' : '.products-list'} }) }}
+        </div>
+    </div>
+
+    <div class="product-status block">
+        <button class="ok-btn" type="submit">ok</button>
+    </div>
+
+    <div class="product-position-wrapper block">
+        <span>
+            {{ form_widget(form.isSpecialOffer, {'attr' : {'class' : 'checkbox bg-grey js-styled-checkbox', 'ng-model' : 'editableProduct.isSpecialOffer', 'styled-checkbox' : '' } }) }}
+
+            <label for="{{ form.isSpecialOffer.vars.id }}">сп</label>
+        </span>
+        <span class="icon-help js-helper-opener"
+              data-text="Спецпредложение будет отображаться на главной странице вашего сайта"
+              data-absolute-parent=".products-list"></span>
+        <span>
+            <label for="{{ form.position.vars.id }}">позиция</label>
+
+            {{ form_widget(form.position, {'type' : 'text', 'attr' : {
+                'class' : 'form-text product-position ie-radius',
+                'ng-model' : 'editableProduct.position',
+                'data-absolute-parent' : '.products-list',
+                'ng-readonly': '!editableProduct.isSpecialOffer',
+                'ng-class': '{disabled: !editableProduct.isSpecialOffer}'
+            }}) }}
+        </span>
+    </div>
+
+    <div class="product-position-wrapper block">
+        <span>
+            {{ form_widget(form.isHotOffer, {'attr' : {'class' : 'checkbox bg-grey js-styled-checkbox', 'ng-model' : 'editableProduct.isHotOffer', 'styled-checkbox' : '' } }) }}
+
+            <label for="{{ form.isHotOffer.vars.id }}">Горячие предложения</label>
+        </span>
+        <span class="icon-help js-helper-opener"
+              data-text="Горячие предложения будут отображаться отдельным пунктом в меню на минисате"
+              data-absolute-parent=".products-list"></span>
+        <span>
+            <label for="{{ form.hotOfferPosition.vars.id }}">позиция</label>
+
+            {{ form_widget(form.hotOfferPosition, {'type' : 'text', 'attr' : {
+                'class' : 'form-text product-position ie-radius',
+                'ng-model' : 'editableProduct.hotOfferPosition',
+                'data-absolute-parent' : '.products-list',
+                'ng-readonly': '!editableProduct.isHotOffer',
+                'ng-class': '{disabled: !editableProduct.isHotOffer}'
+            }}) }}
+        </span>
+    </div>
+
+    <div class="product-description-wrapper">
+        {{ form_widget(form.description, {'attr' : {'class' : 'product-description form-textarea ie-radius', 'placeholder' : 'Описание продукта', 'ng-model' : 'editableProduct.description'}}) }}
+
+    </div>
+    {{ form_widget(form.category, {'attr' : {'class' : 'g-hidden', 'ng-model' : 'editableProduct.category.id'} }) }}
+    {{ form_rest(form) }}
+</form>

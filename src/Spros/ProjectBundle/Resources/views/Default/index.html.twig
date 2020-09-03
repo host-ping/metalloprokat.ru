@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% stylesheets
+        '@SprosProjectBundle/Resources/public/css/common.css'
+        filter='phpcssembed,?uglifycss'
+        combine=true
+    %}
+        <link href="{{ asset(asset_url) }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+
+    {% javascripts
+        '@SprosProjectBundle/Resources/public/js/easytabs.js'
+        '@SprosProjectBundle/Resources/public/js/jquery.scrollbar.js'
+        '@SprosProjectBundle/Resources/public/js/jquery.formstyler.js'
+        '@SprosProjectBundle/Resources/public/js/jquery.placeholder.js'
+        '@SprosProjectBundle/Resources/public/js/main.js'
+        filter='?uglifyjs2'
+        combine=true
+    %}
+        <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
+    {% endjavascripts %}
+
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <!--[if lte IE 8]>
+       <link rel="stylesheet" type="text/css" href="{{ asset('bundles/sprosproject/css/ie.css') }}" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="{{ asset('bundles/sprosproject/images/favicon.ico') }}" type="image/x-icon" />
+
+    {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+    {% set parametersOptionsWithSpace = '' %}
+    {% if attributesCollection|length %}
+        {% set parametersOptionsWithSpace = ' ' ~ attributesCollection.toString(' ', ' ') %}
+    {% endif %}
+
+    {% set projectHelper = brouzie_helper('MetalProjectBundle') %}
+    {% set companiesCount = companiesCount|default(null) ? companiesCount : 0 %}
+    {% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+    <title>
+        {%- block title -%}
+            {% filter normalize_whitespace %}
+                {{ category ? category.title : 'Металл' }} {{ parametersOptionsWithSpace }} &mdash; сравнить цены в {{ city ? city.titleLocative : 'своем городе' }}, выбрать продавца и купить на МеталлСпрос.ру
+            {% endfilter %}
+        {%- endblock title -%}
+    </title>
+
+    <meta name="description" content="
+    {%- block meta_description -%}
+        {% filter normalize_whitespace %}
+            {{ category ? category.title : 'Металл' }} {{ parametersOptionsWithSpace }} &mdash; сравнить цены и прайсы, выбрать продавца и купить оптом или в розницу.
+            {{ category ? category.title : 'Металл' }} в {{ city ? city.titleLocative : 'своем городе' }}, новые и б/у - продажа продукции, низкая стоимость.
+        {% endfilter %}
+    {%- endblock -%}
+    ">
+
+    {{ brouzie_render_widget('MetalProjectBundle:SiteConfirm') }}
+</head>
+
+<body>
+{% block body %}
+
+    <div id="header" class="header-wrapper">
+        {% block header %}
+            <div class="wrap g-cleared">
+                <div class="logo">
+                   <span class="logo-pic">
+                       {% if seoHelper.isCurrentPageIsHomePage() %}
+                           Металл Спрос
+                       {% else %}
+                           <a href="/">Металл Спрос</a>
+                       {% endif %}
+                   </span>
+                    {% block header_hover_text %}
+                        {% set routeBack = app.request.getUriForPath(app.request.attributes.get('is_404') ? '/' : app.request.getRequestUri()) %}
+                        {% set routeToForm = path('SprosProjectBundle:Default:form', {'subdomain' : city ? city.slug : 'www', 'city' : city ? city.id : null, 'category' : category ? category.id : null, '_returnTo' : routeBack, 'parameters_title' : parametersOptionsWithSpace ~ '' }) %}
+                        <div class="buble g-hidden">
+                            <div class="left"></div>
+                            <p>
+                                {{ category ? category.title : 'Металл' }} {{ parametersOptionsWithSpace }}
+                                — отправьте <a
+                                        href="{{ routeToForm }}">заявку
+                                    онлайн</a> и получите предложение с ценами от {{ companiesCount ?: '' }} поставщиков
+                                в {{ city ? city.titleLocative : 'России' }}.</p>
+                        </div>
+                    {% endblock header_hover_text %}
+                    <div class="text">
+                        <p><strong>Металл</strong><strong>Спрос</strong></p>
+                        <span>первая помощь потребителю</span>
+                    </div>
+                </div>
+                {% block header_content %}
+
+                   {# <div class="partner">
+                        <div class="partner-logo"></div>
+                        <div class="name">
+                            <p>металлопрокат.ру</p>
+                            <span>партнер</span>
+                        </div>
+                    </div>#}
+
+                    <div class="subscription">
+                        <div class="subscription-logo"></div>
+                        {% block provider %}
+                            <div class="link">
+                                <a href="#" onclick="subscribe()" class="js-submit">
+                                    Я &mdash; поставщик, хочу получать заявки от потребителей</a>
+                            </div>
+                        {% endblock %}
+                    </div>
+                    <script type="text/javascript">
+                        function subscribe() {
+                            var email = prompt('Введите ваш email');
+                            if (email) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ path("SprosProjectBundle:Subscription:subscribe") }}",
+                                    data: { 'email': email, 'category': {{ (category ? category.id : null)|json_encode }}, 'city': {{ (city ? city.id : null)|json_encode }} }
+                                })
+                                .done(function(data) {
+                                    alert(data.message);
+
+                                    if (data.success) {
+                                        document.location.href = '{{ path('MetalUsersBundle:Registration:register') }}';
+                                    }
+                                });
+                            }
+
+                        }
+                    </script>
+                {% endblock header_content %}
+            </div>
+        {% endblock header %}
+    </div>
+    <div id="content" class="{% block content_class '' %}">
+        {% block content %}
+            {% set routeBack = app.request.getUriForPath(app.request.attributes.get('is_404') ? '/' : app.request.getRequestUri()) %}
+            {% set routeToForm = path('SprosProjectBundle:Default:form', {'subdomain' : city ? city.slug : 'www', 'city' : city ? city.id : null, 'category' : category ? category.id : null, '_returnTo' : routeBack, 'parameters_title' : parametersOptionsWithSpace ~ '' }) %}
+
+            <div id="promo" class="promo-wrapper g-cleared">
+
+                <div class="wrap g-cleared">
+                    <div class="promo-text">
+                        {% block messages %}
+                        <ul id="messages" class="form-message">
+                            {% set messages = app.session.flashbag.get('success') %}
+                            {% for message in messages %}
+                                <li class="message complete-message">
+                                    {{ message }}
+                                </li>
+                            {% endfor %}
+
+                            {% for message in app.session.flashbag.get('error') %}
+                                <li class="message error-message">
+                                    {{ message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% endblock messages %}
+
+                        <p>ИЩЕТЕ
+                            <a href="#" class="js-popover-opener js-element-focuser" data-popover="#choose-category" data-focus-element="#category-search-input">
+                                {%- block search_category -%}
+                                    {{- category ? category.titleAccusative : 'Металл' -}}
+                                {%- endblock -%}
+                                {{- parametersOptionsWithSpace -}}
+                            </a> В <nobr><a href="#" class="js-popover-opener js-element-focuser" data-popover="#choose-city" data-focus-element="#city-search-input">{{ city ? city.titleLocative : 'своем городе' }}</a>?</nobr></p>
+                        {% block search_category_description %}
+                            <span>Получите предложение от поставщиков и выберите лучшее!</span>
+                        {% endblock %}
+                    </div>
+                    <div class="img">
+                        <img src="{{- asset('bundles/sprosproject/images/big-logo.png') }}" alt="Металл Спрос" title="Металл Спрос"/>
+                    </div>
+                </div>
+            </div>
+
+            <div id="stages" class="stage-wrapper line">
+                <div class="wrap">
+                    <span class="toggle"></span>
+                    <ul class="stages-content g-cleared">
+                        <li class="first {% block add_demand_block_additional_class '' %}">
+                            <div class="top">
+                                <a id="begin_content"></a>
+                                <span>1.</span>
+                                <img src="{{ asset('bundles/sprosproject/images/img1.png') }}" alt="Заполните заявку" title="Заполните заявку"/>
+                            </div>
+                            <div class="text">
+                                <div class="block-fill-application">
+                                    {% block fill_demand %}
+                                        <h3>Заполните заявку</h3>
+                                        <p>Ваша заявка на покупку
+                                            {{ category ? category.getTitleGenitiveForEmbed : 'металла' }} {{ parametersOptionsWithSpace }}
+                                            будет автоматически отправлена
+                                            {% if companiesCount %}
+                                                {{ companiesCount }}
+                                                {{ 'companies_by_count'|transchoice(companiesCount, {}, 'MetalCompaniesBundle') }}
+                                            {% else %}
+                                                поставщикам
+                                            {% endif %}
+                                            в {{ city ? city.titleLocative : 'России' }}.
+                                        </p>
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="top">
+                                <span>2.</span>
+                                <img src="{{ asset('bundles/sprosproject/images/img2.png') }}" alt="Получите предложения" title="Получите предложения"/>
+                            </div>
+                            <div class="text">
+                                {% block get_offers %}
+                                    <h3>получите предложения</h3>
+                                    <p>Поставщики будут связываться по указанному вами телефону и электронной почте.</p>
+                                {% endblock %}
+                            </div>
+                        </li>
+                        <li class="last">
+                            <div class="top">
+                                <span>3.</span>
+                                <img src="{{ asset('bundles/sprosproject/images/img3.png') }}" alt="Сделайте выбор" title="Сделайте выбор"/>
+                            </div>
+                            <div class="text">
+                                {% block make_choice %}
+                                    <h3>Сделайте выбор</h3>
+                                    <p>Вы сможете сделать оптимальный выбор на основе полученных предложений.</p>
+                                {% endblock %}
+                            </div>
+                        </li>
+                    </ul>
+
+                    {% block footer_messages'' %}
+                </div>
+            </div>
+            {% block redirect_to_form_block %}
+                <div class="intro line">
+                    <div class="order-button-holder">
+
+                        {% block redirect_to_form_block_category_title %}
+                            <div class="button-only">
+                                <a class="order-button js-clickable"
+                                   href="{{ routeToForm }}">
+                                    <p> Заполнить заявку на
+                                        {{ category ? category.getTitleAccusativeForEmbed : 'металл' }}
+                                    </p>
+                                    <span>Это быстро, бесплатно и эффективно!</span>
+                                    <div class="right">
+                                    </div>
+                                </a>
+                            </div>
+                        {% endblock redirect_to_form_block_category_title %}
+                    </div>
+                    <div class="wrap">
+
+                        <div class="phones">
+                            {% block phone %}
+                                {% if projectHelper.isWorkingTime() %}
+                                    <p>8-800-555-56-65</p>
+                                    <span>звонок бесплатный</span>
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+                        {% if category and category.getHasChildren() and not attributesCollection|length %}
+                            <div class="product-description">
+                                <p>
+                                    <h1> {{ category.title|capitalize }} в {{ city ? city.titleLocative : 'вашем городе' }} </h1>
+                                </p>
+                                <p>МеталСпрос — это удобный сервис, позволяющий найти квалифицированных и опытных поставщиков металла в <strong>{{ city ? city.titleLocative : 'своем городе' }}</strong>. Мы собрали в базе данных только надежных производителей и дилеров в сфере металлопроката. Гарантией их качества служит безупречная репутация и постоянный спрос на продукцию. Покупайте {{ category.getTitleAccusativeForEmbed }} для производственных и личных целей, в минимальных и промышленных масштабах.
+                                   {% if companiesCount %}
+                                       {{ category.title }} продается у {{ companiesCount }} компании.
+                                   {% endif %}
+                                    <a href="{{- routeToForm -}}">Оставьте заказ</a>, чтобы получить продукцию в {{ city ? city.titleLocative : 'своем городе' }} с доставкой по указанному вами адресу. Вам необходимо будет просто выбрать наиболее выгодное из представленных предложений.
+                                    Вашему вниманию будет предложена {{ category.title|lower }} отличного качества и по выгодным ценам. Укажите необходимые размеры, материал и желаемую стоимость {{ category.getTitleGenitiveForEmbed }}, указав эти данные в заявке.
+                                </p>
+                                <p>
+                                    <div class="preference">Преимущества нашего сервиса:</div>
+                                    <ul>
+                                        <li>
+                                            Удобный поиск именно в вашем регионе (для того, чтобы найти интересующую вас продукцию просто введите в строку поиска её название и город).
+                                        </li>
+                                        <li>
+                                            Простая форма заказа (никакой докучливой рекламы, никаких форм регистрации на десять листов, укажите только те контактные данные, которые желаете сообщить о себе).
+                                        </li>
+                                        <li>
+                                            Привлекательная цена (сравнение цен в каталоге позволит вам выбрать самое интересное ценовое предложение).
+                                        </li>
+                                        <li>
+                                            Гарантии качества и надежности (при необходимости производители предоставляют сертификаты качества своей продукции).
+                                        </li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    Теперь вам не нужно тратить время на поиск надежного поставщика и просмотр каталогов с сомнительной продукцией. Наш сайт поможет связаться только с актуальными для вас поставщиками.
+
+                                    Подготавливая каталог и прайс-лист, учитываются все ваши требования к продукции, её количество, сорт и качество.
+                                    {% if companiesCount %}
+                                        Заявка на {{  category.getTitleAccusativeForEmbed }} будет рассмотрена более {{ city ? companiesCount : '' }} компанией.
+                                    {% endif %}
+                                    База данных регулярно обновляется, так что вся предоставленная нами информация будет полной и актуальной.
+
+                                    Заполните <a href="{{ routeToForm }}">форму заявки</a>, чтобы заказать {{ category.getTitleAccusativeForEmbed }} оптом или в розницу.
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            {% endblock redirect_to_form_block %}
+        {% endblock content %}
+    </div>
+    <div id="footer" class="footer-wrapper {% block footer_additional_class '' %}">
+        {% block footer %}
+            <div class="wrap">
+
+                {% block footer_content %}
+                    <div class="links g-cleared">
+                        <div class="link">
+                            {% set searchBeforeYouHtml = brouzie_render_widget('SprosProjectBundle:SearchBeforeYou', {
+                                'category' : category|default(null),
+                                'city' : city|default(null),
+                                'categories' : categories,
+                                'attributes_collection' : attributesCollection
+                                })|trim %}
+                            {% if searchBeforeYouHtml %}
+                                {{ searchBeforeYouHtml|raw }}
+                            {% else %}
+                                {% set categoryToRender = null %}
+                                {% set skipCategories = 0 %}
+                                {% if category|default(null) %}
+                                    {% set categoryToRender = category.getSuperParent() %}
+                                    {% if categoryToRender.id == category.id %}
+                                        {# если мы в корневой категории - пропускаем еще одну категорию, что б
+                                            не получился точно такой же блок, как и "Часто спрашивают" #}
+                                        {% set skipCategories = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {{ brouzie_render_widget('SprosProjectBundle:OftenAsk', {
+                                    'categories' : categories,
+                                    'category' : categoryToRender,
+                                    'skipCategories': skipCategories,
+                                    'label' : 'Что искали до вас',
+                                    'city' : city|default(null)
+                                    }) }}
+                            {% endif %}
+                        </div>
+
+                        <div class="link">
+                            {{ brouzie_render_widget('SprosProjectBundle:NeighbouringCities', {
+                                'category' : category|default(null),
+                                'city' : city|default(null),
+                                'attributes_collection' : attributesCollection
+                            }) }}
+                        </div>
+
+                        <div class="link last">
+                            {{ brouzie_render_widget('SprosProjectBundle:OftenAsk', {
+                                'category' : category|default(null),
+                                'city' : city|default(null),
+                                'categories' : categories
+                            }) }}
+                        </div>
+                    </div>
+                {% endblock footer_content %}
+                <div class="footer-logo g-cleared">
+                    <div class="metallspros-logo">
+                        <span>© МеталлСпрос 2013-{{ 'now'|date('Y') }}</span>
+                    </div>
+                    {#<div class="metallorokat-logo">
+                        <a href="#">Металлопрокат</a> <span> →</span>
+                    </div>#}
+                </div>
+            </div>
+        {% endblock footer %}
+    </div>
+
+{% macro name(name, regionsData, category) %}
+
+    <ul class="regions">
+        {% for regionData in regionsData[name] %}
+            <li class="expanded js-search-hidable">
+                <span class="bullet"></span>
+                <a href="#"
+                   data-region-id="{{ regionData.region.id }}">{{ regionData.region.title }}</a>
+                <ul class="inside level-1">
+                    {% set routeName = 'SprosProjectBundle:Default:index_subdomain' %}
+                    {% if category %}
+                        {% set routeName = 'SprosProjectBundle:Default:index_subdomain_category' %}
+                    {% endif %}
+
+                    {% for city in regionData.cities %}
+                        <li class="js-search-source" data-search-hide-parent=".js-search-hidable">
+                            <a data-href="{{ path(routeName, {'subdomain' : city.slug, 'category_slug' : category ? category.getSlugCombined() : null}) }}"
+                               data-city-id="{{ city.id }}">{{ city.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endmacro %}
+
+{% block popovers %}
+    {% import 'SprosProjectBundle:Default:index.html.twig' as regionName %}
+
+    <div id="choose-city" class="popup g-cleared js-searchable-block">
+        <div class="holder-left">
+            <div class="holder-right">
+                <div class="popup-content">
+                    <div class="top">
+                        <span class="bullet"></span>
+
+                        <h3>Выбор Города</h3>
+
+                        <form class="search" action="">
+                            <fieldset>
+                                <div class="holder">
+                                    <input type="text" value="" placeholder="Поиск" class="text js-search-query" id="city-search-input" />
+                                    <input type="submit" value="" class="button"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div id="city-tabs" class="bottom-container">
+                        <div class="shadow"></div>
+                        <ul class="tabs g-cleared">
+                            <li><a href="#rus">Россия</a></li>
+                            <li><a href="#ukr">Украина</a></li>
+                            <li><a href="#bel">Беларусь</a></li>
+                            <li><a href="#kaz">Казахстан</a></li>
+                        </ul>
+                        <div class="tabs-content scroll">
+                            <div id="rus">
+                                {% set russia = countries['Россия'] %}
+                                {{ regionName.name(russia.id, regionsData, category) }}
+                            </div>
+
+                            <div id="ukr">
+                                {% set ukraine = countries['Украина'] %}
+                                {{ regionName.name(ukraine.id, regionsData, category) }}
+                            </div>
+
+                            <div id="bel">
+                                {% set belorussia = countries['Беларусь'] %}
+                                {{ regionName.name(belorussia.id, regionsData, category) }}
+                            </div>
+
+                            <div id="kaz">
+                                {% set kazakhstan = countries['Казахстан'] %}
+                                {{ regionName.name(kazakhstan.id, regionsData, category) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="choose-category" class="popup g-cleared js-searchable-block">
+        <div class="holder-left">
+            <div class="holder-right">
+                <div class="popup-content">
+                    <div class="top">
+                        <span class="bullet"></span>
+
+                        <h3>Выбор раздела</h3>
+
+                        <form class="search" action="#">
+                            <fieldset>
+                                <div class="holder">
+                                    <input type="text" value="" placeholder="Поиск" class="text js-search-query" id="category-search-input" />
+                                    <input type="submit" value="" class="button"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="bottom-container">
+                        <div class="shadow"></div>
+
+                        <div class="tabs-content scroll">
+                            <ul class="regions">
+                                {% set routeName = 'SprosProjectBundle:Default:index_category' %}
+                                {% if city %}
+                                    {% set routeName = 'SprosProjectBundle:Default:index_subdomain_category' %}
+                                {% endif %}
+
+                                {% for category in categories %}
+                                    <li class="expanded js-search-source">
+                                        <span class="bullet"></span>
+                                        <a data-href="{{ path(routeName, { 'category_slug' : category.getSlugCombined(), 'subdomain' : city ? city.slug : null  }) }}"
+                                           data-category-id="{{ category.id }}">{{ category.title }}</a>
+
+                                        {% if category.getAttribute('hasChildren') %}
+                                            <ul class="inside level-1">
+                                                {% for child in category.getAttribute('children') %}
+                                                    <li class="js-search-source">
+                                                        <a data-href="{{ path(routeName, { 'category_slug' : child.getSlugCombined(), 'subdomain' : city ? city.slug : null }) }}"
+                                                           data-category-id="{{ child.id }}">{{ child.title }}</a>
+                                                        {% if child.getAttribute('hasChildren') %}
+                                                            <span class="bullet"></span>
+                                                            <ul class="inside level-2">
+                                                                {% for subChild in child.getAttribute('children') %}
+                                                                    <li class="js-search-source">
+                                                                        <a data-href="{{ path(routeName, { 'category_slug' : subChild.getSlugCombined(), 'subdomain' : city ? city.slug : null }) }}"
+                                                                           data-category-id="{{ subChild.id }}">{{ subChild.title }}</a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </li>
+
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+{% endblock popovers %}
+
+{% block counters %}
+    {% if spros_yandex_metrika_id is not empty %}
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter{{ spros_yandex_metrika_id }} = new Ya.Metrika({
+                            id:{{ spros_yandex_metrika_id }},
+                            webvisor:true,
+                            clickmap:true,
+                            trackLinks:true,
+                            accurateTrackBounce:true});
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                        s = d.createElement("script"),
+                        f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks");
+        </script>
+        <noscript><div><img src="//mc.yandex.ru/watch/21619564" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
+    {% endif %}
+{% endblock counters %}
+
+{% endblock body %}
+    <!-- generated at {{ 'now'|date('d.m.Y H:i:s') }} -->
+</body>
+</html>

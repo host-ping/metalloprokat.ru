@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.mini_site.admin.mini_site_cover" class="Metal\MiniSiteBundle\Admin\MiniSiteCoverAdmin">
+            <argument>metal.mini_site.admin.mini_site_cover</argument>
+            <argument>Metal\MiniSiteBundle\Entity\MiniSiteCover</argument>
+            <argument>MetalMiniSiteBundle:MiniSiteCoverAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="minisite_covers" label="Шапки" />
+        </service>
+
+        <service id="metal.mini_site.service.mini_site_css_compiler" class="Metal\MiniSiteBundle\Service\MinisiteCssCompiler">
+            <argument type="service" id="templating" />
+            <argument>%web_dir%</argument>
+            <argument>%minisite_compiled_themes_path%</argument>
+        </service>
+
+    </services>
+</container>

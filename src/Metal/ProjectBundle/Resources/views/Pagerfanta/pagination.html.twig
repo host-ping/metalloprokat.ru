@@ -1,0 +1,13 @@
+{% if pagerfanta.haveToPaginate %}
+    <div class="g-hidden">
+        {% for page in range(rangePage.start_page, rangePage.end_page) %}
+            {% if page == rangePage.current_page - 1 %}
+                <a rel="prev" href="{{ pagerfanta_page_url(pagerfanta, page == 1 ? null : page) }}">{{ page }}</a>
+            {% elseif page == rangePage.current_page + 1 %}
+                <a rel="next" href="{{ pagerfanta_page_url(pagerfanta, page) }}">{{ page }}</a>
+            {% elseif page != rangePage.current_page %}
+                <a href="{{ pagerfanta_page_url(pagerfanta, page == 1 ? null : page) }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

@@ -1,0 +1,3 @@
+8_800_project:
+    resource: "@SprosProjectBundle/Resources/config/routing_8_800.yml"
+    prefix:   /

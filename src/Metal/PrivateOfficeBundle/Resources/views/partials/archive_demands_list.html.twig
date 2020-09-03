@@ -1,0 +1,29 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% for demand in pagerfanta %}
+    {{ include('@MetalPrivateOffice/partials/archive_demand.html.twig', {
+        'demand': demand,
+    }, false) }}
+{% else %}
+    <li class="demand-item ">
+        <div class="empty-result">
+            <p class="message">Здесь будут размещаться заявки, которые вы опубликовали</p>
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="complaints-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+                href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#complaints-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}
+

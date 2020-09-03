@@ -1,0 +1,22 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Новый обратный звонок{% endblock %}
+
+{% block body_text -%}
+Здравствуйте{% if employee %}, {{ employee.firstName }}{% endif %}.
+
+Вашей компании{% if employee and employee.company %} {{ employee.company.title}} ({{ employee.company.city.title }}){% endif %} был оставлен обратный звонок {% if user %}пользователем {{ user.fullName }} ({{ user.email }}){% else %}анонимным пользователем{% endif %}. Телефон пользователя - {{ callback.phone }}.
+
+Что бы просмотреть обратный звонок, перейдите по ссылке {{ url('MetalPrivateOfficeBundle:Callbacks:list', {'from': 'email'})|raw }}.
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Здравствуйте{% if employee %}, {{ employee.firstName }}{% endif %}.<br/>
+        <br/>
+        Вашей компании{% if company %} <b>{{ company.title}} ({{ company.city.title }})</b>{% endif %} был оставлен обратный звонок {% if user %}пользователем <b>{{ user.fullName }} ({{ user.email }})</b>{% else %}анонимным пользователем{% endif %}. Телефон пользователя - <b>{{ callback.phone }}</b>.<br/>
+        Что бы просмотреть обратный звонок, перейдите по <a href="{{ url('MetalPrivateOfficeBundle:Callbacks:list', {'from': 'email'})|raw }}">ссылке</a>.<br/>
+    </p>
+{% endblock %}

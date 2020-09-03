@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="metal.demands.admin.demand" class="Metal\DemandsBundle\Admin\DemandAdmin">
+            <argument>metal.demands.admin.demand</argument>
+            <argument>Metal\DemandsBundle\Entity\AbstractDemand</argument>
+            <argument>MetalDemandsBundle:DemandAdmin</argument>
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sonata.notification.backend" />
+            <argument type="service" id="Enqueue\Client\Producer" />
+            <argument>%project.family%</argument>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="demand">Metal\DemandsBundle\Entity\Demand</argument>
+                </argument>
+            </call>
+            <tag name="sonata.admin" manager_type="orm" persist_filters="true" group="demands" label="Заявки" />
+        </service>
+
+        <service id="metal.demands.admin.demand_item" class="Metal\DemandsBundle\Admin\DemandItemAdmin">
+            <argument>metal.demands.admin.demand_item</argument>
+            <argument>Metal\DemandsBundle\Entity\DemandItem</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>%tokens.product_volume_title%</argument>
+            <argument>%project.family%</argument>
+            <tag name="sonata.admin" manager_type="orm" group="demands" show_in_dashboard="false" label="Позиции" />
+        </service>
+
+        <service id="metal.demands.admin.demand_file" class="Metal\DemandsBundle\Admin\DemandFileAdmin">
+            <argument>metal.demands.admin.demand_file</argument>
+            <argument>Metal\DemandsBundle\Entity\DemandFile</argument>
+            <argument>SonataAdminBundle:DemandFileAdmin</argument>
+            <tag name="sonata.admin" manager_type="orm" group="demands" show_in_dashboard="false" label="Файлы" />
+        </service>
+
+        <service id="metal.demands.demand_answer_voter" class="Metal\DemandsBundle\Acl\Voter\DemandAnswerVoter">
+            <argument type="service" id="security.access.decision_manager" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="security.voter" />
+        </service>
+
+        <service id="metal.demands.concrete_data_fetcher"
+                 class="Metal\DemandsBundle\DataFetching\DemandsDataFetcher" public="false">
+        </service>
+
+        <service id="metal.demands.data_fetcher" class="Metal\ProjectBundle\DataFetching\Sphinxy\SphinxyDataFetcher">
+            <argument type="service" id="sphinxy.default_connection" />
+            <argument type="service" id="metal.demands.concrete_data_fetcher" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="metal.demands.concrete_entity_loader"
+                 class="Metal\DemandsBundle\DataFetching\DemandsEntityLoader" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="metal.demands.entity_loader" class="Metal\ProjectBundle\DataFetching\EntityLoader">
+            <argument type="service" id="metal.demands.concrete_entity_loader" />
+        </service>
+
+        <service id="metal.demands.management_services" class="Metal\DemandsBundle\Service\DemandManagementService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="metal.newsletter.mailer" />
+            <argument type="service" id="metal.users.user_service" />
+            <argument>%project.family%</argument>
+        </service>
+
+        <service id="metal.demands.form.type.demand_item" class="Metal\DemandsBundle\Form\DemandItemType">
+            <argument>%project.family%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="metal.demands.demands_indexer" class="Metal\DemandsBundle\Indexer\DemandsIndexer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="sphinxy.indexer" index="demands" />
+        </service>
+
+        <service id="metal.demands.demand_export_service" class="Metal\DemandsBundle\Service\DemandExportService">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="phpexcel" />
+            <argument>%upload_dir%</argument>
+            <argument type="service" id="sonata.intl.templating.helper.number" />
+            <argument>%tokens.supplier%</argument>
+        </service>
+
+        <service id="metal.demands.consumer.admin_demand_consumer"
+                 class="Metal\DemandsBundle\Consumer\AdminDemandConsumer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sphinxy.index_manager" />
+            <tag name="sonata.notification.consumer" type="admin_demand" />
+        </service>
+
+        <service id="metal.demands.admin.block.created_demand" class="Metal\DemandsBundle\Admin\Block\CreatedDemandBlockService">
+            <argument>metal.demands.admin.block.created_demand</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+
+        <service id="metal.demands.admin.block.source_demand" class="Metal\DemandsBundle\Admin\Block\SourceDemandBlockService">
+            <argument>metal.demands.admin.block.source_demand</argument>
+            <argument type="service" id="templating" />
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+            <call method="setAdminPool">
+                <argument type="service" id="sonata.admin.pool" />
+            </call>
+            <tag name="sonata.block" />
+        </service>
+    </services>
+
+</container>

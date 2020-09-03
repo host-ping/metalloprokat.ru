@@ -1,0 +1,22 @@
+{% extends 'MetalProductsBundle:Products:list.html.twig' %}
+
+{% block products_list %}
+    <ul class="product grid clearfix" data-replacement-zone="page.products_list" data-replacement-callback="scrollToElement">
+        {{ include('MetalProductsBundle:Products:partial/list_products.html.twig', {
+            'pagerfanta': productsViewModel.pagerfanta,
+            'category': category,
+        }, false) }}
+
+        {#'ul[class="product grid clearfix"]'#}
+
+        {% if fallbackProductsViewModel and fallbackProductsViewModel.pagerfanta|length %}
+            {# FIXME: баннера некорректно вставляются на http://msk.metalloprokat.dev/sort/armatura/12_14/a1_a3/3ps5/?view=pallete #}
+            {{ include('MetalProductsBundle:Products:partial/list_products.html.twig', {
+                'pagerfanta': fallbackProductsViewModel.pagerfanta,
+                'category': category,
+                'isFallback': true,
+                'index': productsViewModel.pagerfanta|length
+            }, false) }}
+        {% endif %}
+    </ul>
+{% endblock %}

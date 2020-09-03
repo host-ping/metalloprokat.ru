@@ -1,0 +1,27 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% set urlHelper = brouzie_helper('MetalProjectBundle:Url') %}
+
+{% block subject %}Сообщение от модератора сайта {{ project.title }}{% endblock %}
+
+{% block body_text -%}
+Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!
+
+{{ productsCount|number_format_decimal }} {{ 'products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }} было промодерировано и размещено {{ currentDate }} на сайте {{ project.title }}.
+Благодарим за сотрудничество!
+Просмотреть товары можно на вашем минисайте
+{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }} .
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Добрый день{% if user.firstName %}, {{ user.firstName }}{% endif %}!<br/><br/>
+        {{ productsCount|number_format_decimal }} {{ 'products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }} было промодерировано и размещено {{ currentDate }} на сайте {{ project.title }}.
+        Благодарим за сотрудничество! <br/>
+        Просмотреть товары можно на Вашем <a href="{{ urlHelper.generateUrl('MetalMiniSiteBundle:MiniSite:view', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable()}) }}">минисайте</a>
+    </p>
+{% endblock %}
+
+{% block user_agreement '' %}

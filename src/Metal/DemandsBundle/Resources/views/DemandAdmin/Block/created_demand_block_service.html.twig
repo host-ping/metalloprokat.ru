@@ -1,0 +1,67 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if isGranted %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a target="_blank" href="{{ path('admin_metal_demands_abstractdemand_list') }}">Статистика созданных
+                        заявок</a> (
+                    <a target="_blank" href="{{ path('admin_metal_demands_abstractdemand_show_all_statistic') }}">за все
+                        время</a> )
+                </h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Пользователь</th>
+                        <th>Количество</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if currentMonthDemands|length %}
+                        <tr>
+                            <td colspan="3" align="center">Заявки за текущий месяц <strong>({{ currMonth }})</strong>
+                            </td>
+                        </tr>
+                        {% for stats in currentMonthDemands %}
+                            <tr>
+                                <td class="text-right">{{ loop.index }}</td>
+                                <td>
+                                    {{ stats.user.fullName }} (<a target="_blank"
+                                                                  href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': stats.user.id} } }) }}">{{ stats.userId }}</a>)
+                                </td>
+                                <td class="text-right"><a target="_blank"
+                                                          href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'user': {'value': stats.user.id}, 'createdAt': {'value': {'start': stats.dateFrom, 'end': stats.dateTo}} } }) }}">{{ stats.demandsCount|number_format_decimal }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if previousMonthDemands|length %}
+                        <tr>
+                            <td colspan="3" align="center">Заявки за прошлый месяц <strong>({{ prevMonth }})</strong>
+                            </td>
+                        </tr>
+                        {% for stats in previousMonthDemands %}
+                            <tr>
+                                <td class="text-right">{{ loop.index }}</td>
+                                <td>
+                                    {{ stats.user.fullName }} (<a target="_blank"
+                                                                  href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': stats.user.id} } }) }}">{{ stats.userId }}</a>)
+                                </td>
+                                <td class="text-right">
+                                    <a target="_blank"
+                                       href="{{ path('admin_metal_demands_abstractdemand_list', {'filter': {'user': {'value': stats.user.id}, 'createdAt': {'value': {'start': stats.dateFrom, 'end': stats.dateTo}} } }) }}">{{ stats.demandsCount|number_format_decimal }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock block %}

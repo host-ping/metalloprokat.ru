@@ -1,0 +1,66 @@
+{% set popupId = 'upload-product-image' %}
+
+<div id="{{ popupId }}-popup" data-popup-template="#{{ popupId }}-template" class="load-photo-block popup-block opacity-border large"></div>
+
+<script type="text/ng-template" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup" ng-if="editablePhoto.imageUrl">Редактировать фото</div>
+        <div class="title-popup" ng-if="!editablePhoto.imageUrl">Загрузить фото</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              action="<%= editablePhoto.editUrl || '{{ path('MetalPrivateOfficeBundle:PrivateProductPhoto:save') }}' %>"
+              data-file-upload="productPhotoFileUploadOptions"
+              data-replace-file-input="false"
+              data-ajax-form="productPhotoAjaxFormOptions"
+              method="post"
+              enctype="multipart/form-data"
+              class="load-photo-form popup-form"
+              novalidate="novalidate"
+                >
+            <fieldset>
+                <div class="clearfix">
+                    <div class="photo-wrapper float-left">
+                        <div class="img is-bordered">
+                            <span class="pattern-big">
+                                <img
+                                        ng-if="editablePhoto.imageUrl"
+                                        ng-src="<%= editablePhoto.imageUrl %>"
+                                        ng-attr-alt="<%= editablePhoto.description %>"
+                                        ng-attr-title="<%= editablePhoto.description %>"
+                                        width="113"
+                                        height="112"
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="data-wrapper float-left">
+                        <div class="field-wrap">
+                            <label class="file-upload">
+                                <span class="file-btn button white-bg is-bordered ie-radius" ng-if="productPhotoFile"><%= productPhotoFile.name %></span>
+                                <span class="file-btn button white-bg is-bordered ie-radius" ng-if="!productPhotoFile">Выбрать из файла...</span>
+                                {{ form_widget(form.uploadedPhoto, {'attr' : {'class' : 'file-btn button white-bg is-bordered ie-radius', 'file-model': 'productPhotoFile' }} ) }}
+                            </label>
+                        </div>
+                        <div class="field-wrap">
+                            {{ form_widget(form.description, {'attr' : {'ng-model': 'editablePhoto.description', 'class' : 'form-textarea ie-radius', 'placeholder' : 'Комментарий'} }) }}
+                        </div>
+                        <div class="field-wrap" ng-init="editablePhoto.optimized = editablePhoto.optimized === false ? false : true">
+                            <label for="{{ form.optimized.vars.id }}">
+                                {{ form_widget(form.optimized, {'attr': {'class': 'js-styled-checkbox', 'initial-value': '', 'ng-model': 'editablePhoto.optimized', 'styled-checkbox' : ''}}) }}
+                                Оптимизировать изображение</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-wrapper">
+                    <input ng-if="editablePhoto.imageUrl" class="load-btn button blue-bg ie-radius" type="submit" value="Сохранить" />
+                    <input ng-if="!editablePhoto.imageUrl" class="load-btn button blue-bg ie-radius" type="submit" value="Загрузить" />
+                    <div ng-show="ajaxFormSubmitting" class="loading-mask">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

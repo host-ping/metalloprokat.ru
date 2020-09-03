@@ -1,0 +1,101 @@
+{% extends '@markup/portal/_portal_layout.html.twig' %}
+
+{% block title 'Product' %}
+{% block content %}
+    <div id="content" class="content-wide table-container outline-left">
+    <div class="left table-cell">
+        <div class="product-inside js-calc-height">
+            <div class="product-info-wrapper clearfix">
+                <div class="product-img is-bordered float-left">
+                    <a class="img-link pattern-big" href="#">
+                        <img class="js-popup-opener" src="./markup/pic/p-logo2.jpg" alt="image description" data-popup="#photo"/>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <h1 class="product_main-title">
+                        Швеллер
+                    </h1>
+                    <div class="information">
+                        <div class="size-price gray60-color">
+                            <p>Размер 30x30</p>
+                            <p><strong class="red-color">25 000 <span class="icon-rouble"></span></strong> за тонну</p>
+                        </div>
+                        <p class="phone-text">
+                            <strong>+7 (495) 784</strong>
+                            ( <a href="#" class="see">показать</a> )
+                            <a href="#" class="callback">обратный звонок</a>
+                        </p>
+                        <a class="on-site" href="#">Товар на сайте компании</a>
+                        <span class="dot">.</span>
+                        <span class="updated-date">Обновлено 8 фев 2013</span>
+                    </div>
+                    <ul class="links demand_links clearfix">
+                        <li class="links_report item float-left clearfix">
+                            <a href="#" class="button report is-bordered js-tooltip-opener js-popup-opener ie-radius" data-tooltip-title="Пожаловаться" data-popup="#report">
+                                <span class="icon-complaint"></span>
+                            </a>
+                        </li>
+                        <li class="item width-181 float-left clearfix">
+                            <a href="#" class="button favorites is-bordered ie-radius">
+                                <span class="text">В Избранное</span>
+                                <span class="icon-favorite float-right"></span>
+                            </a>
+                        </li>
+                        <li class="links_answer item width-182 float-left clearfix">
+                            <a class="send-order_send-button button send-button red-bg ie-radius" href="#">Отправить заявку</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="product-right right white95-bg table-cell">
+        <div class="info-wrapper white-bg">
+            <div class="company-info-wrapper clearfix">
+                <div class="company-info float-left">
+                    <div class="prod-title clearfix">
+                        <div class="star-panel float-left">
+                            <div class="status float-left green-bg ie-radius">online</div>
+                            <div class="rating float-left">
+                                <span class="star-mini icon-star-colored"></span>
+                                <span class="star-mini icon-star-colored"></span>
+                                <span class="star-mini icon-star-colored"></span>
+                            </div>
+                        </div>
+                        <div class="title"><a href="#">Стальторг</a></div>
+                    </div>
+                    <p class="localization gray60-color">филиал в Люберцах</p>
+                    <a class="site" href="#">staltorg.ru</a>
+                </div>
+                <div class="company-logo float-right">
+                    <a class="img-link pattern-small" href="#">
+                        <img src="./markup/pic/product-logo-tmp.jpg" width="64" height="64" alt="image description"/>
+                    </a>
+                </div>
+            </div>
+            <div class="sec-info">
+                <p>
+                    <a href="#">258 товаров</a> из раздела Арматура
+                </p>
+                <p>
+                    <a href="#">3,814 товаров</a> на сайте
+                </p>
+            </div>
+            <div class="reviews-block">
+                <div class="reviews-title">
+                    <span class="title ">Отзывы о компании</span>
+                    <span class="review-count">12</span>
+                    <span class="icon-comment"></span>
+                </div>
+                <div class="reviews-links">
+                    <a class="add-review link" href="#">Добавить отзыв</a>
+                    <a class="all-reviews link" href="#">Все отзывы</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+{% endblock %}

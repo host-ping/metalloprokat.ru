@@ -1,0 +1,475 @@
+{% extends 'markup/html/_base_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="./markup/css/mini-site.css" type="text/css"/>
+    <link rel="stylesheet" href="./markup/css/private.css" type="text/css"/>
+
+    {#<link rel="stylesheet" href="./markup/css/mini-site-themes/default.css" type="text/css"/>#}
+    <link rel="stylesheet" href="./index.php?render_css={{ query.css_theme|default('default-theme') }}.css.twig" type="text/css"/>
+
+{% endblock stylesheets %}
+
+{% block body %}
+<div class="mini-site container">
+    <div class="inside-container">
+        <div id="header" class="clearfix">
+            <div class="wrap">
+                {% block header %}
+                    <div class="left float-left">
+                        <div class="logo float-left">
+                            <a href="/">
+                                <img src="./markup/img/logo.png" width="36" height="27" alt="металлопрокат.ру"/>
+                            </a>
+                        </div>
+                        <div class="logo-text float-left">
+                            <p>
+                                <a class="header-logo-text" href="#">металлопрокат.ру</a>
+                            </p>
+                        </div>
+                        <div class="location float-right">
+                            <a href="#" class="js-popover-opener current-location" data-popover="#cities" data-index="1001" data-different-position="true">Москва и Область</a>
+                        </div>
+                    </div>
+                    {% block login %}
+                        <div class="user-block float-right">
+                            <a class="login js-popup-opener icon-exit" data-popup="#login" href="#">Вход в кабинет</a>
+                            <a class="register-link js-popup-opener" data-popup="#register-company" href="#">Регистрация</a>
+                        </div>
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+        {% block companyBanner %}
+            <div class="company-announcement">
+                <div class="wrap clearfix">
+                    <form action="#">
+                        <label class="file-upload">
+                            <span class="admin-button button gray60-bg float-right ie-radius">Загрузить шапку</span>
+                            <input type="file"/>
+                        </label>
+                        <div class="company-logo float-left">
+                            <a class="company-link big-pattern" href="#"></a>
+                            <div class="photo-btns-wrapper clearfix">
+                                <div class="add-photo-wrapper float-left">
+                                    <label class="file-upload">
+                                        <span class="ico-upload"></span>
+                                        <input type="file"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="company-info-wrapper float-left">
+                        <a class="admin-button button gray60-bg float-right ie-radius" href="#">изменить</a>
+                        <div class="heading">
+                            <div class="company-name">Стальторг</div>
+                            <span>Продажа металлопроката</span>
+                        </div>
+                        <div class="address-phone-wrapper">
+                            <p class="company-phone">+7 (495) 904-53-13</p>
+                            <p class="company-address">Люберцы, <a href="#" class="link">Ялтинская 17</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock companyBanner %}
+
+        <div id="main" class="clearfix">
+            {% block side_announcements %}
+                <div class="left-announcement-wrapper">
+                    <div class="js-fixed-side-banner">
+                        <div class="left-announcement announcement has-announcement">
+                            <img src="./markup/pic/left-banner-150.jpg" alt="image description"/>
+                            {#<object width="150" height="610">#}
+                            {#<param name="wmode" value="transparent" >#}
+                            {#<param name="movie" value="./markup/pic/75-announcement-1404126831.swf">#}
+                            {#<embed src="./markup/pic/75-announcement-1404126831.swf" width="150" height="610" wmode="transparent">#}
+                            {#</embed>#}
+                            {#</object>#}
+                        </div>
+                    </div>
+                </div>
+                <div class="right-announcement-wrapper employees-block-wrapper">
+                    <div class="js-fixed-side-banner">
+                        <div class="js-scrollable thin-scroll">
+                            <div class="premium-product-block employees-block">
+
+                                <div class="company-info">
+                                    <div class="company-title title">Стальторг</div>
+                                    <div class="web-site"><a class="link" href="#">www.staltorg.ru</a></div>
+                                    <div class="web-site"><a class="link" href="#">www.staltorg.ua</a></div>
+                                    <div class="web-site"><a class="link" href="#">www.staltorg.com</a></div>
+                                    <div class="button-wrapper">
+                                        <a class="primary send-button button js-popup-opener ie-radius" data-popup="#send-mail" href="#">Отправить заявку</a>
+                                    </div>
+                                </div>
+                                <div class="topic-wrapper">
+                                    <ul class="topic-list">
+                                        <li class="item clearfix">
+                                            <div class="employee-info clearfix">
+                                                <div class="img float-right is-gradiented">
+                                                    <div class="img-holder">
+                                                        <a class="img-link pattern-big" href="#">
+                                                            <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="topic-info">
+                                                    <div class="employee-name">Станислав Станислановский</div>
+                                                    <div class="position">директор по маркетингу и обеспечению</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="employee-info clearfix">
+                                                <div class="img float-right is-gradiented">
+                                                    <div class="img-holder">
+                                                        <a class="img-link pattern-big" href="#">
+                                                            <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="topic-info">
+                                                    <div class="employee-name">Семен Меркушев</div>
+                                                    <div class="position">директор по маркетингу и обеспечению</div>
+                                                </div>
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="employee-info clearfix">
+                                                <div class="img float-right is-gradiented">
+                                                    <div class="img-holder">
+                                                        <a class="img-link pattern-big" href="#">
+                                                            <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="topic-info">
+                                                    <div class="employee-name">Станислав Станислановский</div>
+                                                    <div class="position">директор по маркетингу</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                            </div>
+                                        </li>
+                                        {% if true %}
+                                            <li class="item clearfix">
+                                                <span class="js-show-all-employees secondary write-btn button clickable ie-radius">Показать всех</span>
+                                            </li>
+
+                                            <li class="item clearfix g-hidden js-all-employees">
+                                                <div class="employee-info clearfix">
+                                                    <div class="img float-right is-gradiented">
+                                                        <div class="img-holder">
+                                                            <a class="img-link pattern-big" href="#">
+                                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="topic-info">
+                                                        <div class="employee-name">Станислав Станислановский</div>
+                                                        <div class="position">директор по маркетингу</div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="button-wrapper">
+                                                    <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                                </div>
+                                            </li>
+                                            <li class="item clearfix g-hidden js-all-employees">
+                                                <div class="employee-info clearfix">
+                                                    <div class="img float-right is-gradiented">
+                                                        <div class="img-holder">
+                                                            <a class="img-link pattern-big" href="#">
+                                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="topic-info">
+                                                        <div class="employee-name">Станислав Станислановский</div>
+                                                        <div class="position">директор по маркетингу</div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="button-wrapper">
+                                                    <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                                </div>
+                                            </li>
+                                            <li class="item clearfix g-hidden js-all-employees">
+                                                <div class="employee-info clearfix">
+                                                    <div class="img float-right is-gradiented">
+                                                        <div class="img-holder">
+                                                            <a class="img-link pattern-big" href="#">
+                                                                <img src="./markup/pic/userpic.jpg" alt="image description"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="topic-info">
+                                                        <div class="employee-name">Семен Меркушев</div>
+                                                        <div class="position">директор по маркетингу</div>
+                                                    </div>
+                                                </div>
+                                                <div class="button-wrapper">
+                                                    <a class="primary write-btn button js-popup-opener ie-radius" data-popup="#send-mail" href="#">написать</a>
+                                                </div>
+                                            </li>
+
+                                        {% endif %}
+
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            {% endblock side_announcements %}
+            <div class="wrap clearfix">
+                {% block banner %}
+                    {#<div class="announcement has-announcement ">#}
+                        {#<img src="./markup/pic/banner.jpg" width="960" height="90" alt="image description"/>#}
+                    {#</div>#}
+                {% endblock %}
+
+                <div class="wrapper outline clearfix">
+                    <div class="table-container">
+                        {% block sidebar %}
+                            <div id="sidebar" class="side-left table-cell">
+                                <div class="products-wrapper">
+                                    <div class="clearfix">
+                                        <a class="admin-button button gray60-bg float-right ie-radius" href="#">управлять</a>
+                                        <div class="title float-left">Товары</div>
+                                    </div>
+                                    <ul class="product-categories-list">
+                                        <li class="level-1 item js-expandable-menu-item " data-expandable-menu-children=".list">
+                                            <a href="#" class="check-link"><span class="icon-check black"></span></a>
+                                            <a class="item-link active clearfix js-expandable-menu-expander" href="#armatura">
+                                                <span class="count float-right">51</span>
+                                                <span class="elem is-gradiented">Арматура</span>
+                                            </a>
+                                            <ul class="list">
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#armatura-1">
+                                                        <span class="count float-right">31</span>
+                                                        <span class="elem is-gradiented">Арматура А1</span>
+                                                    </a>
+                                                </li>
+                                                <li class="level-inside item">
+                                                    <span class="link active clearfix" href="#armatura-2">
+                                                        <span class="count float-right">14</span>
+                                                        <span class="elem is-gradiented">Арматура 09Г2С</span>
+                                                    </span>
+                                                </li>
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#armatura-3">
+                                                        <span class="count float-right">103</span>
+                                                        <span class="elem is-gradiented">Арматура А3</span>
+                                                    </a>
+                                                </li>
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#armatura-4">
+                                                        <span class="count float-right">52</span>
+                                                        <span class="elem is-gradiented">Арматура А500С</span>
+                                                    </a>
+                                                </li>
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#armatura-5">
+                                                        <span class="count float-right">62</span>
+                                                        <span class="elem is-gradiented">Арматура 12</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="level-1 item js-expandable-menu-item" data-expandable-menu-children=".list">
+                                            <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                                            <a class="item-link clearfix js-expandable-menu-expander" href="#balka">
+                                                <span class="count float-right">60</span>
+                                                <span class="elem is-gradiented">Балка</span>
+                                            </a>
+                                            <ul class="list g-hidden">
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#balka-1">
+                                                        <span class="count float-right">31</span>
+                                                        <span class="elem is-gradiented">Балка Б2</span>
+                                                    </a>
+                                                </li>
+                                                <li class="level-inside item">
+                                                    <a class="link clearfix" href="#balka-2">
+                                                        <span class="count float-right">14</span>
+                                                        <span class="elem is-gradiented">Балка Б4</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="level-1 item">
+                                            <a href="#" class="check-link collapsed"><span class="icon-check black"></span></a>
+                                            <a class="item-link clearfix" href="#">
+                                                <span class="count float-right">777</span>
+                                                <span class="elem is-gradiented">Заглушка</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="premium-product-block">
+                                    {#<div class="category-title">&#123;&#35;FIXED !!! &#35;&#125;#}
+                                        {#<a class="title-link link" href="#">Арматура</a>#}
+                                        {#других компаний#}
+                                    {#</div>#}
+                                    <ul class="topic-list">
+                                        <li class="item clearfix">
+                                            <div class="topic-info float-left">
+                                                <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                                                <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                                            </div>
+                                            <div class="img float-right">
+                                                <div class="img-holder">
+                                                    <a href="#" class="img-link pattern-small">
+                                                        <img src="./markup/pic/small-img.jpg" alt="image description"/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="topic-info float-left">
+                                                <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                                                <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                                            </div>
+                                            <div class="img float-right">
+                                                <div class="img-holder">
+                                                    <a href="#" class="img-link pattern-small"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="topic-info float-left">
+                                                <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                                                <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                                            </div>
+                                            <div class="img float-right">
+                                                <div class="img-holder">
+                                                    <a href="#" class="img-link pattern-small"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="topic-info float-left">
+                                                <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                                                <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                                            </div>
+                                            <div class="img float-right">
+                                                <div class="img-holder">
+                                                    <a href="#" class="img-link pattern-small"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="item clearfix">
+                                            <div class="topic-info float-left">
+                                                <a class="title-link link" href="#">Арматура стеклопластиковая АСП-6</a>
+                                                <p class="text">Размер 6, <strong class="price ">10 <span class="icon-rouble"></span></strong> за погонный метр</p>
+                                            </div>
+                                            <div class="img float-right">
+                                                <div class="img-holder">
+                                                    <a href="#" class="img-link pattern-small"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a class="add-product-text" href="#">Разместить здесь товары</a>
+                                </div>
+                            </div>
+                        {% endblock %}
+                        {% block content %}
+                            <div class="js-calc-height">
+                                {% block filters '' %}
+                                {% block tabs '' %}
+                            </div>
+                        {% endblock content %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div id="footer">
+        <div class="footer-content wrap">
+            {% block footer %}
+                <div class="footer-links-wrapper clearfix">
+                    <div class="footer-links">
+                        <div class="footer-title">Компания</div>
+                        <ul class="footer-links-list first">
+                            <li class="item"><a href="#">О сервисе</a></li>
+                            <li class="item"><a href="#">Реклама и услуги</a></li>
+                            <li class="item"><a href="#">Клиенты</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Контактная информация</a></li>
+                            <li class="item"><p class="support">Техническая поддержка: <span class="support-phone">(495) 984-06-52</span>
+                                </p></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-title">Информация на сайте</div>
+                        <ul class="footer-links-list">
+                            <li class="item"><a href="#">Компании</a></li>
+                            <li class="item"><a href="#">Отзывы</a></li>
+                            <li class="item"><a href="#">Товары</a></li>
+                            <li class="item"><a href="#">Потребности</a></li>
+                            <li class="item"><a href="#">Последние обновления</a></li>
+                            <li class="item"><a href="#" class="green-color">Добавить компанию и товары</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="footer-links-list clearfix">
+                    <li class="item">
+                        <p class="copy">Металлопрокат.ру © 2000-2013</p>
+                    </li>
+                    <li class="item">
+                        <a class="agreement" href="#" target="_blank">Пользовательское соглашение</a>
+                    </li>
+                </ul>
+                <div class="counters-block clearfix">
+                    <a href="#" class="rspm-member float-left">Действительный член РСПМ</a>
+
+                    <div class="counter-container float-right">
+                        <img src="./markup/pic/counter1.png" width="80" height="31" alt="image description"/>
+                        <img src="./markup/pic/counter2.png" width="88" height="31" alt="image description"/>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% include '@markup/_popups.html.twig' %}
+<script>
+    $(document).ready(function () {
+        $('.js-show-all-employees').bind('click', function (e) {
+            $el = $(e.target);
+            $el.parent().addClass('g-hidden');
+
+            $('.js-all-employees').removeClass('g-hidden');
+
+            $(window).trigger('resize');
+
+            /* var $rightFixedSide = $('.right-announcement-wrapper .js-fixed-side-banner');
+             $rightFixedSide.scrollToFixed({
+             limit: function () {
+             return $('#footer').offset().top - $rightFixedSide.outerHeight(true);
+             }
+             })*/
+        });
+    });
+</script>
+{% endblock %}
+

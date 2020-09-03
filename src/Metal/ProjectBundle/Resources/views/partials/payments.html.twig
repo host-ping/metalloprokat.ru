@@ -1,0 +1,67 @@
+{#
+    партиал вывода счетов
+
+    ожидает:
+        payments: массив счетов
+#}
+
+<table class="accounts table">
+    <thead>
+    <tr class="row">
+        <th class="id col">Номер</th>
+        <th class="package-name col">Основание</th>
+        <th class="date col">Дата выставления</th>
+        <th class="account-num col">Номер счета из CRM</th>
+        <th class="account-status col">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+    {% for payment in payments %}
+        <tr class="current row">
+            <td class="id col">{{ payment.id }}</td>
+            <td class="package-name col">
+                <span>{{ payment.servName }} ({{ payment.pSum }} руб.)</span>
+            </td>
+            <td class="date col">{{ formattingHelper.formatDate(payment.createdInCrm) }}</td>
+            <td class="account-num col">
+                <span>{{ payment.orderNO }}</span>
+            </td>
+
+            <td class="account-status col">
+                {% if payment.isPayed %}
+                    <span class="complete">оплачен {{ formattingHelper.formatDate(payment.payedAt) }}</span>
+                {% elseif payment.isDeleted  %}
+                    <span class="complete">удален {{ formattingHelper.formatDate(payment.deletedAt) }}</span>
+                {% else %}
+                    <a class="link icon-check black js-popover-opener" data-popover="#load-links-{{ payment.id }}" href="#">Оплатить</a><br />
+                    <div id="load-links-{{ payment.id }}" class="drop-wrapper opacity-border">
+                        <ul class="dropdown">
+                            <li class="drop-item">
+                                {{ jh9_robokassa_form(
+                                payment.id,
+                                payment.pSum, {
+                                    'template': 'MetalPrivateOfficeBundle:PrivateDetails:pay_form.html.twig',
+                                    'Desc': payment.servName
+                                }) }}
+                            </li>
+
+                            <li class="drop-item">
+                                <a class="drop-link" target="_blank" href="{{ path('MetalPrivateOfficeBundle:Details:printPayment', {'id': payment.id}) }}">Распечатать счет</a>
+                            </li>
+
+                            <li class="drop-item">
+                                <a class="drop-link" target="_blank" href="{{ path('MetalPrivateOfficeBundle:Details:downloadPayment', {'id': payment.id}) }}">Скачать счет (PDF)</a>
+                            </li>
+
+                            <li class="drop-item">
+                                <a class="drop-link" href="{{ path('MetalPrivateOfficeBundle:Details:deletePayment', {'id': payment.id}) }}">Удалить</a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

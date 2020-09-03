@@ -1,0 +1,69 @@
+{% extends 'MetalCatalogBundle::_catalog_layout.html.twig' %}
+
+{% block title brouzie_helper('MetalCatalogBundle:Seo').getMetaTitleForBrandsPage() %}
+
+{% block meta %}
+    {{ brouzie_helper('MetalProjectBundle:Seo').getAdditionalMetaTagsForSearchResults(pagerfanta)|raw }}
+{% endblock meta %}
+
+{% block meta_description brouzie_helper('MetalCatalogBundle:Seo').getMetaDescriptionForBrandsPage() %}
+
+{#{% block background_announcement '' %}#}
+{#{% block side_announcement_left '' %}#}
+{#{% block side_announcements_right '' %}#}
+{#{% block banner '' %}#}
+{#{% block tabs '' %}#}
+
+{% block search_results %}
+    <div id="company" class="view-category companies catalog">
+        <div class="js-calc-height">
+            {% block brands_list %}
+                <ul class="company list clearfix" data-replacement-zone="page.brands_list" data-replacement-callback="scrollToElement">
+                    {% include 'MetalCatalogBundle:partial:brand_in_brands.html.twig' with {
+                        'pagerfanta' : pagerfanta,
+                    } only %}
+                </ul>
+            {% endblock brands_list %}
+        </div>
+    </div>
+{% endblock search_results %}
+
+{% block head_banner %}
+    <div class="head-announcements-wrapper">
+        <div class="head-announcements clearfix">
+            <div class="left-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'head-side-1', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="right-announcement-wrapper">
+                {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'head-side-2', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+            </div>
+            <div class="wrap ">
+                <div class="center-announcement table-container">
+                    <div class="head-banner table-cell">
+                        {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'head-center', 'category_id' : categoryForSearch|default(currentCategory) ? categoryForSearch|default(currentCategory).id : null}) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock head_banner %}
+
+{% block banner %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'premium', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'premium-announcement'}) }}
+{% endblock %}
+
+
+{% block side_announcement_left %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'left-sidebar', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'left-announcement'}) }}
+{% endblock %}
+
+{% block background_announcement %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'background', 'category_id' : currentCategory ? currentCategory.id : null}) }}
+{% endblock %}
+
+{% block side_announcements_right %}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'right-sidebar-1', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement top-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'right-sidebar-2', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+    {{ brouzie_render_widget('MetalAnnouncementsBundle:AnnounceFrame', {'source_type_slug' : 'catalog-brands', 'zone_slug' : 'right-sidebar-3', 'category_id' : currentCategory ? currentCategory.id : null, 'additional_class' : 'right-announcement'}) }}
+{% endblock %}

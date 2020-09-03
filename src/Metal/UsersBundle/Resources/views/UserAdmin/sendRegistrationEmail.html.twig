@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:action.html.twig' %}
+
+{% block content %}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Введите email получателя
+            </h3>
+        </div>
+        <div class="box-body">
+
+            <form action="{{ admin.generateUrl('send_registration_email', {'id': id}) }}" method="POST">
+                <input type="email" name="email"/>
+                <input type="submit" value="Отправить"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

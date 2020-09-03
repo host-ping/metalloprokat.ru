@@ -1,0 +1,93 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block formactions %}
+    {{ parent() }}
+
+    {% if object.id %}
+        <div class="clearfix">
+            <div class="well well-small form-actions">
+                <input type="submit" class="btn btn-success" name="btn_create_and_create" value=" Сохранить и добавить новую">
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock formactions %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        function insertLoadingMask($element) {
+            $element.before("<div class='loading-mask'><div class='spinner'></div></div>");
+        }
+
+        $(document).ready(function () {
+            var $category = $("#{{ admin.uniqId }}_category");
+            var $manufacturer = $("#{{ admin.uniqId }}_manufacturer");
+            var $brand = $("#{{ admin.uniqId }}_brand");
+            var loadAttributesUrl = "{{ admin.generateUrl('load_attributes_by_category') }}";
+            var loadAdditionalAttributesUrl = "{{ admin.generateUrl('load_additional_attributes_by_category') }}";
+
+            $category.bind('change', function (e) {
+                insertLoadingMask($brand);
+                insertLoadingMask($manufacturer);
+                insertLoadingMask($('.js-additional-attributes .box'));
+                $.post(
+                    loadAttributesUrl,
+                    {category_id: $(e.target).val()},
+                    function (data) {
+                        function createOptions(items) {
+                            var $items = [];
+
+                            $emptyOption = $('<option />')
+                                    .attr('value', '')
+                                    .text('');
+                            $items.push($emptyOption);
+
+                            $.each(items, function (i, item) {
+                                var $option = $('<option />')
+                                        .attr('value', item.id)
+                                        .text(item.label);
+
+                                $items.push($option);
+                            });
+
+                            return $items;
+                        }
+
+                        var oldVal = $manufacturer.select2('val');
+                        $manufacturer
+                                .html(createOptions(data.manufacturers))
+                                .select2('val', '')
+                                .select2('val', oldVal)
+                                .siblings('.loading-mask').remove();
+
+                        oldVal = $brand.select2('val');
+                        $brand
+                                .html(createOptions(data.brands))
+                                .select2('val', '')
+                                .select2('val', oldVal)
+                                .siblings('.loading-mask').remove();
+                    },
+                    'json'
+                );
+
+                $.post(
+                    loadAdditionalAttributesUrl,
+                    {category_id: $(e.target).val(), uniqid: '{{ admin.uniqId }}'},
+                    function (data) {
+                        var $container = $('.js-additional-attributes .sonata-ba-collapsed-fields');
+                        $container
+                                .html(data)
+                                .parents('.js-additional-attributes')
+                                .find('.loading-mask').remove();
+                        Admin.setup_select2($container);
+
+                    },
+                    'html'
+                );
+
+            });
+        });
+    </script>
+{% endblock %}

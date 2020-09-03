@@ -1,0 +1,71 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set productHelper = brouzie_helper('MetalProductsBundle') %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set productsHelper = brouzie_helper('MetalMiniSiteBundle:Product') %}
+{% set currentCountry = app.request.attributes.get('country') %}
+
+{% set renderPagerfanta = renderPagerfanta is defined ? renderPagerfanta : false %}
+
+{% for product in pagerfanta %}
+    {% set context = 'portal' %}
+    {% if productViewUrlMode|default('standard') == 'minisite' and product.company.minisiteEnabled %}
+        {% set context = 'minisite' %}
+        {% set productViewUrl = brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:product_view', {'id': product.id, 'domain': product.company.domain, '_secure' : product.company.packageChecker.isHttpsAvailable()}) %}
+    {% else %}
+        {% set productViewUrl = productHelper.generateProductUrl(product) %}
+    {% endif %}
+
+    {% include 'MetalProductsBundle:partial:product_article_by_company.html.twig' with {
+        'product' : product,
+        'imageHelper' : imageHelper,
+        'productHelper' : productHelper,
+        'productsHelper' : productsHelper,
+        'formatHelper' : formatHelper,
+        'city' : city|default(null),
+        'currentCountry' : currentCountry,
+        'productViewUrl': productViewUrl,
+        'context' : context
+    } only %}
+{% endfor %}
+
+{% set routeParameters = app.request.attributes.get('_route_params') %}
+{% set routeParameters = routeParameters|merge(app.request.query.all()) %}
+{% set routeParameters = routeParameters|merge(routeParamsShowMore|default({})) %}
+
+{# NB! http://projects.brouzie.com/browse/MET-2545 #}
+{% if id == 'similar-products-tab-more' %}
+    {% set routeParameters = routeParameters|merge({'tab': null}) %}
+{% endif %}
+
+{% if use_pagination is not defined or use_pagination %}
+    {% set encodedContent %}
+        {{ pagerfanta(pagerfanta, 'pagination_twig', {'routeParameters': routeParameters}) }}
+    {% endset %}
+    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">
+    </span>
+{% else %}
+    {% if pagerfanta.hasNextPage() %}
+        <li class="see-more-block-wrapper" id="{{ id }}">
+            <div class="see-more-block">
+                <a class="see-more button js-load-more ie-radius"
+                   data-href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage(), {'routeParams': routeParameters}) }}"
+                   data-load-more-replace="#{{ id }}"
+                   rel="nofollow"
+                >Показать еще...</a>
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </li>
+    {% endif %}
+
+    {% if renderPagerfanta is defined and renderPagerfanta %}
+        {% set encodedContent %}
+            {{ pagerfanta(pagerfanta, 'twig') }}
+        {% endset %}
+        <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}">
+        </span>
+    {% endif %}
+{% endif %}
+
+

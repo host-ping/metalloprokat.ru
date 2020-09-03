@@ -1,0 +1,147 @@
+{% extends 'MetalNewsletterBundle::base_layout.html.twig' %}
+
+{% block body_html %}
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns:v="urn:schemas-microsoft-com:vml">
+    <head>
+        <!-- If you delete this meta tag, the ground will open and swallow you. -->
+        <meta name="viewport" content="width=device-width" />
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no">
+
+        <title>{{ block('subject') }}</title>
+
+        <style type="text/css">
+            @media only screen and (max-width: 672px) {
+                table[id=wrapper] {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E6E3DF">
+    <tr>
+    <td>
+
+    <!-- WRAPPER -->
+    <table id="wrapper" width="672" align="center" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="top">
+
+            <!-- HEADER -->
+            {% block html_header %}
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#171F26">
+                    <tr>
+                        <td valign="middle" style="padding: 23px; padding-right: 0; font-family: Arial; color: #FFFFFF; font-size: 24px; font-weight: bold; line-height: 24px;">
+                            <span style="color: #FFFFFF; text-decoration: none;">
+                                <img src="{{ base_url~project.email_logo_path~'/'~(country ? country.countryCode : 'ru')~'.png' }}" alt="{% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %}" title="{% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %}" border="0" height="30" style="vertical-align: top;" />
+                            </span>
+                        </td>
+                        <td valign="middle" align="right" style="padding: 23px; padding-left: 0; font-family: Arial; color: #A6A39D; font-size: 13px; line-height: 19px;">
+                            {% set datePeriod -%}
+                                {% block date_period '' %}
+                            {%- endset %}
+                            {% if datePeriod %}{{ datePeriod }}  &bull;  {% endif %}<a href="{{ http_prefix }}://www.{% if country %}{{ country.baseHost }}{% else %}{{ project.base_host }}{% endif %}/" target="_blank" style="color: #2972A6; text-decoration: none;">{% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %}</a>
+                        </td>
+                    </tr>
+                </table>
+            {% endblock %}
+            <!-- /HEADER -->
+
+        </td>
+    </tr>
+    <tr>
+    <td valign="top">
+
+    <!-- BODY -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+    {% block text_part_wrapper %}
+        {% block text_part %}
+            <tr>
+                <td valign="top" style="padding: 24px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="left" valign="top" style="padding-bottom: 15px; font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+                                {% block text_part_header %}{{ block('subject') }}{% endblock %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" style="padding-bottom: 15px; font-family: Arial; color: #171F26; font-size: 13px; line-height: 19px;">
+                                {% block text_part_body %}{% endblock %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        {% endblock text_part %}
+        {% block text_part_bottom_border %}
+            <tr>
+                <td height="1" bgcolor="#F2F0ED" valign="top"></td>
+            </tr>
+        {% endblock text_part_bottom_border %}
+    {% endblock text_part_wrapper %}
+    </table>
+    <!-- /BODY -->
+
+    </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <!-- FOOTER -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#171F26">
+                <tr>
+                    <td valign="top" style="padding: 24px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            {% block unsubscribe_block %}
+                                {% if newsletterType is defined %}
+                                    {% set unsubscribeUrl = brouzie_helper('MetalNewsletterBundle').generateUnsubscribeUrl(recipient, newsletterType) %}
+                                {% endif %}
+                                {% if unsubscribeUrl|default(null) %}
+                                    <tr>
+                                        <td align="left" valign="top" style="padding-bottom: 20px; font-family: Arial; color: #A6A39D; font-size: 12px; line-height: 19px;">
+                                            Вы получили это письмо, потому что зарегистрированы на портале {{ project.title }}. Если вы не ждали этого письма, <a href="{{ unsubscribeUrl }}"
+                                                target="_blank" style="color: #FFFFFF; text-decoration: none;">отпишитесь от рассылки</a>.
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endblock unsubscribe_block %}
+                            <tr>
+                                <td align="left" valign="top" style="font-family: Arial; color: #A6A39D; font-size: 12px; line-height: 19px;">
+                                    {% if country %}{{ country.domainTitle }}{% else %}{{ project.title }}{% endif %} &copy; {{ project.copyright_year }}—{{ 'now'|date('Y') }} {% block user_agreement %}&ensp; <a href="{{ url('MetalCorpsiteBundle:Default:licenseAgreement') }}" target="_blank" style="color: #2972A6; text-decoration: none;">Пользовательское соглашение</a>{% endblock %}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% if project.email_rspm_template_name|length %}
+                    {{ include('MetalNewsletterBundle:footerTemplates:'~project.email_rspm_template_name~'.html.twig') }}
+                {% endif %}
+            </table>
+            <!-- /FOOTER -->
+        </td>
+    </tr>
+    </table>
+    <!-- /WRAPPER -->
+
+    <td>
+    </tr>
+    </table>
+
+    </body>
+    </html>
+{% endblock body_html %}
+
+{% block text_footer -%}
+{% if newsletterType is defined %}
+    {% set unsubscribeUrl = brouzie_helper('MetalNewsletterBundle').generateUnsubscribeUrl(recipient, newsletterType) %}
+{% endif %}
+{% if unsubscribeUrl|default(null) %}
+
+Вы получили это письмо, потому что зарегистрированы на портале {{ project.title }}. Если вы не ждали этого письма, отпишитесь от рассылки, перейдя по ссылке {{ unsubscribeUrl|raw }} .
+{% endif %}
+{% if country %}{{ country.domainTitle }} | www.{{ country.baseHost }}{% else %}{{ project.title }} | www.{{ project.base_host }}{% endif %} {% if app.request %}{% if app.request.attributes.get('country').supportPhone %}| {{ app.request.attributes.get('country').supportPhone }}{% endif %}{% else %}| +7 (495) 268-02-85{% endif %}
+{%- endblock %}

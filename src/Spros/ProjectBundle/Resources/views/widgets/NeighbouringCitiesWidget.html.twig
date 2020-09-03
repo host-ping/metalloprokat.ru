@@ -1,0 +1,19 @@
+<h3>В соседних городах</h3>
+<ul>
+    {% set routeName = 'SprosProjectBundle:Default:index_subdomain' %}
+    {% if category %}
+        {% set routeName = 'SprosProjectBundle:Default:index_subdomain_category' %}
+    {% endif %}
+
+    {% set attributesSlug = attributesCollection|length ? attributesCollection.getUrl() : '' %}
+    {% set attributesString = attributesCollection|length ? attributesCollection.toString(' ', ' ') : '' %}
+    {% set categorySlug = category ? category.getUrl(attributesCollection.getUrl()) : null %}
+    {% for city in cities %}
+        <li>
+            <span class="arrow">→</span>
+            <a class="has-arrow" href="{{ url(routeName, {'category_slug' : categorySlug, 'subdomain' : city ? city.slug : null}) }}">{{ category ? category.title : tokens.product_title.nominative|capitalize }}
+                {{ attributesString }} в {{ city.getTitleLocative }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

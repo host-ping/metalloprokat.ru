@@ -1,0 +1,14 @@
+MetalServicesBundle:RobokassaPayment:result:
+    path: /robokassa/result
+    defaults:  { _controller: MetalServicesBundle:RobokassaPayment:result }
+    methods:  [POST]
+
+MetalServicesBundle:RobokassaPayment:success:
+    path: /robokassa/success
+    defaults:  { _controller: MetalServicesBundle:RobokassaPayment:success }
+    methods:  [POST]
+
+MetalServicesBundle:RobokassaPayment:fail:
+    path: /robokassa/fail
+    defaults:  { _controller: MetalServicesBundle:RobokassaPayment:fail }
+    methods:  [POST]

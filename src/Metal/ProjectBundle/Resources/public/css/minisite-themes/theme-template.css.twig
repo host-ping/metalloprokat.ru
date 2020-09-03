@@ -1,0 +1,199 @@
+{% autoescape false %}
+    /* generated at {{ 'now'|date('d.m.Y H:i:s') }} */
+
+    .header-inner{
+    background: {{ colors['background'] }};
+    }
+
+    .header-inner .company-info{
+    behavior: url(/markup/js/PIE.htc);
+    zoom: 1;
+    background-color: rgba({{ colors['rgb_hover'] }}, 0.85);
+    -pie-background: rgba({{ colors['rgb_hover'] }}, 0.85);
+    }
+
+    .mini-site .side-left{
+    background: #f7f1e4;
+    border-right: 4px solid #fff;
+    }
+    .mini-site .side-left.without-products-block{
+    background: {{ colors['background'] }};
+
+    }
+
+    .mini-site .right-announcement-wrapper.employees-block-wrapper .js-fixed-side-banner{
+    background: {{ colors['background'] }}
+    }
+    .mini-site .premium-product-block.employees-block{
+    border-color: #fff;
+    }
+    .mini-site .side-left .products-wrapper{
+    background: {{ colors['background'] }};
+    }
+
+    .mini-site .content{
+    background: {{ colors['background'] }};
+    }
+
+    .company-menu{
+    border-bottom: 1px solid #fff;
+    }
+
+    {#.mini-site .product .button.favorites,#}
+    {#.mini-site .product .button.report{#}
+        {#background: {{ colors.background }};#}
+    {#}#}
+
+    .mini-site .deals .item{
+    background: {{ colors['background'] }};
+    border-color: #fff;
+    }
+    .mini-site .deals .item .hover-block .dropdown{
+    background: {{ colors['background'] }}
+    }
+    .mini-site .deals .item .hover-block .dropdown:hover{
+    background: {{ colors['hover_color'] }}
+    }
+    .mini-site .search-wrapper .form-text{
+    background: {{ colors['bg_color'] }};
+    border: 1px solid {{ colors['bg_color'] }};
+    color: {{ colors['hover_color'] }};
+    }
+
+    .mini-site .search-wrapper .form-text:focus{
+    background: #fff;
+    color: {{ colors['bg_color'] }};
+    }
+    .mini-site .icon-search-small:before{
+    color: {{ colors['hover_color'] }};
+    }
+    .mini-site .search-wrapper .form-text:focus + .icon-search-small:before{
+    color: {{ colors['bg_color'] }};
+    }
+    .mini-site .search-wrapper .search-field::-webkit-input-placeholder{
+    color: {{ colors['hover_color'] }};
+    }
+
+    .mini-site .similar-list .item .links-wrapper .report,
+    .mini-site .similar-list .item .links-wrapper .favorites{
+    border: 1px solid {{ colors['background'] }};
+    color: {{ colors['bg_color'] }}
+    }
+
+    .mini-site .icon-complaint:before,
+    .mini-site .icon-favorite-active:before,
+    .mini-site .icon-favorite:before{
+    color: {{ colors['bg_color'] }}
+    }
+
+    .mini-site .similar-list .item:hover{
+    background: {{ colors['hover_color'] }};
+    }
+
+    .mini-site .similar-list .item:hover .links-wrapper{
+        background: {{ colors['hover_color'] }};
+    }
+
+    .mini-site .company-contacts{
+    border-bottom: 1px solid #fff;
+    }
+
+    .mini-site .dropdown{
+    background: {{ colors['background'] }};
+    }
+
+    .mini-site .similar-list .item{
+    border-bottom: 1px dashed #fff;
+    }
+
+    .mini-site .result-tabs-wrapper,
+    .mini-site .reviews .item,
+    .mini-site .filters-block{
+    border-bottom: 1px solid #fff;
+    }
+
+    .mini-site .tabs li.active{
+    border-color: #fff;
+    background: {{ colors['background'] }};
+    }
+
+    .mini-site .tooltip{
+    background: {{ colors['hover_color'] }};
+    border-color: {{ colors['background'] }};
+    }
+
+    .mini-site .tooltip.with-bullet i{
+    border-color: {{ colors['background'] }} transparent transparent transparent;
+    }
+    .mini-site .chat-bubble-arrow{
+    border-color: {{ colors['hover_color'] }} transparent transparent transparent;
+
+    }
+    .mini-site .big-pattern.has-logo{
+    background: rgba({{ colors['rgb_hover'] }}, .85);
+    }
+    .mini-site .is-gradiented:after{
+    background: linear-gradient(left, RGBA({{ colors['rgba'] }}), {{ colors['background'] }}) !important;
+    background: -moz-linear-gradient(left, RGBA({{ colors['rgba'] }}), {{ colors['background'] }}) !important;
+    background: -webkit-linear-gradient(left, RGBA({{ colors['rgba'] }}), {{ colors['background'] }}) !important;
+    background: -o-linear-gradient(left, RGBA({{ colors['rgba'] }}), {{ colors['background'] }}) !important;
+    }
+    .mini-site .similar-list .item:hover .is-gradiented:after{
+    background: linear-gradient(left, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }}) !important;
+    background: -moz-linear-gradient(left, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }}) !important;
+    background: -webkit-linear-gradient(left, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }}) !important;
+    background: -o-linear-gradient(left, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }}) !important;
+    }
+    .mini-site .similar-list .left .title .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='{{ colors['argb_background_start'] }}', EndColorStr='{{ colors['argb_background_finish'] }}')";
+    }
+    .mini-site .is-gradiented-bottom:after{
+    background: linear-gradient(top, RGBA({{ colors['rgba'] }}), {{ colors['background'] }});
+    background: -moz-linear-gradient(top, RGBA({{ colors['rgba'] }}), {{ colors['background'] }});
+    background: -webkit-linear-gradient(top, RGBA({{ colors['rgba'] }}), {{ colors['background'] }});
+    background: -o-linear-gradient(top, RGBA({{ colors['rgba'] }}), {{ colors['background'] }});
+    }
+    .mini-site .deals .item:hover .is-gradiented-bottom:after{
+    background: linear-gradient(top, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }});
+    background: -moz-linear-gradient(top, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }});
+    background: -webkit-linear-gradient(top, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }});
+    background: -o-linear-gradient(top, RGBA({{ colors['rgb_hover'] }}, .2), {{ colors['hover_color'] }});
+    }
+    .mini-site .is-gradiented-bottom .ie-gradient-bottom{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='{{ colors['argb_background_start'] }}', EndColorStr='{{ colors['argb_background_finish'] }}')";
+    }
+    .mini-site .item:hover .is-gradiented-bottom .ie-gradient-bottom{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='{{ colors['argb_hover_start'] }}', EndColorStr='{{ colors['argb_hover_finish'] }}')";
+    }
+    .mini-site .similar-list .item:hover .left .title .ie-gradient{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, StartColorStr='{{ colors['argb_hover_start'] }}', EndColorStr='{{ colors['argb_hover_finish'] }}')";
+    }
+    .mini-site .see-more{
+    background: {{ colors['bg_color'] }};
+    }
+    .mini-site .see-more-block .loading-mask{
+    background-color: {{ colors['bg_color'] }};
+    }
+    .mini-site .is-bordered{
+    border-color: {{ colors['bg_color'] }}
+    }
+
+    .mini-site .user.link,
+    .mini-site .price{
+    color: {{ colors['primary'] }};
+    }
+    .mini-site .primary{
+    background: {{ colors['primary'] }};
+    }
+
+    .mini-site .deals .link,
+    .mini-site .offices.icon-check:after,
+    .mini-site .similar-list .link,
+    .mini-site .drop-link,
+    .mini-site .link{
+    color: {{ colors['secondary'] }};
+    }
+    .mini-site .secondary{
+    background: {{ colors['secondary'] }};
+    }
+{% endautoescape %}

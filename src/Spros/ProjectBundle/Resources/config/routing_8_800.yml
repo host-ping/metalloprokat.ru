@@ -1,0 +1,62 @@
+MetalUsersBundle:Registration:register:
+    path:   /registration
+    defaults:  { _controller: MetalUsersBundle:Registration:register }
+    host: %host_prefix%%base_host%
+
+SprosProjectBundle:Default:index:
+    path:  /
+    defaults: { _controller: SprosProjectBundle:Default:lightIndex }
+    host: %host_prefix_8_800%%base_host_8_800%
+
+SprosProjectBundle:Default:form:
+    path:  /form
+    defaults: { _controller: SprosProjectBundle:Default:form }
+    host: %host_prefix_8_800%%base_host_8_800%
+
+SprosProjectBundle:Default:parse:
+    path:  /parse
+    defaults: { _controller: SprosProjectBundle:Default:parse }
+    host: %host_prefix_8_800%%base_host_8_800%
+
+SprosProjectBundle:Subscription:subscribe:
+    path:  /metallspros/subscribe
+    # host not needed here!
+    defaults: { _controller: SprosProjectBundle:Subscription:subscribe }
+    methods:  [POST]
+
+SprosProjectBundle:Subscription:unsubscribe:
+    path:  /metallspros/unsubscribe
+    host: %host_prefix_8_800%%base_host_8_800%
+    defaults: { _controller: SprosProjectBundle:Subscription:unsubscribe }
+
+SprosProjectBundle:Subscription:confirmation:
+    path:  /metallspros/confirmation
+    host: %host_prefix_8_800%%base_host_8_800%
+    defaults: { _controller: SprosProjectBundle:Subscription:confirmation }
+
+SprosProjectBundle:Default:index_category:
+    path:   /{category_slug}/
+    host: %host_prefix_8_800%%base_host_8_800%
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: SprosProjectBundle:Default:lightIndex }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+
+SprosProjectBundle:Default:index_subdomain:
+    path: /
+    defaults:  { _controller: SprosProjectBundle:Default:lightIndex }
+    host: %host_prefix_8_800%%base_host_8_800%
+
+SprosProjectBundle:Default:index_subdomain_category:
+    path:   /{category_slug}/
+    host: %host_prefix_8_800%%base_host_8_800%
+    condition: "request.attributes.has('category')"
+    defaults:  { _controller: SprosProjectBundle:Default:lightIndex }
+    requirements:
+        category_slug: %category_with_parameters_slug_regex%
+
+SprosProjectBundle:Default:generate_robots:
+    path:     /robots.txt
+    host: %host_prefix_8_800%%base_host_8_800%
+    defaults: { _controller: MetalProjectBundle:Robots:generate, section: 8_800 }
+

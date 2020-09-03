@@ -1,0 +1,251 @@
+@media (max-width: 1250px) {
+	.portal .form .group .field-wrap + .field-wrap{margin-left: 0;}
+	.register-form .group .company-type-wrapper{width: 108px;}
+}
+@media (max-width: 790px) {
+	body{min-width: 100%;}
+	.portal .wrap, .wizzard .wrap, .mini-site .wrap, 
+	.portal #main:not(.main-wide) .wrap, #footer .wrap,
+	.wrap,.portal .search-block .more .wrap,
+	.head-announcements-wrapper .head-announcements, .mini-site #main, 
+	.portal #main:not(.main-wide),
+	.main-page .product-categories-wrapper,
+	.portal #main:not(.main-wide) .content-wide,
+	.portal #main:not(.main-wide) .content-wide.table-container,
+	.portal .view-category,
+	.portal .demand-data,
+	.portal .register-form .register-company,
+	.portal #main.main-wide .breadcrumbs-wrapper,
+	.portal .content-wide,
+	.portal .view-category .favorites_demands .demand_item,
+	.portal #main:not(.main-wide) .content-wide
+	{
+	    max-width: 100%;
+	    width: 100%;
+	}
+	.portal .main-menu-wrappe .float-left,
+	.portal .main-menu-wrappe .float-right,
+	.portal #header .float-left,
+	.portal #header .float-right,
+	.portal .search-block .float-left,
+	.portal .search-block .float-right,
+	.portal .sort-view,
+	.portal .demand_item .demand-info,
+	.portal .breadcrumbs.empty-breadcrumbs .add,
+	.portal .breadcrumbs.empty-breadcrumbs .site-info
+	{float: none;}
+	.portal .search-block{width: 100%;}
+	.portal .user-block{
+	    margin: 0 auto 10px;
+		padding: 0;
+	}
+	.portal .location{
+		display: block;
+		text-align: center;
+	}
+	.portal .logo-text{text-align: center;}
+	.portal .logo img{margin: auto;}
+	.portal .logo-text .header-logo-text{margin: 0;}
+	.portal .menu-holder,
+	.portal .main-menu li{
+		float: none;
+		left: auto;
+		border: none;
+	}
+	.portal .main-menu{
+		padding: 0;
+		left: auto;
+	}
+	.portal .main-menu li:first-child,
+	.portal .main-menu li.prev-active{border: none;}
+	.portal .compact-mode .main-menu li .link{padding: 10px 25px 13px;}
+	.portal .search-submit{margin: auto;}
+	.portal .change-location {
+	    display: block;
+	    margin: 0 auto 15px;
+        width: 200px;
+    	text-align: center;
+	}
+	.portal .search-input{
+		margin: 0 auto 15px;
+   	    display: block;
+        padding: 0 10px 0;
+	}
+	.portal .search-block .more .wrap{padding: 0;}
+	.portal #footer{height: auto;}
+	.portal .product-categories .item {
+	    text-align: center;
+	    width: 48%;
+	    padding: 0 0 10px;
+	    float: left;
+	    margin: 0 4px 15px;
+	    min-height: 180px;
+	}
+	.portal .intro .text{
+		font-size: 14px;
+		line-height: 20px;
+	}
+	.portal .main-register .main-register-button{
+		max-width: 336px;
+		width: 90%;
+	}
+	.portal .icon-search-big{
+		left: auto;
+		right: 0;
+	}
+	.portal #main:not(.main-wide) .left.table-cell,
+	.portal #main:not(.main-wide) .right.table-cell,
+	#main:not(.main-wide) .result-tabs-wrapper.tabs.demand_tabs{
+		width: 100%;
+		display: block;
+	}
+	.portal .table-container{display: block;}
+	.portal .see-more-block{width: 94%;}
+	.portal .demand_product{width: 100%;}
+	.portal .table-holder {
+	    max-width: 100vw;
+	    overflow-x: auto;
+	    width: 100%;
+	}
+	.portal .demand_product .title {min-width: 265px;}
+	.portal .demand_product .count {min-width: 122px;}
+	.portal .demand_links .float-left{float: left;}
+	.portal .demand_links li{margin: 0 0 10px;}
+	.portal .search-block .more .check-holder {
+    	padding: 0 10px 4px;
+	}
+	.portal .content-right{width: 100%;}
+	.portal .steps-block{
+		margin: auto;
+		display: block;
+		float: none;
+	}
+	.portal .breadcrumbs_item{display: block;}
+	.portal .register .register-block,
+	.portal .register-form .form-email, 
+	.portal .register-form .form-text{
+		width: 100%;
+	}
+	.portal .form .group .field-wrap + .field-wrap{margin-left: 0;}
+	.portal .form .group .field-wrap,
+	.portal .register-form .user-type.form-select {
+	    width: 100%;
+	    float: none;
+        padding: 0 15px;
+        box-sizing: border-box;
+	}
+	.portal .register-button {
+	    width: 95%;
+	    margin: auto;
+	}
+	.portal .register-form .agreement-wrapper{padding: 0 15px;}
+	.portal .promo-group .icon-help,
+	.portal .icon-error-color{
+		position: relative;
+		top: 0;
+	}
+	.portal .product-right .info-wrapper{
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.portal .similar-list .img.is-bordered{
+		margin: auto;
+    	display: block;
+    	float: none;
+	}
+	.portal #header .user-block-holder .float-left{float: left;}
+	.portal .user-block-holder{position: relative;}
+	.portal .location{margin: 0 0 15px;}
+	.portal .favorites.main-title{padding: 0 23px;}
+	.portal .favorites_result-tabs-wrapper{
+		padding: 0 34px;
+	    box-sizing: border-box;
+	}
+	.view-category .note-wrapper{box-sizing: border-box;}
+	.portal .view-category .notes-form{
+		float: none;
+	    margin: 0 0 20px;
+	}
+	.portal .view-category{
+		box-sizing: border-box;
+    	padding: 10px 24px 0;
+	}
+	.portal .view-category .note-wrapper{width: auto;}
+	.portal .view-category li{margin: 0 0 15px;}
+	.portal .view-category.favorites .view-company, 
+	.portal .view-category.companies .view-company{width: 100%;}
+	.portal .view-category.favorites .send-order, 
+	.portal .view-category.companies .send-order,
+	.portal .view-category.favorites .send-order, 
+	.portal .view-category.companies .send-order
+	{
+		width: 100%;
+	}
+	#main:not(.main-wide) .view-category.products .list .links{margin-left: 0;}
+	.portal .view-category .grid_item,
+	.portal .hover-block .dropdown{
+		width: 100%;
+	    box-sizing: border-box;
+	}
+	.portal .view-category .grid{
+		width: 100%;
+		margin: 0;
+	}
+	.portal .filters,
+	.portal .sidebar-content,
+	.portal .side-left{
+		width: 90%!important;
+	    box-sizing: border-box;
+    	margin: auto;
+    	border: none;
+	}
+	.register .register-form{
+		padding: 0 15px;
+		box-sizing: border-box;
+	}
+	.register-form .category-list-wrapper .item-group .item{
+		width: 50%;
+	}
+	.landing-page .land-text {
+		font-size: 25px;
+		line-height: 1.3;
+	}
+	.landing-page .land-text .land-slog {
+    	font-size: 19px;
+    	margin-bottom: 36px;
+	}
+	.landing-page .land-container .button-wrapper .button {
+    	padding: 15px 0;
+    	width: 50%;
+    	font-size: 17px;
+    	line-height: 1.3;
+	}
+	.wizzard .content-wide,
+	.wizzard-block{width: 100%;}
+	.wizzard-block .promotions-form .price, 
+	.wizzard-block .promotions-form .options{
+		display: block;
+	    margin: auto;
+	}
+	.wizzard .register-block{width: 85%;}
+	.wizzard .register-form .register-company,
+	.wizzard .form .group .field-wrap{width: 100%;}
+	.wizzard .register-form .group .user-company-wrapper{width: 67%;}
+	.wizzard .register-form .group .company-type-wrapper{ width: 30%; }
+	.wizzard .form .group .field-wrap + .field-wrap{margin-left: 0;}
+	.wizzard .company-type-wrapper.field-wrap{ margin-left: 3% !important;}
+
+}
+@media (max-width: 500px) {
+	.portal #content .intro .site-name{
+	    font-size: 27px;
+    	line-height: 37px;
+	}
+	.portal .intro .site-slogan {
+	    font-size: 19px;
+	    line-height: 28px;
+	}
+	/*.portal .product-categories .item {width: 47%;}*/
+	.portal #main:not(.main-wide) .width-181{width: auto;}
+	.portal .product-categories .item {width: 97%;}
+}

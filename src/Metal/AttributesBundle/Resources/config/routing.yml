@@ -1,0 +1,7 @@
+'MetalAttributesBundle:Api:loadAttributesByCategoryId':
+    path: /attributes/load-attributes-by-category-id
+    defaults: { _controller: MetalAttributesBundle:Api:loadAttributesByCategoryId }
+
+'MetalAttributesBundle:Api:getPossibleAttributesForTitle':
+    path: /attributes/set-possible-attributes
+    defaults: { _controller: MetalAttributesBundle:Api:getPossibleAttributesForTitle }

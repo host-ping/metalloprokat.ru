@@ -1,0 +1,24 @@
+{% extends 'MetalProjectBundle:Admin:list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $('body').delegate('.js-inline-submit', 'submit', function (e) {
+                e.preventDefault();
+
+                var $buttons = $(e.currentTarget).find(':submit').prop('disabled', true);
+                var url = $(e.currentTarget).attr('action');
+                var productParameters = $(e.currentTarget).serializeArray();
+
+                $.post(url, productParameters
+                        , function () {
+                            $buttons.prop('disabled', false)
+                        });
+            });
+
+            $('#{{ admin.uniqid }}_all_elements').prop('checked', true);
+        })
+    </script>
+{% endblock %}

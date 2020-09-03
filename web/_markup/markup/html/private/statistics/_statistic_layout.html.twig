@@ -1,0 +1,127 @@
+{% extends '@markup/private/_private_layout.html.twig' %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="./markup/js/libs/Highcharts/js/highcharts.src.js"></script>
+
+    <script type="text/javascript" src="./markup/js/charts.js"></script>
+{% endblock javascript %}
+
+{% block tabs %}
+    {% set defaultActiveTab = 'income' %}
+    <div class="result-tabs-wrapper clearfix">
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'income') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/statistics/income.html.twig') }}">Входящие клиенты</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'stats-demand') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/statistics/stats-demand.html.twig') }}">Работа с потребностями</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'stats-media') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/statistics/stats-media.html.twig') }}">Медийная реклама</a>
+                </li>
+                <li class="item {% if (activeTab|default(defaultActiveTab) == 'stats-content') %} active ie-radius {% endif %}">
+                    <a class="link" href="{{ path('private/statistics/stats-content.html.twig') }}">Управление информацией</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block filters %}
+    <div class="statistic filters-block outline-right clearfix">
+        <ul class="sort-period list float-left">
+            <li class="item float-left">
+                <a class="period-link icon-check black link js-popover-opener" data-popover="#period" href="#">За неделю</a>
+                <div id="period" class="drop-wrapper period-list opacity-border">
+                    <ul class="dropdown">
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">За день</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">За неделю</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">За месяц</a>
+                        </li>
+                        <li class="drop-item">
+                            <a class="drop-link" href="#">За весь период</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item float-left">
+                <div class="period-from float-left">
+                    <p class="text">
+                        c <span class="icon-calendar js-popover-opener clickable" data-popover="#datepicker-period-from"></span>
+                        <input type="text" id="date_from" class="date js-popover-opener" value="20 янв 2014" data-popover="#datepicker-period-from" />
+                    </p>
+
+                    {% set datepickerConfig = {
+                        'selectedDate': '2014-01-20',
+                        'targets': [
+                            {
+                                "format": "DD.MM.YYYY",
+                                "target": "url",
+                                "query": "date_from"
+                            },
+                            {
+                                "format": "D MMM YYYY",
+                                "target": "#date_from"
+                            }
+                        ]
+                    } %}
+                    <div id="datepicker-period-from"
+                         class="drop-wrapper popover-block datepicker opacity-border js-datepicker"
+                         data-datepicker-config='{{ datepickerConfig|json_encode|raw }}'></div>
+                </div>
+                <div class="period-for float-left">
+                    <p class="text">
+                        по <span class="icon-calendar js-popover-opener clickable" data-popover="#datepicker-period-to"></span>
+                        <input type="text" id="for" class="date" name="for" />
+                    </p>
+                </div>
+            </li>
+            <li class="item float-left">
+                <a class="period-link icon-check black link" href="#">По дням</a>
+            </li>
+        </ul>
+        <div class="all float-right">
+            <a class="period-link icon-check black link" href="#">Все</a>
+        </div>
+        <div class="chart-fields-wrapper float-right">
+            <span class="chart-link icon-check black clickable link js-popover-opener js-chart-current-field" data-popover="#chart-fields">Обратн. звонки пришло / обр.</span>
+            <div id="chart-fields" class="drop-wrapper fields-list opacity-border">
+                <ul class="dropdown js-popover-self-closer">
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Просмотр товаров</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Переходы на сайт</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Просмотры телефонов</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Заявки пришло / обр.</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower current" data-chart-show="#chart-wrapper-1">Обратн. звонки пришло / обр.</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Отзывы</span>
+                    </li>
+                    <li class="drop-item">
+                        <span class="drop-link clickable js-chart-shower" data-chart-show="#chart-wrapper-1">Жалобы пришло / обр.</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock filters %}
+{% block sidebar %}
+    {% set activeMenu = 'statistics' %}
+    {{ parent() }}
+{% endblock sidebar %}

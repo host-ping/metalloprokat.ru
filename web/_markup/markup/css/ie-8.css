@@ -1,0 +1,67 @@
+body{
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+.main-menu li a{width: 95px;}
+.jq-selectbox__select,
+.jq-selectbox .jq-selectbox__dropdown,
+.scroll-element.scroll-y .scroll-bar,
+.ie-radius{
+    behavior: url(/markup/js/PIE.htc);
+    zoom: 1;
+    position: relative;
+}
+.tooltip{
+    behavior: url(/markup/js/PIE.htc);
+    zoom: 1;
+}
+.corporate-content .clients .client-logo img{
+    display: block;
+    border-radius: 100%;
+    width: 72px;
+    height: 72px;
+    position: relative;
+    zoom: 1;
+    behavior: url(/markup/js/PIE.htc);
+}
+.loading-mask.with-opacity-bg{
+    behavior: url(/markup/js/PIE.htc);
+    -pie-background:rgba(255,255,255,0.6);
+    zoom: 1;
+}
+.placeholder{
+    color: #919191 !important;
+}
+.product-label .label-link:after{
+    top: 15px;
+}
+.company-logo .img-link img{
+    display: block;
+    width: 64px;
+}
+body fieldset{
+    padding: 0;
+    border: none 0;
+}
+.demand-subscription-block .subscription-products .item.is-invisible:hover .delete-btn{
+    display: none;
+}
+
+.add-review-form .toggle-block .item{
+    width: 210px;
+}
+.view-category .list .product-logo .img-link img{
+    width: 136px;
+    height: 136px;
+}
+.view-category .grid .grid_item .product-logo .img-link img{
+    width: 188px;
+    height: 188px
+}
+.opacity-border,
+.map-balloon.opacity-border{
+    border: 4px solid #919191;
+    box-shadow: none;
+}
+.map-balloon:before{
+    border-color: #919191 #919191 transparent transparent;
+}

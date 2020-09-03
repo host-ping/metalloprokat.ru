@@ -1,0 +1,7 @@
+### NEW ENGINE ###
+
+#RewriteRule ^spros/(.*)$ http://metalloprokat.brouzie.com/new/web/app.php/$0 [L,QSA,P]
+#RewriteRule ^spros/(.*)$ http://metalloprokat.brouzie.com/new/web/$0 [L,QSA,P]
+RewriteRule ^spros/(.*)$ /new/web/$0 [L,QSA]
+
+###

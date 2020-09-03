@@ -1,0 +1,445 @@
+{% extends '@markup/private/support/_support_layout.html.twig' %}
+{% block title 'Support list' %}
+
+{% block content %}
+    <div id="content" class="support-content private-room-content content-right outline-right float-right">
+        <div class="private-scrollable content-scrollable js-scrollable">
+            <div class="private-fix-width">
+                <div class="support-admin-block clearfix">
+                    <div class="add-btn-wrapper float-right">
+                        <a href="#" class="button green-bg ie-radius js-popup-opener ie-radius" data-popup="#add-support-request">Добавить завку</a>
+                    </div>
+                </div>
+                <div class="table-block">
+                    <table class="support-list">
+                        <thead>
+                            <tr class="row"> {#fixed#}
+                                <th class="theme col">
+                                    <span>Тема</span>
+                                </th>
+                                <th class="creation-date col">
+                                    <span>Дата создания</span>
+                                </th>
+                                <th class="comment-count col">
+                                    <span>Комментарии</span>
+                                </th>
+                                <th class="last-comment col">
+                                    <span>Последний комментарий</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row active">
+                                <td class="theme col">
+                                    <a class="link" href="{{ path('private/support/support-list.html.twig') }}">Не могу сменить пароль</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">+1</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>12 мар 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                            <tr class="row">
+                                <td class="theme col">
+                                    <a class="link" href="#">Оплата тарифа</a>
+                                </td>
+                                <td class="creation-date col">
+                                    <span>12 апр 2013</span>
+                                </td>
+                                <td class="comment-count col">
+                                    <span class="ie-radius">2</span>
+                                </td>
+                                <td class="last-comment col">
+                                    <span>5 янв 2013</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

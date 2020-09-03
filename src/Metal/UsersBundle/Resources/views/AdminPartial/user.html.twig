@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.user %}
+        <div>
+            {% if not object.user.isEnabled %}
+            <strike>{{ object.user.fullName }}</strike>
+            {% else %}
+                {{ object.user.fullName }}
+            {% endif %}
+            <strong>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.user.id} } }) }}">{{ object.user.id }}</a>)</strong>
+        </div>
+    {% endif %}
+{% endblock %}

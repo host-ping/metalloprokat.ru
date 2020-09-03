@@ -1,0 +1,328 @@
+{% import '@MetalCompanies/macroses.html.twig' as companyMacroses %}
+
+<li class="company-item clearfix" itemscope itemtype="http://schema.org/Organization">
+    <div class="view-company float-left">
+        <div class="holder">
+            <div class="top-block clearfix">
+                <div class="company-logo float-left">
+                    {% set companyLogoUrl = imageHelper.getCompanyLogoUrl(company, 'sq64', 'portal') %}
+                    {% if company.minisiteEnabled %}
+                        <a class="img-link pattern-small" {% if currentCity %}rel=nofollow{% endif %} data-href="{{ companyViewUrl }}">
+                            {% if companyLogoUrl %}
+                                <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" itemprop="logo"/>
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        {% if companyLogoUrl %}
+                            <img src="{{ companyLogoUrl }}" alt="{{ company.title }}" title="{{ company.title }}" itemprop="logo"/>
+                        {% endif %}
+                    {% endif %}
+                    {% if company.isPromo %}
+                        <div class="promo-label label company-label top">
+                            <span class="label-link">Промо</span>
+                        </div>
+                    {% endif %}
+                </div>
+                {# TODO: починить ширину этого блока http://projects.brouzie.com/browse/MET-2375 #}
+                <div class="company-info float-left" style="width: 270px;">
+                    <div class="prod-title clearfix">
+                        <div class="star-panel float-right">
+                            {% if companyHelper.isCompanyOnline(company) %}
+                                <div class="status float-left green-bg ie-radius ie-radius">Онлайн</div>
+                            {% endif %}
+                            <div class="rating float-right">
+                                {{ companyMacroses.rating(company) }}
+                            </div>
+                        </div>
+                        <div class="title">
+                            {% if company.minisiteEnabled %}
+                                <a href="{{ companyViewUrl }}" {% if currentCity %}rel=nofollow{% endif %} title="{{ company.title }}" class="is-gradiented-bottom" itemprop="review">
+                                    <span itemprop="legalName">{{ company.title }}</span>
+                                </a>
+                            {% else %}
+                                <span itemprop="legalName">{{ company.title }}</span> {#fixme: нужно выводить с теми же стилями что и ссылки#}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <p class="localization gray60-color">
+                        <span itemscope itemprop="address">{{ productHelper.getDeliveryString(company) }}</span>
+                    </p>
+
+                    {% set contactInfo = company.getContactInfo() %}
+                    {% if contactInfo.isContactsShouldBeVisible() %}
+                        {% set site = contactInfo.site ?: company.site %}
+                        {% if site %}
+                            <a target="_blank" rel="noopener noreferrer"
+                               data-href="{{ path('MetalStatisticBundle:Default:redirectSite', {
+                                   'source' : 'companies-list',
+                                   'object-id' : company.id,
+                                   'object-kind' : 'company',
+                                   'url': site,
+                                   'category-id' : category ? category.id : null}) }}"
+                            >{{ brouzie_helper('MetalProjectBundle:Formatting').getDomain(site) }}</a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if contactInfo.isContactsShouldBeVisible() %}
+                        {% set phonesString = company.getAttribute('phones_string')|default(contactInfo.getPhonesAsString())|default(company.getPhonesAsString()) %}
+
+                        {% if phonesString %}
+                            <div class="contacts">
+                                <span class="phone-text float-left">
+                                    <span class="curr-phone float-left js-phone"
+                                          itemprop="telephone"
+                                          data-object-id="{{ company.id }}"
+                                          data-object-kind="company"
+                                          data-source="companies-list"
+                                            {% if category %}
+                                                data-category-id="{{ category.id }}"
+                                            {% endif %}
+                                          data-url="{{ path('MetalStatisticBundle:Default:showContact') }}"
+                                          data-phone-of-company="{{ company.id }}"
+                                            >{{ phonesString }}</span>
+                                </span>
+                                <span class="callback link clickable js-popup-opener"
+                                      data-popup="#callback"
+                                      data-callback-url="{{ path('MetalCallbacksBundle:Callback:save', {'id' : company.id, 'target_object' : 'company', 'from': 'companies-list', 'category': category ? category.id : null}) }}"
+                                      data-callback-text="Меня интересует {{ productTitle }} в {{ companyCity.titleLocative }}"
+                                        >обратный звонок</span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <ul class="links clearfix">
+                <li class="links_report item float-left clearfix">
+                    <span class="button report clickable is-bordered js-tooltip-opener js-popup-opener ie-radius"
+                       data-tooltip-title="Пожаловаться"
+                       data-popup="#complaint-company"
+                       data-object-id="{{ company.id }}"
+                       data-complaint-url="{{ path('MetalComplaintsBundle:Complaint:complaint', {'id' : company.id, 'kind' : 'company', 'category' : category ? category.id : null}) }}">
+                        <span class="icon-complaint"></span>
+                    </span>
+                </li>
+                {% if company.minisiteEnabled %}
+                    <li class="links_comment item medium float-left clearfix">
+                        {% set reviewsCount = company.counter.reviewsCount %}
+                        <a rel="nofollow" data-href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:reviews', {'domain' : company.domain, '_secure' : company.packageChecker.isHttpsAvailable() }) }}" class="button comment is-bordered ie-radius">
+                            <span class="text">Отзывы</span>
+                            <span class="icon-comment {% if reviewsCount %}active{% endif %} float-right"></span>
+                            {% if reviewsCount %}
+                                <span class="count {% if reviewsCount %}red-color{% endif %} float-right">{{ reviewsCount|number_format_decimal }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="item medium float-left clearfix {% if not is_granted('ROLE_USER') %}js-popup-opener{% endif %}"
+                    {% if not is_granted('ROLE_USER') %}data-popup="#login"{% endif %}>
+                    <span class="button favorites is-bordered ie-radius {% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if company.getAttribute('favoriteCompany') %}g-hidden{% endif %}"
+                          data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : company.id, 'object' : 'company'}) }}">
+                        <span class="text">В Избранное</span>
+                        <span class="icon-favorite float-right"></span>
+                    </span>
+
+
+                    <div class="{% if is_granted('ROLE_USER') %}js-toggle-favorite{% endif %} {% if not company.getAttribute('favoriteCompany') %}g-hidden{% endif %}"
+                         data-url="{{ path("MetalUsersBundle:Favorite:toggleFavorite", {'id' : company.id, 'object' : 'company'}) }}">
+                        <span class="button favorites active-link is-bordered js-togglable-block ie-radius">
+                            <span class="text">В Избранном</span>
+                            <span class="icon-favorite-active float-right"></span>
+                        </span>
+                        <span class="button favorites delete blue-bg g-hidden js-togglable-block ie-radius">
+                            <span class="text">Удалить</span>
+                            <span class="icon-favorite-del float-right"></span>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="send-order {% if not productsCount or not product or product.isVirtual %} no-result {% endif %} float-left">
+        <div class="holder clearfix">
+            {% if product and not product.isVirtual %}
+                {% set altSearchTitle = "#{productTitle} в #{currentTerritory.titleLocative}" %}
+                {% set altTitle = "#{product.title} в #{currentTerritory.titleLocative}" %}
+
+                <div class="product-info float-left" itemscope itemtype="http://schema.org/Offer">
+                    <div class="title">
+                        {% set hrefAttr = category ? 'data-href' : 'href'  %}
+                        <a {{ hrefAttr }}="{{ productViewUrl }}" class="small-link is-gradiented-bottom" title="{{ altSearchTitle }}">
+                            <span>{{ productTitle }}</span>
+                            {% if category %}
+                                <span class="g-hidden" itemprop="category">{{ category.title }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
+                    {% if product.size %}
+                        <p class="size gray60-color" ng-bind="'{{ tokens.product_volume_title|capitalize }} {{ product.getCutSize() }}'">{{ tokens.product_volume_title|capitalize }} {{ product.size }}</p>
+                    {% endif %}
+                    {% if productHelper.isContractPrice(company.getAttribute('company_price')) %}
+                        <p class="price gray60-color" itemprop="price">цена договорная</p>
+                    {% elseif company.getAttribute('company_price')  %}
+                        <p class="price gray60-color">от
+                            <span class="strong red-color
+                                {% if product.getAttribute('normalized_price') %}other-currency js-helper-opener{% endif %}"
+                                    data-text="примерно <span class='red-color'>
+                                {{ product.getAttribute('normalized_price')|number_format_decimal }}
+                                <span class='{{ app.request.attributes.get('country').currency.symbolClass }}'></span></span>"
+                            >
+                                <span itemprop="price" content="{{ company.getAttribute('company_price') }}">{{ company.getAttribute('company_price')|number_format_decimal }}</span>
+                                <span class="{{ product.currency.symbolClass }}"></span>
+                                <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                            </span>
+                            {% if product.measureId %}
+                                <span> за {{ product.measure.tokenPrice }}</span>{% endif %}</p>
+                    {% endif %}
+                    <div class="information">
+                        {% set productUpdatedAt = formatHelper.formatDate(company.getAttribute('product_updated_at')) %}
+                        {% if company.getAttribute('product_updated_at') > date('-30 days') %}
+                            <span class="updated-date with-bullet">Обновлено {{ productUpdatedAt }}</span>
+                        {% else %}
+                            <!--noindex-->
+                                <span class="updated-date with-bullet" ng-bind="'Обновлено {{ productUpdatedAt }}'"></span>
+                            <!--/ noindex -->
+                        {% endif %}
+                        <span class="dot">.</span>
+                        <a data-href="{{ productViewUrl }}" class="all-prod">Всего {{ productsCount|number_format_decimal }}</a>
+                    </div>
+                </div>
+                <div class="img is-bordered float-right">
+                    <div class="img-holder">
+                        <a class="img-link pattern-small" data-href="{{ productViewUrl }}">
+                            {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq40', 'portal') %}
+                            {% if imageUrl %}
+                                <img src="{{ imageUrl }}" alt="{{ altTitle }}" title="{{ altTitle }}" itemprop="image" itemtype="http://schema.org/Thing"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            {% elseif companyProducts %}
+                <div class="holder clearfix">
+                    <div class="tooltip-holder clearfix">
+                        {% for product in companyProducts %}
+                            <div id="inform-tooltip-{{ product.id }}" class="product-informer tooltip grey with-bullet g-hidden">
+                                <p class="t is-gradiented">{{ product.title }}</p>
+                                <p class="i">
+                                    {% if product.size %}
+                                        {{ tokens.product_volume_title|capitalize }} {{ product.getCutSize() }},
+                                    {% endif %}
+                                    {% if product.isContractPrice() %}
+                                        <span class="gray60-color">цена договорная</span>
+                                    {% else %}
+                                        {% if product.isPriceFrom %}от {% endif %}
+                                        <strong class="price red-color">
+                                            {{ product.price|number_format_decimal }}
+                                            <span class="{{ product.currency.symbolClass }}"></span>
+                                            <span class="currency {% if product.currency.symbolClass %}g-hidden{% endif %}">{{ product.currency.token }}</span>
+                                        </strong>
+                                        {% if product.measureId  %}
+                                            за {{ product.measure.tokenPrice }}
+                                        {% endif %}
+                                    {% endif %}
+                            </div>
+                        {% endfor %}
+                        {% for product in companyProducts %}
+                            {% set altTitle = "#{product.title} в #{currentTerritory.titleLocative}" %}
+
+                            <div class="img is-bordered float-left">
+                                <div class="img-holder">
+                                    <a class="img-link pattern-small js-tooltip-opener" data-tooltip="#inform-tooltip-{{ product.id }}"
+                                       href="{{ path('MetalProductsBundle:Product:view_subdomain', {'id' : product.id, 'subdomain' : subdomain}) }}">
+                                        {% set imageUrl = imageHelper.getPhotoUrlForProduct(product, 'sq40', 'portal') %}
+                                        {% if imageUrl %}
+                                            <img src="{{ imageUrl }}" alt="{{ altTitle }}" title="{{ altTitle }}"/>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% if productsCount > companyProducts|length  %}
+                            <div class="img is-bordered float-left">
+                                <div class="img-holder">
+                                    <a class="img-link" data-href="{{ productViewUrl }}">
+                                        <span class="icon-points"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <a href="{{ productViewUrl }}" class="link more-link">Всего {{ productsCount|number_format_decimal }} {{ 'products_by_count'|transchoice(productsCount, [], 'MetalProductsBundle') }}</a>
+                </div>
+            {% else %}
+                {% set displayTitles = 3 %}
+
+                {% set categoryTitles = company.companyCategoriesTitles %}
+                {% if categoryTitles %}
+                    {% set moreTitlesCount = categoryTitles|length - displayTitles %}
+
+                    {% set encodedContent %}
+                        <div class="empty">
+                            Компания торгует {{ categoryTitles|slice(0, displayTitles)|join(', ') }}
+                            {% if moreTitlesCount > 0 %}
+                                и
+                                <a class="link js-popover-opener" data-popover="#company-categories-{{ company.id }}">
+                                    еще {{ moreTitlesCount }}</a>
+                                <div id="company-categories-{{ company.id }}" class="drop-wrapper company-categories-list opacity-border">
+                                    <div class="js-scrollable">
+                                        <div class="dropdown">
+                                            <p class="black15-color">{{ categoryTitles|slice(displayTitles)|join(', ') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endset %}
+                    <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}"></span>
+                {% endif %}
+
+                {% set cityTitles = company.companyDeliveryTitles %}
+                {% if cityTitles %}
+                    {% set moreTitlesCount = cityTitles|length - displayTitles %}
+                    {% if not companyProducts %}
+                        {% set encodedContent %}
+                            <div class="empty">
+                                Осуществляет доставку в {{ cityTitles|slice(0, displayTitles)|join(', ') }}
+                                {% if moreTitlesCount > 0 %}
+                                    и
+                                    <a class="link js-popover-opener" data-popover="#company-cities-{{ company.id }}">
+                                        еще {{ moreTitlesCount }}</a>
+
+                                    <div id="company-cities-{{ company.id }}" class="drop-wrapper company-cities-list opacity-border">
+                                        <div class="js-scrollable">
+                                            <div class="dropdown">
+                                                <p class="black15-color">{{ cityTitles|slice(displayTitles)|join(', ') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endset %}
+                        <span data-encoded-content="{{ encodedContent|base64_encode|escape('html_attr') }}"></span>
+                    {% endif %}
+                {% endif %}
+
+                {% if not cityTitles and not categoryTitles %}
+                    <!--noindex--><p class="empty text-centered">Компания еще не загрузила товары</p><!--/ noindex -->
+                {% endif %}
+            {% endif %}
+        </div>
+        <span class="send-order_send-button button clickable send-button ie-radius {% if product or companyProducts %}red-bg {% else %} blue-bg {% endif %} ie-radius"
+           popup-opener="#request-private-demand"
+           data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_private_form') }}"
+           data-demand-text="Заявка для компании {{ company.title }}"
+           data-company-id="{{ company.id }}"
+           data-product-text="{{ productTitle }}"
+           data-city-text="{{ companyCity.title }}"
+           data-city-id="{{ companyCity.id }}"
+           {% if category %}
+               data-product-category-id="{{ category.id }}"
+           {% endif %}
+        {% if product and not product.isContractPrice() %}
+            data-volume-type="{{ product.measureId }}"
+        {% endif %}
+           data-product-city-id="{{ companyCity.id }}">{% if product or companyProducts %}Отправить заявку{% else %}Запросить цены{% endif %}</span>
+    </div>
+</li>

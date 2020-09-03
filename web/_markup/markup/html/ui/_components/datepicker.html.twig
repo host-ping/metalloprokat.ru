@@ -1,0 +1,105 @@
+<script id="calendar-template" type="text/html">
+    <div class="heading white-bg">
+        <div class="date icon-calendar"><%= selectedDate.format('D MMM YYYY') %></div>
+    </div>
+    <div class="calendar-wrapper white95-bg">
+        <div class="calendar-navigation clearfix">
+            <div class="month float-left">
+                <ul class="month-list">
+                    <li class="item"><%= _.str.capitalize(month) %></li>
+                </ul>
+                <div class="nav-btn">
+                    <span class="prev btn clndr-previous-button">prev</span>
+                    <span class="next btn clndr-next-button">next</span>
+                </div>
+            </div>
+            <div class="year float-right">
+                <ul class="year-list">
+                    <li class="item"><%= year %></li>
+                </ul>
+                <div class="nav-btn">
+                    <span class="prev btn clndr-previous-year-button">prev</span>
+                    <span class="next btn clndr-next-year-button">next</span>
+                </div>
+            </div>
+        </div>
+        <table class="calendar">
+            <thead>
+                <tr class="row">
+                    <% _.each(daysOfTheWeek, function(day) { %>
+                        <th class="col"><%= day %></th>
+                    <% }); %>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i = 0; i < numberOfRows; i++) { %>
+                    <tr class="week row">
+                        <% for (var j = 0; j < 7; j++){ %>
+                            <% var d = j + i * 7; %>
+                            <% var dayTs = days[d].date.format('YYYY-MM-DD'); %>
+                            <% var selectedDayTs = selectedDate.format('YYYY-MM-DD'); %>
+                            <% var rowClass = ''; %>
+                            <% if (j == 0) { %>
+                                <% rowClass += ' first'; %>
+                            <% } %>
+                            <% if (j == 6) { %>
+                                <% rowClass += ' last'; %>
+                            <% } %>
+
+                            <% if (!relatedDatepickerDate) { %>
+                                <% if (dayTs == selectedDayTs) { %>
+                                    <% rowClass += ' in-range'; %>
+                                    <% rowClass += ' first-range'; %>
+                                    <% rowClass += ' last-range'; %>
+                                <% } %>
+                            <% } else { %>
+                                <% var relatedSelectedDayTs = relatedDatepickerDate.format('YYYY-MM-DD'); %>
+
+                                <% if (relatedDatepickerMode == 'finish') { %>
+                                    <% if (dayTs >= selectedDayTs && dayTs <= relatedSelectedDayTs) { %>
+                                        <% rowClass += ' in-range'; %>
+
+                                        <% if (dayTs == selectedDayTs) { %>
+                                            <% rowClass += ' first-range'; %>
+                                        <% } %>
+                                        <% if (dayTs == relatedSelectedDayTs) { %>
+                                            <% rowClass += ' last-range'; %>
+                                        <% } %>
+                                    <% } %>
+                                <% } else { %>
+                                    <% if (dayTs <= selectedDayTs && dayTs >= relatedSelectedDayTs) { %>
+                                        <% rowClass += ' in-range'; %>
+
+                                        <% if (dayTs == selectedDayTs) { %>
+                                            <% rowClass += ' last-range'; %>
+                                        <% } %>
+                                        <% if (dayTs == relatedSelectedDayTs) { %>
+                                            <% rowClass += ' first-range'; %>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+
+                            <% } %>
+
+                            <% if (days[d].classes.indexOf('today') > -1) { %>
+                                <% rowClass += ' current'; %>
+                            <% } %>
+
+                            <% if (days[d].classes.indexOf('adjacent-month') > -1) { %>
+                                <td class="col disabled <%= rowClass %>">
+                                    <%= days[d].day %>
+                                </td>
+                            <% } else { %>
+                                <td class="col <%= rowClass %>">
+                                    <div class="elem">
+                                        <span class="link ie-radius <%= days[d].classes %>"><%= days[d].day %></span>
+                                    </div>
+                                </td>
+                            <% } %>
+                        <% } %>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</script>

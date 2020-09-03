@@ -1,0 +1,62 @@
+{% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% for callback in pagerfanta %}
+    <li class="item clearfix">
+        <div class="phone-text float-left">
+            {{ callback.phone }}
+        </div>
+        <div class="date-text float-left">
+            {{ formattingHelper.formatDateTime(callback.createdAt) }}
+        </div>
+        <div class="page-from float-left">
+            <p class="text is-gradiented">
+                {%- if callback.isFromProduct -%}
+                    {{- callback.callFromType.title~' ' -}}
+                    <a class="link" href="
+                    {{- path('MetalProductsBundle:Product:view_subdomain', {'id': callback.product.getId(), 'subdomain': callback.product.getBranchOffice().getCity().getSlugWithFallback()}) -}}
+                    " title="{{ callback.product.title }}">
+                        {{- callback.product.title -}}
+                    </a>
+                {% elseif callback.isFromMiniSite %}
+                    <a class="link" href="{{ brouzie_helper('MetalProjectBundle:Url').generateUrl('MetalMiniSiteBundle:MiniSite:view', { 'domain': callback.company.domain, '_secure' : callback.company.packageChecker.isHttpsAvailable() }) }}" title="{{ callback.callFromType.title }}">{{ callback.callFromType.title }}</a>
+                {% else %}
+                    {{ callback.callFromType.title }}
+                {% endif %}
+            </p>
+            {% if callback.city %}
+                <p class="city text">
+                    {{ callback.city.title }}
+                </p>
+            {% endif %}
+        </div>
+        <div class="status float-left">
+            {% if not callback.processedAt %}
+                <span class="callback-btn button clickable blue-bg js-process-btn ie-radius" data-url="{{ path('MetalPrivateOfficeBundle:Callbacks:processed', {'id': callback.id }) }}">Перезвонили</span>
+                <div class="loading-mask g-hidden">
+                    <div class="spinner"></div>
+                </div>
+            {% else %}
+                <p class="text">
+                    <strong>Перезвонили</strong>
+                    <span class="js-processed-date">{{ formattingHelper.formatDateTime(callback.processedAt) }}</span><br />
+                    <strong>{{ callback.processedBy.fullName }}</strong>
+                </p>
+            {% endif %}
+        </div>
+    </li>
+{% endfor %}
+
+{% if pagerfanta.hasNextPage() %}
+    <li class="see-more-block-wrapper" id="callbacks-load-more">
+        <div class="see-more-block">
+            <a class="see-more button js-load-more ie-radius"
+               href="{{ pagerfanta_page_url(pagerfanta, pagerfanta.getNextPage()) }}"
+               data-load-more-replace="#callbacks-load-more"
+            >Показать еще...</a>
+
+            <div class="loading-mask g-hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </li>
+{% endif %}

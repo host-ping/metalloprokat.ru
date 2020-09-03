@@ -1,0 +1,81 @@
+{% extends 'MetalProductsBundle::search_result_layout.html.twig' %}
+
+{# @var \Metal\CategoriesBundle\Helper\CompaniesListSeoHelper companiesListSeoHelper #}
+{% set companiesListSeoHelper = brouzie_helper('MetalCompaniesBundle:CompaniesListSeo') %}
+
+{# @var \Metal\ProjectBundle\Helper\SeoHelper seoHelper #}
+{% set seoHelper = brouzie_helper('MetalProjectBundle:Seo') %}
+
+{% block title companiesListSeoHelper.getMetaTitleForCompanyCatalogPage() %}
+
+{% block meta %}
+    {{ seoHelper.getAdditionalMetaTagsForSearchResults(companiesViewModel.pagerfanta)|raw }}
+    {{ seoHelper.getMetaPagination(companiesViewModel.pagerfanta)|raw }}
+{% endblock %}
+
+{% block meta_description companiesListSeoHelper.getMetaDescriptionForCompanyCatalogPage(productTabsWidget) %}
+
+{% block canonical_url seoHelper.getCanonicalUrlForSearchResults() %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ include('@MetalProject/partials/yandex_maps_initialization.html.twig') }}
+{% endblock javascripts %}
+
+{% block callback %}
+    {% set displayCallbackBlock = true %}
+    {% set callbackFormFrom = 'companies-list' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block tab_content %}
+    {% set productTitle = '' %}
+    {% set attributesCollection = app.request.attributes.get('attributes_collection') %}
+    {% if attributesCollection|length %}
+        {% set productTitle = attributesCollection.toString(' ', ' ') %}
+    {% endif %}
+
+    {% if category %}
+        {% set productTitle = category.title ~ ' ' ~ productTitle %}
+    {% endif %}
+
+    <div class="map-page map-wrapper">
+        {% set currentRegion = app.request.attributes.get('region') %}
+        {% set currentCity = app.request.attributes.get('city') %}
+        {% set companies = brouzie_helper('MetalProductsBundle').productToArrayAsCompany(companiesViewModel.pagerfanta, productTitle) %}
+        {% set center = null %}
+        {% if currentCity %}
+            {% set center = [currentCity.longitude, currentCity.latitude] %}
+            {% set zoom = 10 %}
+        {% endif %}
+        {% if currentRegion %}
+            {% set center = [currentRegion.administrativeCenter.longitude, currentRegion.administrativeCenter.latitude] %}
+            {% set zoom = 8 %}
+        {% endif %}
+        {% if not currentRegion and not currentCity %}
+            {% for company in companies %}
+                {% if company.coord[0] != 0 and not center %}
+                    {% set center = company.coord %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {% if companies %}
+            <div id="map"></div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var cm = new MetalMaps.CompaniesMap($('#map')[0], {
+                        zoom: {{ zoom|default(4) }},
+                        center: {{ center|json_encode|raw }}
+                    }, {{ companies|json_encode|raw }}, $('.js-map-toggle'));
+                });
+            </script>
+        {% else %}
+            <div class="no-favorites js-calc-height">
+                <span class="text">Нет компаний для отображения на карте</span>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

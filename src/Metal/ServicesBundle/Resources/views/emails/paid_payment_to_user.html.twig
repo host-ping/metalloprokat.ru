@@ -1,0 +1,26 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Оплата пакета услуг{% endblock %}
+
+{% block body_text -%}
+Добрый день!
+Благодарим за оплату пакета услуг {{ payment.servName() }}
+Персональный менеджер свяжется с вами в ближайшее время
+{{ url('MetalPrivateOfficeBundle:Details:payment') }}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_header %}
+    <p style="font-family: Arial; color: #171F26; font-size: 24px; line-height: 26px;">
+        Оплата пакета услуг
+    </p>
+{% endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12px;">
+        Добрый день!
+        Благодарим за оплату пакета услуг <a href="{{ url('MetalPrivateOfficeBundle:Details:payment') }}">{{ payment.servName() }}</a>.<br />
+        Персональный менеджер свяжется с вами в ближайшее время
+    </p>
+{% endblock %}

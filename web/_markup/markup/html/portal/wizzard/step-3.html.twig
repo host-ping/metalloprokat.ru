@@ -1,0 +1,80 @@
+{% extends '@markup/portal/wizzard/_wizzard_layout.html.twig' %}
+{% block title 'Step - 3' %}
+{% block content %}
+    <div id="content" class="register content-wide js-calc-height clearfix">
+
+        <div class="wizzard-block">
+            <ul class="steps-list clearfix">
+                <li class="step item float-left completed">
+                    <div class="step-count is-bordered ie-radius">1</div>
+                </li>
+                <li class="step item float-left completed">
+                    <div class="step-count is-bordered ie-radius">2</div>
+                </li>
+                <li class="step item float-left active">
+                    <div class="step-count is-bordered ie-radius">3</div>
+                </li>
+            </ul>
+            <div class="main-title ">
+                <h1>Способ продвижения</h1>
+            </div>
+            <form action="#" class="promotions-form">
+                <fieldset>
+                    <div class="promotion-item">
+                        <div class="options">
+                            <input id="radio-1" name="promotion" type="radio" class="radio bg-grey80"/>
+                            <label for="radio-1">Не продвигать товары</label>
+                            <div class="options-list">
+                                <ul>
+                                    <li class="item">размещение в каталоге без фото и логотипа</li>
+                                    <li class="item">упрощенный мини-сайт с рекламой</li>
+                                    <li class="item">самостоятельное обновление прайс-листа</li>
+                                    <li class="item">без доступа к ежедневным заявкам от потребителей</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <span>Бесплатно</span>
+                        </div>
+                    </div>
+                    <div class="promotion-item">
+                        <div class="options">
+                            <input id="radio-2" name="promotion" type="radio" checked class="radio bg-grey80"/>
+                            <label for="radio-2">Рекомендованное продвижение</label>
+                            <div class="options-list">
+                                <ul>
+                                    <li class="item">фотографии товаров и логотип</li>
+                                    <li class="item">мини-сайт без рекламы</li>
+                                    <li class="item">обновление прайс-листа специалистами портала раз в месяц</li>
+                                    <li class="item">доступ к ежедневным заявкам от потребителей</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <span>2000 <span class="icon-rouble"></span> в месяц</span>
+                        </div>
+                    </div>
+                    <div class="promotion-item">
+                        <div class="options">
+                            <input id="radio-3" name="promotion" type="radio" class="radio bg-grey80"/>
+                            <label for="radio-3">Максимальное продвижение</label>
+                            <div class="options-list">
+                                <ul>
+                                    <li class="item">все возможности рекомендованного продвижения</li>
+                                    <li class="item">автоматическое перемещение товаров на первую страницу раздела</li>
+                                    <li class="item">обновление прайс-листа специалистами портала два раза в месяц</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <span>3000 <span class="icon-rouble"></span> в месяц</span>
+                        </div>
+                    </div>
+                    <div class="button-wrapper">
+                        <button class="button green-bg ie-radius js-popup-opener" data-popup="#promotion-1">Завершить</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

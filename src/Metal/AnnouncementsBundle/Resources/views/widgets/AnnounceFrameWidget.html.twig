@@ -1,0 +1,7 @@
+
+{% if announcementLoadingOptions.is_background %}
+    {{ announcementLoadingOptions|json_encode|escape('html_attr') }}
+{% else %}
+    <{{ _options.tag_type }} class="announcement {{ _options.additional_class }} js-announcement" id="{{ announcementLoadingOptions.element_id }}" data-announcement-options="{{ announcementLoadingOptions|json_encode|escape('html_attr') }}">
+    </{{ _options.tag_type }}>
+{% endif %}

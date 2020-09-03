@@ -1,0 +1,58 @@
+{% set imageHelper = brouzie_helper('MetalProjectBundle:Image') %}
+{% set currentCountry = app.request.attributes.get('country') %}
+
+{% set attributes = _options.attributes_collection.toString(' ', ' ') %}
+
+<li class="view-product item">
+    <div class="all-product-holder clearfix">
+        <div class="product-logo is-bordered  float-left" style="width:70px; height:70px;">
+            <span class="pattern-big" style="width:70px; height:70px;">
+                {% if image %}
+                    {% set imageUrl = imageHelper.getPhotoUrlForProductPhoto(image, 'sq136') %}
+                    <img src="{{ imageUrl }}" style="width:70px; height: 70px;" />
+                {% endif %}
+            </span>
+        </div>
+        <div class="holder float-left">
+            <div class="container top-block clearfix">
+                <div class="product-info float-left">
+                    <div class="title">{{ _options.category.title }} {{ attributes }} оптом</div>
+                    <p class="price gray60-color">
+                        {% if price>0 %}
+                            от <span class="strong red-color">
+                            {{ price|number_format_decimal }}
+                            <span class="{{ currencyClass }}"></span>
+                        </span>
+                        {% endif %}
+
+                        {% if unit and unit != '-' %}
+                            за
+                            <span>{{ unit }}</span>
+                        {% endif %}
+                    </p>
+
+                    <p class="localization gray60-color" style="font-size:13px; margin-top:5px;">
+                        {{ _options.territory.title }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="company-info float-right" style="text-align: left">
+            {% if currentCountry.callbackPhone %}
+                {% if brouzie_helper('MetalProjectBundle').isWorkingTime() %}
+                    <strong class="phone-company big-size title-callback"
+                            style="color:#18a3d1; font-weight:600">{{ currentCountry.callbackPhone }}</strong>
+                    <p style="color:grey;">Бесплатный звонок по России</p>
+                {% endif %}
+            {% endif %}
+
+            <span class="send-order_send-button button clickable send-button red-bg ie-radius" style="margin-top:15px;"
+                  popup-opener="#request-demand"
+                  data-request-demand-url="{{ path('MetalDemandsBundle:Demand:save_form') }}"
+                  data-product-text="{{ _options.category.title }} {{ attributes }}"
+            >Купить</span>
+        </div>
+    </div>
+</li>
+<li class="special-title item">
+</li>

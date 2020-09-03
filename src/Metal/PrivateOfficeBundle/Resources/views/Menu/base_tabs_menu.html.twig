@@ -1,0 +1,29 @@
+{% block root %}
+    {% for menuItem in item.children if matcher.isAncestor(menuItem) %}
+        <div id="tabs" class="tabs float-left">
+            <ul class="private-tabs list">
+                {% for menuSubItem in menuItem.children %}
+                    {% if matcher.isCurrent(menuSubItem) %}
+                        <li class="item active ie-radius">
+                            <span class="link">{{ menuSubItem.label }}</span>
+                            {% if menuSubItem.getExtra('count') %}
+                                <span class="count red-bg ie-radius">{{ menuSubItem.getExtra('count')|number_format_decimal }}</span>
+                            {% elseif (menuSubItem.getExtra('total_count') > 0) %}
+                                <span class="counts">{{ menuSubItem.getExtra('total_count')|number_format_decimal }}</span>
+                            {% endif %}
+                        </li>
+                    {% else %}
+                        <li class="item">
+                            <a class="link" href="{{ menuSubItem.uri }}">{{ menuSubItem.label }}</a>
+                            {% if menuSubItem.getExtra('count') %}
+                                <span class="count red-bg ie-radius">{{ menuSubItem.getExtra('count')|number_format_decimal }}</span>
+                            {% elseif (menuSubItem.getExtra('total_count') > 0) %}
+                                <span class="counts">{{ menuSubItem.getExtra('total_count')|number_format_decimal }}</span>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{{ include('@SonataAdmin/CRUD/list_inner_row.html.twig', { 'object' : object, 'admin' : admin}, false) }}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+
+<tr>
+    <td> &nbsp;</td>
+    <td colspan="{{ admin.list.elements|length-11 }}"><b>Позиции:</b> {{ include('MetalDemandsBundle:DemandAdmin:demandItems.html.twig', { 'object' : object, 'standalone': true}, false) }}</td>
+    <td colspan="{{ admin.list.elements|length-12 }}"><b>Информация:</b> {{ object.info }}</td>
+    <td colspan="{{ admin.list.elements|length-10 }}"><b>Примечание для модератора:</b> {{ object.body }}</td>
+    <td colspan="{{ admin.list.elements|length-14 }}"><b>Автор последнего изменения заявки:</b>
+        {% if object.updatedBy %}
+            {{ object.updatedBy.fullName }}.
+            <strong>(<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': object.updatedBy.id} } }) }}">{{ object.updatedBy.id }}</a>)</strong>
+        {% endif %}
+    </td>
+    <td colspan="{{ admin.list.elements|length-14 }}"><b>Дата изменения:</b> {{ formatHelper.formatDateTime(object.updatedAt) }}</td>
+    <td> &nbsp;</td>
+</tr>

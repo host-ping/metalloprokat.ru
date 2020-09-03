@@ -1,0 +1,29 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Годовое размещение на Stroy.ru за 11 000 рублей{% endblock subject %}
+
+{% block body_text -%}
+Уважаемые наши клиенты!
+Если ваш прайс лист содержит строительные позиции, предлагаем вам разместить любое количество ваших строительных позиций на портале Stroy.ru на 1 год за 11 000 рублей.
+
+По любым вопросам пишите: http://corp.metalloprokat.ru/contacts/
+
+или звоните:
+
++7 495 268-02-85
+
+{{ block('text_footer') }}
+{%- endblock body_text %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+    <p>Уважаемые наши клиенты!</p>
+    <p>Если ваш прайс лист содержит строительные позиции, предлагаем вам разместить любое количество ваших строительных позиций на портале Stroy.ru на 1 год за 11 000 рублей.</p>
+    <p>По любым вопросам пишите: <a href="http://corp.metalloprokat.ru/contacts/">corp.metalloprokat.ru/contacts</a></p>
+    <p>или звоните:</p>
+    <p>+7 495 268-02-85</p>
+    <br/>
+    <p>С уважением,</p>
+    <p><a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a></p>
+    </p>
+{% endblock text_part_body %}

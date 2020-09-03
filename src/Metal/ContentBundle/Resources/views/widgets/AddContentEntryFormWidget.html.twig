@@ -1,0 +1,148 @@
+{% set entryType = _options['entry_type'] %}
+
+{% if entryType == 'ENTRY_TYPE_TOPIC' %}
+    {% set popupId = 'add-content-topic' %}
+    {% set popupTitle = 'Добавить публикацию' %}
+{% elseif entryType == 'ENTRY_TYPE_QUESTION' %}
+    {% set popupId = 'add-content-question' %}
+    {% set popupTitle = 'Добавить вопрос' %}
+{% endif %}
+
+<div id="{{ popupId }}"
+     class="add-content-entry-form large-popup popup-block opacity-border large" data-popup-template="#{{ popupId }}-template">
+</div>
+<script id="new-tag-row" type="text/html">
+    <span class="accepted-filter ie-radius js-changed-element">
+        {{ form_widget(form.contentEntryTags.vars.prototype.tag, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'id'}}) }}
+        {{ form_widget(form.contentEntryTags.vars.prototype.tagTitle, {'attr' : {'class' : 'g-hidden', 'data-bind-value' : 'title'}}) }}
+        <span data-bind-text="title"></span>
+        <span class="icon-filter-del clickable js-del-element"></span>
+    </span>
+</script>
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">{{ popupTitle }}</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+
+        <form id="{{ popupId }}-form"
+              class="popup-form js-ajax-form-submit"
+              method="post"
+              novalidate="novalidate"
+              data-success="close-popup-and-show-message"
+              data-bind-attr="action:entry-url"
+              ng-controller="suggestController"
+        >
+            <fieldset>
+                <div class="group clearfix">
+                    {% if form.name is defined %}
+                        <div class="user-name-wrapper field-wrap float-left">
+                            {{ form_widget(form.name, {'attr' : { 'class' : 'form-text ie-radius', 'placeholder' : 'Имя' }} ) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.email is defined %}
+                        <div class="user-email-wrapper field-wrap float-left">
+                            {{ form_widget(form.email, {'attr' : { 'class' : 'form-email ie-radius', 'placeholder' : 'Электронная почта' }}
+                            ) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="field-wrap">
+                    {{ form_widget(form.title, {'attr' : {'class' : 'form-text ie-radius', 'placeholder' : 'Заголовок'}}) }}
+                </div>
+                <div class="group clearfix">
+                    <div class="user-email-wrapper field-wrap float-left">
+                        {{ form_widget(form.category, {'attr' : { 'class' : 'form-select ie-radius' }}
+                        ) }}
+                    </div>
+
+                    <div class="user-email-wrapper field-wrap float-left">
+                        {{ form_widget(form.categorySecondary, {'attr' : { 'class' : 'form-select ie-radius' }}
+                        ) }}
+                    </div>
+                </div>
+                <div class="user-email-wrapper field-wrap">
+                    {{ form_widget(form.subjectTypeId, {'attr' : { 'class' : 'form-select ie-radius' }}
+                    ) }}
+                </div>
+                <div class="textarea-wrapper field-wrap">
+                    <label>Описание</label>
+                    {{ form_widget(form.description, {'attr' : {'class' : 'description form-textarea ie-radius', 'placeholder' : 'Описание', 'data': 'editable' }}
+                    ) }}
+                </div>
+                <div class="textarea-wrapper field-wrap">
+                    <label>Краткое описание</label>
+                    {{ form_widget(form.shortDescription, {'attr' : {'class' : 'short-description form-textarea ie-radius', 'placeholder' : 'Краткое описание', 'data': 'editable' }}
+                    ) }}
+                </div>
+
+                {% if entryType == 'ENTRY_TYPE_TOPIC' %}
+                    <div class="photo-wrapper field-wrap">
+                        <label class="file-upload">
+                            <span class="load-file-btn ico-upload">Главное фото публикации</span>
+                            {{ form_widget(form.uploadedImage, {'attr' : {'placeholder' : 'Главное фото публикации...', 'class': 'js-file', 'data': 'editable'} }) }}
+                        </label>
+                    </div>
+                {% endif %}
+
+                <div class="tags-list-wrapper">
+
+                    <div class="field-wrap">
+                        <div class="tag-wrapper is-bordered ie-radius form-text">
+                            <div class="filtered-block">
+                                <div id="tags-list-container">
+                                    {% for contentEntryTag in form.contentEntryTags %}
+                                        <span class="accepted-filter ie-radius js-changed-element">
+                                        {{ form_widget(contentEntryTag, {
+                                            'attr' : {
+                                                'class' : 'g-hidden'
+                                            }}
+                                        ) }}
+                                            {{ contentEntryTag.tagTitle.vars.value }}
+                                            <span class="icon-filter-del clickable js-del-element"></span>
+                                    </span>
+                                    {% else %}
+                                        {% do form.contentEntryTags.setRendered() %}
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                            <div class="loading-mask embed-mask for-high-input" ng-show="typeaheadLoading">
+                                <div class="spinner"></div>
+                            </div>
+
+                            <input type="text" placeholder="Теги"
+                                   data-container="#tags-list-container"
+                                   typeahead=""
+                                   typeahead-loading="typeaheadLoading"
+                                   typeahead-prefetch-url="{{ path('MetalContentBundle:Tags:getSuggestTags') }}"
+                                   typeahead-model="tag"
+                                   typeahead-clear-on-select="true"
+                            >
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="submit-wrapper">
+                    <input class="popup-form_send-button send-button button blue-bg ie-radius" type="submit"
+                           value="Добавить" />
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+    function suggestController($scope) {
+        $scope.$watch('tag', function (item) {
+            processItem(item, $('#tags-list-container'), $('#new-tag-row'))
+        });
+    }
+    $(document).ready(function () {
+        $('#{{ popupId }}').bind('popup.open', function (e) {
+            includeAjax(e.$popup);
+        });
+    });
+</script>

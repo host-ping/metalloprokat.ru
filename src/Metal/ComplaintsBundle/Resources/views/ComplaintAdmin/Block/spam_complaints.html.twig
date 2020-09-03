@@ -1,0 +1,57 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+        {% set formattingHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <a target="_blank" href="{{ path('admin_metal_complaints_abstractcomplaint_list', {'filter': {'complaint_object_type': {'value': 'demand'}, 'complaintTypeId': {'value': constant('Metal\\ComplaintsBundle\\Entity\\ValueObject\\ComplaintTypeProvider::SPAM_COMPLAINT')} } }) }}">Жалобы на заявки за все время</a>
+                </h3>
+            </div>
+
+            <div class="box-body">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Дата</th>
+                        <th>Тип жалобы</th>
+                        <th>Автор</th>
+                        <th>Жалоба на</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for complaint in data %}
+                        <tr {% if formattingHelper.isWeekend(date(complaint.createdDate)) %}class="red-color"{% endif %}>
+                            <td>
+                                <a href="{{ path('admin_metal_complaints_abstractcomplaint_show', {'id': complaint.complaintId}) }}">{{ complaint.complaintId }}</a>
+                            </td>
+                            <td>{{ formattingHelper.formatStatsDate(date(complaint.createdDate), 'day')|raw }}</td>
+                            <td>
+                                {{ complaintTypes[complaint.complaintTypeId] }}
+                            </td>
+                            <td>
+                                {% if complaint.fullName %}
+                                    {{ complaint.fullName }} (<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': complaint.userId} } }) }}">{{ complaint.userId }}</a>)
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if complaint.demandUserFullName %}
+                                    {{ complaint.demandUserFullName }}. (<a target="_blank" href="{{ path('admin_metal_users_user_list', {'filter': {'id': {'value': complaint.demandUserId} } }) }}">{{ complaint.demandUserId }}</a>)
+                                {% else %}
+                                    {{ complaint.person }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

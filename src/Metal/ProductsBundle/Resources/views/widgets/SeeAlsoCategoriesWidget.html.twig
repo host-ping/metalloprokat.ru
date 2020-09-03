@@ -1,0 +1,52 @@
+{% set parameterHelper = brouzie_helper('MetalCategoriesBundle:Parameter') %}
+{% set routeParameters = {} %}
+
+{% set activeRegion = country %}
+{% if city %}
+    {% set routeParameters = {'subdomain' : city.getSlug() } %}
+    {% set activeRegion = city %}
+{% elseif region %}
+    {% set routeParameters = {'subdomain' : region.getId() } %}
+    {% set activeRegion = region %}
+{% endif %}
+
+{% if categories or parameters or landingPages %}
+    <ul class="row first float-left">
+        <li class="title">Смежные разделы</li>
+        {% if currentAttributeValue %}
+            {% set category = _options['category'] %}
+            {% set linkTitle = category.title ~ ' ' ~ currentAttributeValue.value %}
+
+            <li><a class="is-gradiented" title="{{ linkTitle }}"
+                   href="{{ path(_options['route_name'], routeParameters|merge({'category_slug' : category ? category.getUrl(currentAttributeValue.slug) : null})) }}"
+                >{{ linkTitle }}</a></li>
+        {% endif %}
+
+        {% for landingPage in landingPages %}
+            <li><a class="is-gradiented" title="{{ landingPage.title }}"
+                   href="{{ path('MetalCategoriesBundle:LandingPage:landing', routeParameters|merge({'slug' : landingPage.slug })) }}"
+                >{{ landingPage.title }}</a></li>
+        {% endfor %}
+
+        {% for parameter in parameters %}
+            {% set title = parameterHelper.getTitleForParameterFriend(parameter, results[parameter.id], city, country) %}
+            <li>
+                <a class="is-gradiented" title="{{ title }}"
+                   href="{{ path(_options['route_name'], routeParameters|merge({'category_slug' : parameter ? parameter.getSlugCombined : null})) }}">{{ title }}</a>
+            </li>
+        {% endfor %}
+
+        {% for category in categories %}
+            {% set linkTitle = category.title %}
+            {% if results[category.id] is constant('Metal\\CategoriesBundle\\Entity\\CategoryFriends::ANCHOR_CATEGORY_NAME_WITH_REGION') %}
+                {% set linkTitle = category.title~' '~activeRegion.getTitle() %}
+            {% elseif results[category.id] >= constant('Metal\\CategoriesBundle\\Entity\\CategoryFriends::ANCHOR_CATEGORY_NAME_WITH_IN_REGION') %}
+                {% set linkTitle = category.title~' в '~activeRegion.getTitleLocative() %}
+            {% endif %}
+
+            <li><a class="is-gradiented" title="{{ linkTitle }}"
+                   href="{{ path(_options['route_name'], routeParameters|merge({'category_slug' : category ? category.getSlugCombined() : null})) }}"
+                        >{{ linkTitle }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

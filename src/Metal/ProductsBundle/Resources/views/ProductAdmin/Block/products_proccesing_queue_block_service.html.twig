@@ -1,0 +1,58 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+
+{% block block %}
+    {% if isGranted %}
+
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Товары в очереди на обработку
+                </h3>
+            </div>
+
+            <div class="box-body">
+
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <caption>
+
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th>Статус</th>
+                        <th>Количество товаров</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Ожидают модерации</td>
+                        <td class="text-right">
+                            <a href="{{ path('admin_metal_products_product_list', {'filter[checked][value]': '0'}) }}">
+                                {{ productsProcessingQueue.waiting_moderation|default(0)|number_format_decimal }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ожидают определения категории</td>
+                        <td class="text-right">
+                            <a href="{{ path('admin_metal_products_product_list', {'filter[checked][value]': '3'}) }}">
+                                {{ productsProcessingQueue.waiting_category_detection|default(0)|number_format_decimal }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Обрабатываются</td>
+                        <td class="text-right">
+                            <a href="{{ path('admin_metal_products_product_list', {'filter[checked][value]': '4'}) }}">
+                                {{ productsProcessingQueue.in_processing|default(0)|number_format_decimal }}
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

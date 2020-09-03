@@ -1,0 +1,81 @@
+{% set entryType = _options['entry_type'] %}
+{% set formatHelper = brouzie_helper('MetalProjectBundle:Formatting') %}
+{% set currentCategory = app.request.attributes.get('content_category') %}
+
+{% if entryType == 'ENTRY_TYPE_TOPIC' %}
+    <div class="topics-block">
+        <h3 class="title">Популярные темы</h3>
+
+        <ul class="topics list">
+            {% for entry in pagerfanta %}
+                <li class="item">
+                    <a href="{{ path('MetalContentBundle:Topic:view', {'id' : entry.id, 'category_slug' : entry.category.slugCombined}) }}"
+                       class="link">{{ entry.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="block-links">
+            <span class="add-link link clickable js-popup-opener"
+                {% if app.user %}
+                    data-popup="#add-content-topic"
+                    data-entry-url="{{ path('MetalContentBundle:ContentEntry:add', {'entry_type' : 'ENTRY_TYPE_TOPIC'}) }}"
+                {% else %}
+                    data-popup="#stroy-login"
+                {% endif %}
+            >Добавить публикацию</span>
+            {% set topicsPath = path('MetalProjectBundle:Default:index') %}
+            {% if currentCategory %}
+                {% set topicsPath = path('MetalContentBundle:Topics:list', {'category_slug' : currentCategory.slugCombined}) %}
+            {% endif %}
+            <a class="all-link link" href="{{ topicsPath }}">Все публикации {% if currentCategory %}раздела{% endif %}</a>
+        </div>
+    </div>
+{% elseif entryType == 'ENTRY_TYPE_QUESTION' %}
+    <div class="questions-block">
+        <h3 class="title">Вопросы</h3>
+        <ul class="questions list">
+            {% for entry in pagerfanta %}
+                <li class="item">
+                    <div class="title">
+                        <a href="{{ path('MetalContentBundle:Question:view', {'id' : entry.id, 'category_slug' : entry.category.slugCombined}) }}">{{ entry.title }}</a>
+                    </div>
+                    <p class="text">
+                        {{ entry.shortDescription|striptags('<p><img><a><b><i>')|raw }}
+                    </p>
+                    <div class="info">
+                        {% if entry.user %}
+                            <span class="author link clickable js-popup-opener"
+                                  data-popup="#user-info"
+                                  data-ajax-content="{{ path('MetalContentBundle:UserContentCategory:loadInfo', {'id' : entry.user.id}) }}"
+                            >
+                                {{ entry.user.fullName }}
+                            </span>
+                        {% else %}
+                            <span class="author link">
+                                {{ entry.name }}
+                            </span>
+                        {% endif %}
+                        <span class="period" title="{{ formatHelper.formatDate(entry.createdAt) }}">{{ formatHelper.getTimeLocalized(entry.createdAt) }} назад</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="block-links">
+            <span class="add-link link clickable js-popup-opener"
+                {% if app.user %}
+                    data-popup="#add-content-question"
+                    data-entry-url="{{ path('MetalContentBundle:ContentEntry:add', {'entry_type' : entryType}) }}"
+                {% else %}
+                    data-popup="#stroy-login"
+                {% endif %}
+            >Добавить вопрос</span>
+
+            {% set questionsPath = path('MetalContentBundle:Questions:listAll') %}
+            {% if currentCategory %}
+                {% set questionsPath = path('MetalContentBundle:Questions:list', {'category_slug' : currentCategory.slugCombined}) %}
+            {% endif %}
+            <a class="all-link link" data-href="{{ questionsPath }}">Все вопросы {% if currentCategory %}раздела{% endif %}</a>
+        </div>
+    </div>
+{% endif %}

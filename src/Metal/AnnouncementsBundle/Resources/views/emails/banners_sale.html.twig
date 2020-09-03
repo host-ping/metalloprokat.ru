@@ -1,0 +1,71 @@
+{% extends 'MetalNewsletterBundle::project_base_layout.html.twig' %}
+
+{% block subject %}Недорогие баннеры в разделе "Поставщики" на Metalloprokat.ru {% endblock %}
+
+{% block body_text -%}
+Добрый день, {{ user.firstName }}!
+
+Праздники закончились, а наши скидки продолжаются!
+
+Размещайте недорогие баннеры в разделе «Поставщики»: http://www.metalloprokat.ru/price/  на портале Metalloprokat.ru на квартал, полгода и год со скидками.
+
+Минимальная цена Центрального баннера, размер 735х80 составляет всего 10 000 рублей.
+
+При размещении баннера на:
+3 мес. - скидка 15%
+6 мес. - скидка 25%
+12 мес. - скидка 50%
+
+С расценками на баннеры вы можете ознакомиться здесь:  http://corp.metalloprokat.ru/media/
+
+По любым вопросам пишите:
+http://corp.metalloprokat.ru/contacts
+или звоните:
++7 495 268-02-85
+
+
+С уважением,
+{{ user.country.domainTitle }}
+http://www.{{ user.country.baseHost }}
+
+{{ block('text_footer') }}
+{%- endblock %}
+
+{% block text_part_body %}
+    <p style="font-size: 12;">
+        Добрый день, {{ user.firstName }}!<br/>
+        <br/>
+        <p style="color:red; font-weight:bold;">
+            Праздники закончились, а наши скидки продолжаются!
+        </p>
+        <br/>
+        Размещайте недорогие баннеры в разделе «Поставщики»: <a href="http://www.metalloprokat.ru/price/">http://www.metalloprokat.ru/price/</a> на портале Metalloprokat.ru на квартал, полгода и год со скидками.
+        <br/>
+        Минимальная цена Центрального баннера, размер 735х80 составляет всего 10 000 рублей.
+        <br/>
+        При размещении баннера на:
+        <ul>
+            <li>3 мес. - скидка 15%</li>
+            <li>6 мес. - скидка 25%</li>
+            <li>12 мес. - скидка 50%</li>
+        </ul>
+
+        С расценками на баннеры вы можете ознакомиться здесь:  <a href="http://corp.metalloprokat.ru/media/">http://corp.metalloprokat.ru/media/</a>
+
+        <br/>
+
+        <img src="{{ email_images_base_url~'/metalloprokat/banners-table.png' }}" alt="Металлопрокат.ру-баннеры" />
+
+        <br/><br/>
+        По любым вопросам пишите - <a href="http://corp.metalloprokat.ru/contacts">http://corp.metalloprokat.ru/contacts</a>
+
+        или звоните:
+
+        +7 495 268-02-85
+
+        <br />
+        <br />
+        С уважением,
+        <a href="http://www.{{ user.country.baseHost }}">{{ user.country.domainTitle }}</a>
+    </p>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        <ul>
+            {% if object.getAttribute('subscriber') %}
+                <li>
+                    <a href="{{ path('admin_metal_newsletter_subscriber_edit', {'id' : object.getAttribute('subscriber').id}) }}" target="_blank">Подписки</a>
+                </li>
+            {% endif %}
+
+            {% if object.id and object.company %}
+                <li>
+                    <a href="{{ admin.getConfigurationPool.getAdminByAdminCode('metal.companies.admin.company').generateUrl('edit', { 'id': object.company.id }) }}" target="_blank">Редактировать компанию</a>
+                </li>
+            {% endif %}
+
+            {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                <li>
+                    <a href="{{ path('MetalPrivateOfficeBundle:Default:index', {'_switch_user': object.email}) }}" target="_blank">Войти под</a>
+                </li>
+            {% endif %}
+
+            {% if not object.isEmailConfirmed %}
+                <li>
+                    <a href="{{ admin.generateUrl('send_registration_email', {'id': object.id}) }}" target="_blank">Отправить письмо</a>
+                </li>
+            {% endif %}
+
+            <li>
+                <a href="{{ path('admin_metal_demands_abstractdemand_list', {'filter':{'user': {'value' :object.id}}}) }}"
+                   target="_blank">Заявки</a>
+            </li>
+
+            <li>
+                <a href="{{ admin.generateUrl('send_recovery_password_email', {'id': object.id}) }}" target="_blank">Выслать
+                    письмо сброса пароля</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

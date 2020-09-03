@@ -1,0 +1,48 @@
+{{ include('@SonataAdmin/CRUD/list_inner_row.html.twig', { 'object' : object, 'admin' : admin}, false) }}
+
+</tr>
+<tr>
+    {% set form = admin.getFormForObject(object) %}
+    <td colspan="11">
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="{{ admin.generateObjectUrl('inline_case_editing', object) }}"
+                      method="POST" class="js-inline-submit">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th>{{ form_label(form.title) }}</th>
+                            <th>{{ form_label(form.titleLocative) }}</th>
+                            <th>{{ form_label(form.titleGenitive) }}</th>
+                            <th>{{ form_label(form.titleAccusative) }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="sonata-ba-list-field">
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'style': 'width: 100%;'}}) }}
+                            </td>
+                            <td class="sonata-ba-list-field">
+                                {{ form_widget(form.titleLocative, {'attr': {'class': 'form-control'}}) }}
+                                <span class="help-block sonata-ba-field-help">Где? - заявка на покупку арматуры композитной в Москве</span>
+                            </td>
+                            <td class="sonata-ba-list-field">
+                                {{ form_widget(form.titleGenitive, {'attr': {'class': 'form-control'}}) }}
+                                <span class="help-block sonata-ba-field-help">Кого? Чего? - из Москвы</span>
+                            </td>
+                            <td class="sonata-ba-list-field">
+                                {{ form_widget(form.titleAccusative, {'attr': {'class': 'form-control'}}) }}
+                                <span class="help-block sonata-ba-field-help">Кого? Что? Куда? - товары доствляемые в Москву</span>
+                            </td>
+                            <td>
+                                <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сохранить" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+    </td>

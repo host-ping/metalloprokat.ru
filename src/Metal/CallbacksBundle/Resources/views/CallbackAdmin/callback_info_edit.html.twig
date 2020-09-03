@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block notice %}
+    {{ parent() }}
+    <div class="alert alert-info alert-dismissable">
+        Обрытный звонок был создан со страницы '{{ object.callFromType.title|lower }}'
+        {% if object.product %}
+            <b>{{ object.product.title }}</b>
+        {% endif %}
+        {% if object.company %}
+            компании <b>{{ object.company.title }}</b>
+        {% endif %}
+        {% if object.city %}
+            в городе <b>{{ object.city.title }}</b>
+        {% endif %}
+        .
+    </div>
+{% endblock notice %}

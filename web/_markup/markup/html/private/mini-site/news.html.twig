@@ -1,0 +1,195 @@
+{% extends '@markup/private/mini-site/_minisite_layout.html.twig' %}
+{% block title 'News' %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        <div class="private-fix-width">
+            {% block tabs %}
+                {% set activeTab = 'news' %}
+                {{ parent() }}
+            {% endblock tabs %}
+
+            {% block filters %}
+                <div class="filters-block clearfix">
+                    <div class="float-left">
+                        <a class="filter-type icon-check black link js-popover-opener" data-popover="#favorite-type" href="#">Все</a>
+                        <div id="favorite-type" class="drop-wrapper favorite-type_links opacity-border">
+                            <ul class="dropdown">
+                                <li class="drop-item">
+                                    <span class="drop-link current">Все</span>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Опубликованные</a>
+                                </li>
+                                <li class="drop-item">
+                                    <a class="drop-link" href="#">Неопубликованные</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="add-news-wrapper float-left">
+                        <span class="button green-bg">Добавить новость</span>
+                    </div>
+                </div>
+            {% endblock %}
+            <div class="content-scrollable js-scrollable">
+
+                <ul class="news-list private-fix-width">
+                    <li class="item clearfix">
+                        <div class="news-wrapper clearfix">
+                            <div class="news-img-wrapper float-left">
+                                <div class="img is-bordered">
+                                    <a class="pattern-small" href="#"></a>
+                                </div>
+                            </div>
+                            <div class="info float-left">
+                                <h2 class="news-title">Заголовок новости</h2>
+                                <p class="short-description">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
+                                </p>
+                            </div>
+                            <div class="manage float-left">
+                                <a class="button blue-bg ie-radius" href="#">Опубликовать</a>
+                                <a class="button green-bg ie-radius" href="#">Редактировать</a>
+                            </div>
+                        </div>
+
+                        <div class="form-wrapper">
+                            <form action="#" class="form">
+                                <fieldset class="clearfix">
+                                    <div class="load-photo-block field-wrap float-left">
+                                        <div class="img is-bordered">
+                                            <span class="pattern-big"></span>
+                                            <div class="add-photo-wrapper">
+                                                <label class="file-upload">
+                                                    <span class="ico-upload"></span>
+                                                    <input type="file">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="data float-left">
+                                        <div class="field-wrap">
+                                            <input type="text" class="form-text" placeholder="Заголовок">
+                                        </div>
+                                        <div class="field-wrap">
+                                            <textarea name="news" class="form-textarea" placeholder="Текст"></textarea>
+                                        </div>
+                                        <div class="field-wrap float-right">
+                                            <button type="submit" class="button blue-bg">Сохранить</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="news-img-wrapper float-left">
+                            <div class="img is-bordered">
+                                <a class="pattern-small" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="info float-left">
+                            <h2 class="news-title">Заголовок новости</h2>
+                            <p class="short-description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
+                            </p>
+                        </div>
+                        <div class="manage float-left">
+                            <a class="button red-bg ie-radius" href="#">Удалить</a>
+                            <a class="button green-bg ie-radius" href="#">Редактировать</a>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="news-img-wrapper float-left">
+                            <div class="img is-bordered">
+                                <a class="pattern-small" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="info float-left">
+                            <h2 class="news-title">Заголовок новости</h2>
+                            <p class="short-description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
+                            </p>
+                        </div>
+                        <div class="manage float-left">
+                            <a class="button blue-bg ie-radius" href="#">Опубликовать</a>
+                            <a class="button green-bg ie-radius" href="#">Редактировать</a>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="news-img-wrapper float-left">
+                            <div class="img is-bordered">
+                                <a class="pattern-small" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="info float-left">
+                            <h2 class="news-title">Заголовок новости</h2>
+                            <p class="short-description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
+                            </p>
+                        </div>
+                        <div class="manage float-left">
+                            <a class="button blue-bg ie-radius" href="#">Опубликовать</a>
+                            <a class="button green-bg ie-radius" href="#">Редактировать</a>
+                        </div>
+                    </li>
+                    <li class="item clearfix">
+                        <div class="news-img-wrapper float-left">
+                            <div class="img is-bordered">
+                                <a class="pattern-small" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="info float-left">
+                            <h2 class="news-title">Заголовок новости</h2>
+                            <p class="short-description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
+                            </p>
+                        </div>
+                        <div class="manage float-left">
+                            <a class="button blue-bg ie-radius" href="#">Опубликовать</a>
+                            <a class="button green-bg ie-radius" href="#">Редактировать</a>
+                        </div>
+                    </li>
+                    <li class="see-more-block-wrapper">
+                        <div class="see-more-block">
+                            <a class="see-more button ie-radius" href="#">показать еще...</a>
+                        </div>
+                    </li>
+                </ul>
+
+                {#<form class="address-form form" action="#">#}
+                    {#<fieldset class="clearfix">#}
+                        {#<div class="site-name-wrapper field-wrap float-left">#}
+                            {#<input type="text" class="site-name form-text ie-radius" placeholder="staltorg"/>#}
+                        {#</div>#}
+                        {#<div class="point float-left">.</div>#}
+                        {#<div class="form-select-wrapper field-wrap float-left">#}
+                            {#<select class="form-select">#}
+                                {#<option value="0">metalloprokat.ru</option>#}
+                                {#<option value="1">metalloprokat.com</option>#}
+                            {#</select>#}
+                        {#</div>#}
+                        {#<div class="address-msg float-left">#}
+                            {#<p class="text positive">Адрес используется вами</p>#}
+                            {#<p class="text negative">Адрес используется вами</p>#}
+                            {#<p class="text free">Адрес используется вами</p>#}
+                        {#</div>#}
+                    {#</fieldset>#}
+                    {#<div class="submit-wrapper">#}
+                        {#<input type="submit" class="button green-bg ie-radius" value="использовать"/>#}
+                    {#</div>#}
+                    {#<p class="text">Если вы указываете в качестве адреса свой собственный домен, то вам необходимо#}
+                        {#сделать следующую запись на сервере, чтобы сайт заработал:</p>#}
+                    {#<p class="text"><strong>some dns records</strong></p>#}
+                {#</form>#}
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

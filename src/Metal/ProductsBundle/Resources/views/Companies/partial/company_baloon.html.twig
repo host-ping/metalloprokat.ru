@@ -1,0 +1,92 @@
+<script type="text/yamaps-template" id="maps__companies__baloon">
+    <div class="drop-wrapper map-balloon {% if properties.company.products_count == false %}simple {% endif %}opacity-border" style="display: block;">
+        <div class="dropdown">
+            <div class="rating clearfix">
+                {% if properties.company.rating == 1 %}
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                {% elseif properties.company.rating == 2 %}
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                {% elseif properties.company.rating == 3 %}
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                    <span class="star-mini {{ properties.company.star_color }}"></span>
+                {% endif %}
+            </div>
+            <div class="title"><a target="_blank" rel="noopener noreferrer" href="{{ properties.company.mini_site }}">{{ properties.company.title }}</a></div>
+
+            <p class="localization gray60-color">{{ properties.company.city_title }}</p>
+            {% if properties.company.url %}
+                <a target="_blank" rel="noopener noreferrer" href="{{ properties.company.url }}">{{ properties.company.url_caption }}</a>
+            {% endif %}
+            {% if properties.company.phone %}
+                <div class="contacts clearfix">
+                    <span class="phone-text float-left">
+                        <span class="curr-phone float-left js-phone"
+                              data-object-id="{{ properties.company.id }}"
+                              data-object-kind="company"
+                              data-source="companies-list"
+                              {% if properties.company.category_id %}
+                                  data-category-id="{{ properties.company.category_id }}"
+                              {% endif %}
+                              data-url="{{ properties.company.show_contact_url }}"
+                              data-phone-of-company="{{ properties.company.id }}"
+                                >{{ properties.company.phone }}</span>
+                    </span>
+
+                    <span class="callback link clickable js-popup-opener"
+                       data-popup="#callback"
+                       data-callback-url="{{ properties.company.callback_url }}"
+                       data-callback-text="Меня интересует {{ properties.company.product.title }} в {{ properties.company.city_locative }}"
+                            >обратный звонок</span>
+                </div>
+            {% endif %}
+            {% if properties.company.visible_in_all_cities == true %}
+                <div class="more clearfix">
+                    <div class="promo-label label float-left">
+                        <span class="label-link">Промо</span>
+                    </div>
+                </div>
+            {% endif %}
+            {% if properties.company.has_products == true %}
+                <div class="more clearfix">
+                    <div class="product-label label float-left">
+                        <a class="label-link" href="{{ properties.company.company_products_url }}">всего {{ properties.company.products_count }} {{ properties.company.products_count_title }}</a>
+                    </div>
+                    <div class="date float-left">
+                        <span class="updated-date">Обновлено {{ properties.company.updated_at }}</span>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="dropdown white95-bg {% if properties.company.has_products == false %}g-hidden{% endif %}">
+            <div class="product-info">
+                <strong><a href="{{ properties.company.company_products_url }}" class="small-link">{{ properties.company.product.title }}</a></strong>
+                {% if properties.company.product.size %}
+                    <p class="size gray60-color">{{ properties.company.product.product_volume_title }} {{ properties.company.product.size }}</p>
+                {% endif %}
+                {% if properties.company.product.is_contract_price %}
+                    <p class="price gray60-color">цена договорная</p>
+                {% else %}
+                    <p class="price gray60-color">от
+                        <span class="strong red-color
+                            {% if properties.company.product.normalized_price > 0 %}other-currency js-helper-opener{% endif %}"
+                            data-text="примерно <span class='red-color'>
+                            {{ properties.company.product.normalized_price }}
+                            <span class='{{ properties.company.product.country_symbol_class }}'></span></span>"
+                        >
+                            {{ properties.company.product.price }}
+                            <span class="{{ properties.company.product.currency_symbol_class }}"></span>
+                            <span class="currency {% if properties.company.product.currency_symbol_class %}g-hidden{% endif %}">{{ properties.company.product.currency }}</span>
+                        </span>
+                        {% if properties.company.product.measure %}
+                            за {{ properties.company.product.measure }}
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="arrow"></div>
+    </div>
+</script>

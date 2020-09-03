@@ -1,0 +1,18 @@
+{% extends '@MetalProject/layouts/_private_layout.html.twig' %}
+
+{% block title 'Обратные звонки / Мои заявки / '~titleSuffix %}
+
+{% block content %}
+    <div id="content" class="private-room-content content-right outline-right float-right">
+        {{ block('tabs') }}
+
+        <div class="content-scrollable js-scrollable">
+            <ul class="callback-list callback-archive private-fix-width">
+                {{ include('MetalPrivateOfficeBundle:partials:archive_callbacks_list.html.twig', {
+                    'callbacks' : callbacks,
+                    'pagerfanta' : pagerfanta
+                }, false) }}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

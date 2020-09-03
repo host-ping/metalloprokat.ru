@@ -1,0 +1,28 @@
+<div id="invite-project" class="confirmation-email popup-block opacity-border large" data-popup-non-closable="true">
+    <div class="popup-content">
+
+        <div class="title-popup">Ваша компания занимается продажей стройматериалов?</div>
+
+        <div class="popup-form">
+            <fieldset>
+                <p class="text">Вы можете пройти регистрацию и разместить предложения по товарам на специализированном портале Строй.ру</p>
+                <div class="submit-wrapper more-btns clearfix">
+                    <a href="{{ invite_url }}" target="_blank" class="send-button button green-bg float-left ie-radius">
+                        Зарегистрироваться
+                    </a>
+                    <button class="send-button button gray60-bg float-left js-popup-closer ie-radius" >
+                        Нет, спасибо
+                    </button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).delegate(".send-button", "click", function () {
+        setTimeout(function () {
+            window.location = '{{ redirect_to_after_registration }}';
+        }, 500);
+    });
+</script>

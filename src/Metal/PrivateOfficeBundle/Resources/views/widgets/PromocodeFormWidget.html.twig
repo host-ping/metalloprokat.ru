@@ -1,0 +1,35 @@
+{% set popupId = 'promo' %}
+
+<div id="{{ popupId }}" class="popup-block opacity-border large"
+     data-popup-template="#{{ popupId }}-template"></div>
+
+<script type="text/html" id="{{ popupId }}-template">
+    <div class="popup-content">
+        <div class="title-popup">Промокод</div>
+        <span class="close-popup icon-popup-close clickable js-popup-closer"></span>
+        <form id="{{ popupId }}-form" class="popup-form js-ajax-form-submit"
+              data-success="reload"
+              action="{{ path('MetalPrivateOfficeBundle:Company:usePromocode') }}"
+              method="post"
+              novalidate="novalidate">
+            <fieldset>
+                <div class="promo-group clearfix">
+                    <div class="promo-wrapper field-wrap float-left">
+                        {{ form_widget(form.promocode, {'attr' : {'class' : 'promo-field form-text ie-radius', 'placeholder' : 'Промокод'}} ) }}
+                        <span class="icon-help js-helper-opener" data-text="Вы можете ввести промокод, он дает
+                                 право на пользование полным пакетом услуг в течении одного месяца"></span>
+
+                    </div>
+                    <div class="promo-description-wrapper field-wrap float-left g-hidden">
+                        <p class="promo-status green-color">Промокод действителен и дает право на пользование полным пакетом услуг в течении одного месяца</p>
+                        <p class="promo-status red-color">Промокод действителен с 16 окт 2015 до 31 дек 2015</p>
+                    </div>
+                </div>
+                <div class="submit-wrapper">
+                    <input class="send-button button blue-bg ie-radius" type="submit" value="Применить"/>
+                </div>
+            </fieldset>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</script>

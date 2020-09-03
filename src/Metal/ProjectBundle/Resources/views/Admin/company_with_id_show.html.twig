@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% if object.company %}
+        <div>
+            {% if object.company.deletedAtTS %}
+                <strike>{{ object.company.title }}</strike>
+            {% else %}
+                {{ object.company.title }}
+            {% endif %}
+            <b>(<a target="_blank" href="{{ path('admin_metal_companies_company_list', {'filter': {'id': {'value': object.company.id}}}) }}">{{ object.company.id }}</a>)</b>
+            {{ include('MetalProjectBundle:Admin:stars.html.twig', {'object' : object.company}, false) }}
+        </div>
+    {% endif %}
+{% endblock %}

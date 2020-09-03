@@ -1,0 +1,61 @@
+{% extends admin.getTemplate('edit') %}
+
+{% block form %}
+    <form
+          id="attribute-value-category-create"
+          method="post"
+          {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div class="box box-success">
+            <div class="box-body">
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.categories, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.categories) }}
+                            {{ form_errors(form.categories) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.attribute, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.attribute) }}
+                            {{ form_errors(form.attribute) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row control-group">
+                    <div class="col-md-5">
+                        {{ form_label(form.possibleValue, null, {'label_attr' : {'class' : 'control-label'}}) }}
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural ">
+                            {{ form_widget(form.possibleValue) }}
+                            {{ form_errors(form.possibleValue) }}
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="submitted" value="Сохранить" />
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+
+        {% block formactions %}
+            <div class="clearfix">
+                <div class="well well-small form-actions">
+                    <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сохранить">
+
+                </div>
+            </div>
+        {% endblock formactions %}
+    </form>
+{% endblock %}
